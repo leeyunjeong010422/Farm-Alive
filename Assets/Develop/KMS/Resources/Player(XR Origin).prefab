@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4885141331294168703}
   - component: {fileID: 6270385978765209903}
   - component: {fileID: 8910061085558262156}
+  - component: {fileID: 1165557642626564534}
+  - component: {fileID: 8481773483335478877}
   m_Layer: 0
   m_Name: Right Controller
   m_TagString: Untagged
@@ -276,6 +278,51 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &1165557642626564534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255193212329280977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9ac216f0eb04754b1d938aac6380b31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ManipulationInteractionGroup: {fileID: 8481773483335478877}
+  m_DirectInteractor: {fileID: 3406782361045389138}
+  m_RayInteractor: {fileID: 0}
+  m_TeleportInteractor: {fileID: 0}
+  m_TeleportModeActivate: {fileID: 0}
+  m_TeleportModeCancel: {fileID: 0}
+  m_Turn: {fileID: 0}
+  m_SnapTurn: {fileID: 0}
+  m_Move: {fileID: 0}
+  m_UIScroll: {fileID: 0}
+  m_SmoothMotionEnabled: 0
+  m_SmoothTurnEnabled: 0
+  m_UIScrollingEnabled: 0
+  m_RayInteractorChanged:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &8481773483335478877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255193212329280977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4a50d88b55b45648927679791f472de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_GroupName: 
+  m_InteractionManager: {fileID: 0}
+  m_StartingGroupMembers:
+  - {fileID: 8481773483335478877}
+  m_StartingInteractionOverridesMap: []
 --- !u!1 &2950595669399027435
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,6 +483,8 @@ MonoBehaviour:
   cam: {fileID: 4301564372954175389}
   audioListener: {fileID: 2394687054046984463}
   trackedPoseDriver: {fileID: 1079225272714446807}
+  leftControllerManager: {fileID: 0}
+  rightControllerManager: {fileID: 0}
   leftController: {fileID: 7244205502502397373}
   rightController: {fileID: 6270385978765209903}
 --- !u!114 &7796118003363028200
@@ -602,6 +651,8 @@ GameObject:
   - component: {fileID: 8944627104272007818}
   - component: {fileID: 7244205502502397373}
   - component: {fileID: 1824613436137977714}
+  - component: {fileID: 6171529729526377531}
+  - component: {fileID: 5514463026059203841}
   m_Layer: 0
   m_Name: Left Controller
   m_TagString: Untagged
@@ -867,6 +918,51 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &6171529729526377531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8079279044524754647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9ac216f0eb04754b1d938aac6380b31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ManipulationInteractionGroup: {fileID: 5514463026059203841}
+  m_DirectInteractor: {fileID: 7635926324706420632}
+  m_RayInteractor: {fileID: 0}
+  m_TeleportInteractor: {fileID: 0}
+  m_TeleportModeActivate: {fileID: 0}
+  m_TeleportModeCancel: {fileID: 0}
+  m_Turn: {fileID: 0}
+  m_SnapTurn: {fileID: 0}
+  m_Move: {fileID: 0}
+  m_UIScroll: {fileID: 0}
+  m_SmoothMotionEnabled: 0
+  m_SmoothTurnEnabled: 0
+  m_UIScrollingEnabled: 0
+  m_RayInteractorChanged:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &5514463026059203841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8079279044524754647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4a50d88b55b45648927679791f472de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_GroupName: 
+  m_InteractionManager: {fileID: 0}
+  m_StartingGroupMembers:
+  - {fileID: 5514463026059203841}
+  m_StartingInteractionOverridesMap: []
 --- !u!1 &8854785556495982557
 GameObject:
   m_ObjectHideFlags: 0
