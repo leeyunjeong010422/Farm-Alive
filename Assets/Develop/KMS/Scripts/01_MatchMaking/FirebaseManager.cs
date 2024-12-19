@@ -221,19 +221,22 @@ public class FirebaseManager : MonoBehaviour
     /// </summary>
     public void UpdateLastLogin()
     {
-        DatabaseReference userRef = dataBase.GetReference($"users/{userId}/lastLogin");
+        Debug.Log("캐릭터 마지막 로그인 갱신!");
+        Debug.Log("지금은 데이터를 잠시 갱신안함 - (코드 막아둠!)");
 
-        userRef.SetValueAsync(DateTime.UtcNow.ToString("o")).ContinueWithOnMainThread(task =>
-        {
-            if (task.IsCompleted && !task.IsFaulted)
-            {
-                Debug.Log("마지막 로그인 시간 업데이트 성공!");
-            }
-            else
-            {
-                Debug.LogError("마지막 로그인 시간 업데이트 실패: " + task.Exception);
-            }
-        });
+        //DatabaseReference userRef = dataBase.GetReference($"users/{userId}/lastLogin");
+
+        //userRef.SetValueAsync(DateTime.UtcNow.ToString("o")).ContinueWithOnMainThread(task =>
+        //{
+        //    if (task.IsCompleted && !task.IsFaulted)
+        //    {
+        //        Debug.Log("마지막 로그인 시간 업데이트 성공!");
+        //    }
+        //    else
+        //    {
+        //        Debug.LogError("마지막 로그인 시간 업데이트 실패: " + task.Exception);
+        //    }
+        //});
     }
 
     /// <summary>
