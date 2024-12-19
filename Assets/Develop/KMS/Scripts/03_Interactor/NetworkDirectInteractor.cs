@@ -17,7 +17,7 @@ public class NetworkDirectInteractor : XRDirectInteractor
         base.OnSelectEntered(args);
         // TODO : 잡은 사실을 네트워크를 통해서 전달.
         // 1. 잡은 플레이어가 잡은 물체의 소유권을 가져오기.
-        PhotonView interactablePV = args.interactorObject.transform.GetComponent<PhotonView>();
+        PhotonView interactablePV = args.interactableObject.transform.GetComponent<PhotonView>();
         interactablePV.RequestOwnership();
     }
 
@@ -30,7 +30,7 @@ public class NetworkDirectInteractor : XRDirectInteractor
         base.OnSelectExited(args);
         // TODO : 놓은 사실을 네트워크를 통해서 전달.
         // 1. 놓은 플레이어가 잡은 물체의 소유권을 방장에게 다시 돌려주기.
-        PhotonView interactablePV = args.interactorObject.transform.GetComponent<PhotonView>();
+        PhotonView interactablePV = args.interactableObject.transform.GetComponent<PhotonView>();
         interactablePV.TransferOwnership(PhotonNetwork.MasterClient);
     }
 }

@@ -492,6 +492,7 @@ GameObject:
   - component: {fileID: 4262812292424078863}
   - component: {fileID: 5112236440635720896}
   - component: {fileID: 1916838843314841748}
+  - component: {fileID: 8643493765415063428}
   m_Layer: 0
   m_Name: Left Controller
   m_TagString: Untagged
@@ -769,7 +770,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9ac216f0eb04754b1d938aac6380b31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ManipulationInteractionGroup: {fileID: 0}
+  m_ManipulationInteractionGroup: {fileID: 8643493765415063428}
   m_DirectInteractor: {fileID: 3915977995224929322}
   m_RayInteractor: {fileID: 0}
   m_TeleportInteractor: {fileID: 0}
@@ -798,6 +799,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8643493765415063428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3440546465287058789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4a50d88b55b45648927679791f472de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_GroupName: 
+  m_InteractionManager: {fileID: 0}
+  m_StartingGroupMembers:
+  - {fileID: 3915977995224929322}
+  m_StartingInteractionOverridesMap: []
 --- !u!1 &4491274995854829400
 GameObject:
   m_ObjectHideFlags: 0
@@ -823,7 +841,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4491274995854829400}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -947,6 +965,7 @@ GameObject:
   - component: {fileID: 622896870845121181}
   - component: {fileID: 2596042532059462206}
   - component: {fileID: 6165566283734767950}
+  - component: {fileID: 6218905537226850075}
   m_Layer: 0
   m_Name: Right Controller
   m_TagString: Untagged
@@ -1224,7 +1243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9ac216f0eb04754b1d938aac6380b31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ManipulationInteractionGroup: {fileID: 0}
+  m_ManipulationInteractionGroup: {fileID: 6218905537226850075}
   m_DirectInteractor: {fileID: 8135551747400908000}
   m_RayInteractor: {fileID: 0}
   m_TeleportInteractor: {fileID: 0}
@@ -1253,6 +1272,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6218905537226850075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6641326672428971619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4a50d88b55b45648927679791f472de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_GroupName: 
+  m_InteractionManager: {fileID: 0}
+  m_StartingGroupMembers:
+  - {fileID: 8135551747400908000}
+  m_StartingInteractionOverridesMap: []
 --- !u!1 &8598080413633301849
 GameObject:
   m_ObjectHideFlags: 0
