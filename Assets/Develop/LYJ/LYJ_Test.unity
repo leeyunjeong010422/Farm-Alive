@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 83273836}
   - component: {fileID: 83273835}
   - component: {fileID: 83273837}
+  - component: {fileID: 83273838}
   m_Layer: 0
   m_Name: Plant Ground
   m_TagString: Untagged
@@ -191,6 +192,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _digCount: 5
+--- !u!114 &83273838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 83273834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85ae5084de620f440912448c417a7d12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetTag: Plant
 --- !u!1 &102537975
 GameObject:
   m_ObjectHideFlags: 0
@@ -1222,7 +1236,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_InteractionLayers:
-    m_Bits: 4294967295
+    m_Bits: 2
   m_AttachTransform: {fileID: 1288371792}
   m_KeepSelectedTargetValid: 1
   m_DisableVisualsWhenBlockedInGroup: 1
@@ -1622,7 +1636,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_InteractionLayers:
-    m_Bits: 1
+    m_Bits: 2
   m_DistanceCalculationMode: 1
   m_SelectMode: 0
   m_FocusMode: 1
