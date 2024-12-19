@@ -4,26 +4,44 @@ using UnityEngine;
 
 public class ShovelInteractor : MonoBehaviour
 {
-    private bool _isShovelTouchingGround = false;
+    private PlantGround _currentGround;
+    private int _groundTriggerCount = 0;
 
     private void OnTriggerEnter(Collider other)
     {
-        // 삽이 DisappearGround와 닿으면
-        if (other.CompareTag("DisappearGround"))
+        PlantGround ground = other.GetComponentInParent<PlantGround>();
+        if (ground != null)
         {
-            _isShovelTouchingGround = true; // 삽이 땅에 닿음
+            if (_currentGround == null)
+            {
+                _currentGround = ground;
+                Debug.Log($"참조 성공");
+            }
+            else
+            {
+                Debug.Log("참조 실패: PlantGround 스크립트가 없음");
+            }
+
+            if (ground == _currentGround)
+            {
+                _groundTriggerCount++;
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        // 삽이 DisappearGround에서 떨어지면
-        if (other.CompareTag("DisappearGround"))
+        PlantGround ground = other.GetComponentInParent<PlantGround>();
+        if (ground != null && ground == _currentGround)
         {
-            if (_isShovelTouchingGround)
+            _groundTriggerCount--;
+
+            if (_groundTriggerCount <= 0)
             {
-                Destroy(other.gameObject); // DisappearGround 오브젝트 삭제
-                _isShovelTouchingGround = false; // 상태 초기화
+                _currentGround.Dig();
+                _currentGround = null;
+                _groundTriggerCount = 0;
+                Debug.Log("참조 해제");
             }
         }
     }
