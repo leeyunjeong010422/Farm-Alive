@@ -29,7 +29,7 @@ public class Crop : MonoBehaviourPun
     [SerializeField] private int _curNutrient;
 
     private BaseState[] _states = new BaseState[(int)E_CropState.SIZE];
-    private XRGrabInteractable _grabInteractable;
+    private CropInteractable _cropInteractable;
 
     private void Awake()
     {
@@ -37,7 +37,7 @@ public class Crop : MonoBehaviourPun
         _states[(int)E_CropState.GrowStopped] = new GrowStoppedState(this);
         _states[(int)E_CropState.GrowCompleted] = new GrowCompletedState(this);
 
-        _grabInteractable = GetComponent<XRGrabInteractable>();
+        _cropInteractable = GetComponent<CropInteractable>();
     }
 
     private void OnEnable()
@@ -153,7 +153,7 @@ public class Crop : MonoBehaviourPun
 
         public override void StateEnter()
         {
-            crop._grabInteractable.enabled = true;
+            crop._cropInteractable.enabled = true;
 
             // TODO: 성장완료 피드백 변경
             crop.transform.localScale *= 1.2f;
