@@ -464,7 +464,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xrOriginPrefab: {fileID: 0}
   characterPrefab: {fileID: 0}
-  newcharacterPrefab: {fileID: 637130388568675776, guid: dbb499442da301643a7279892a2472b9, type: 3}
+  newcharacterPrefab: {fileID: 1865248795837646416, guid: 41a7f5e4088d6e541b22c5be713161ae, type: 3}
 --- !u!1 &2125315160
 GameObject:
   m_ObjectHideFlags: 0

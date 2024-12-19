@@ -12,8 +12,8 @@ public class PlayerSpawn : MonoBehaviourPun
     [SerializeField] private AudioListener audioListener;
     [SerializeField] private TrackedPoseDriver trackedPoseDriver;
 
-    //[SerializeField] private ActionBasedControllerManager leftControllerManager;
-    //[SerializeField] private ActionBasedControllerManager rightControllerManager;
+    [SerializeField] private ActionBasedControllerManager leftControllerManager;
+    [SerializeField] private ActionBasedControllerManager rightControllerManager;
     [SerializeField] private ActionBasedController leftController;
     [SerializeField] private ActionBasedController rightController;
 
@@ -34,8 +34,8 @@ public class PlayerSpawn : MonoBehaviourPun
             leftController.enabled = false;
             rightController.enabled = false;
 
-            //leftControllerManager.enabled = false;
-            //rightControllerManager.enabled = false;
+            leftControllerManager.enabled = false;
+            rightControllerManager.enabled = false;
         }
     }
 }
