@@ -4,11 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Projectile
   - Flame
+  - Projectile
   - Destroyer
+  - MiniWorldCamera
   - Water
-  - DisappearGround
   layers:
   - Default
   - TransparentFX
@@ -38,10 +38,10 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - Pushable
+  - Character Collider
+  - Character Controller
+  - Teleport
   m_SortingLayers:
   - name: Default
     uniqueID: 0
