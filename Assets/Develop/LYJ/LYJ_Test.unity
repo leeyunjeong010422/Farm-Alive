@@ -1597,8 +1597,8 @@ GameObject:
   - component: {fileID: 7641459633145632752}
   - component: {fileID: 6139951464473883786}
   m_Layer: 0
-  m_Name: DisappearGround
-  m_TagString: DisappearGround
+  m_Name: DisappearingGround
+  m_TagString: DisappearingGround
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
