@@ -65,6 +65,7 @@ public class Crop : MonoBehaviourPun
         _curNutrient = 0;
     }
 
+    [PunRPC]
     public void ChangeState(E_CropState state)
     {
         _states[(int)_curState].StateExit();
@@ -113,7 +114,7 @@ public class Crop : MonoBehaviourPun
             // 상태 전이
             if (crop._elapsedTime >= crop._growthTime)
             {
-                crop.ChangeState(E_CropState.GrowCompleted);
+                crop.photonView.RPC(nameof(crop.ChangeState), RpcTarget.All, E_CropState.GrowCompleted);
             }
         }
 
@@ -133,7 +134,7 @@ public class Crop : MonoBehaviourPun
             // 상태 전이
             if (CheckGrowthCondition())
             {
-                crop.ChangeState(E_CropState.Growing);
+                crop.photonView.RPC(nameof(crop.ChangeState), RpcTarget.All, E_CropState.Growing);
             }
         }
 
