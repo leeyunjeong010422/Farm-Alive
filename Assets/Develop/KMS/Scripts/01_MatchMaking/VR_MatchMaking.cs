@@ -71,7 +71,8 @@ public class VR_MatchMaking : MonoBehaviourPunCallbacks
     /// </summary>
     private void LoadLobbyScene()
     {
-        PhotonNetwork.LoadLevel("LobbyScene");
+        // TODO: 기능 test 상황에서 레벨 변경 없이 진행하도록 한다.
+        //PhotonNetwork.LoadLevel("LobbyScene");
         Debug.Log("로비 씬 로드 및 방 입장 시도.");
 
         // 임시로 테스트 룸으로 입장하도록 함.
