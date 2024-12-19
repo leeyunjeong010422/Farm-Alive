@@ -41,10 +41,16 @@ public class Valve : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("충돌");
+
+        if (hosePoint == null)
+        {
+            Debug.LogError("호스포인가 없음");
+            return;
+        }
+
+
         if (other.gameObject.tag == "Player")
         {
-            other.transform.SetParent(transform);
-
             XRGrabInteractable grabInteractable = other.GetComponent<XRGrabInteractable>();
             if (grabInteractable != null)
             {
@@ -57,12 +63,29 @@ public class Valve : MonoBehaviour
     private void OnHoseReleased(XRGrabInteractable grabInteractable)
     {
         if (isHoseConnected) return;
-
+        
         Transform hoseTransform = grabInteractable.transform;
-        hoseTransform.SetParent(transform);
 
-        hoseTransform.position = hosePoint.position;
-        hoseTransform.rotation = hosePoint.rotation;
+        Transform startPoint = hoseTransform.Find("StartPoint");
+        if (startPoint == null)
+        {
+            Debug.LogError("스타트포인트가 없음");
+            return;
+        }
+
+        if (startPoint == null)
+        {
+            Debug.LogError("스타트포인트가 없음");
+            foreach (Transform child in hoseTransform)
+            {
+                Debug.Log($"호스의 하위 오브젝트: {child.name}");
+            }
+            return;
+        }
+
+
+        AlignHose(hoseTransform, startPoint);
+
 
         Rigidbody hoseRigidbody = grabInteractable.GetComponent<Rigidbody>();
         if (hoseRigidbody != null)
@@ -75,4 +98,14 @@ public class Valve : MonoBehaviour
         Debug.Log("호스 연결 완료!!");
     }
 
+    private void AlignHose(Transform hoseTransform, Transform startPoint)
+    {
+        Vector3 positionOffset = hosePoint.position - startPoint.position;
+        hoseTransform.position += positionOffset;
+
+        Quaternion rotationOffset = Quaternion.FromToRotation(startPoint.forward, hosePoint.forward);
+        hoseTransform.rotation = rotationOffset * hoseTransform.rotation;
+
+        hoseTransform.SetParent(transform);
+    }
 }
