@@ -8,11 +8,11 @@ public class Crop : MonoBehaviourPun
 {
     public enum E_CropState
     {
-        Growing, GrowStopped, GrowCompleted
+        Growing, GrowStopped, GrowCompleted, SIZE
     }
 
     [Header("작물의 현재 상태")]
-    [SerializeField] private E_CropState _cropState;
+    [SerializeField] private E_CropState _curState;
 
     [Header("수치")]
     [Tooltip("수확가능 상태로 변경될 때까지 성장가능 상태에서 머물러야 하는 시간")]
@@ -20,30 +20,24 @@ public class Crop : MonoBehaviourPun
     [Tooltip("성장가능 상태에서 머무른 시간")]
     [SerializeField] private float _elapsedTime;
     [Tooltip("성장가능 상태가 되기 위해 필요한 수분")]
-    [SerializeField] private float _maxMoisture;
+    [SerializeField] private int _maxMoisture;
     [Tooltip("작물의 현재 수분")]
-    [SerializeField] private float _curMoisture;
+    [SerializeField] private int _curMoisture;
     [Tooltip("성장가능 상태가 되기 위해 필요한 영양분")]
-    [SerializeField] private float _maxNutrient;
+    [SerializeField] private int _maxNutrient;
     [Tooltip("작물의 현재 영양분")]
-    [SerializeField] private float _curNutrient;
+    [SerializeField] private int _curNutrient;
 
-    // TODO: 성장가능 상태 판단 로직 추가
-    [SerializeField] private bool _canGrowth;
-
-    private XRGrabInteractable _grabInteractable;
-
-    private bool CanGrowth { 
-        set
-        { 
-            _canGrowth = value;
-            _cropState = _canGrowth ? E_CropState.Growing : E_CropState.GrowStopped;
-        }
-    }
+    private BaseState[] _states = new BaseState[(int)E_CropState.SIZE];
+    private CropInteractable _cropInteractable;
 
     private void Awake()
     {
-        _grabInteractable = GetComponent<XRGrabInteractable>();
+        _states[(int)E_CropState.Growing] = new GrowingState(this);
+        _states[(int)E_CropState.GrowStopped] = new GrowStoppedState(this);
+        _states[(int)E_CropState.GrowCompleted] = new GrowCompletedState(this);
+
+        _cropInteractable = GetComponent<CropInteractable>();
     }
 
     private void OnEnable()
@@ -53,38 +47,122 @@ public class Crop : MonoBehaviourPun
 
     private void Update()
     {
-        Grow();
+        _states[(int)_curState].StateUpdate();
+    }
+
+    private void OnDestroy()
+    {
+        _states[(int)_curState].StateExit();
     }
 
     private void Init()
     {
-        _canGrowth = true;
-        _cropState = E_CropState.Growing;
+        _curState = E_CropState.GrowStopped;
+        _states[(int)_curState].StateEnter();
+
         _elapsedTime = 0.0f;
-        _curMoisture = 0.0f;
-        _curNutrient = 0.0f;
+        _curMoisture = 0;
+        _curNutrient = 0;
     }
 
-    private void Grow()
+    [PunRPC]
+    public void ChangeState(E_CropState state)
     {
-        if (!_canGrowth)
-            return;
+        _states[(int)_curState].StateExit();
+        _curState = state;
+        _states[(int)_curState].StateEnter();
+    }
 
-        _elapsedTime += Time.deltaTime;
+    public void IncreaseMoisture() => _curMoisture++;
+    public void IncreaseNutrient() => _curNutrient++;
 
-        if (_elapsedTime >= _growthTime)
+    #region 작물 상태 행동 및 전이
+    private class CropState : BaseState
+    {
+        public Crop crop;
+        public CropState(Crop crop) => this.crop = crop;
+
+        public override void StateEnter()
         {
-            CompleteGrow();
+            throw new System.NotImplementedException();
+        }
+
+        public override void StateExit()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void StateUpdate()
+        {
+            throw new System.NotImplementedException();
         }
     }
 
-    private void CompleteGrow()
+    private class GrowingState : CropState
     {
-        _cropState = E_CropState.GrowCompleted;
-        _canGrowth = false;
-        _grabInteractable.enabled = true;
+        public GrowingState(Crop crop) : base(crop) { }
 
-        // TODO: 성장완료 피드백 변경
-        transform.localScale *= 1.2f;
+        public override void StateEnter() { }
+
+        public override void StateExit() { }
+
+        public override void StateUpdate()
+        {
+            // 행동
+            Grow();
+
+            // 상태 전이
+            if (crop._elapsedTime >= crop._growthTime)
+            {
+                crop.photonView.RPC(nameof(crop.ChangeState), RpcTarget.All, E_CropState.GrowCompleted);
+            }
+        }
+
+        private void Grow() => crop._elapsedTime += Time.deltaTime;
     }
+
+    private class GrowStoppedState : CropState
+    {
+        public GrowStoppedState(Crop crop) : base(crop) { }
+
+        public override void StateEnter() { }
+
+        public override void StateExit() { }
+
+        public override void StateUpdate()
+        {
+            // 상태 전이
+            if (CheckGrowthCondition())
+            {
+                crop.photonView.RPC(nameof(crop.ChangeState), RpcTarget.All, E_CropState.Growing);
+            }
+        }
+
+        private bool CheckGrowthCondition()
+        {
+            return CheckMoisture() && CheckNutrient();
+        }
+
+        private bool CheckMoisture() => crop._curMoisture >= crop._maxMoisture;
+        private bool CheckNutrient() => crop._curNutrient >= crop._maxNutrient;
+    }
+
+    private class GrowCompletedState : CropState
+    {
+        public GrowCompletedState(Crop crop) : base(crop) { }
+
+        public override void StateEnter()
+        {
+            crop._cropInteractable.enabled = true;
+
+            // TODO: 성장완료 피드백 변경
+            crop.transform.localScale *= 1.2f;
+
+        }
+
+        public override void StateExit() { }
+
+        public override void StateUpdate() { }
+    }
+    #endregion
 }
