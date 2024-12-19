@@ -19,6 +19,14 @@ public class Crop : MonoBehaviourPun
     [SerializeField] private float _growthTime;
     [Tooltip("성장가능 상태에서 머무른 시간")]
     [SerializeField] private float _elapsedTime;
+    [Tooltip("성장가능 상태가 되기 위해 필요한 수분")]
+    [SerializeField] private float _maxMoisture;
+    [Tooltip("작물의 현재 수분")]
+    [SerializeField] private float _curMoisture;
+    [Tooltip("성장가능 상태가 되기 위해 필요한 영양분")]
+    [SerializeField] private float _maxNutrient;
+    [Tooltip("작물의 현재 영양분")]
+    [SerializeField] private float _curNutrient;
 
     // TODO: 성장가능 상태 판단 로직 추가
     [SerializeField] private bool _canGrowth;
@@ -53,6 +61,8 @@ public class Crop : MonoBehaviourPun
         _canGrowth = true;
         _cropState = E_CropState.Growing;
         _elapsedTime = 0.0f;
+        _curMoisture = 0.0f;
+        _curNutrient = 0.0f;
     }
 
     private void Grow()
