@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4230721833028069135}
   - component: {fileID: 3582830591059302490}
   - component: {fileID: 5922741845108198140}
+  - component: {fileID: 5698470133758010466}
   m_Layer: 0
   m_Name: newPlayer(XR Origin)_2
   m_TagString: Untagged
@@ -147,6 +148,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vrCamera: {fileID: 7210863017178047535}
   headObject: {fileID: 5568894721508230800}
+--- !u!114 &5698470133758010466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865248795837646416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 126494ae2a10a34499272ed97a6c9f5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2628180127515033405
 GameObject:
   m_ObjectHideFlags: 0
