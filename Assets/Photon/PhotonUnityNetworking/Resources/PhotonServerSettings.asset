@@ -45,6 +45,7 @@ MonoBehaviour:
   - SyncIKRPC
   - SyncAnimationRPC
   - ChangeState
+  - SyncDig
   - SyncSelect
   DisableAutoOpenWizard: 1
   ShowSettings: 1

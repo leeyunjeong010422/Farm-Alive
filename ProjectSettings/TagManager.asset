@@ -9,7 +9,7 @@ TagManager:
   - Destroyer
   - MiniWorldCamera
   - Water
-  - DisappearGround
+  - DisappearingGround
   layers:
   - Default
   - TransparentFX
