@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -16,11 +14,12 @@ public class PlantGround : MonoBehaviour
 
         if (_socketInteractor != null)
         {
-            _socketInteractor.enabled = false;
+            _socketInteractor.enabled = false; // 초기 상태 비활성화
+            _socketInteractor.hoverEntered.AddListener(OnHoverEntered); // 아이템 삽입 이벤트 연결
         }
         else
         {
-            Debug.Log("XRSocketInteractor를 찾을 수 없습니다.");
+            Debug.LogWarning("XRSocketInteractor를 찾을 수 없습니다.");
         }
     }
 
@@ -36,20 +35,58 @@ public class PlantGround : MonoBehaviour
 
         if (_currentDigCount >= _digCount)
         {
+            // DisappearingGround 오브젝트 삭제
             GameObject disappearGround = GameObject.FindWithTag("DisappearingGround");
             if (disappearGround != null)
             {
                 Destroy(disappearGround);
-                Debug.Log("DisappearingGround이 삭제되었습니다.");
+                Debug.Log("DisappearingGround가 삭제되었습니다.");
             }
 
+            _isInteractable = false; // 추가 삽질 방지
+
+            // 소켓 인터렉터 활성화 (조건 검사는 OnHoverEntered에서 수행)
             if (_socketInteractor != null)
             {
                 _socketInteractor.enabled = true;
+                _socketInteractor.showInteractableHoverMeshes = true;
+                Debug.Log("소켓 인터렉터가 활성화되었습니다.");
             }
-
-
-            _isInteractable = false;
         }
+    }
+
+    // 오브젝트를 땅에 가져다 댔을 때 조건 검사
+    private void OnHoverEntered(HoverEnterEventArgs args)
+    {
+        // 가져다댄 오브젝트에서 PlantDigCount 컴포넌트를 가져옴
+        // TODO: 식물 스크립트로 코드를 옮긴다면 밑에 코드도 수정해 주어야 함
+        PlantDigCount plant = args.interactableObject.transform.GetComponent<PlantDigCount>();
+
+        if (plant == null)
+        {
+            _socketInteractor.enabled = false;
+            return;
+        }
+
+        // 조건 검사: 땅의 _digCount와 식물의 _plantDigCount가 같아야 함
+        if (!CanPlant(plant))
+        {
+            _socketInteractor.enabled = false;
+        }
+        else
+        {
+            _socketInteractor.enabled = true;
+        }
+    }
+
+    /// <summary>
+    /// 현재 땅이 특정 식물이 심어질 수 있는지 확인
+    /// </summary>
+    public bool CanPlant(PlantDigCount plantDigCount)
+    {
+        if (plantDigCount == null) return false;
+
+        // 식물의 요구 삽질 횟수와 땅의 DigCount 비교
+        return plantDigCount.CanPlant(_digCount);
     }
 }
