@@ -23,7 +23,7 @@ public class NetworkDirectInteractor : XRDirectInteractor
         interactablePV.RequestOwnership();
 
         // 2. 잡은 사실 알리기
-        photonView.RPC(nameof(SyncSelect), RpcTarget.Others, selectInteractable, true);
+        photonView.RPC(nameof(SyncSelect), RpcTarget.Others, interactablePV.ViewID, true);
     }
 
     /// <summary>
@@ -41,13 +41,14 @@ public class NetworkDirectInteractor : XRDirectInteractor
         interactablePV.TransferOwnership(PhotonNetwork.MasterClient);
 
         // 2. 놓은 사실 알리기
-        photonView.RPC(nameof(SyncSelect), RpcTarget.Others, selectInteractable, false);
+        photonView.RPC(nameof(SyncSelect), RpcTarget.Others, interactablePV.ViewID, false);
     }
 
     [PunRPC]
-    private void SyncSelect(IXRSelectInteractable interactable, bool isSelected)
+    private void SyncSelect(int interactable, bool isSelected)
     {
-        Rigidbody interactableRigid = interactable.transform.GetComponent<Rigidbody>();
+        PhotonView photonView =  PhotonView.Find(interactable);
+        Rigidbody interactableRigid = photonView.transform.GetComponent<Rigidbody>();
 
         if (isSelected)
         {
