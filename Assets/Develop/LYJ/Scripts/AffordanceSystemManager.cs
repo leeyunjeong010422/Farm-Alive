@@ -120,7 +120,12 @@ public class AffordanceSystemManager : MonoBehaviour
     {
         if (_audioSource != null && clip != null)
         {
-            _audioSource.PlayOneShot(clip);
+            // 이전에 재생 중이던 소리를 중지
+            _audioSource.Stop();
+
+            // 새로운 소리를 재생
+            _audioSource.clip = clip;
+            _audioSource.Play();
         }
     }
 
