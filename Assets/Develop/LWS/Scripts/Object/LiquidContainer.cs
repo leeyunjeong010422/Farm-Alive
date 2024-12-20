@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class LiquidContainer : MonoBehaviour
 {
     public float _fillAmount = 0.0f;
-    public float _maxAmount = 1.0f;
+    float _maxAmount = 1.0f;
 
     /// <summary>
     /// 외부에서 물을 채울경우 호출할 함수.
