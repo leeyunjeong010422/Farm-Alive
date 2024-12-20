@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Repair : MonoBehaviour
 {
-    public int _maxRepairCount;
+    [Tooltip("몇 번 때려야 고쳐지는지")]
+    [SerializeField] int _maxRepairCount;
     private int _curRepairCount = 0;
 
     public void PlusRepairCount()
