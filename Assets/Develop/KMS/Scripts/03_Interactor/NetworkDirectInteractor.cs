@@ -15,10 +15,15 @@ public class NetworkDirectInteractor : XRDirectInteractor
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
         base.OnSelectEntered(args);
-        // TODO : 잡은 사실을 네트워크를 통해서 전달.
+
+        IXRSelectInteractable selectInteractable = args.interactableObject;
+
         // 1. 잡은 플레이어가 잡은 물체의 소유권을 가져오기.
-        PhotonView interactablePV = args.interactableObject.transform.GetComponent<PhotonView>();
+        PhotonView interactablePV = selectInteractable.transform.GetComponent<PhotonView>();
         interactablePV.RequestOwnership();
+
+        // 2. 잡은 사실 알리기
+        photonView.RPC(nameof(SyncSelect), RpcTarget.Others, selectInteractable, true);
     }
 
     /// <summary>
@@ -28,9 +33,31 @@ public class NetworkDirectInteractor : XRDirectInteractor
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
         base.OnSelectExited(args);
-        // TODO : 놓은 사실을 네트워크를 통해서 전달.
+
+        IXRSelectInteractable selectInteractable = args.interactableObject;
+
         // 1. 놓은 플레이어가 잡은 물체의 소유권을 방장에게 다시 돌려주기.
-        PhotonView interactablePV = args.interactableObject.transform.GetComponent<PhotonView>();
+        PhotonView interactablePV = selectInteractable.transform.GetComponent<PhotonView>();
         interactablePV.TransferOwnership(PhotonNetwork.MasterClient);
+
+        // 2. 놓은 사실 알리기
+        photonView.RPC(nameof(SyncSelect), RpcTarget.Others, selectInteractable, true);
+    }
+
+    [PunRPC]
+    private void SyncSelect(IXRSelectInteractable interactable, bool isSelected)
+    {
+        Rigidbody interactableRigid = interactable.transform.GetComponent<Rigidbody>();
+
+        if (isSelected)
+        {
+            interactableRigid.useGravity = false;
+            interactableRigid.isKinematic = true;
+        }
+        else
+        {
+            interactableRigid.useGravity = true;
+            interactableRigid.isKinematic = false;
+        }
     }
 }
