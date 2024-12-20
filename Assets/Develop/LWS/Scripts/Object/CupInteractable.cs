@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Cup : MonoBehaviour
+public class CupInteractable : MonoBehaviour
 {
-    public ParticleSystem _particleSystemLiquid;
+    [Tooltip("액체가 흐르는 파티클")]
+    [SerializeField] ParticleSystem _particleSystemLiquid;
     
-    // 액체가 차 있을 초기값 (1.0이면 꽉 참)
-    private float _fillAmount = 1.0f;
-    // 외부에서 값을 바꿀 경우 (호스로 물을 채운다거나)
-    public float FillAmount { get { return _fillAmount; } set { _fillAmount = value; } }
+    [Tooltip("액체가 차 있을 초기값 (1.0이면 꽉 참)")]
+    [SerializeField] float _fillAmount = 1.0f;
 
-    // 초당 흘러내릴 비율
-    private float _pourRate = 0.1f;
+    [Tooltip("기울일 경우 흘러내릴 비율")]
+    [SerializeField] float _pourRate = 0.1f;
 
-    // 물이 흐르는 사운드
-    public AudioClip _pouringSound;
+    [Tooltip("액체가 흐르는 사운드")]
+    [SerializeField] AudioClip _pouringSound;
+
     private AudioSource _audioSource;
 
     private void OnEnable()

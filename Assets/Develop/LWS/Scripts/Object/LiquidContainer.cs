@@ -6,8 +6,9 @@ using UnityEngine.Events;
 
 public class LiquidContainer : MonoBehaviour
 {
-    public float _fillAmount = 0.0f;
-    public float _maxAmount = 1.0f;
+    [Tooltip("초기에 차 있을 정도 (0.0으로 시작이 기본)")]
+    [SerializeField] float _fillAmount = 0.0f;
+    float _maxAmount = 1.0f;
 
     /// <summary>
     /// 외부에서 물을 채울경우 호출할 함수.
