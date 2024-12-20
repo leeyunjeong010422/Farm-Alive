@@ -848,7 +848,10 @@ MonoBehaviour:
   m_StartingGroupMembers:
   - {fileID: 8011763247794510613}
   - {fileID: 3915977995224929322}
-  m_StartingInteractionOverridesMap: []
+  m_StartingInteractionOverridesMap:
+  - groupMember: {fileID: 8011763247794510613}
+    overrideGroupMembers:
+    - {fileID: 3915977995224929322}
 --- !u!1 &4164353751815813860
 GameObject:
   m_ObjectHideFlags: 0
@@ -1454,7 +1457,10 @@ MonoBehaviour:
   m_StartingGroupMembers:
   - {fileID: 8515143821666998839}
   - {fileID: 8135551747400908000}
-  m_StartingInteractionOverridesMap: []
+  m_StartingInteractionOverridesMap:
+  - groupMember: {fileID: 8515143821666998839}
+    overrideGroupMembers:
+    - {fileID: 8135551747400908000}
 --- !u!1 &7660886087456761472
 GameObject:
   m_ObjectHideFlags: 0
