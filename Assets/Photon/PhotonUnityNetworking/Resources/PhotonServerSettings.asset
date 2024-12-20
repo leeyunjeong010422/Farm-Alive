@@ -44,6 +44,9 @@ MonoBehaviour:
   - RespawnSpaceship
   - SyncIKRPC
   - SyncAnimationRPC
+  - StartFollowingRPC
+  - StopFollowingRPC
+  - SyncDestination
   - ChangeState
   - SyncDig
   - SyncSelect

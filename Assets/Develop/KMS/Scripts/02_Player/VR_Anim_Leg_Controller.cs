@@ -33,15 +33,15 @@ public class VR_Anim_Leg_Controller : MonoBehaviourPun
             InputDevice controller = InputDevices.GetDeviceAtXRNode(controllerNode);
             if (controller.TryGetFeatureValue(CommonUsages.primary2DAxis, out inputAxis))
             {
-                Debug.Log("입력 받음.");
+                //Debug.Log("입력 받음.");
 
                 if (inputAxis != Vector2.zero)
                 {
-                    Debug.Log("입력 값 변경.");
+                    //Debug.Log("입력 값 변경.");
 
                     MoveCharacter();
                     animator.SetFloat("Speed", inputAxis.magnitude); // Speed 파라미터 전달
-                    Debug.Log("Speed: " + inputAxis.magnitude);
+                    //Debug.Log("Speed: " + inputAxis.magnitude);
                 }
                 else
                 {
