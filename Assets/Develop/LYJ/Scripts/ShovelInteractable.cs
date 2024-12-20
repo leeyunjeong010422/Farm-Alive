@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class ShovelInteractor : XRGrabInteractable
+public class ShovelInteractable : XRGrabInteractable
 {
     private PlantGround _currentGround;
     private int _groundTriggerCount = 0;
