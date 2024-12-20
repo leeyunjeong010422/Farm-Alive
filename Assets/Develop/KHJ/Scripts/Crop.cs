@@ -15,6 +15,8 @@ public class Crop : MonoBehaviourPun
     [SerializeField] private E_CropState _curState;
 
     [Header("수치")]
+    [Tooltip("밭에 심어지기 위해 밭이 경작돼야하는 횟수")]
+    [SerializeField] private int _digCount;
     [Tooltip("수확가능 상태로 변경될 때까지 성장가능 상태에서 머물러야 하는 시간")]
     [SerializeField] private float _growthTime;
     [Tooltip("성장가능 상태에서 머무른 시간")]
@@ -30,6 +32,8 @@ public class Crop : MonoBehaviourPun
 
     private BaseState[] _states = new BaseState[(int)E_CropState.SIZE];
     private CropInteractable _cropInteractable;
+
+    public int DigCount {  get { return _digCount; } }
 
     private void Awake()
     {
