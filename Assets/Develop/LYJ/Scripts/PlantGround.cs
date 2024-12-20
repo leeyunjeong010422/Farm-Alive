@@ -1,7 +1,8 @@
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class PlantGround : MonoBehaviour
+public class PlantGround : MonoBehaviourPun
 {
     [SerializeField] private int _digCount; // 필요 삽질 횟수
     private int _currentDigCount = 0; // 현재 삽질 횟수
@@ -27,6 +28,18 @@ public class PlantGround : MonoBehaviour
     /// 삽질 관리 메소드
     /// </summary>
     public void Dig()
+    {
+        if (!_isInteractable) return;
+
+        // Dig() 동작을 네트워크에서 동기화
+        photonView.RPC(nameof(SyncDig), RpcTarget.AllBuffered);
+    }
+
+    /// <summary>
+    /// 삽질 관리 메소드
+    /// </summary>
+    [PunRPC]
+    public void SyncDig()
     {
         if (!_isInteractable) return;
 
