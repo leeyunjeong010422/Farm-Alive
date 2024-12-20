@@ -41,7 +41,7 @@ public class NetworkDirectInteractor : XRDirectInteractor
         interactablePV.TransferOwnership(PhotonNetwork.MasterClient);
 
         // 2. 놓은 사실 알리기
-        photonView.RPC(nameof(SyncSelect), RpcTarget.Others, selectInteractable, true);
+        photonView.RPC(nameof(SyncSelect), RpcTarget.Others, selectInteractable, false);
     }
 
     [PunRPC]
