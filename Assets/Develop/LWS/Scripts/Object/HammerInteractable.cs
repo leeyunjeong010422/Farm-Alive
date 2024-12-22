@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HammerInteractable : MonoBehaviour
+public class HammerInteractable : MonoBehaviourPunCallbacks
 {
     private bool _isGrapped = false;
 
@@ -20,11 +21,17 @@ public class HammerInteractable : MonoBehaviour
     {
         if (!_isGrapped) return;
 
+        if (!photonView.AmOwner) return;
+
         Repair repair = collision.collider.gameObject.GetComponent<Repair>();
 
         if (repair != null)
         {
-            repair.PlusRepairCount();
+            PhotonView repairView = repair.GetComponent<PhotonView>();
+            if (repairView != null)
+            {
+                repairView.RPC("RPC_PlusRepairCount", RpcTarget.MasterClient);
+            }
         }
     }
 }
