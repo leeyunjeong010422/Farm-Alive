@@ -181,7 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xrOriginPrefab: {fileID: 5062796198389102050, guid: 8b01d553c90897947bb3dc251f048968, type: 3}
   characterPrefab: {fileID: 7264607921442958913, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
-  newcharacterPrefab: {fileID: 637130388568675776, guid: dbb499442da301643a7279892a2472b9, type: 3}
+  newcharacterPrefab: {fileID: 1865248795837646416, guid: 41a7f5e4088d6e541b22c5be713161ae, type: 3}
 --- !u!1 &1884138177
 GameObject:
   m_ObjectHideFlags: 0

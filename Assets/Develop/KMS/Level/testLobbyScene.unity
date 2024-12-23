@@ -964,8 +964,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _axis: {x: 0, y: -1, z: 0}
-  _maxDistance: 0
-  _returnSpeed: 10
+  _maxDistance: 0.03
+  _returnSpeed: 1
   _onButtonPressed:
     m_PersistentCalls:
       m_Calls:
@@ -1289,6 +1289,7 @@ MonoBehaviour:
   xrOriginPrefab: {fileID: 0}
   characterPrefab: {fileID: 0}
   newcharacterPrefab: {fileID: 1865248795837646416, guid: 41a7f5e4088d6e541b22c5be713161ae, type: 3}
+  RoomNum: 999
 --- !u!1 &1640389241
 GameObject:
   m_ObjectHideFlags: 0
