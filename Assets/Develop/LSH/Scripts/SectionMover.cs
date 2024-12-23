@@ -39,7 +39,7 @@ public class SectionMover : MonoBehaviourPun
                 {
                     Debug.Log("¿­¸²");
                     isMoving = false;
-                    photonView.RPC(nameof(OpenAllShutters), RpcTarget.All);
+                    photonView.RPC(nameof(OpenAllShutters), RpcTarget.AllBuffered);
                 }
                 
             }
@@ -73,7 +73,7 @@ public class SectionMover : MonoBehaviourPun
     {
         if (!isMoving)
         {
-            photonView.RPC(nameof(SelectCubeRPC), RpcTarget.All, cubeIndex);
+            photonView.RPC(nameof(SelectCubeRPC), RpcTarget.AllBuffered, cubeIndex);
         }
     }
 
@@ -83,7 +83,7 @@ public class SectionMover : MonoBehaviourPun
         selectedCube = targetCubes[cubeIndex];
         isMoving = true;
 
-        photonView.RPC(nameof(CloseAllShutters), RpcTarget.All);
+        photonView.RPC(nameof(CloseAllShutters), RpcTarget.AllBuffered);
     }
 
     [PunRPC]
