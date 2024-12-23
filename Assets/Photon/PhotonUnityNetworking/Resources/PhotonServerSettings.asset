@@ -36,33 +36,31 @@ MonoBehaviour:
   RpcList:
   - CantHearYou
   - ChangeColour
+  - ChangeState
   - ClickRpc
+  - CloseAllShutters
+  - ConnectHose
   - DestroyRpc
-  - HeresWhy
   - DestroySpaceship
   - Fire
-  - RespawnSpaceship
-  - SyncIKRPC
-  - SyncAnimationRPC
-  - StartFollowingRPC
-  - StopFollowingRPC
-  - SyncDestination
-  - ChangeState
-  - SyncDig
-  - SyncSelect
-  - RPC_OnButtonPressed
-  - RPC_OnButtonReleased
-  - RPC_PlusRepairCount
-  - CloseShutter
-  - ConnectHose
-  - OpenShutter
-  - SelectCubeRPC
-  - StartWater
-  - StopWater
-  - CloseAllShutters
+  - HeresWhy
   - NextQuest
   - OpenAllShutters
   - QuestStart
+  - RespawnSpaceship
+  - RPC_OnButtonPressed
+  - RPC_OnButtonReleased
+  - RPC_PlusRepairCount
+  - SelectCubeRPC
+  - StartFollowingRPC
+  - StartWater
+  - StopFollowingRPC
+  - StopWater
+  - SyncAnimationRPC
+  - SyncDestination
+  - SyncDig
+  - SyncIKRPC
+  - SyncSelect
   - UpdateItemCount
   DisableAutoOpenWizard: 1
   ShowSettings: 1
