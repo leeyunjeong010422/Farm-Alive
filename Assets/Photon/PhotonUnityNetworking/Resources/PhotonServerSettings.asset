@@ -59,6 +59,11 @@ MonoBehaviour:
   - SelectCubeRPC
   - StartWater
   - StopWater
+  - CloseAllShutters
+  - NextQuest
+  - OpenAllShutters
+  - QuestStart
+  - UpdateItemCount
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
