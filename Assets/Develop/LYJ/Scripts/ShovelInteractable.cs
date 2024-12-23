@@ -8,33 +8,10 @@ public class ShovelInteractable : XRGrabInteractable
 {
     private PlantGround _currentGround;
     private int _groundTriggerCount = 0;
-    private PhotonView _photonView;
 
     protected override void Awake()
     {
         base.Awake();
-        _photonView = GetComponent<PhotonView>();
-    }
-
-    protected override void OnSelectEntering(SelectEnterEventArgs args)
-    {
-        base.OnSelectEntering(args);
-
-        if (_photonView != null && _photonView.IsMine == false)
-        {
-            _photonView.RequestOwnership();
-            Debug.Log($"소유자 변경 => {PhotonNetwork.LocalPlayer.ActorNumber}");
-        }
-    }
-
-    protected override void OnSelectExited(SelectExitEventArgs args)
-    {
-        base.OnSelectExited(args);
-        if (_photonView != null && _photonView.IsMine)
-        {
-            _photonView.TransferOwnership(PhotonNetwork.MasterClient);
-            Debug.Log("소유자 변경 => 마스터 클라이언트로 전환됨");
-        }
     }
 
     private void OnTriggerEnter(Collider other)
