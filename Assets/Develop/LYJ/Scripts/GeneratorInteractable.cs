@@ -1,13 +1,18 @@
 using UnityEngine;
+using UnityEngine.XR.Content.Interaction;
 using UnityEngine.XR.Interaction.Toolkit;
+using Photon.Pun;
+using System.Collections;
 
 public class GeneratorInteractable : XRGrabInteractable
 {
     [Header("Generator Settings")]
     [Tooltip("시동이 걸리기까지 필요한 시도 횟수")]
-    [SerializeField] private int startAttemptsRequired = 3; // m값 (필요한 시도 횟수)
+    [SerializeField] private int startAttemptsRequired = 3;
 
-    [Header("Cord Settings")]
+    [Tooltip("고장이 발생하기까지의 시간")]
+    [SerializeField] private float breakdownWarningDuration = 5f;
+  
     [Tooltip("시동줄의 고정 시작 위치")]
     [SerializeField] private Transform cordStartPosition;
     [Tooltip("시동줄의 최대 끝 위치")]
@@ -15,20 +20,71 @@ public class GeneratorInteractable : XRGrabInteractable
     [Tooltip("시동줄 오브젝트")]
     [SerializeField] private Transform cordObject;
 
-    private Vector3 initialCordPosition; // 줄의 초기 위치
-    private Quaternion initialCordRotation; // 줄의 초기 회전
-    private int currentAttempts = 0; // 현재 시도 횟수
-    private bool isBeingPulled = false; // 줄이 당겨지고 있는 상태인지
-    private bool hasTriggered = false; // 중복 처리를 방지하기 위한 플래그
+    [Header("Linked Components")]
+    [SerializeField] private XRKnob knob;
+    [SerializeField] private XRLever lever;
+
+    [Header("Lighting")]
+    [Tooltip("정전 시 켜질 헤드라이트")]
+    [SerializeField] private HeadLightInteractable headLight;
+
+    private Vector3 initialCordPosition;
+    private Quaternion initialCordRotation;
+    private Vector3 initialCordScale;
+    private int currentAttempts = 0;
+    private bool isBeingPulled = false;
+    private bool hasTriggered = false;
+
+    private bool isGeneratorRunning = true;
+    private Coroutine warningCoroutine = null;
+
+    private bool isLeverDown = false;
+    private float currentKnobValue = 0f;
 
     private void Start()
     {
-        // 줄의 초기 위치 및 초기 회전 설정
+        knob = transform.root.GetComponentInChildren<XRKnob>();
+        lever = transform.root.GetComponentInChildren<XRLever>();
+
+        knob.onValueChange.AddListener(OnKnobValueChanged);
+        lever.onLeverActivate.AddListener(OnLeverActivate);
+        lever.onLeverDeactivate.AddListener(OnLeverDeactivate);
+
         if (cordObject != null)
         {
             initialCordPosition = cordObject.position;
             initialCordRotation = cordObject.rotation;
+            initialCordScale = cordObject.localScale;
         }
+    }
+
+    private void OnKnobValueChanged(float value)
+    {
+        currentKnobValue = value;
+
+        if (currentKnobValue >= 1f && !isGeneratorRunning)
+        {
+            Debug.Log("휠이 최대 범위까지 돌아감!");
+        }
+    }
+
+    private void OnLeverActivate()
+    {
+        isLeverDown = true;
+        Debug.Log("레버가 내려갔습니다.");
+
+        if (warningCoroutine != null)
+        {
+            StopCoroutine(warningCoroutine);
+            warningCoroutine = null;
+            Debug.Log("레버가 내려가서 고장 방지됨.");
+        }
+    }
+
+    private void OnLeverDeactivate()
+    {
+        isLeverDown = false;
+        Debug.Log("레버가 올라갔습니다.");
     }
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
@@ -44,40 +100,116 @@ public class GeneratorInteractable : XRGrabInteractable
         ResetCordPosition();
     }
 
+    private void Update()
+    {
+        if (isBeingPulled && cordObject != null && cordStartPosition != null && cordEndPosition != null)
+        {
+            float pullDistance = Vector3.Distance(cordObject.position, cordStartPosition.position);
+
+            Vector3 newScale = initialCordScale;
+            newScale.y = initialCordScale.y + pullDistance;
+            cordObject.localScale = newScale;
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            Debug.Log("전조 증상 테스트 시작");
+            TriggerWarning();
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        // cordObject가 cordEndPosition에 닿았고, 중복 처리가 안 된 경우
         if (other.transform == cordEndPosition && !hasTriggered)
         {
-            hasTriggered = true; // 중복 처리 방지
-            currentAttempts++; // 시도 횟수 증가
+            hasTriggered = true;
+            currentAttempts++;
 
             Debug.Log($"발전기 시동 시도: {currentAttempts}/{startAttemptsRequired}");
 
-            if (currentAttempts >= startAttemptsRequired)
+            if (currentAttempts >= startAttemptsRequired && currentKnobValue >= 1f)
             {
                 Debug.Log("발전기 시동 성공!");
-                currentAttempts = 0; // 성공 후 초기화
+                isGeneratorRunning = true;
+                currentAttempts = 0;
+
+                // 정전 해제
+                Light[] lights = FindObjectsOfType<Light>();
+                foreach (Light light in lights)
+                {
+                    if (light.type == LightType.Directional)
+                    {
+                        light.enabled = true;
+                        Debug.Log("정전 해제");
+                    }
+                }
+
+                if (headLight != null)
+                {
+                    headLight.DisableHeadlight();
+                    Debug.Log("헤드라이트 꺼짐");
+                }
             }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        // cordObject가 cordEndPosition에서 벗어났을 때 중복 처리를 다시 허용
         if (other.transform == cordEndPosition)
         {
-            hasTriggered = false; // 플래그 초기화
+            hasTriggered = false;
         }
     }
 
     private void ResetCordPosition()
     {
-        // 줄을 초기 위치와 초기 회전으로 되돌리기
         if (cordObject != null)
         {
             cordObject.position = initialCordPosition;
             cordObject.rotation = initialCordRotation;
+            cordObject.localScale = initialCordScale;
         }
+    }
+
+    public void TriggerWarning()
+    {
+        if (warningCoroutine == null)
+        {
+            warningCoroutine = StartCoroutine(BreakdownWarning());
+        }
+    }
+
+    private IEnumerator BreakdownWarning()
+    {
+        Debug.Log("전조 증상! 레버를 내려 고장을 방지하세요!!!");
+        yield return new WaitForSeconds(breakdownWarningDuration);
+
+        if (!isLeverDown)
+        {
+            Debug.Log("고장이 발생했습니다!");
+            isGeneratorRunning = false;
+
+            Light[] lights = FindObjectsOfType<Light>();
+            foreach (Light light in lights)
+            {
+                if (light.type == LightType.Directional)
+                {
+                    light.enabled = false;
+                    Debug.Log("정전 발생");
+                }
+            }
+
+            if (headLight != null)
+            {
+                headLight.EnableHeadlight();
+                Debug.Log("헤드라이트 켜짐");
+            }
+            else
+            {
+                Debug.Log("headLight가 없습니다.");
+            }
+        }
+
+        warningCoroutine = null;
     }
 }
