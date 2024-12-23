@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -53,19 +51,27 @@ public class HeadLightInteractable : XRGrabInteractable
 
         if (_directionalLight.enabled)
         {
-            if (_headLight.enabled)
-            {
-                _headLight.enabled = false;
-                Debug.Log("헤드라이트 끄기");
-            }
+            _headLight.enabled = false;
         }
         else
         {
-            if (!_headLight.enabled)
-            {
-                _headLight.enabled = true;
-                Debug.Log("헤드라이트 켜기");
-            }
+            _headLight.enabled = true;
+        }
+    }
+
+    public void EnableHeadlight()
+    {
+        if (_headLight != null)
+        {
+            _headLight.enabled = true;
+        }
+    }
+
+    public void DisableHeadlight()
+    {
+        if (_headLight != null)
+        {
+            _headLight.enabled = false;
         }
     }
 }
