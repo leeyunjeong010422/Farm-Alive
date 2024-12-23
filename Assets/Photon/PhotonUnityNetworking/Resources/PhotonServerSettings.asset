@@ -50,6 +50,9 @@ MonoBehaviour:
   - ChangeState
   - SyncDig
   - SyncSelect
+  - RPC_OnButtonPressed
+  - RPC_OnButtonReleased
+  - RPC_PlusRepairCount
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
