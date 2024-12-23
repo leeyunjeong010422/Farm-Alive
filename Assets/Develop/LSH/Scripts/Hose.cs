@@ -5,14 +5,15 @@ using System.Net;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class Hose : MonoBehaviour
+public class Hose : MonoBehaviourPun
 {
     [SerializeField] Transform hoseAttachmentPoint;
     public bool isHoseConnected = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isHoseConnected) return;
+        if (isHoseConnected) 
+            return;
 
         if (other.CompareTag("Player"))
         {
@@ -26,7 +27,7 @@ public class Hose : MonoBehaviour
 
     private void OnHoseConnect(XRGrabInteractable grab)
     {
-        if (isHoseConnected) return;
+        /*if (isHoseConnected) return;
 
         Transform hoseRoot = grab.transform;
         Transform startPoint = hoseRoot.Find("StartPoint");
@@ -40,8 +41,31 @@ public class Hose : MonoBehaviour
             hoseRigidbody.isKinematic = true;
         }
 
+        isHoseConnected = true;*/
+
+        if (isHoseConnected) 
+            return;
+
+        photonView.RPC("ConnectHose", RpcTarget.All, grab.transform.name);
+    }
+
+    [PunRPC]
+    private void ConnectHose(string hoseName)
+    {
+        Transform hoseRoot = GameObject.Find(hoseName).transform;
+        Transform startPoint = hoseRoot.Find("StartPoint");
+
+        PositionHose(hoseRoot, startPoint);
+
+        Rigidbody hoseRigidbody = hoseRoot.GetComponent<Rigidbody>();
+        if (hoseRigidbody != null)
+        {
+            hoseRigidbody.isKinematic = true;
+        }
+
         isHoseConnected = true;
     }
+
 
     private void PositionHose(Transform hoseRoot, Transform startPoint)
     {
