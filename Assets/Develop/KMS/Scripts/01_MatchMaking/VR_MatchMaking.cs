@@ -8,6 +8,9 @@ public class VR_MatchMaking : MonoBehaviourPunCallbacks
     public GameObject characterPrefab;      // 캐릭터 프리팹
     public GameObject newcharacterPrefab;   // 캐릭터 프리팹
 
+    [Tooltip("테스트를 위한 방 넘버 설정.")]
+    public int RoomNum = 0;
+
     /// <summary>
     /// FirebaseManager가 초기화 완료되면 ConnectToPhoton() 호출.
     /// VR의 특성상 키보드를 사용하기에 어려움이 있다고 생각이 들어서
@@ -78,7 +81,7 @@ public class VR_MatchMaking : MonoBehaviourPunCallbacks
         // 임시로 테스트 룸으로 입장하도록 함.
         // TODO: 방을 만드는 부분 수정 필요!.
         RoomOptions options = new RoomOptions() { IsVisible = false };
-        PhotonNetwork.JoinOrCreateRoom("TestRoom", options, TypedLobby.Default);
+        PhotonNetwork.JoinOrCreateRoom($"TestRoom {RoomNum}", options, TypedLobby.Default);
     }
 
     /// <summary>
