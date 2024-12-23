@@ -33,6 +33,7 @@ public class Crop : MonoBehaviourPun
     private BaseState[] _states = new BaseState[(int)E_CropState.SIZE];
     private CropInteractable _cropInteractable;
 
+    public E_CropState CurState { get { return _curState; } }
     public int DigCount {  get { return _digCount; } }
 
     private void Awake()
@@ -157,10 +158,10 @@ public class Crop : MonoBehaviourPun
 
         public override void StateEnter()
         {
-            crop._cropInteractable.enabled = true;
+            crop._cropInteractable.interactionLayers = (1 << 1);
 
             // TODO: 성장완료 피드백 변경
-            crop.transform.localScale *= 1.2f;
+            crop.transform.localScale *= 1.5f;
 
         }
 

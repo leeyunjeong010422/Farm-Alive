@@ -11,7 +11,10 @@ public class CropInteractable : XRGrabInteractable
 
         if (args.interactorObject is XRSocketInteractor)
         {
-            enabled = false;
+            SectionManager.Instance.Crops[SectionManager.Instance.CurSection].Add(GetComponent<Crop>());
+
+            // 상호작용 X
+            interactionLayers = (1 << 29);
         }
     }
 }
