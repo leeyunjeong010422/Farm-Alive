@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class BoxTrigger : MonoBehaviourPun
 {
@@ -38,6 +39,6 @@ public class BoxTrigger : MonoBehaviourPun
         Debug.Log("유효아이템 통과");
 
         QuestManager.Instance.UpdateCount();
-        //Destroy(other.gameObject);        
+        Destroy(other.gameObject);        
     }
 }
