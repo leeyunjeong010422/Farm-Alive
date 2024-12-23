@@ -24,11 +24,11 @@ public class Valve : MonoBehaviourPun
     {
         if (valveValue > 0.5f && !isWaterOn)
         {
-            photonView.RPC("StartWater", RpcTarget.All);
+            photonView.RPC(nameof(StartWater), RpcTarget.All);
         }
         else if (valveValue <= 0.5f && isWaterOn)
         {
-            photonView.RPC("StopWater", RpcTarget.All);
+            photonView.RPC(nameof(StopWater), RpcTarget.All);
         }
     }
 

@@ -10,6 +10,7 @@ TagManager:
   - MiniWorldCamera
   - Water
   - DisappearingGround
+  - Item
   layers:
   - Default
   - TransparentFX

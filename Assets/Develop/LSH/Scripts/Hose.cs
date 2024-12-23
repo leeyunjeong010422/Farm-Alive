@@ -46,7 +46,7 @@ public class Hose : MonoBehaviourPun
         if (isHoseConnected) 
             return;
 
-        photonView.RPC("ConnectHose", RpcTarget.All, grab.transform.name);
+        photonView.RPC(nameof(ConnectHose), RpcTarget.All, grab.transform.name);
     }
 
     [PunRPC]

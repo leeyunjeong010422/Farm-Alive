@@ -5,34 +5,53 @@ using UnityEngine;
 
 public class ShutterController : MonoBehaviour
 {
-    [SerializeField] Transform shutter;
-    [SerializeField] Vector3 closedPosition;
-    [SerializeField] Vector3 openPosition;
-    [SerializeField] float moveSpeed = 5f;
+    [SerializeField] public bool isUpperLowerShutterOpen = false;
+    [SerializeField] public bool isLeftRightShutterOpen = false;
 
-    [SerializeField] bool isShutterOpen = false;
+    [SerializeField] Transform upperShutter;
+    [SerializeField] Transform lowerShutter;
+    [SerializeField] Vector3 upperClosedPosition;
+    [SerializeField] Vector3 upperOpenPosition;
+    [SerializeField] Vector3 lowerClosedPosition;
+    [SerializeField] Vector3 lowerOpenPosition;
+
+    [SerializeField] Transform leftShutter;
+    [SerializeField] Transform rightShutter;
+    [SerializeField] Vector3 leftClosedPosition;
+    [SerializeField] Vector3 leftOpenPosition;
+    [SerializeField] Vector3 rightClosedPosition;
+    [SerializeField] Vector3 rightOpenPosition;
+
+    [SerializeField] float moveSpeed = 5f;
 
     void Update()
     {
-        if (isShutterOpen)
+        if (upperShutter != null && lowerShutter != null)
         {
-            shutter.localPosition = Vector3.MoveTowards(shutter.localPosition, openPosition, moveSpeed * Time.deltaTime);
+            if (isUpperLowerShutterOpen)
+            {
+                upperShutter.localPosition = Vector3.MoveTowards(upperShutter.localPosition, upperOpenPosition, moveSpeed * Time.deltaTime);
+                lowerShutter.localPosition = Vector3.MoveTowards(lowerShutter.localPosition, lowerOpenPosition, moveSpeed * Time.deltaTime);
+            }
+            else
+            {
+                upperShutter.localPosition = Vector3.MoveTowards(upperShutter.localPosition, upperClosedPosition, moveSpeed * Time.deltaTime);
+                lowerShutter.localPosition = Vector3.MoveTowards(lowerShutter.localPosition, lowerClosedPosition, moveSpeed * Time.deltaTime);
+            }
         }
-        else
+
+        if (leftShutter != null && rightShutter != null)
         {
-            shutter.localPosition = Vector3.MoveTowards(shutter.localPosition, closedPosition, moveSpeed * Time.deltaTime);
+            if (isLeftRightShutterOpen)
+            {
+                leftShutter.localPosition = Vector3.MoveTowards(leftShutter.localPosition, leftOpenPosition, moveSpeed * Time.deltaTime);
+                rightShutter.localPosition = Vector3.MoveTowards(rightShutter.localPosition, rightOpenPosition, moveSpeed * Time.deltaTime);
+            }
+            else
+            {
+                leftShutter.localPosition = Vector3.MoveTowards(leftShutter.localPosition, leftClosedPosition, moveSpeed * Time.deltaTime);
+                rightShutter.localPosition = Vector3.MoveTowards(rightShutter.localPosition, rightClosedPosition, moveSpeed * Time.deltaTime);
+            }
         }
-    }
-
-    [PunRPC]
-    public void OpenShutter()
-    {
-        isShutterOpen = true;
-    }
-
-    [PunRPC]
-    public void CloseShutter()
-    {
-        isShutterOpen = false;
     }
 }

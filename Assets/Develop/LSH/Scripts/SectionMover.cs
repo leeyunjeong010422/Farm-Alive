@@ -8,11 +8,15 @@ public class SectionMover : MonoBehaviourPun
     [SerializeField] GameObject mainCube;
     [SerializeField] GameObject[] targetCubes;
     [SerializeField] float moveSpeed = 5f;
-    [SerializeField] ShutterController shutterController;
+
+    [SerializeField] ShutterController ShutterController;
 
     [SerializeField] GameObject selectedCube;
     [SerializeField] Vector3[] firstPosition;
     [SerializeField] bool isMoving = false;
+
+    private bool isUpperLowerShutterOpen = false;
+    private bool isLeftRightShutterOpen = false;
 
     private void Start()
     {
@@ -31,8 +35,13 @@ public class SectionMover : MonoBehaviourPun
 
             if (Vector3.Distance(selectedCube.transform.position, targetPosition) < 0.01f)
             {
-                isMoving = false;
-                photonView.RPC("CloseShutter", RpcTarget.All);
+                if (!isUpperLowerShutterOpen || !isLeftRightShutterOpen)
+                {
+                    Debug.Log("¿­¸²");
+                    isMoving = false;
+                    photonView.RPC(nameof(OpenAllShutters), RpcTarget.All);
+                }
+                
             }
         }
 
@@ -64,7 +73,7 @@ public class SectionMover : MonoBehaviourPun
     {
         if (!isMoving)
         {
-            photonView.RPC("SelectCubeRPC", RpcTarget.All, cubeIndex);
+            photonView.RPC(nameof(SelectCubeRPC), RpcTarget.All, cubeIndex);
         }
     }
 
@@ -74,6 +83,39 @@ public class SectionMover : MonoBehaviourPun
         selectedCube = targetCubes[cubeIndex];
         isMoving = true;
 
-        photonView.RPC("OpenShutter", RpcTarget.All);
+        photonView.RPC(nameof(CloseAllShutters), RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void OpenAllShutters()
+    {
+        if (!isUpperLowerShutterOpen)
+        {
+            if (ShutterController != null)
+                ShutterController.isUpperLowerShutterOpen = true;
+
+            isUpperLowerShutterOpen = true;
+        }
+        else if (!isLeftRightShutterOpen)
+        {
+            if (ShutterController != null)
+                ShutterController.isLeftRightShutterOpen = true;
+
+            isLeftRightShutterOpen = true;
+        }
+    }
+
+    [PunRPC]
+    public void CloseAllShutters()
+    {
+        Debug.Log("´ÝÈû");
+        if (ShutterController != null)
+        {
+            ShutterController.isUpperLowerShutterOpen = false;
+            ShutterController.isLeftRightShutterOpen = false;
+        }
+
+        isUpperLowerShutterOpen = false;
+        isLeftRightShutterOpen = false;
     }
 }
