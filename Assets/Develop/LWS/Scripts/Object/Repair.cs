@@ -1,20 +1,25 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Repair : MonoBehaviour
+public class Repair : MonoBehaviourPunCallbacks
 {
     [Tooltip("몇 번 때려야 고쳐지는지")]
     [SerializeField] int _maxRepairCount;
     private int _curRepairCount = 0;
 
-    public void PlusRepairCount()
-    {
-        _curRepairCount++;
+    [PunRPC]
+    public void RPC_PlusRepairCount()
+    { 
+        if (!PhotonNetwork.IsMasterClient) return;
 
-        if (_curRepairCount == _maxRepairCount)
+        _curRepairCount++;
+        if (_curRepairCount >= _maxRepairCount)
         {
-            // TODO 수리 완료 INVOKE
+            // 수리 완료
+            Debug.Log($"[{photonView.ViewID}] 수리 완료!");
+            // TODO: 수리 완료 로직 (ex: 오브젝트 파괴, 애니메이션, 상태 변환 등)
         }
     }
 }

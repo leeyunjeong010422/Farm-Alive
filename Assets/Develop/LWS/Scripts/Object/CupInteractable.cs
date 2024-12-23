@@ -1,9 +1,10 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class CupInteractable : MonoBehaviour
+public class CupInteractable : MonoBehaviourPunCallbacks, IPunObservable
 {
     [Tooltip("액체가 흐르는 파티클")]
     [SerializeField] ParticleSystem _particleSystemLiquid;
@@ -19,58 +20,119 @@ public class CupInteractable : MonoBehaviour
 
     private AudioSource _audioSource;
 
+    private bool _isPouring = false;
+
     private void OnEnable()
     {
-        _particleSystemLiquid.Stop();
+        if (_particleSystemLiquid != null)
+        {
+            _particleSystemLiquid.Stop();
+        }
     }
 
     private void Start()
     {
         _audioSource = GetComponent<AudioSource>();
-        _audioSource.clip = _pouringSound;
+        if (_audioSource != null)
+        {
+            _audioSource.clip = _pouringSound;
+        }
     }
 
     private void Update()
     {
-        // 뒤집어 져 있고, 액체가 남아있을 때
-        if (Vector3.Dot(transform.up, Vector3.down) > 0 && _fillAmount > 0)
+        if (photonView.IsMine)
         {
-            // 파티클, 따르는 소리 재생
-            if (_particleSystemLiquid.isStopped && _particleSystemLiquid != null && _audioSource != null)
+            Pour();
+        }
+        else
+        {
+            UpdateEffects();
+        }
+    }
+
+    private void Pour()
+    {
+        // 컵이 뒤집혔는지: transform.up과 Vector3.down의 내적이 양수면 "업벡터가 아래쪽으로 향한다"
+        bool shouldPour = (Vector3.Dot(transform.up, Vector3.down) > 0 && _fillAmount > 0);
+
+        if (shouldPour)
+        {
+            // 붓는 중이 아닌데 새로 붓기 시작 -> 상태 전환
+            if (!_isPouring)
             {
-                _particleSystemLiquid.Play();
-                _audioSource.Play();
-                // TODO:에셋이후
-                Debug.Log("액체 따르는 소리 및 파티클 재생");
+                _isPouring = true;
             }
 
-            // 잔량 감소
+            // 액체량 감소
             _fillAmount -= _pourRate * Time.deltaTime;
-            _fillAmount = Mathf.Max(_fillAmount, 0.0f);
-            
-            RaycastHit hit;
-            // 파티클 시스템 기준으로 아래로 50길이의 레이를 발사해서,
-            if (Physics.Raycast(_particleSystemLiquid.transform.position, Vector3.down, out hit, 50.0f))
-            {
-                // hit이 LiquidReceiver (물통, 비료통에 존재) 컴포넌트를 가지고 있을 경우
-                LiquidContainer receiver = hit.collider.GetComponent<LiquidContainer>();
-                Debug.Log("리퀴드 컨테이너에 레이 도달");
+            if (_fillAmount < 0f) _fillAmount = 0f;
 
-                // 물, 비료 타입에 따른 함수 실행
-                // => 타입 구분 없이 붓는 비율 만큼 액체 채우기
-                if (receiver != null)
+            // 파티클/사운드 (로컬에서 재생)
+            if (_particleSystemLiquid != null && _particleSystemLiquid.isStopped)
+                _particleSystemLiquid.Play();
+
+            if (_audioSource != null && !_audioSource.isPlaying)
+                _audioSource.Play();
+
+            // 레이캐스트 후 LiquidContainer 처리
+            RaycastHit hit;
+            if (_particleSystemLiquid != null)
+            {
+                if (Physics.Raycast(_particleSystemLiquid.transform.position, Vector3.down, out hit, 50.0f))
                 {
-                    float amount = _pourRate * Time.deltaTime;
-                    receiver.ReceiveLiquid(amount);
-                    Debug.Log("리퀴드 컨테이너 ReceiveLiquid 호출");
+                    LiquidContainer receiver = hit.collider.GetComponent<LiquidContainer>();
+                    if (receiver != null)
+                    {
+                        float amount = _pourRate * Time.deltaTime;
+                        receiver.ReceiveLiquid(amount);
+                    }
                 }
             }
         }
         else
         {
-            _particleSystemLiquid.Stop();
-            _audioSource.Stop();
-            Debug.Log("액체 따르는 소리 및 파티클 중지");
+            // 더 이상 붓지 않는 상황
+            if (_isPouring)
+            {
+                _isPouring = false;
+            }
+
+            // 파티클/사운드 정지
+            if (_particleSystemLiquid != null) _particleSystemLiquid.Stop();
+            if (_audioSource != null) _audioSource.Stop();
+        }
+    }
+
+    private void UpdateEffects()
+    {
+        if (_isPouring && _fillAmount > 0)
+        {
+            if (_particleSystemLiquid != null && _particleSystemLiquid.isStopped)
+                _particleSystemLiquid.Play();
+
+            if (_audioSource != null && !_audioSource.isPlaying)
+                _audioSource.Play();
+        }
+        else
+        {
+            // 붓고 있지 않거나 액체가 없으면 정지
+            if (_particleSystemLiquid != null) _particleSystemLiquid.Stop();
+            if (_audioSource != null) _audioSource.Stop();
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(_fillAmount);
+            stream.SendNext(_isPouring);
+        }
+        else
+        {
+            _fillAmount = (float)stream.ReceiveNext();
+            _isPouring = (bool)stream.ReceiveNext();
         }
     }
 }

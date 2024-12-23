@@ -1,8 +1,9 @@
+using Photon.Pun;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ButtonInteractable : MonoBehaviour
+public class ButtonInteractable : MonoBehaviourPunCallbacks
 {
     [System.Serializable]
     public class ButtonPressedEvent : UnityEvent { }
@@ -29,31 +30,31 @@ public class ButtonInteractable : MonoBehaviour
     // 버튼의 시작위치 저장
     Vector3 _startPosition;
     Rigidbody _rigidbody;
-    Collider _collider;
-
     bool _pressed = false;
 
     void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
-        _collider = GetComponentInChildren<Collider>();
         _startPosition = transform.position;
+
+        // ownership transfer가 fixed여야 함
     }
 
     void FixedUpdate()
     {
+        // 물리 연산 -> 소유자만 실행
+        if (!photonView.IsMine)
+            return;
+        
         // 축을 월드방향으로
         Vector3 worldAxis = transform.TransformDirection(_axis);
-        // end Position을 버튼 기준 축으로 거리만큼
-        Vector3 end = transform.position + worldAxis * _maxDistance;
 
         // 현재 버튼의 이동 위치
         float currentDistance = (transform.position - _startPosition).magnitude;
-        RaycastHit hit;
-
         float move = 0.0f;
 
-        if (_rigidbody.SweepTest(-worldAxis, out hit, _returnSpeed * Time.deltaTime + 0.005f))
+        // SweepTest로 감지
+        if (_rigidbody.SweepTest(-worldAxis, out RaycastHit hit, _returnSpeed * Time.deltaTime + 0.005f))
         {
             // 충돌이 있는 경우 : move를 양수로 하여 버튼을 더 눌러줌
             move = (_returnSpeed * Time.deltaTime) - hit.distance;
@@ -81,7 +82,7 @@ public class ButtonInteractable : MonoBehaviour
                 Volume = 1.0f
             }, 0.0f);
             */
-            _onButtonPressed.Invoke();
+            photonView.RPC(nameof(RPC_OnButtonPressed), RpcTarget.All);
         }
         else if (_pressed && !Mathf.Approximately(newDistance, _maxDistance))
         {
@@ -94,7 +95,19 @@ public class ButtonInteractable : MonoBehaviour
                 Volume = 1.0f
             }, 0.0f);
             */
-            _onButtonReleased.Invoke();
+            photonView.RPC(nameof(RPC_OnButtonReleased), RpcTarget.All);
         }
+    }
+
+    [PunRPC]
+    private void RPC_OnButtonPressed()
+    {
+        _onButtonPressed.Invoke();
+    }
+
+    [PunRPC]
+    private void RPC_OnButtonReleased()
+    {
+        _onButtonReleased.Invoke();
     }
 }
