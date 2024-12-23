@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -34,5 +35,12 @@ public class TutorialManager : MonoBehaviour
         {
             Debug.LogError("플레이어 생성 실패!");
         }
+    }
+
+    // 버튼 클릭 시 Fusion 로비로 이동
+    public void OnTutorialComplete()
+    {
+        Debug.Log("Fusion 로비로 이동...");
+        SceneManager.LoadScene("03_FusionLobbyScene");
     }
 }
