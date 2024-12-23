@@ -53,6 +53,12 @@ MonoBehaviour:
   - RPC_OnButtonPressed
   - RPC_OnButtonReleased
   - RPC_PlusRepairCount
+  - CloseShutter
+  - ConnectHose
+  - OpenShutter
+  - SelectCubeRPC
+  - StartWater
+  - StopWater
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
