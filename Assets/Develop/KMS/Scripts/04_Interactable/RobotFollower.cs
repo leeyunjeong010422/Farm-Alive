@@ -63,6 +63,11 @@ public class RobotFollower : MonoBehaviour
         }
     }
 
+    public void Test()
+    {
+        Debug.Log("버튼을 눌림!");
+    }
+
     [PunRPC]
     public void StartFollowingRPC(int playerViewID)
     {

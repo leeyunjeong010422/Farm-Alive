@@ -20,7 +20,7 @@ public class VoiceIconController : MonoBehaviourPun
         }
 
         if (speakingIcon) speakingIcon.SetActive(false);
-        //if (listeningIcon) listeningIcon.SetActive(false);
+        if (listeningIcon) listeningIcon.SetActive(false);
     }
 
     void Update()
@@ -38,19 +38,19 @@ public class VoiceIconController : MonoBehaviourPun
                 SetIconState(speakingIcon, false);
             }
         }
-        //else
-        //{
-        //    if (_photonVoiceView.IsSpeaking)
-        //    {
-        //        // 다른 플레이어의 음성을 듣고 있을 때 listeningIcon 활성화
-        //        SetIconState(listeningIcon, true);
-        //    }
-        //    else
-        //    {
-        //        // 듣는 상태가 아니면 listeningIcon 비활성화
-        //        SetIconState(listeningIcon, false);
-        //    }
-        //}
+        else
+        {
+            if (_photonVoiceView.IsSpeaking)
+            {
+                // 다른 플레이어의 음성을 듣고 있을 때 listeningIcon 활성화
+                SetIconState(listeningIcon, true);
+            }
+            else
+            {
+                // 듣는 상태가 아니면 listeningIcon 비활성화
+                SetIconState(listeningIcon, false);
+            }
+        }
     }
 
     // 아이콘 활성화/비활성화 처리 메서드
