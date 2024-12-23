@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SectionMover : MonoBehaviour
+public class SectionMover : MonoBehaviourPun
 {
     [SerializeField] GameObject mainCube;
     [SerializeField] GameObject[] targetCubes;
@@ -31,7 +32,7 @@ public class SectionMover : MonoBehaviour
             if (Vector3.Distance(selectedCube.transform.position, targetPosition) < 0.01f)
             {
                 isMoving = false;
-                shutterController.OpenShutter();
+                photonView.RPC("CloseShutter", RpcTarget.All);
             }
         }
 
@@ -46,22 +47,33 @@ public class SectionMover : MonoBehaviour
 
     public void sel1()
     {
-        selectedCube = targetCubes[0];
-        isMoving = true;
-        shutterController.CloseShutter();
+        OnSelectCube(0);
     }
 
     public void sel2()
     {
-        selectedCube = targetCubes[1];
-        isMoving = true;
-        shutterController.CloseShutter();
+        OnSelectCube(1);
     }
 
     public void sel3()
     {
-        selectedCube = targetCubes[2];
+        OnSelectCube(2);
+    }
+
+    public void OnSelectCube(int cubeIndex)
+    {
+        if (!isMoving)
+        {
+            photonView.RPC("SelectCubeRPC", RpcTarget.All, cubeIndex);
+        }
+    }
+
+    [PunRPC]
+    private void SelectCubeRPC(int cubeIndex)
+    {
+        selectedCube = targetCubes[cubeIndex];
         isMoving = true;
-        shutterController.CloseShutter();
+
+        photonView.RPC("OpenShutter", RpcTarget.All);
     }
 }

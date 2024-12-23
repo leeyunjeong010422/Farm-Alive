@@ -1,10 +1,11 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 using UnityEngine.XR.Content.Interaction;
 using UnityEngine.XR.Interaction.Toolkit;
-public class Valve : MonoBehaviour
+public class Valve : MonoBehaviourPun
 {
     [SerializeField] XRKnob knob;
     [SerializeField] GameObject waterEffect;
@@ -21,16 +22,17 @@ public class Valve : MonoBehaviour
 
     private void OnChangeValue(float valveValue)
     {
-        if (valveValue > 0.5f)
+        if (valveValue > 0.5f && !isWaterOn)
         {
-            StartWater();
+            photonView.RPC("StartWater", RpcTarget.All);
         }
         else if (valveValue <= 0.5f && isWaterOn)
         {
-            StopWater();
+            photonView.RPC("StopWater", RpcTarget.All);
         }
     }
 
+    [PunRPC]
     private void StartWater()
     {
         if (waterEffect != null && !hoseConnected.isHoseConnected)
@@ -42,16 +44,16 @@ public class Valve : MonoBehaviour
         if (waterEffect != null && hoseConnected.isHoseConnected)
         {
             waterEffect.transform.position = hoseeffectPosition.position;
-
             waterEffect.SetActive(true);
         }
 
         isWaterOn = true;
     }
 
+    [PunRPC]
     private void StopWater()
     {
-        if (waterEffect != null) 
+        if (waterEffect != null)
             waterEffect.SetActive(false);
 
         isWaterOn = false;

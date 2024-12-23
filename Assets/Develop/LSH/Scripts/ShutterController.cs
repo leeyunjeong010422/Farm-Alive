@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,11 +24,13 @@ public class ShutterController : MonoBehaviour
         }
     }
 
+    [PunRPC]
     public void OpenShutter()
     {
         isShutterOpen = true;
     }
 
+    [PunRPC]
     public void CloseShutter()
     {
         isShutterOpen = false;
