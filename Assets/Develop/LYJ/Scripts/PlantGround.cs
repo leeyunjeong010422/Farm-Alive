@@ -73,7 +73,7 @@ public class PlantGround : MonoBehaviourPun
     {
         // 가져다댄 오브젝트에서 PlantDigCount 컴포넌트를 가져옴
         // TODO: 식물 스크립트로 코드를 옮긴다면 밑에 코드도 수정해 주어야 함
-        PlantDigCount plant = args.interactableObject.transform.GetComponent<PlantDigCount>();
+        Crop plant = args.interactableObject.transform.GetComponent<Crop>();
 
         if (plant == null)
         {
@@ -95,11 +95,11 @@ public class PlantGround : MonoBehaviourPun
     /// <summary>
     /// 현재 땅이 특정 식물이 심어질 수 있는지 확인
     /// </summary>
-    public bool CanPlant(PlantDigCount plantDigCount)
+    public bool CanPlant(Crop plant)
     {
-        if (plantDigCount == null) return false;
+        if (plant == null) return false;
 
         // 식물의 요구 삽질 횟수와 땅의 DigCount 비교
-        return plantDigCount.CanPlant(_digCount);
+        return plant.DigCount == _digCount;
     }
 }
