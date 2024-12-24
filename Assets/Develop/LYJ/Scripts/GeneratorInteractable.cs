@@ -3,7 +3,7 @@ using UnityEngine.XR.Content.Interaction;
 using UnityEngine.XR.Interaction.Toolkit;
 using System.Collections;
 
-public class GeneratorInteractable : XRGrabInteractable
+public class GeneratorInteractable : XRBaseInteractable
 {
     [Header("Generator Settings")]
     [Tooltip("시동이 걸리기까지 필요한 시도 횟수")]
@@ -19,7 +19,7 @@ public class GeneratorInteractable : XRGrabInteractable
     [Tooltip("시동줄 오브젝트")]
     [SerializeField] private Transform cordObject;
 
-    private XRKnobGenerator _knob;
+    private XRKnob _knob;
     private XRLever _lever;
 
     [SerializeField] private Repair repair;
@@ -37,9 +37,19 @@ public class GeneratorInteractable : XRGrabInteractable
     private bool isLeverDown = false;
     private float currentKnobValue = 0f;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    private Rigidbody rigid;
+    private Vector3 startPos;
+
     private void Start()
     {
-        _knob = transform.root.GetComponentInChildren<XRKnobGenerator>();
+
+        rigid = GetComponent<Rigidbody>();
+        startPos = transform.position;
+
+        _knob = transform.root.GetComponentInChildren<XRKnob>();
         _lever = transform.root.GetComponentInChildren<XRLever>();
 
         _knob.onValueChange.AddListener(OnKnobValueChanged);
@@ -98,6 +108,7 @@ public class GeneratorInteractable : XRGrabInteractable
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
         base.OnSelectEntered(args);
+        rigid.isKinematic = false;
         isBeingPulled = true;
     }
 
@@ -105,12 +116,15 @@ public class GeneratorInteractable : XRGrabInteractable
     {
         base.OnSelectExited(args);
         isBeingPulled = false;
-        ResetCordPosition();
+        rigid.isKinematic = true;
+        transform.position = startPos;
+        // ResetCordPosition();
     }
 
     private void Update()
     {
-        if (isBeingPulled && cordObject != null && cordStartPosition != null && cordEndPosition != null)
+        /*
+         * if (isBeingPulled && cordObject != null && cordStartPosition != null && cordEndPosition != null)
         {
             float pullDistance = Vector3.Distance(cordObject.position, cordStartPosition.position);
 
@@ -118,7 +132,7 @@ public class GeneratorInteractable : XRGrabInteractable
             newScale.y = initialCordScale.y + pullDistance;
             cordObject.localScale = newScale;
         }
-
+        */
         if (Input.GetKeyDown(KeyCode.T))
         {
             Debug.Log("전조 증상 테스트 시작");
