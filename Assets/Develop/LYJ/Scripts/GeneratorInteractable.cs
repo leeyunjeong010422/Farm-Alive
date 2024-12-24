@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR.Content.Interaction;
 using UnityEngine.XR.Interaction.Toolkit;
-using Photon.Pun;
 using System.Collections;
 
 public class GeneratorInteractable : XRGrabInteractable
@@ -12,7 +11,7 @@ public class GeneratorInteractable : XRGrabInteractable
 
     [Tooltip("고장이 발생하기까지의 시간")]
     [SerializeField] private float breakdownWarningDuration = 5f;
-  
+
     [Tooltip("시동줄의 고정 시작 위치")]
     [SerializeField] private Transform cordStartPosition;
     [Tooltip("시동줄의 최대 끝 위치")]
@@ -20,12 +19,9 @@ public class GeneratorInteractable : XRGrabInteractable
     [Tooltip("시동줄 오브젝트")]
     [SerializeField] private Transform cordObject;
 
-    [Header("Linked Components")]
-    [SerializeField] private XRKnob knob;
-    [SerializeField] private XRLever lever;
+    private XRKnob _knob;
+    private XRLever _lever;
 
-    [Header("Lighting")]
-    [Tooltip("정전 시 켜질 헤드라이트")]
     [SerializeField] private HeadLightInteractable headLight;
 
     private Vector3 initialCordPosition;
@@ -37,24 +33,33 @@ public class GeneratorInteractable : XRGrabInteractable
 
     private bool isGeneratorRunning = true;
     private Coroutine warningCoroutine = null;
-
     private bool isLeverDown = false;
     private float currentKnobValue = 0f;
 
     private void Start()
     {
-        knob = transform.root.GetComponentInChildren<XRKnob>();
-        lever = transform.root.GetComponentInChildren<XRLever>();
+        // 초기화
+        _knob = transform.root.GetComponentInChildren<XRKnob>();
+        _lever = transform.root.GetComponentInChildren<XRLever>();
 
-        knob.onValueChange.AddListener(OnKnobValueChanged);
-        lever.onLeverActivate.AddListener(OnLeverActivate);
-        lever.onLeverDeactivate.AddListener(OnLeverDeactivate);
+        _knob.onValueChange.AddListener(OnKnobValueChanged);
+        _lever.onLeverActivate.AddListener(OnLeverActivate);
+        _lever.onLeverDeactivate.AddListener(OnLeverDeactivate);
 
         if (cordObject != null)
         {
             initialCordPosition = cordObject.position;
             initialCordRotation = cordObject.rotation;
             initialCordScale = cordObject.localScale;
+        }
+
+        if (headLight == null)
+        {
+            headLight = FindObjectOfType<HeadLightInteractable>();
+            if (headLight == null)
+            {
+                Debug.LogWarning("HeadLightInteractable을 찾을 수 없습니다.");
+            }
         }
     }
 
@@ -134,20 +139,13 @@ public class GeneratorInteractable : XRGrabInteractable
                 currentAttempts = 0;
 
                 // 정전 해제
-                Light[] lights = FindObjectsOfType<Light>();
-                foreach (Light light in lights)
-                {
-                    if (light.type == LightType.Directional)
-                    {
-                        light.enabled = true;
-                        Debug.Log("정전 해제");
-                    }
-                }
-
                 if (headLight != null)
                 {
-                    headLight.DisableHeadlight();
-                    Debug.Log("헤드라이트 꺼짐");
+                    headLight.RecoverFromBlackout(); // 조명 복구
+                }
+                else
+                {
+                    Debug.LogWarning("HeadLightInteractable이 설정되지 않았습니다!");
                 }
             }
         }
@@ -189,24 +187,13 @@ public class GeneratorInteractable : XRGrabInteractable
             Debug.Log("고장이 발생했습니다!");
             isGeneratorRunning = false;
 
-            Light[] lights = FindObjectsOfType<Light>();
-            foreach (Light light in lights)
-            {
-                if (light.type == LightType.Directional)
-                {
-                    light.enabled = false;
-                    Debug.Log("정전 발생");
-                }
-            }
-
             if (headLight != null)
             {
-                headLight.EnableHeadlight();
-                Debug.Log("헤드라이트 켜짐");
+                headLight.TriggerBlackout(); // 정전 발생
             }
             else
             {
-                Debug.Log("headLight가 없습니다.");
+                Debug.LogWarning("HeadLightInteractable이 설정되지 않았습니다!");
             }
         }
 
