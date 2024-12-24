@@ -83,7 +83,6 @@ public class QuestManager  : MonoBehaviourPun
     private void QuestComplete()
     {
         Debug.Log("Äù½ºÆ® ¿Ï·á!");
-        PhotonView photonView = PhotonView.Get(this);
         photonView.RPC(nameof(NextQuest), RpcTarget.AllBuffered);
     }
 

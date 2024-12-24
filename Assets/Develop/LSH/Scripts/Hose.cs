@@ -27,22 +27,6 @@ public class Hose : MonoBehaviourPun
 
     private void OnHoseConnect(XRGrabInteractable grab)
     {
-        /*if (isHoseConnected) return;
-
-        Transform hoseRoot = grab.transform;
-        Transform startPoint = hoseRoot.Find("StartPoint");
-        Transform endPoint = hoseRoot.Find("EndPoint");
-
-        PositionHose(hoseRoot, startPoint);
-
-        Rigidbody hoseRigidbody = grab.GetComponent<Rigidbody>();
-        if (hoseRigidbody != null)
-        {
-            hoseRigidbody.isKinematic = true;
-        }
-
-        isHoseConnected = true;*/
-
         if (isHoseConnected) 
             return;
 
