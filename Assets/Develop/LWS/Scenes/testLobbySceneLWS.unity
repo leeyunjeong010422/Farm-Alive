@@ -945,6 +945,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5718609006492719116, guid: fb16974c6c45c2c41a7f99769a024d0d, type: 3}
+      propertyPath: _snapOnRelease
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718609006492719117, guid: fb16974c6c45c2c41a7f99769a024d0d, type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718609006492719118, guid: fb16974c6c45c2c41a7f99769a024d0d, type: 3}
+      propertyPath: sceneViewId
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718609006492719119, guid: fb16974c6c45c2c41a7f99769a024d0d, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718609007232212445, guid: fb16974c6c45c2c41a7f99769a024d0d, type: 3}
+      propertyPath: sceneViewId
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718609007232212446, guid: fb16974c6c45c2c41a7f99769a024d0d, type: 3}
+      propertyPath: _onButtonPressed.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb16974c6c45c2c41a7f99769a024d0d, type: 3}
 --- !u!1001 &5974615067438198208
