@@ -37,11 +37,8 @@ public class SectionMover : MonoBehaviourPun
             {
                 if (!isUpperLowerShutterOpen || !isLeftRightShutterOpen)
                 {
-                    Debug.Log("¿­¸²");
-                    isMoving = false;
-                    photonView.RPC(nameof(OpenAllShutters), RpcTarget.AllBuffered);
+                    SectorDistance();
                 }
-                
             }
         }
 
@@ -84,6 +81,12 @@ public class SectionMover : MonoBehaviourPun
         isMoving = true;
 
         photonView.RPC(nameof(CloseAllShutters), RpcTarget.AllBuffered);
+    }
+
+    public void SectorDistance()
+    {
+        isMoving = false;
+        photonView.RPC(nameof(OpenAllShutters), RpcTarget.AllBuffered);
     }
 
     [PunRPC]

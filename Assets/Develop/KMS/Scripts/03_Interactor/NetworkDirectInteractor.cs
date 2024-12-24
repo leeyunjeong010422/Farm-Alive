@@ -6,7 +6,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class NetworkDirectInteractor : XRDirectInteractor
 {
-    [SerializeField] private PhotonView photonView;
+    [SerializeField] private PhotonView _photonView;
 
     /// <summary>
     /// 물체를 잡았을 때 동작하는 메서드.
@@ -17,13 +17,17 @@ public class NetworkDirectInteractor : XRDirectInteractor
         base.OnSelectEntered(args);
 
         IXRSelectInteractable selectInteractable = args.interactableObject;
+        
+        if (args.interactorObject.transform.GetComponent<PhotonView>().IsMine == false)
+            return;
 
         // 1. 잡은 플레이어가 잡은 물체의 소유권을 가져오기.
         PhotonView interactablePV = selectInteractable.transform.GetComponent<PhotonView>();
-        interactablePV.RequestOwnership();
+        interactablePV.TransferOwnership(PhotonNetwork.LocalPlayer);
+        Debug.Log("소유권 변경");
 
         // 2. 잡은 사실 알리기
-        photonView.RPC(nameof(SyncSelect), RpcTarget.Others, interactablePV.ViewID, true);
+        _photonView.RPC(nameof(SyncSelect), RpcTarget.Others, _photonView.ViewID, interactablePV.ViewID, true);
     }
 
     /// <summary>
@@ -34,6 +38,9 @@ public class NetworkDirectInteractor : XRDirectInteractor
     {
         base.OnSelectExited(args);
 
+        if (!_photonView.IsMine)
+            return;
+
         IXRSelectInteractable selectInteractable = args.interactableObject;
 
         // 1. 놓은 플레이어가 잡은 물체의 소유권을 방장에게 다시 돌려주기.
@@ -41,24 +48,31 @@ public class NetworkDirectInteractor : XRDirectInteractor
         interactablePV.TransferOwnership(PhotonNetwork.MasterClient);
 
         // 2. 놓은 사실 알리기
-        photonView.RPC(nameof(SyncSelect), RpcTarget.Others, interactablePV.ViewID, false);
+        _photonView.RPC(nameof(SyncSelect), RpcTarget.Others, _photonView.ViewID, interactablePV.ViewID, false);
     }
 
     [PunRPC]
-    private void SyncSelect(int interactable, bool isSelected)
+    private void SyncSelect(int interactorID, int interactableID, bool isSelected)
     {
-        PhotonView photonView =  PhotonView.Find(interactable);
-        Rigidbody interactableRigid = photonView.transform.GetComponent<Rigidbody>();
+        PhotonView interactorPV =  PhotonView.Find(interactorID);
+        PhotonView interactablePV =  PhotonView.Find(interactableID);
+        Rigidbody interactableRb = interactablePV.GetComponent<Rigidbody>();
+        if (interactablePV.GetComponent<TabletInteractable>() != null)
+            return;
+
+        IXRSelectInteractor interactor = interactorPV.GetComponent<IXRSelectInteractor>();
+        IXRSelectInteractable interactable = interactablePV.GetComponent<IXRSelectInteractable>();
 
         if (isSelected)
         {
-            interactableRigid.useGravity = false;
-            interactableRigid.isKinematic = true;
+            interactionManager.SelectEnter(interactor, interactable);
         }
         else
         {
-            interactableRigid.useGravity = true;
-            interactableRigid.isKinematic = false;
+            if (!hasSelection)
+                return;
+
+            interactionManager.SelectExit(interactor, interactable);
         }
     }
 }
