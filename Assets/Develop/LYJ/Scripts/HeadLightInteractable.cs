@@ -7,8 +7,8 @@ public class HeadLightInteractable : XRGrabInteractable
     private Light _directionalLight;
     private Camera _mainCamera;
 
-    private float _lightingIntensity = 1f;
-    private float _reflectionIntensity = 1f;
+    [Range(0f, 1f)][SerializeField] private float _lightingIntensity = 1f;
+    [Range(0f, 1f)][SerializeField] private float _reflectionIntensity = 1f;
     private Color _blackoutColor = Color.black;
 
     private CameraClearFlags _defaultClearFlags;
@@ -45,6 +45,12 @@ public class HeadLightInteractable : XRGrabInteractable
         {
             Debug.LogError("씬에 Directional Light가 없습니다.");
         }
+    }
+
+    private void Update()
+    {
+        RenderSettings.ambientIntensity = _lightingIntensity;
+        RenderSettings.reflectionIntensity = _reflectionIntensity;
     }
 
     private void LateUpdate()
