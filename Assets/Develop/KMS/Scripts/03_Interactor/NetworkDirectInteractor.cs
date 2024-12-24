@@ -6,10 +6,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class NetworkDirectInteractor : XRDirectInteractor
 {
-    [SerializeField] private PhotonView photonView;
-
-    private Vector3 _velocity;
-    private Vector3 _angularVelocity;
+    [SerializeField] private PhotonView _photonView;
 
     /// <summary>
     /// 물체를 잡았을 때 동작하는 메서드.
@@ -26,8 +23,7 @@ public class NetworkDirectInteractor : XRDirectInteractor
         interactablePV.RequestOwnership();
 
         // 2. 잡은 사실 알리기
-        photonView.RPC(nameof(SyncSelect), RpcTarget.Others, interactablePV.ViewID, true,
-            0f, 0f, 0f, 0f, 0f, 0f);
+        _photonView.RPC(nameof(SyncSelect), RpcTarget.Others, interactablePV.ViewID, true);
     }
 
     /// <summary>
@@ -42,42 +38,36 @@ public class NetworkDirectInteractor : XRDirectInteractor
 
         // 1. 놓은 플레이어가 잡은 물체의 소유권을 방장에게 다시 돌려주기.
         PhotonView interactablePV = selectInteractable.transform.GetComponent<PhotonView>();
-        Rigidbody rb = selectInteractable.transform.GetComponent<Rigidbody>();
-        _velocity = rb.velocity;
-        _angularVelocity = rb.angularVelocity;
-
         interactablePV.TransferOwnership(PhotonNetwork.MasterClient);
 
         // 2. 놓은 사실 알리기
-        photonView.RPC(nameof(SyncSelect), RpcTarget.Others, interactablePV.ViewID, false,
-            _velocity.x, _velocity.y, _velocity.z, _angularVelocity.x, _angularVelocity.y, _angularVelocity.z);
+        _photonView.RPC(nameof(SyncSelect), RpcTarget.Others, interactablePV.ViewID, false);
     }
 
     [PunRPC]
-    private void SyncSelect(int interactable, bool isSelected, 
-        float velocityX, float velocityY, float velocityZ,
-        float angularVelocityX, float angularVelocityY, float angularVelocityZ)
+    private void SyncSelect(int interactableID, bool isSelected)
     {
-
-        PhotonView photonView =  PhotonView.Find(interactable);
-        Rigidbody interactableRigid = photonView.transform.GetComponent<Rigidbody>();
-        if (photonView.GetComponent<TabletInteractable>() != null)
+        PhotonView interactablePV =  PhotonView.Find(interactableID);
+        Rigidbody interactableRb = interactablePV.GetComponent<Rigidbody>();
+        if (interactablePV.GetComponent<TabletInteractable>() != null)
             return;
+
+        IXRSelectInteractor interactor = _photonView.GetComponent<IXRSelectInteractor>();
+        IXRSelectInteractable interactable = interactablePV.GetComponent<IXRSelectInteractable>();
 
         if (isSelected)
         {
-            interactableRigid.useGravity = false;
-            interactableRigid.isKinematic = true;
+            interactionManager.SelectEnter(interactor, interactable);
+
+            interactableRb.useGravity = false;
+            interactableRb.isKinematic = true;
         }
         else
         {
-            interactableRigid.useGravity = true;
-            interactableRigid.isKinematic = false;
+            interactionManager.SelectExit(interactor, interactable);
 
-            Vector3 velocity = new(velocityX, velocityY, velocityZ);
-            Vector3 angularVelocity = new(angularVelocityX, angularVelocityY, angularVelocityZ);
-            interactableRigid.velocity = velocity;
-            interactableRigid.angularVelocity = angularVelocity;
+            interactableRb.useGravity = true;
+            interactableRb.isKinematic = false;
         }
     }
 }

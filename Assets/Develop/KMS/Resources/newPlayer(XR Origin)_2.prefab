@@ -406,7 +406,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   m_PhysicsTriggerInteraction: 1
-  photonView: {fileID: 3264033988876759867}
+  _photonView: {fileID: 3264033988876759867}
 --- !u!135 &4171814626559513934
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1218,7 +1218,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   m_PhysicsTriggerInteraction: 1
-  photonView: {fileID: 5020555539954536931}
+  _photonView: {fileID: 5020555539954536931}
 --- !u!135 &6950078669528477943
 SphereCollider:
   m_ObjectHideFlags: 0
