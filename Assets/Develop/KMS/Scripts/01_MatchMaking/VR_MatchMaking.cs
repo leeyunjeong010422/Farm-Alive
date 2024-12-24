@@ -66,7 +66,7 @@ public class VR_MatchMaking : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log("1. 로비 입장!");
-        //LoadLobbyScene();
+        LoadLobbyScene();
     }
 
     /// <summary>
