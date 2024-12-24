@@ -19,7 +19,7 @@ public class GeneratorInteractable : XRGrabInteractable
     [Tooltip("시동줄 오브젝트")]
     [SerializeField] private Transform cordObject;
 
-    private XRKnob _knob;
+    private XRKnobGenerator _knob;
     private XRLever _lever;
 
     [SerializeField] private Repair repair;
@@ -39,7 +39,7 @@ public class GeneratorInteractable : XRGrabInteractable
 
     private void Start()
     {
-        _knob = transform.root.GetComponentInChildren<XRKnob>();
+        _knob = transform.root.GetComponentInChildren<XRKnobGenerator>();
         _lever = transform.root.GetComponentInChildren<XRLever>();
 
         _knob.onValueChange.AddListener(OnKnobValueChanged);
