@@ -23,7 +23,7 @@ public class NetworkDirectInteractor : XRDirectInteractor
         interactablePV.RequestOwnership();
 
         // 2. 잡은 사실 알리기
-        _photonView.RPC(nameof(SyncSelect), RpcTarget.Others, interactablePV.ViewID, true);
+        _photonView.RPC(nameof(SyncSelect), RpcTarget.Others, _photonView.ViewID, interactablePV.ViewID, true);
     }
 
     /// <summary>
@@ -41,29 +41,27 @@ public class NetworkDirectInteractor : XRDirectInteractor
 
         // 1. 놓은 플레이어가 잡은 물체의 소유권을 방장에게 다시 돌려주기.
         PhotonView interactablePV = selectInteractable.transform.GetComponent<PhotonView>();
-        interactablePV.TransferOwnership(PhotonNetwork.MasterClient);
+        //interactablePV.TransferOwnership(PhotonNetwork.MasterClient);
 
         // 2. 놓은 사실 알리기
-        _photonView.RPC(nameof(SyncSelect), RpcTarget.Others, interactablePV.ViewID, false);
+        _photonView.RPC(nameof(SyncSelect), RpcTarget.Others, _photonView.ViewID, interactablePV.ViewID, false);
     }
 
     [PunRPC]
-    private void SyncSelect(int interactableID, bool isSelected)
+    private void SyncSelect(int interactorID, int interactableID, bool isSelected)
     {
+        PhotonView interactorPV =  PhotonView.Find(interactorID);
         PhotonView interactablePV =  PhotonView.Find(interactableID);
         Rigidbody interactableRb = interactablePV.GetComponent<Rigidbody>();
         if (interactablePV.GetComponent<TabletInteractable>() != null)
             return;
 
-        IXRSelectInteractor interactor = _photonView.GetComponent<IXRSelectInteractor>();
+        IXRSelectInteractor interactor = interactorPV.GetComponent<IXRSelectInteractor>();
         IXRSelectInteractable interactable = interactablePV.GetComponent<IXRSelectInteractable>();
 
         if (isSelected)
         {
             interactionManager.SelectEnter(interactor, interactable);
-
-            interactableRb.useGravity = false;
-            interactableRb.isKinematic = true;
         }
         else
         {
@@ -71,9 +69,6 @@ public class NetworkDirectInteractor : XRDirectInteractor
                 return;
 
             interactionManager.SelectExit(interactor, interactable);
-
-            interactableRb.useGravity = true;
-            interactableRb.isKinematic = false;
         }
     }
 }
