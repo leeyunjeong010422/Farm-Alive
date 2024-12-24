@@ -34,6 +34,9 @@ public class NetworkDirectInteractor : XRDirectInteractor
     {
         base.OnSelectExited(args);
 
+        if (!_photonView.IsMine)
+            return;
+
         IXRSelectInteractable selectInteractable = args.interactableObject;
 
         // 1. 놓은 플레이어가 잡은 물체의 소유권을 방장에게 다시 돌려주기.
@@ -64,6 +67,9 @@ public class NetworkDirectInteractor : XRDirectInteractor
         }
         else
         {
+            if (!hasSelection)
+                return;
+
             interactionManager.SelectExit(interactor, interactable);
 
             interactableRb.useGravity = true;
