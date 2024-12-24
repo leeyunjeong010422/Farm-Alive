@@ -17,10 +17,14 @@ public class NetworkDirectInteractor : XRDirectInteractor
         base.OnSelectEntered(args);
 
         IXRSelectInteractable selectInteractable = args.interactableObject;
+        
+        if (args.interactorObject.transform.GetComponent<PhotonView>().IsMine == false)
+            return;
 
         // 1. 잡은 플레이어가 잡은 물체의 소유권을 가져오기.
         PhotonView interactablePV = selectInteractable.transform.GetComponent<PhotonView>();
-        interactablePV.RequestOwnership();
+        interactablePV.TransferOwnership(PhotonNetwork.LocalPlayer);
+        Debug.Log("소유권 변경");
 
         // 2. 잡은 사실 알리기
         _photonView.RPC(nameof(SyncSelect), RpcTarget.Others, _photonView.ViewID, interactablePV.ViewID, true);
