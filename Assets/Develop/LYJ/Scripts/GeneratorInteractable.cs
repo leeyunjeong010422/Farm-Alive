@@ -37,9 +37,6 @@ public class GeneratorInteractable : XRBaseInteractable
     private bool isLeverDown = false;
     private float currentKnobValue = 0f;
 
-    /// <summary>
-    /// 
-    /// </summary>
     private Rigidbody rigid;
     private Vector3 startPos;
 
@@ -118,21 +115,10 @@ public class GeneratorInteractable : XRBaseInteractable
         isBeingPulled = false;
         rigid.isKinematic = true;
         transform.position = startPos;
-        // ResetCordPosition();
     }
 
     private void Update()
     {
-        /*
-         * if (isBeingPulled && cordObject != null && cordStartPosition != null && cordEndPosition != null)
-        {
-            float pullDistance = Vector3.Distance(cordObject.position, cordStartPosition.position);
-
-            Vector3 newScale = initialCordScale;
-            newScale.y = initialCordScale.y + pullDistance;
-            cordObject.localScale = newScale;
-        }
-        */
         if (Input.GetKeyDown(KeyCode.T))
         {
             Debug.Log("전조 증상 테스트 시작");
