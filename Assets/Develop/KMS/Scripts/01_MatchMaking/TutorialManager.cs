@@ -41,6 +41,6 @@ public class TutorialManager : MonoBehaviour
     public void OnTutorialComplete()
     {
         Debug.Log("Fusion 로비로 이동...");
-        SceneManager.LoadScene("03_FusionLobbyScene");
+        SceneManager.LoadScene("03_FusionLobby");
     }
 }
