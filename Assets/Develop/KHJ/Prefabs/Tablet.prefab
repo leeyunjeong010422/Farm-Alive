@@ -1432,6 +1432,7 @@ GameObject:
   - component: {fileID: 7028858567104104987}
   - component: {fileID: 7028858567104104984}
   - component: {fileID: 5730456263542408266}
+  - component: {fileID: -8088259024097173679}
   m_Layer: 0
   m_Name: Tablet
   m_TagString: Untagged
@@ -1490,10 +1491,11 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 1
+  OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
   - {fileID: 7028858567104104984}
+  - {fileID: -8088259024097173679}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -1666,6 +1668,23 @@ MonoBehaviour:
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
   _holder: {fileID: 0}
+  _photonView: {fileID: 7028858567104104987}
+--- !u!114 &-8088259024097173679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7028858567104104985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &7028858567614641670
 GameObject:
   m_ObjectHideFlags: 0
