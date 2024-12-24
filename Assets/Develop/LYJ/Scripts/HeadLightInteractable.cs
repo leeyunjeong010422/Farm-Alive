@@ -121,6 +121,8 @@ public class HeadLightInteractable : XRGrabInteractable
             _directionalLight.enabled = true;
         }
 
+        _lightingIntensity = 1f;
+        _reflectionIntensity = 1f;
         RenderSettings.ambientIntensity = _lightingIntensity;
         RenderSettings.reflectionIntensity = _reflectionIntensity;
 
