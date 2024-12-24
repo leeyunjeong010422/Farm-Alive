@@ -22,6 +22,7 @@ public class GeneratorInteractable : XRGrabInteractable
     private XRKnob _knob;
     private XRLever _lever;
 
+    [SerializeField] private Repair repair;
     [SerializeField] private HeadLightInteractable headLight;
 
     private Vector3 initialCordPosition;
@@ -61,6 +62,9 @@ public class GeneratorInteractable : XRGrabInteractable
                 Debug.LogWarning("HeadLightInteractable을 찾을 수 없습니다.");
             }
         }
+
+        repair = GetComponent<Repair>();
+        repair.enabled = false;
     }
 
     private void OnKnobValueChanged(float value)
@@ -185,6 +189,7 @@ public class GeneratorInteractable : XRGrabInteractable
         if (!isLeverDown)
         {
             Debug.Log("고장이 발생했습니다!");
+            repair.enabled = true;
             isGeneratorRunning = false;
 
             if (headLight != null)
