@@ -39,7 +39,6 @@ public class GeneratorInteractable : XRGrabInteractable
 
     private void Start()
     {
-        // √ ±‚»≠
         _knob = transform.root.GetComponentInChildren<XRKnob>();
         _lever = transform.root.GetComponentInChildren<XRLever>();
 
@@ -63,7 +62,7 @@ public class GeneratorInteractable : XRGrabInteractable
             }
         }
 
-        repair = GetComponent<Repair>();
+        repair = GetComponentInParent<Repair>();
         repair.enabled = false;
     }
 
