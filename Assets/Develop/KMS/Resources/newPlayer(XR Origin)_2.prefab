@@ -406,7 +406,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   m_PhysicsTriggerInteraction: 1
-  photonView: {fileID: 3264033988876759867}
+  _photonView: {fileID: 3264033988876759867}
 --- !u!135 &4171814626559513934
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1218,7 +1218,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   m_PhysicsTriggerInteraction: 1
-  photonView: {fileID: 5020555539954536931}
+  _photonView: {fileID: 5020555539954536931}
 --- !u!135 &6950078669528477943
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1913,6 +1913,10 @@ PrefabInstance:
     - target: {fileID: 7028858567104104985, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_Name
       value: Tablet
+      objectReference: {fileID: 0}
+    - target: {fileID: 7028858567104104987, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7028858567104105445, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_RootOrder
