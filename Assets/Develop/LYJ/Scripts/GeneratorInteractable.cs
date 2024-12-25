@@ -138,6 +138,13 @@ public class GeneratorInteractable : XRBaseInteractable
     {
         if (other.transform == cordEndPosition && !hasTriggered)
         {
+            // 수리가 완료되었는지 확인
+            if (!repair.IsRepaired)
+            {
+                Debug.Log("먼저 망치로 수리를 완료하세요.");
+                return;
+            }
+
             hasTriggered = true;
             currentAttempts++;
 
