@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8630283655968138637}
   - component: {fileID: 4520182131664337233}
-  - component: {fileID: 3488959335844571280}
+  - component: {fileID: 8450520263998807654}
   - component: {fileID: 7594104593235513931}
   - component: {fileID: 663345490963425092}
   - component: {fileID: -1272708414687315774}
@@ -56,7 +56,7 @@ MonoBehaviour:
   m_CameraFloorOffsetObject: {fileID: 8598080413633301849}
   m_RequestedTrackingOriginMode: 1
   m_CameraYOffset: 1.1176
---- !u!114 &3488959335844571280
+--- !u!114 &8450520263998807654
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1865248795837646416}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dc15ea0ba1b99b44b230ed47667ce98, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e99bc3d957fb3a498c0b1c04e50b5a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   controllerNode: 4
@@ -120,8 +120,10 @@ MonoBehaviour:
   SortKey: 1794842215
   ObjectInterest: 1
   Flags: 262145
-  NestedObjects: []
+  NestedObjects:
+  - {fileID: 3216354027234456884}
   NetworkedBehaviours:
+  - {fileID: 8450520263998807654}
   - {fileID: 7594104593235513931}
   - {fileID: 663345490963425092}
   - {fileID: -765375501826874901}
@@ -1858,6 +1860,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4608710727954308140}
     - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: leftHandIK
       value: 
       objectReference: {fileID: 8443358506025383845}
@@ -1895,6 +1901,77 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5845125219956739443, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
   m_PrefabInstance: {fileID: 5524814367918095455}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2917495896350642718 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7264607921442958913, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+  m_PrefabInstance: {fileID: 5524814367918095455}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2607053838480271733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2917495896350642718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4365fcf2cbda6ff44aa5afe0fa758ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftHandIK: {fileID: 8443358506025383845}
+  rightHandIK: {fileID: 1479064106603695084}
+  headIK: {fileID: 4608710727954308140}
+  leftHandController: {fileID: 2558512163534156088}
+  rightHandController: {fileID: 2047899354014995917}
+  hmd: {fileID: 7261734078042661224}
+  leftOffset:
+  - {x: 0, y: 0, z: 0}
+  - {x: -90, y: 90, z: 90}
+  rightOffset:
+  - {x: 0, y: 0, z: 0}
+  - {x: -90, y: 90, z: 90}
+  headOffset:
+  - {x: 0, y: -0.25, z: 0}
+  - {x: 0, y: 0, z: 0}
+  smoothValue: 0.1
+  modelHeight: 1.1176
+--- !u!114 &2727733434441193858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2917495896350642718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0.15
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
+--- !u!114 &3216354027234456884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2917495896350642718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 557323859
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 2607053838480271733}
+  - {fileID: 2727733434441193858}
+  ForceRemoteRenderTimeframe: 0
 --- !u!95 &3499155542520994851 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 8945109869299949692, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
