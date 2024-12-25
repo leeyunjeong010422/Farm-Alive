@@ -1,7 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Content.Interaction;
 using UnityEngine.XR.Interaction.Toolkit;
-using System.Collections;
 
 public class GeneratorInteractable : XRBaseInteractable
 {
@@ -19,8 +19,8 @@ public class GeneratorInteractable : XRBaseInteractable
     [Tooltip("시동줄 오브젝트")]
     [SerializeField] private Transform cordObject;
 
-    private XRKnob _knob;
-    private XRLever _lever;
+    [SerializeField] private XRKnobGenerator _knob;
+    [SerializeField] private XRLever _lever;
 
     [SerializeField] private Repair repair;
     [SerializeField] private HeadLightInteractable headLight;
@@ -46,7 +46,12 @@ public class GeneratorInteractable : XRBaseInteractable
         rigid = GetComponent<Rigidbody>();
         startPos = transform.position;
 
-        _knob = transform.root.GetComponentInChildren<XRKnob>();
+        repair = GetComponentInParent<Repair>();
+        repair.enabled = false;
+
+        headLight = FindObjectOfType<HeadLightInteractable>();
+
+        _knob = transform.root.GetComponentInChildren<XRKnobGenerator>();
         _lever = transform.root.GetComponentInChildren<XRLever>();
 
         _knob.onValueChange.AddListener(OnKnobValueChanged);
@@ -62,15 +67,8 @@ public class GeneratorInteractable : XRBaseInteractable
 
         if (headLight == null)
         {
-            headLight = FindObjectOfType<HeadLightInteractable>();
-            if (headLight == null)
-            {
-                Debug.LogWarning("HeadLightInteractable을 찾을 수 없습니다.");
-            }
+            Debug.LogWarning("HeadLightInteractable을 찾을 수 없습니다.");
         }
-
-        repair = GetComponentInParent<Repair>();
-        repair.enabled = false;
     }
 
     private void OnKnobValueChanged(float value)

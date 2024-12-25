@@ -11,10 +11,16 @@ public class Repair : MonoBehaviourPunCallbacks
 
     [PunRPC]
     public void RPC_PlusRepairCount()
-    { 
+    {
+        if (!enabled)
+        {
+            return;
+        }
+
         if (!PhotonNetwork.IsMasterClient) return;
 
         _curRepairCount++;
+        Debug.Log($"수리중: {_curRepairCount}/{_maxRepairCount}");
         if (_curRepairCount >= _maxRepairCount)
         {
             // 수리 완료

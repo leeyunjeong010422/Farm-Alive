@@ -393,8 +393,10 @@ MonoBehaviour:
   cordStartPosition: {fileID: 582197983}
   cordEndPosition: {fileID: 1723823422}
   cordObject: {fileID: 149199537}
-  repair: {fileID: 1145787001}
-  headLight: {fileID: 988678043}
+  _knob: {fileID: 0}
+  _lever: {fileID: 0}
+  repair: {fileID: 0}
+  headLight: {fileID: 0}
 --- !u!114 &149199543
 MonoBehaviour:
   m_ObjectHideFlags: 0
