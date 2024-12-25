@@ -41,6 +41,7 @@ public class GeneratorInteractable : XRBaseInteractable
     private Vector3 startPos;
 
     private bool warningActive = false;
+    private bool isKnobAtMax = false;
 
     private void Start()
     {
@@ -78,7 +79,13 @@ public class GeneratorInteractable : XRBaseInteractable
 
         if (currentKnobValue >= 1f && !isGeneratorRunning)
         {
+            isKnobAtMax = true;
             Debug.Log("휠이 최대 범위까지 돌아감!");
+        }
+        else if (currentKnobValue < 1f && isKnobAtMax)
+        {
+            isKnobAtMax = false;
+            Debug.Log("휠이 최대 범위에서 벗어나 시동줄을 당길 수 없습니다.");
         }
     }
 
@@ -142,6 +149,12 @@ public class GeneratorInteractable : XRBaseInteractable
             if (!repair.IsRepaired)
             {
                 Debug.Log("먼저 망치로 수리를 완료하세요.");
+                return;
+            }
+
+            if (!isKnobAtMax)
+            {
+                Debug.Log("다른 플레이어가 휠을 최대치로 돌려야 시동줄을 당길 수 있습니다.");
                 return;
             }
 
