@@ -40,9 +40,10 @@ public class GeneratorInteractable : XRBaseInteractable
     private Rigidbody rigid;
     private Vector3 startPos;
 
+    private bool warningActive = false;
+
     private void Start()
     {
-
         rigid = GetComponent<Rigidbody>();
         startPos = transform.position;
 
@@ -83,14 +84,23 @@ public class GeneratorInteractable : XRBaseInteractable
 
     private void OnLeverActivate()
     {
-        isLeverDown = true;
-        Debug.Log("레버가 내려갔습니다.");
-
-        if (warningCoroutine != null)
+        // 전조 증상이 활성화된 경우에만 레버 내리기가 인정됨
+        if (warningActive)
         {
-            StopCoroutine(warningCoroutine);
-            warningCoroutine = null;
-            Debug.Log("레버가 내려가서 고장 방지됨.");
+            isLeverDown = true;
+            Debug.Log("레버가 내려갔습니다.");
+
+            if (warningCoroutine != null)
+            {
+                StopCoroutine(warningCoroutine);
+                warningCoroutine = null;
+                warningActive = false;
+                Debug.Log("레버가 내려가서 고장 방지됨.");
+            }
+        }
+        else
+        {
+            Debug.Log("전조 증상이 발생전 레버 동작으로 동작 인정 X");
         }
     }
 
@@ -174,6 +184,7 @@ public class GeneratorInteractable : XRBaseInteractable
     {
         if (warningCoroutine == null)
         {
+            warningActive = true; // 전조 증상 활성화
             warningCoroutine = StartCoroutine(BreakdownWarning());
         }
     }
@@ -199,6 +210,7 @@ public class GeneratorInteractable : XRBaseInteractable
             }
         }
 
+        warningActive = false; // 전조 증상이 더 이상 진행되지 않음
         warningCoroutine = null;
     }
 }
