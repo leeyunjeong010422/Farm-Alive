@@ -247,9 +247,9 @@ public class GeneratorInteractable : XRBaseInteractable
     // 전조 증상 시작
     public void TriggerWarning()
     {
-        Debug.Log("TriggerWarning RPC 호출 시도");
+        //Debug.Log("TriggerWarning RPC 호출 시도");
         photonView.RPC(nameof(SyncTriggerWarning), RpcTarget.AllBuffered);
-        Debug.Log("TriggerWarning RPC 호출 완료");
+        //Debug.Log("TriggerWarning RPC 호출 완료");
     }
 
     [PunRPC]
@@ -259,7 +259,7 @@ public class GeneratorInteractable : XRBaseInteractable
         MessageDisplayManager.Instance.ShowMessage("Start");
         Debug.Log("전조 증상! 레버를 내려 고장을 방지하세요!!!");
 
-        Debug.Log("SyncTriggerWarning 실행됨");
+        //Debug.Log("SyncTriggerWarning 실행됨");
 
         if (warningCoroutine == null)
         {
@@ -278,10 +278,10 @@ public class GeneratorInteractable : XRBaseInteractable
         if (!_isLeverDown)
         {
             Debug.Log("고장이 발생했습니다!");
-            _repair.enabled = true;
+            photonView.RPC(nameof(SyncEnableRepair), RpcTarget.AllBuffered, true);
             _isGeneratorRunning = false;
 
-            Debug.Log("TriggerBlackout 호출됨");
+            //Debug.Log("TriggerBlackout 호출됨");
             if (_headLight != null)
             {
                 _headLight.TriggerBlackout(); // 정전 발생
@@ -294,5 +294,12 @@ public class GeneratorInteractable : XRBaseInteractable
 
         _warningActive = false; // 전조 증상이 더 이상 진행되지 않음
         warningCoroutine = null;
+    }
+
+    [PunRPC]
+    private void SyncEnableRepair(bool isRepaired)
+    {
+        _repair.enabled = isRepaired;
+        _repair.IsRepaired = isRepaired;
     }
 }

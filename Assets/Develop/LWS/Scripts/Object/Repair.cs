@@ -12,7 +12,7 @@ public class Repair : MonoBehaviourPunCallbacks
     /// <summary>
     /// 수리가 완료되었는지 여부를 나타내는 속성
     /// </summary>
-    public bool IsRepaired { get; private set; } = false;
+    public bool IsRepaired { get; set; } = false;
 
     [PunRPC]
     public void RPC_PlusRepairCount()
@@ -22,7 +22,7 @@ public class Repair : MonoBehaviourPunCallbacks
             return;
         }
 
-        if (!PhotonNetwork.IsMasterClient) return;
+        //if (!PhotonNetwork.IsMasterClient) return;
 
         _curRepairCount++;
         Debug.Log($"수리중: {_curRepairCount}/{_maxRepairCount}");
