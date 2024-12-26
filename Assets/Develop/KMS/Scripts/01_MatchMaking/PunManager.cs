@@ -7,9 +7,6 @@ using UnityEngine;
 
 public class PunManager : MonoBehaviourPunCallbacks
 {
-    public GameObject xrOriginPrefab;       // XR Origin 프리팹
-    public GameObject characterPrefab;      // 캐릭터 프리팹
-    public GameObject newcharacterPrefab;   // 캐릭터 프리팹
     public NetworkRunner FusionNetworkRunner; // Fusion 네트워크 러너
 
     [Tooltip("테스트를 위한 방 넘버 설정.")]
@@ -69,7 +66,7 @@ public class PunManager : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnJoinedLobby()
     {
-        Debug.Log("1. 로비 입장!");
+        Debug.Log("1. PUN 로비 입장!");
     }
 
     /// <summary>
@@ -85,10 +82,6 @@ public class PunManager : MonoBehaviourPunCallbacks
             Destroy(FusionNetworkRunner.gameObject);
         }
 
-        // Pun 이동
-        Debug.Log($"방 입장 성공: {PhotonNetwork.CurrentRoom.Name}");
-        PhotonNetwork.LoadLevel("04_PunWaitingRoom"); // 대기실 씬으로 이동
-
         // Pun 방 생성
         RoomOptions roomOptions = new RoomOptions
         {
@@ -98,8 +91,6 @@ public class PunManager : MonoBehaviourPunCallbacks
         };
 
         PhotonNetwork.JoinOrCreateRoom($"PunRoom_{RoomNum}", roomOptions, TypedLobby.Default);
-
-        // 씬 로드 후 방 입장은 OnJoinedRoom 콜백에서 처리
     }
 
     /// <summary>
@@ -107,17 +98,9 @@ public class PunManager : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnJoinedRoom()
     {
-        Debug.Log("방에 입장했습니다. XR Origin 및 캐릭터 생성 중...");
-        GameObject Player = PhotonNetwork.Instantiate(newcharacterPrefab.name, Vector3.zero, Quaternion.identity);
-
-        if (Player)
-        {
-            Debug.Log("Player 생성완료!");
-        }
-        else
-        {
-            Debug.LogWarning($"Player 생성실패. newcharacterPrefab이 존재하는지 확인!");
-        }
+        // Pun 이동
+        Debug.Log($"방 입장 성공: {PhotonNetwork.CurrentRoom.Name}");
+        PhotonNetwork.LoadLevel("04_PunWaitingRoom"); // 대기실 씬으로 이동
     }
 
     /// <summary>
@@ -129,21 +112,6 @@ public class PunManager : MonoBehaviourPunCallbacks
         {
             Debug.Log($"방 이름: {room.Name}, 플레이어: {room.PlayerCount}/{room.MaxPlayers}");
         }
-    }
-
-    /// <summary>
-    /// 로비 입장에 성공시 Level전환 메서드.
-    /// </summary>
-    private void LoadLobbyScene()
-    {
-        // TODO: 기능 test 상황에서 레벨 변경 없이 진행하도록 한다.
-        //PhotonNetwork.LoadLevel("LobbyScene");
-        Debug.Log("로비 씬 로드 및 방 입장 시도.");
-
-        // 임시로 테스트 룸으로 입장하도록 함.
-        // TODO: 방을 만드는 부분 수정 필요!.
-        RoomOptions options = new RoomOptions() { IsVisible = false };
-        PhotonNetwork.JoinOrCreateRoom($"TestRoom {RoomNum}", options, TypedLobby.Default);
     }
 
     /// <summary>
