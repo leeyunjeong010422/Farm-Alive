@@ -91,4 +91,9 @@ public class QuestManager  : MonoBehaviourPun
     {
         Debug.Log("다음 퀘스트를 시작합니다!");
     }
+
+    public bool IsQuestComplete()
+    {
+        return currentQuest != null && currentQuest.currentCount >= currentQuest.requiredCount;
+    }
 }
