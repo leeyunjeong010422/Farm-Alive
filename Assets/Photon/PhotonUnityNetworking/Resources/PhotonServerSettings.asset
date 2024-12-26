@@ -71,6 +71,7 @@ MonoBehaviour:
   - SyncTriggerBlackout
   - SyncSuccessGeneratorStart
   - SyncEnableRepair
+  - ExitItemCount
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

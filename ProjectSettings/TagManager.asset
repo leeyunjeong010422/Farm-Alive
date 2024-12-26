@@ -10,7 +10,8 @@ TagManager:
   - MiniWorldCamera
   - Water
   - DisappearingGround
-  - Item
+  - Tape
+  - Crop
   layers:
   - Default
   - TransparentFX
