@@ -92,6 +92,13 @@ public class GeneratorInteractable : XRBaseInteractable
         {
             _isKnobAtMax = true;
             photonView.RPC(nameof(SyncKnobState), RpcTarget.AllBuffered, true);
+
+            if (!_repair.IsRepaired)
+            {
+                Debug.Log("먼저 망치로 수리를 완료하세요.");
+                return;
+            }
+
             Debug.Log("휠이 최대 범위까지 돌아가 시동줄을 당길 수 있습니다.");
         }
 
