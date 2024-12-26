@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class ShutterController : MonoBehaviour
 {
-    [SerializeField] public bool isUpperLowerShutterOpen = false;
+    //[SerializeField] public bool isUpperLowerShutterOpen = false;
     [SerializeField] public bool isLeftRightShutterOpen = false;
 
-    [SerializeField] Transform upperShutter;
+    /*[SerializeField] Transform upperShutter;
     [SerializeField] Transform lowerShutter;
     [SerializeField] Vector3 upperClosedPosition;
     [SerializeField] Vector3 upperOpenPosition;
     [SerializeField] Vector3 lowerClosedPosition;
-    [SerializeField] Vector3 lowerOpenPosition;
+    [SerializeField] Vector3 lowerOpenPosition;*/
 
     [SerializeField] Transform leftShutter;
     [SerializeField] Transform rightShutter;
@@ -26,7 +26,7 @@ public class ShutterController : MonoBehaviour
 
     void Update()
     {
-        if (upperShutter != null && lowerShutter != null)
+        /*if (upperShutter != null && lowerShutter != null)
         {
             if (isUpperLowerShutterOpen)
             {
@@ -38,7 +38,7 @@ public class ShutterController : MonoBehaviour
                 upperShutter.localPosition = Vector3.MoveTowards(upperShutter.localPosition, upperClosedPosition, moveSpeed * Time.deltaTime);
                 lowerShutter.localPosition = Vector3.MoveTowards(lowerShutter.localPosition, lowerClosedPosition, moveSpeed * Time.deltaTime);
             }
-        }
+        }*/
 
         if (leftShutter != null && rightShutter != null)
         {

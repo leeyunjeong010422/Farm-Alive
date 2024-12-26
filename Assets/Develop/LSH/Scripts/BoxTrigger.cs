@@ -1,13 +1,18 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UIElements;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class BoxTrigger : MonoBehaviourPun
 {
-    public GameObject boxCover;
-    private bool isBoxSealed = false;
+    [SerializeField] public GameObject boxCover1;
+    [SerializeField] public GameObject boxCover2;
+    [SerializeField] public GameObject boxTape;
+    [SerializeField] bool isBoxClose = false;
+    [SerializeField] bool isBoxSealed = false;
 
     private void OnTriggerEnter(Collider other)
     {      
@@ -41,7 +46,6 @@ public class BoxTrigger : MonoBehaviourPun
                 return;
 
             QuestManager.Instance.UpdateCount();
-            Destroy(other.gameObject);
 
             if (QuestManager.Instance.IsQuestComplete())
             {
@@ -49,13 +53,14 @@ public class BoxTrigger : MonoBehaviourPun
             }
         }
             
-        else if (isBoxSealed && other.CompareTag("Tape"))
+        else if (!isBoxSealed && other.CompareTag("Tape"))
         {
             Debug.Log("포장시작");
 
             Taping taping = other.GetComponent<Taping>();
             if (taping != null && !isBoxSealed)
             {
+                Debug.Log("상자테이핑시작준비");
                 taping.StartTaping(this);
             }
         }
@@ -63,20 +68,29 @@ public class BoxTrigger : MonoBehaviourPun
 
     private void OnTriggerExit(Collider other)
     {
-        if (!other.CompareTag("Tape")) return;
-
-        Taping taping = other.GetComponent<Taping>();
-        if (taping != null)
+        if (other.CompareTag("Tape"))
         {
-            taping.StopTaping();
+            Taping taping = other.GetComponent<Taping>();
+            if (taping != null)
+            {
+                taping.StopTaping();
+            }
+        }
+        else if (other.CompareTag("Item"))
+        {
+            XRGrabInteractable grabInteractable = other.GetComponent<XRGrabInteractable>();
+            if (grabInteractable != null && !grabInteractable.isSelected)
+                return;
+
+            QuestManager.Instance.ExitItemCount();
         }
     }
 
     private void CloseCover()
     {
-        if (boxCover != null)
+        if (boxCover1 != null && boxCover2 != null)
         {
-            boxCover.SetActive(true);
+            isBoxClose = true;
             Debug.Log("상자 뚜껑이 닫혔습니다!");
         }
     }
@@ -89,6 +103,6 @@ public class BoxTrigger : MonoBehaviourPun
 
     public bool IsCoverClosed()
     {
-        return boxCover != null && boxCover.activeSelf;
+        return boxCover1 != null && boxCover2 != null && isBoxClose;
     }
 }
