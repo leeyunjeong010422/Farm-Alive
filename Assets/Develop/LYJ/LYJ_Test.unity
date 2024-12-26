@@ -388,15 +388,11 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  startAttemptsRequired: 3
-  breakdownWarningDuration: 5
-  cordStartPosition: {fileID: 582197983}
-  cordEndPosition: {fileID: 1723823422}
-  cordObject: {fileID: 149199537}
-  _knob: {fileID: 0}
-  _lever: {fileID: 0}
-  repair: {fileID: 0}
-  headLight: {fileID: 0}
+  _startAttemptsRequired: 3
+  _breakdownWarningDuration: 5
+  _cordStartPosition: {fileID: 582197983}
+  _cordEndPosition: {fileID: 1723823422}
+  _cordObject: {fileID: 149199537}
 --- !u!114 &149199543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2248,7 +2244,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1723823421}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.546, y: 0.22, z: 0.12}
+  m_LocalPosition: {x: -1.447, y: 0.22, z: 0.12}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []

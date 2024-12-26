@@ -6,52 +6,49 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class GeneratorInteractable : XRBaseInteractable
 {
     [Header("Generator Settings")]
-    [Tooltip("시동이 걸리기까지 필요한 시도 횟수")]
-    [SerializeField] private int startAttemptsRequired = 3;
+    [Tooltip("시동이 걸리기까지 필요한 시동줄 당기는 시도 횟수")]
+    [SerializeField] private int _startAttemptsRequired = 3;
 
     [Tooltip("고장이 발생하기까지의 시간")]
-    [SerializeField] private float breakdownWarningDuration = 5f;
+    [SerializeField] private float _breakdownWarningDuration = 5f;
 
     [Tooltip("시동줄의 고정 시작 위치")]
-    [SerializeField] private Transform cordStartPosition;
+    [SerializeField] private Transform _cordStartPosition;
     [Tooltip("시동줄의 최대 끝 위치")]
-    [SerializeField] private Transform cordEndPosition;
+    [SerializeField] private Transform _cordEndPosition;
     [Tooltip("시동줄 오브젝트")]
-    [SerializeField] private Transform cordObject;
-
-    [SerializeField] private XRKnobGenerator _knob;
-    [SerializeField] private XRLever _lever;
-
-    [SerializeField] private Repair repair;
-    [SerializeField] private HeadLightInteractable headLight;
-
-    private Vector3 initialCordPosition;
-    private Quaternion initialCordRotation;
-    private Vector3 initialCordScale;
-    private int currentAttempts = 0;
-    private bool isBeingPulled = false;
-    private bool hasTriggered = false;
-
-    private bool isGeneratorRunning = true;
-    private Coroutine warningCoroutine = null;
-    private bool isLeverDown = false;
-    private float currentKnobValue = 0f;
+    [SerializeField] private Transform _cordObject;
 
     private Rigidbody rigid;
     private Vector3 startPos;
 
-    private bool warningActive = false;
-    private bool isKnobAtMax = false;
+    private XRKnobGenerator _knob;
+    private XRLever _lever;
+
+    private Repair _repair;
+    private HeadLightInteractable _headLight;
+
+    private Vector3 _initialCordPosition;   // 시동줄의 초기 위치
+    private int _currentAttempts = 0;        // 현재 시동 시도 횟수
+    private float _currentKnobValue = 0f;    // 현재 휠의 값 (돌아간 위치에 대한 값)
+    private bool _isBeingPulled = false;     // 시동줄이 당겨지고 있는지에 대한 여부
+    private bool _hasTriggered = false;      // 시동줄이 트리거된 상태인지에 대한 여부
+    private bool _isGeneratorRunning = true; // 발전기가 작동 중인지에 대한 여부
+    private bool _isLeverDown = false;       // 레버가 내려간 상태인지에 대한 여부
+    private bool _warningActive = false;     // 전조 증상 활성화 여부
+    private bool _isKnobAtMax = false;       // 휠이 최대 위치에 있는지에 대한 여부
+
+    private Coroutine warningCoroutine = null;  // 전조 증상 코루틴
 
     private void Start()
     {
         rigid = GetComponent<Rigidbody>();
         startPos = transform.position;
 
-        repair = GetComponentInParent<Repair>();
-        repair.enabled = false;
+        _repair = GetComponentInParent<Repair>();
+        _repair.enabled = false;
 
-        headLight = FindObjectOfType<HeadLightInteractable>();
+        _headLight = FindObjectOfType<HeadLightInteractable>();
 
         _knob = transform.root.GetComponentInChildren<XRKnobGenerator>();
         _lever = transform.root.GetComponentInChildren<XRLever>();
@@ -60,48 +57,52 @@ public class GeneratorInteractable : XRBaseInteractable
         _lever.onLeverActivate.AddListener(OnLeverActivate);
         _lever.onLeverDeactivate.AddListener(OnLeverDeactivate);
 
-        if (cordObject != null)
+        if (_cordObject != null)
         {
-            initialCordPosition = cordObject.position;
-            initialCordRotation = cordObject.rotation;
-            initialCordScale = cordObject.localScale;
+            _initialCordPosition = _cordObject.position;
         }
 
-        if (headLight == null)
+        if (_headLight == null)
         {
             Debug.LogWarning("HeadLightInteractable을 찾을 수 없습니다.");
         }
     }
 
+    // 휠 값이 변경될 때마다 호출
     private void OnKnobValueChanged(float value)
     {
-        currentKnobValue = value;
+        _currentKnobValue = value;
 
-        if (currentKnobValue >= 1f && !isGeneratorRunning)
+        // 휠이 최대 범위에 도달한 경우
+        if (_currentKnobValue >= 1f && !_isGeneratorRunning)
         {
-            isKnobAtMax = true;
-            Debug.Log("휠이 최대 범위까지 돌아감!");
+            _isKnobAtMax = true;
+            Debug.Log("휠이 최대 범위까지 돌아가 시동줄을 당길 수 있습니다.");
         }
-        else if (currentKnobValue < 1f && isKnobAtMax)
+
+        // 휠이 최대 범위를 벗어난 경우
+        else if (_currentKnobValue < 1f && _isKnobAtMax)
         {
-            isKnobAtMax = false;
+            _isKnobAtMax = false;
             Debug.Log("휠이 최대 범위에서 벗어나 시동줄을 당길 수 없습니다.");
         }
     }
 
+    // 레버를 내렸을 때 호출
     private void OnLeverActivate()
     {
         // 전조 증상이 활성화된 경우에만 레버 내리기가 인정됨
-        if (warningActive)
+        // 전조 증상 전에 만진 레버는 의미 없음
+        if (_warningActive)
         {
-            isLeverDown = true;
+            _isLeverDown = true;
             Debug.Log("레버가 내려갔습니다.");
 
             if (warningCoroutine != null)
             {
                 StopCoroutine(warningCoroutine);
                 warningCoroutine = null;
-                warningActive = false;
+                _warningActive = false;
                 Debug.Log("레버가 내려가서 고장 방지됨.");
             }
         }
@@ -111,29 +112,34 @@ public class GeneratorInteractable : XRBaseInteractable
         }
     }
 
+    // 레버를 올렸을 때 호출
     private void OnLeverDeactivate()
     {
-        isLeverDown = false;
+        _isLeverDown = false;
         Debug.Log("레버가 올라갔습니다.");
     }
 
+    // 시동줄을 잡았을 때 호출
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
         base.OnSelectEntered(args);
         rigid.isKinematic = false;
-        isBeingPulled = true;
+        _isBeingPulled = true;
     }
 
+    // 시동줄을 놓았을 때 호출
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
         base.OnSelectExited(args);
-        isBeingPulled = false;
-        rigid.isKinematic = true;
-        transform.position = startPos;
+        _isBeingPulled = false;
+        rigid.isKinematic = true; // 움직임 고정
+        transform.position = startPos; // 시동줄 위치 초기화 (원래대로)
     }
 
+    // 
     private void Update()
     {
+        // 전조 증상 테스트 (T 키 입력 시)
         if (Input.GetKeyDown(KeyCode.T))
         {
             Debug.Log("전조 증상 테스트 시작");
@@ -141,38 +147,42 @@ public class GeneratorInteractable : XRBaseInteractable
         }
     }
 
+    // 시동줄이 끝 위치에 도달했을 때 호출
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform == cordEndPosition && !hasTriggered)
+        if (other.transform == _cordEndPosition && !_hasTriggered)
         {
             // 수리가 완료되었는지 확인
-            if (!repair.IsRepaired)
+            // 망치로 수리를 먼저 하지 않으면 시동줄을 당기거나 휠을 돌려도 의미 없음
+            if (!_repair.IsRepaired)
             {
                 Debug.Log("먼저 망치로 수리를 완료하세요.");
                 return;
             }
 
-            if (!isKnobAtMax)
+            // 휠이 최대 위치가 아니면 시동줄을 당길 수 없음
+            if (!_isKnobAtMax)
             {
                 Debug.Log("다른 플레이어가 휠을 최대치로 돌려야 시동줄을 당길 수 있습니다.");
                 return;
             }
 
-            hasTriggered = true;
-            currentAttempts++;
+            _hasTriggered = true;
+            _currentAttempts++;
 
-            Debug.Log($"발전기 시동 시도: {currentAttempts}/{startAttemptsRequired}");
+            Debug.Log($"발전기 시동 시도: {_currentAttempts}/{_startAttemptsRequired}");
 
-            if (currentAttempts >= startAttemptsRequired && currentKnobValue >= 1f)
+            // 시동 성공 조건 확인
+            if (_currentAttempts >= _startAttemptsRequired && _currentKnobValue >= 1f)
             {
                 Debug.Log("발전기 시동 성공!");
-                isGeneratorRunning = true;
-                currentAttempts = 0;
+                _isGeneratorRunning = true;
+                _currentAttempts = 0;
 
                 // 정전 해제
-                if (headLight != null)
+                if (_headLight != null)
                 {
-                    headLight.RecoverFromBlackout(); // 조명 복구
+                    _headLight.RecoverFromBlackout(); // 조명 복구
                 }
                 else
                 {
@@ -184,45 +194,38 @@ public class GeneratorInteractable : XRBaseInteractable
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.transform == cordEndPosition)
+        if (other.transform == _cordEndPosition)
         {
-            hasTriggered = false;
+            _hasTriggered = false;
         }
     }
 
-    private void ResetCordPosition()
-    {
-        if (cordObject != null)
-        {
-            cordObject.position = initialCordPosition;
-            cordObject.rotation = initialCordRotation;
-            cordObject.localScale = initialCordScale;
-        }
-    }
-
+    // 전조 증상 시작
     public void TriggerWarning()
     {
         if (warningCoroutine == null)
         {
-            warningActive = true; // 전조 증상 활성화
+            _warningActive = true; // 전조 증상 활성화
             warningCoroutine = StartCoroutine(BreakdownWarning());
         }
     }
 
+    // 전조 증상 처리
+    // 여기서 처리하면 고장나지 않음 (처리하지 못하면 고장남)
     private IEnumerator BreakdownWarning()
     {
         Debug.Log("전조 증상! 레버를 내려 고장을 방지하세요!!!");
-        yield return new WaitForSeconds(breakdownWarningDuration);
+        yield return new WaitForSeconds(_breakdownWarningDuration);
 
-        if (!isLeverDown)
+        if (!_isLeverDown)
         {
             Debug.Log("고장이 발생했습니다!");
-            repair.enabled = true;
-            isGeneratorRunning = false;
+            _repair.enabled = true;
+            _isGeneratorRunning = false;
 
-            if (headLight != null)
+            if (_headLight != null)
             {
-                headLight.TriggerBlackout(); // 정전 발생
+                _headLight.TriggerBlackout(); // 정전 발생
             }
             else
             {
@@ -230,7 +233,7 @@ public class GeneratorInteractable : XRBaseInteractable
             }
         }
 
-        warningActive = false; // 전조 증상이 더 이상 진행되지 않음
+        _warningActive = false; // 전조 증상이 더 이상 진행되지 않음
         warningCoroutine = null;
     }
 }
