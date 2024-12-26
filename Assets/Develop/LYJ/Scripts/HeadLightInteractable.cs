@@ -1,8 +1,11 @@
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class HeadLightInteractable : XRGrabInteractable
 {
+    private PhotonView photonView;
+
     private Light _headLight;
     private Light _directionalLight;
     private Camera _mainCamera;
@@ -18,6 +21,8 @@ public class HeadLightInteractable : XRGrabInteractable
     protected override void Awake()
     {
         base.Awake();
+
+        photonView = GetComponent<PhotonView>();
 
         _headLight = GetComponentInChildren<Light>();
         if (_headLight == null)
@@ -83,6 +88,29 @@ public class HeadLightInteractable : XRGrabInteractable
     /// </summary>
     public void TriggerBlackout()
     {
+        if (photonView.IsMine)
+        {
+            photonView.RPC(nameof(SyncTriggerBlackout), RpcTarget.AllBuffered);
+        }
+    }
+
+    /// <summary>
+    /// 정전 해제 시 실행
+    /// </summary>
+    public void RecoverFromBlackout()
+    {
+        if (photonView.IsMine)
+        {
+            photonView.RPC(nameof(SyncRecoverFromBlackout), RpcTarget.AllBuffered);
+        }
+    }
+
+    /// <summary>
+    /// 정전 발생 시 실행
+    /// </summary>
+    [PunRPC]
+    public void SyncTriggerBlackout()
+    {
         Debug.Log("정전 발생!");
 
         // 1. Directional Light 끄기
@@ -111,7 +139,8 @@ public class HeadLightInteractable : XRGrabInteractable
     /// <summary>
     /// 정전 해제 시 실행
     /// </summary>
-    public void RecoverFromBlackout()
+    [PunRPC]
+    public void SyncRecoverFromBlackout()
     {
         Debug.Log("정전 해제!");
 

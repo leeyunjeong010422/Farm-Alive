@@ -63,6 +63,14 @@ MonoBehaviour:
   - SyncSelect
   - UpdateItemCount
   - SyncTransform
+  - SyncKnobState
+  - SyncLeverState
+  - SyncPullState
+  - SyncTriggerWarning
+  - SyncRecoverFromBlackout
+  - SyncTriggerBlackout
+  - SyncSuccessGeneratorStart
+  - SyncEnableRepair
   - ExitItemCount
   DisableAutoOpenWizard: 1
   ShowSettings: 1

@@ -34,12 +34,12 @@ public class MessageDisplayManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Canvas를 설정해야 합니다.");
+            Debug.Log("Canvas를 설정해야 합니다.");
         }
 
         if (messageText == null)
         {
-            Debug.LogError("Text를 설정해야 합니다.");
+            Debug.Log("Text를 설정해야 합니다.");
         }
     }
 
@@ -76,7 +76,7 @@ public class MessageDisplayManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Camera를 찾을 수 없습니다.");
+            Debug.Log("Camera를 찾을 수 없습니다.");
         }
     }
 
