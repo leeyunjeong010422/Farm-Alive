@@ -48,11 +48,10 @@ public class PlantGround : MonoBehaviourPun
 
         if (_currentDigCount >= _digCount)
         {
-            // DisappearingGround 오브젝트 삭제
-            GameObject disappearGround = GameObject.FindWithTag("DisappearingGround");
+            Transform disappearGround = transform.Find("DisappearingGround");
             if (disappearGround != null)
             {
-                Destroy(disappearGround);
+                Destroy(disappearGround.gameObject);
                 Debug.Log("DisappearingGround가 삭제되었습니다.");
             }
 
