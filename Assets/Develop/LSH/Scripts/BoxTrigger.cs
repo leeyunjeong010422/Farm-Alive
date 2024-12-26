@@ -17,30 +17,36 @@ public class BoxTrigger : MonoBehaviourPun
     private void OnTriggerEnter(Collider other)
     {      
         
-        if (other.CompareTag("Item"))
+        if (other.CompareTag("Crop"))
         {
             PhotonView itemView = other.GetComponent<PhotonView>();
             if (itemView == null || !itemView.IsMine)
                 return;
 
-            XRGrabInteractable grabInteractable = other.GetComponent<XRGrabInteractable>();
+            /*XRGrabInteractable grabInteractable = other.GetComponent<XRGrabInteractable>();
             if (grabInteractable != null && !grabInteractable.isSelected)
-                return;
+                return;*/
 
             if (QuestManager.Instance.currentQuest == null)
                 return;
 
-            GameObject[] requiredItems = QuestManager.Instance.currentQuest.requiredItems;
+            List<QuestManager.Quest> requiredItem = QuestManager.Instance.questsList;
             bool isValidItem = false;
 
-            foreach (GameObject item in requiredItems)
+            
+
+            foreach (QuestManager.Quest item in requiredItem)
             {
-                if (item.name == other.gameObject.name)
+                
+                
+                /*if (item.requiredItems. == other.gameObject.name)
                 {
                     isValidItem = true;
                     break;
-                }
+                }*/
             }
+
+
 
             if (!isValidItem)
                 return;
@@ -76,7 +82,7 @@ public class BoxTrigger : MonoBehaviourPun
                 taping.StopTaping();
             }
         }
-        else if (other.CompareTag("Item"))
+        else if (other.CompareTag("Crop"))
         {
             XRGrabInteractable grabInteractable = other.GetComponent<XRGrabInteractable>();
             if (grabInteractable != null && !grabInteractable.isSelected)

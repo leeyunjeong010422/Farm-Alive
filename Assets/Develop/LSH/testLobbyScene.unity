@@ -2208,7 +2208,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 18.8, y: -112.1}
+  m_AnchoredPosition: {x: 18.8, y: 162.1}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &852792656
@@ -3522,13 +3522,12 @@ MonoBehaviour:
   questsList: []
   currentQuest:
     questName: deliveryPackage
-    requiredItems:
-    - {fileID: 3180198504722258452, guid: 7df6b3c258319034388cc3622ae5a970, type: 3}
+    itemPrefabs:
     - {fileID: 1331337494980994803, guid: 66772cdc3fb512549bf5133d05b01f83, type: 3}
     - {fileID: 9217307988167323705, guid: 22c7395f080237c46bdbeb55bf20590b, type: 3}
     - {fileID: 3538256223735237040, guid: f4535e913ac6b0649851d439cee5ca1d, type: 3}
-    requiredItem: {fileID: 0}
-    requiredCount: 5
+    - {fileID: 3180198504722258452, guid: 7df6b3c258319034388cc3622ae5a970, type: 3}
+    requiredItems: []
     currentCount: 0
 --- !u!114 &1385944374
 MonoBehaviour:
@@ -4812,7 +4811,7 @@ PrefabInstance:
       objectReference: {fileID: 190455236}
     - target: {fileID: 8251795225624279817, guid: 3e724a86dfb4be3458b49d3f406ae9a5, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8251795225624279817, guid: 3e724a86dfb4be3458b49d3f406ae9a5, type: 3}
       propertyPath: m_LocalRotation.x
@@ -4824,11 +4823,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8251795225624279817, guid: 3e724a86dfb4be3458b49d3f406ae9a5, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8251795225624279817, guid: 3e724a86dfb4be3458b49d3f406ae9a5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 8251795225624279819, guid: 3e724a86dfb4be3458b49d3f406ae9a5, type: 3}
       propertyPath: m_Mesh
@@ -4852,11 +4851,11 @@ PrefabInstance:
       objectReference: {fileID: 1784241286}
     - target: {fileID: 8251795226155802751, guid: 3e724a86dfb4be3458b49d3f406ae9a5, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 8251795226155802751, guid: 3e724a86dfb4be3458b49d3f406ae9a5, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8251795226155802751, guid: 3e724a86dfb4be3458b49d3f406ae9a5, type: 3}
       propertyPath: m_LocalRotation.z
@@ -4864,7 +4863,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8251795226155802751, guid: 3e724a86dfb4be3458b49d3f406ae9a5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e724a86dfb4be3458b49d3f406ae9a5, type: 3}
@@ -5326,7 +5325,7 @@ MonoBehaviour:
   boxCover1: {fileID: 119219894}
   boxCover2: {fileID: 1771280834}
   boxTape: {fileID: 354958988}
-  isBoxClose: 1
+  isBoxClose: 0
   isBoxSealed: 0
 --- !u!4 &1960810207 stripped
 Transform:
