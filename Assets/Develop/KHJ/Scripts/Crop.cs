@@ -42,6 +42,13 @@ public class Crop : MonoBehaviourPun
 
     private void Awake()
     {
+        Transform GFX = transform.GetChild(0);
+        _GFXs = new GameObject[GFX.childCount];
+        for (int i = 0; i < GFX.childCount; i++)
+        {
+            _GFXs[i] = GFX.GetChild(i).gameObject;
+        }
+
         _states[(int)E_CropState.Growing] = new GrowingState(this);
         _states[(int)E_CropState.GrowStopped] = new GrowStoppedState(this);
         _states[(int)E_CropState.GrowCompleted] = new GrowCompletedState(this);
