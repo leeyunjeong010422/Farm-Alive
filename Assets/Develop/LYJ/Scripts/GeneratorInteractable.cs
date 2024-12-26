@@ -116,6 +116,7 @@ public class GeneratorInteractable : XRBaseInteractable
     private void OnLeverDeactivate()
     {
         _isLeverDown = false;
+        MessageDisplayManager.Instance.ShowMessage("lever Up");
         Debug.Log("레버가 올라갔습니다.");
     }
 
@@ -214,6 +215,7 @@ public class GeneratorInteractable : XRBaseInteractable
     // 여기서 처리하면 고장나지 않음 (처리하지 못하면 고장남)
     private IEnumerator BreakdownWarning()
     {
+        MessageDisplayManager.Instance.ShowMessage("Start");
         Debug.Log("전조 증상! 레버를 내려 고장을 방지하세요!!!");
         yield return new WaitForSeconds(_breakdownWarningDuration);
 
