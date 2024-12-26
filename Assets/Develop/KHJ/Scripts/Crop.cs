@@ -11,6 +11,10 @@ public class Crop : MonoBehaviourPun
         Growing, GrowStopped, GrowCompleted, SIZE
     }
 
+    [Header("작물 외형")]
+    [Tooltip("성장 단계에 따라 변화하는 외형")]
+    [SerializeField] private GameObject[] _GFXs;
+
     [Header("작물의 현재 상태")]
     [SerializeField] private E_CropState _curState;
 
@@ -62,6 +66,10 @@ public class Crop : MonoBehaviourPun
 
     private void Init()
     {
+        _GFXs[0].SetActive(true);
+        for (int i = 1; i < _GFXs.Length; i++)
+            _GFXs[i].SetActive(false);
+
         _curState = E_CropState.GrowStopped;
         _states[(int)_curState].StateEnter();
 
@@ -105,9 +113,12 @@ public class Crop : MonoBehaviourPun
 
     private class GrowingState : CropState
     {
+        private int maxGrowthStep;
+        private int curGrowthStep = 0;
+
         public GrowingState(Crop crop) : base(crop) { }
 
-        public override void StateEnter() { }
+        public override void StateEnter() => maxGrowthStep = crop._GFXs.Length - 1;
 
         public override void StateExit() { }
 
@@ -123,7 +134,18 @@ public class Crop : MonoBehaviourPun
             }
         }
 
-        private void Grow() => crop._elapsedTime += Time.deltaTime;
+        private void Grow()
+        {
+            // 성장 시간 누적
+            crop._elapsedTime += Time.deltaTime;
+
+            // 성장치에 따른 외형 변화
+            if (crop._elapsedTime >= crop._growthTime * (curGrowthStep + 1) / maxGrowthStep)
+            {
+                crop._GFXs[curGrowthStep].SetActive(false);
+                crop._GFXs[++curGrowthStep].SetActive(true);
+            }
+        }
     }
 
     private class GrowStoppedState : CropState
@@ -159,10 +181,6 @@ public class Crop : MonoBehaviourPun
         public override void StateEnter()
         {
             crop._cropInteractable.interactionLayers = (1 << 1);
-
-            // TODO: 성장완료 피드백 변경
-            crop.transform.localScale *= 1.5f;
-
         }
 
         public override void StateExit() { }
