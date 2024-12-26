@@ -120,8 +120,7 @@ MonoBehaviour:
   SortKey: 1794842215
   ObjectInterest: 1
   Flags: 262145
-  NestedObjects:
-  - {fileID: 3216354027234456884}
+  NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 8450520263998807654}
   - {fileID: 7594104593235513931}
@@ -1744,6 +1743,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8443358506025383845}
     - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: smoothValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: righttHandIK
       value: 
       objectReference: {fileID: 1479064106603695084}
@@ -1861,7 +1864,7 @@ PrefabInstance:
       objectReference: {fileID: 4608710727954308140}
     - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: leftHandIK
@@ -1901,77 +1904,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5845125219956739443, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
   m_PrefabInstance: {fileID: 5524814367918095455}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2917495896350642718 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7264607921442958913, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
-  m_PrefabInstance: {fileID: 5524814367918095455}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2607053838480271733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2917495896350642718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4365fcf2cbda6ff44aa5afe0fa758ba7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftHandIK: {fileID: 8443358506025383845}
-  rightHandIK: {fileID: 1479064106603695084}
-  headIK: {fileID: 4608710727954308140}
-  leftHandController: {fileID: 2558512163534156088}
-  rightHandController: {fileID: 2047899354014995917}
-  hmd: {fileID: 7261734078042661224}
-  leftOffset:
-  - {x: 0, y: 0, z: 0}
-  - {x: -90, y: 90, z: 90}
-  rightOffset:
-  - {x: 0, y: 0, z: 0}
-  - {x: -90, y: 90, z: 90}
-  headOffset:
-  - {x: 0, y: -0.25, z: 0}
-  - {x: 0, y: 0, z: 0}
-  smoothValue: 0.1
-  modelHeight: 1.1176
---- !u!114 &2727733434441193858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2917495896350642718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _stateAuthorityChangeErrorCorrectionDelta: 0.15
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
---- !u!114 &3216354027234456884
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2917495896350642718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 557323859
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 2607053838480271733}
-  - {fileID: 2727733434441193858}
-  ForceRemoteRenderTimeframe: 0
 --- !u!95 &3499155542520994851 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 8945109869299949692, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
