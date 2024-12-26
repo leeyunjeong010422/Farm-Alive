@@ -99,7 +99,7 @@ public class GeneratorInteractable : XRBaseInteractable
                 return;
             }
 
-            MessageDisplayManager.Instance.ShowMessage("휠이 최대 범위까지 돌아가 시동줄을 당길 수 있습니다.");
+            //MessageDisplayManager.Instance.ShowMessage("휠이 최대 범위까지 돌아가 시동줄을 당길 수 있습니다.");
             //Debug.Log("휠이 최대 범위까지 돌아가 시동줄을 당길 수 있습니다.");
         }
 
@@ -108,7 +108,7 @@ public class GeneratorInteractable : XRBaseInteractable
         {
             _isKnobAtMax = false;
             photonView.RPC(nameof(SyncKnobState), RpcTarget.AllBuffered, false);
-            MessageDisplayManager.Instance.ShowMessage("휠이 최대 범위에서 벗어나 시동줄을 당길 수 없습니다.");
+            //MessageDisplayManager.Instance.ShowMessage("휠이 최대 범위에서 벗어나 시동줄을 당길 수 없습니다.");
             //Debug.Log("휠이 최대 범위에서 벗어나 시동줄을 당길 수 없습니다.");
         }
     }
@@ -222,7 +222,8 @@ public class GeneratorInteractable : XRBaseInteractable
             _hasTriggered = true;
             _currentAttempts++;
 
-            Debug.Log($"발전기 시동 시도: {_currentAttempts}/{_startAttemptsRequired}");
+            MessageDisplayManager.Instance.ShowMessage($"발전기 시동 횟수: {_currentAttempts}/{_startAttemptsRequired}");
+            //Debug.Log($"발전기 시동 시도: {_currentAttempts}/{_startAttemptsRequired}");
 
             // 시동 성공 조건 확인
             if (_currentAttempts >= _startAttemptsRequired && _currentKnobValue >= 1f)
