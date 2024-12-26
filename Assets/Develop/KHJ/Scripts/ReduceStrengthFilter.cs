@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Filtering;
 
-public class ReduceTabletStrengthFilter : MonoBehaviour, IXRInteractionStrengthFilter
+public class ReduceStrengthFilter : MonoBehaviour, IXRInteractionStrengthFilter
 {
+    public float reduceRate;
     public bool canProcess => isActiveAndEnabled;
 
     public float Process(IXRInteractor interactor, IXRInteractable interactable, float interactionStrength)
     {
-        return interactionStrength * 0.5f;
+        return interactionStrength * reduceRate;
     }
 }
