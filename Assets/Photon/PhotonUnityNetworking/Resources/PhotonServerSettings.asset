@@ -70,6 +70,7 @@ MonoBehaviour:
   - SyncRecoverFromBlackout
   - SyncTriggerBlackout
   - SyncSuccessGeneratorStart
+  - SyncEnableRepair
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
