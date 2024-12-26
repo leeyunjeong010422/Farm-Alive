@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Content.Interaction;
@@ -5,6 +6,8 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class GeneratorInteractable : XRBaseInteractable
 {
+    private PhotonView photonView;
+
     [Header("Generator Settings")]
     [Tooltip("시동이 걸리기까지 필요한 시동줄 당기는 시도 횟수")]
     [SerializeField] private int _startAttemptsRequired = 3;
@@ -39,6 +42,17 @@ public class GeneratorInteractable : XRBaseInteractable
     private bool _isKnobAtMax = false;       // 휠이 최대 위치에 있는지에 대한 여부
 
     private Coroutine warningCoroutine = null;  // 전조 증상 코루틴
+
+    protected override void Awake()
+    {
+        base.Awake();
+        photonView = GetComponent<PhotonView>();
+
+        if (photonView == null)
+        {
+            Debug.Log("photonView가 없습니다.");
+        }
+    }
 
     private void Start()
     {
@@ -77,6 +91,7 @@ public class GeneratorInteractable : XRBaseInteractable
         if (_currentKnobValue >= 1f && !_isGeneratorRunning)
         {
             _isKnobAtMax = true;
+            photonView.RPC(nameof(SyncKnobState), RpcTarget.AllBuffered, true);
             Debug.Log("휠이 최대 범위까지 돌아가 시동줄을 당길 수 있습니다.");
         }
 
@@ -84,8 +99,15 @@ public class GeneratorInteractable : XRBaseInteractable
         else if (_currentKnobValue < 1f && _isKnobAtMax)
         {
             _isKnobAtMax = false;
+            photonView.RPC(nameof(SyncKnobState), RpcTarget.AllBuffered, false);
             Debug.Log("휠이 최대 범위에서 벗어나 시동줄을 당길 수 없습니다.");
         }
+    }
+
+    [PunRPC]
+    private void SyncKnobState(bool isAtMax)
+    {
+        _isKnobAtMax = isAtMax;
     }
 
     // 레버를 내렸을 때 호출
@@ -96,6 +118,7 @@ public class GeneratorInteractable : XRBaseInteractable
         if (_warningActive)
         {
             _isLeverDown = true;
+            photonView.RPC(nameof(SyncLeverState), RpcTarget.AllBuffered, true);
             Debug.Log("레버가 내려갔습니다.");
 
             if (warningCoroutine != null)
@@ -116,9 +139,17 @@ public class GeneratorInteractable : XRBaseInteractable
     private void OnLeverDeactivate()
     {
         _isLeverDown = false;
+        photonView.RPC(nameof(SyncLeverState), RpcTarget.AllBuffered, false);
         MessageDisplayManager.Instance.ShowMessage("lever Up");
         Debug.Log("레버가 올라갔습니다.");
     }
+
+    [PunRPC]
+    private void SyncLeverState(bool isDown)
+    {
+        _isLeverDown = isDown;
+    }
+
 
     // 시동줄을 잡았을 때 호출
     protected override void OnSelectEntered(SelectEnterEventArgs args)
@@ -126,6 +157,7 @@ public class GeneratorInteractable : XRBaseInteractable
         base.OnSelectEntered(args);
         rigid.isKinematic = false;
         _isBeingPulled = true;
+        photonView.RPC(nameof(SyncPullState), RpcTarget.AllBuffered, true);
     }
 
     // 시동줄을 놓았을 때 호출
@@ -135,9 +167,15 @@ public class GeneratorInteractable : XRBaseInteractable
         _isBeingPulled = false;
         rigid.isKinematic = true; // 움직임 고정
         transform.position = startPos; // 시동줄 위치 초기화 (원래대로)
+        photonView.RPC(nameof(SyncPullState), RpcTarget.AllBuffered, false);
     }
 
-    // 
+    [PunRPC]
+    private void SyncPullState(bool isPulled)
+    {
+        _isBeingPulled = isPulled;
+    }
+
     private void Update()
     {
         // 전조 증상 테스트 (T 키 입력 시)
@@ -176,20 +214,25 @@ public class GeneratorInteractable : XRBaseInteractable
             // 시동 성공 조건 확인
             if (_currentAttempts >= _startAttemptsRequired && _currentKnobValue >= 1f)
             {
-                Debug.Log("발전기 시동 성공!");
-                _isGeneratorRunning = true;
-                _currentAttempts = 0;
-
-                // 정전 해제
-                if (_headLight != null)
-                {
-                    _headLight.RecoverFromBlackout(); // 조명 복구
-                }
-                else
-                {
-                    Debug.LogWarning("HeadLightInteractable이 설정되지 않았습니다!");
-                }
+                photonView.RPC(nameof(SyncSuccessGeneratorStart), RpcTarget.AllBuffered);
             }
+        }
+    }
+
+    [PunRPC]
+    private void SyncSuccessGeneratorStart()
+    {
+        Debug.Log("발전기 시동 성공!");
+        _isGeneratorRunning = true;
+        _currentAttempts = 0;
+
+        if (_headLight != null)
+        {
+            _headLight.RecoverFromBlackout(); // 조명 복구
+        }
+        else
+        {
+            Debug.LogWarning("HeadLightInteractable이 설정되지 않았습니다!");
         }
     }
 
@@ -204,9 +247,23 @@ public class GeneratorInteractable : XRBaseInteractable
     // 전조 증상 시작
     public void TriggerWarning()
     {
+        Debug.Log("TriggerWarning RPC 호출 시도");
+        photonView.RPC(nameof(SyncTriggerWarning), RpcTarget.AllBuffered);
+        Debug.Log("TriggerWarning RPC 호출 완료");
+    }
+
+    [PunRPC]
+    private void SyncTriggerWarning()
+    {
+        _warningActive = true;
+        MessageDisplayManager.Instance.ShowMessage("Start");
+        Debug.Log("전조 증상! 레버를 내려 고장을 방지하세요!!!");
+
+        Debug.Log("SyncTriggerWarning 실행됨");
+
         if (warningCoroutine == null)
         {
-            _warningActive = true; // 전조 증상 활성화
+            Debug.Log("BreakdownWarning 코루틴 시작");
             warningCoroutine = StartCoroutine(BreakdownWarning());
         }
     }
@@ -215,8 +272,7 @@ public class GeneratorInteractable : XRBaseInteractable
     // 여기서 처리하면 고장나지 않음 (처리하지 못하면 고장남)
     private IEnumerator BreakdownWarning()
     {
-        MessageDisplayManager.Instance.ShowMessage("Start");
-        Debug.Log("전조 증상! 레버를 내려 고장을 방지하세요!!!");
+        Debug.Log("BreakdownWarning 실행됨");
         yield return new WaitForSeconds(_breakdownWarningDuration);
 
         if (!_isLeverDown)
@@ -225,6 +281,7 @@ public class GeneratorInteractable : XRBaseInteractable
             _repair.enabled = true;
             _isGeneratorRunning = false;
 
+            Debug.Log("TriggerBlackout 호출됨");
             if (_headLight != null)
             {
                 _headLight.TriggerBlackout(); // 정전 발생
