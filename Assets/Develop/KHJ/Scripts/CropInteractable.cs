@@ -17,4 +17,17 @@ public class CropInteractable : XRGrabInteractable
             interactionLayers = (1 << 29);
         }
     }
+
+    protected override void OnSelectExited(SelectExitEventArgs args)
+    {
+        base.OnSelectExited(args);
+
+        if (args.interactorObject is XRSocketInteractor)
+        {
+            SectionManager.Instance.Crops[SectionManager.Instance.CurSection].Remove(GetComponent<Crop>());
+
+            // Plant 레이어 설정
+            interactionLayers = (1 << 1);
+        }
+    }
 }
