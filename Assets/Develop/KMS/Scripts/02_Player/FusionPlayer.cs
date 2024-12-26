@@ -21,7 +21,7 @@ public class FusionPlayer : NetworkBehaviour
     private void Start()
     {
         // 로컬 플레이어만 입력 및 장치 활성화
-        if (Object.HasInputAuthority)
+        if (Object.HasStateAuthority)
         {
             EnableLocalPlayerComponents();
         }

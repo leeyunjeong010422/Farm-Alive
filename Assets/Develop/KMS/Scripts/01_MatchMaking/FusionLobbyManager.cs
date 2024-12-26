@@ -23,7 +23,7 @@ public class FusionLobbyManager : MonoBehaviour
 
         var startResult = await _networkRunner.StartGame(new StartGameArgs
         {
-            GameMode = GameMode.Shared,
+            GameMode = GameMode.AutoHostOrClient,
             SessionName = "FusionLobby"
         });
 
