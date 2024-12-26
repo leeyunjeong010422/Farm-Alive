@@ -22,7 +22,7 @@ public class Repair : MonoBehaviourPunCallbacks
             return;
         }
 
-        //if (!PhotonNetwork.IsMasterClient) return;
+        if (!PhotonNetwork.IsMasterClient) return;
 
         _curRepairCount++;
         Debug.Log($"¼ö¸®Áß: {_curRepairCount}/{_maxRepairCount}");
