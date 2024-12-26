@@ -13,7 +13,7 @@ public class SectionManager : MonoBehaviour
     [SerializeField] private int _curSection;
 
     public List<Crop>[] Crops { get { return _crops; } }
-    public int CurSection { get { return _curSection; } }
+    public int CurSection { get { return _curSection; } set { _curSection = value; } }
 
     private void Awake()
     {

@@ -1,11 +1,19 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
 public class QuestManager  : MonoBehaviourPun
 {
     public static QuestManager Instance;
+
+    [System.Serializable]
+    public class RequiredItem
+    {
+        public GameObject itemPrefab;
+        public int count;
+    }
 
     [System.Serializable]
     public class Quest
@@ -17,6 +25,7 @@ public class QuestManager  : MonoBehaviourPun
         public int currentCount = 0;
     }
 
+    [SerializeField] public List<Quest> questsList = new List<Quest>();
     public Quest currentQuest;
 
     private void Awake()
@@ -39,11 +48,12 @@ public class QuestManager  : MonoBehaviourPun
     [PunRPC]
     public void QuestStart()
     {
-        NewQuest("택배포장", currentQuest.requiredItems, 1);
+        NewQuest("택배포장", currentQuest.requiredItems, 2);
     }
 
     public void NewQuest(string questName, GameObject[] requiredItems, int requiredCount)
     {
+
         currentQuest = new Quest
         {
             questName = questName,
@@ -53,6 +63,7 @@ public class QuestManager  : MonoBehaviourPun
             currentCount = 0
         };
 
+        questsList.Add(currentQuest);
         UpdateUI();
     }
 
@@ -67,6 +78,19 @@ public class QuestManager  : MonoBehaviourPun
     {
         Debug.Log(currentQuest.currentCount);
         currentQuest.currentCount++;
+        UpdateUI();
+
+        if (currentQuest.currentCount >= currentQuest.requiredCount)
+        {
+            QuestComplete();
+        }
+    }
+
+    [PunRPC]
+    public void ExitItemCount()
+    {
+        currentQuest.currentCount--;
+        Debug.Log(currentQuest.currentCount);
         UpdateUI();
 
         if (currentQuest.currentCount >= currentQuest.requiredCount)
