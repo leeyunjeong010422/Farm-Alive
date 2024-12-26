@@ -1989,6 +1989,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4608710727954308140}
     - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: leftHandIK
       value: 
       objectReference: {fileID: 8443358506025383845}
@@ -2052,6 +2056,10 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5319662046946083354, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5845125219956739443, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -2112,6 +2120,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6123252989591631915, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7264607921442958913, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: m_Name
       value: mini simple skeleton demo
@@ -2132,7 +2144,8 @@ PrefabInstance:
       propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6123252989591631915, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
 --- !u!4 &1479064106603695084 stripped
 Transform:
