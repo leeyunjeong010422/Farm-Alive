@@ -40,7 +40,7 @@ public class TutorialManager : MonoBehaviour
     // 버튼 클릭 시 Fusion 로비로 이동
     public void OnTutorialComplete()
     {
-        Debug.Log("Fusion 로비로 이동...");
-        SceneManager.LoadScene("03_FusionLobby");
+        Debug.Log("Loading Scene 이동...");
+        SceneManager.LoadScene("LoadingScene");
     }
 }

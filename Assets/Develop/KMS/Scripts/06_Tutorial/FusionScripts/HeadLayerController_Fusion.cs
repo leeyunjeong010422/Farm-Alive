@@ -8,7 +8,7 @@ public class HeadLayerController_Fusion : NetworkBehaviour
 
     void Start()
     {
-        if (Object.HasInputAuthority) // 이 오브젝트가 로컬 플레이어인지 확인
+        if (Object.HasStateAuthority) // 이 오브젝트가 로컬 플레이어인지 확인
         {
             if (vrCamera != null && headObject != null)
             {
@@ -18,6 +18,11 @@ public class HeadLayerController_Fusion : NetworkBehaviour
                 // 카메라에서 해당 레이어를 제외
                 vrCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("HeadLayer"));
             }
+        }
+        else
+        {
+            // 원격 플레이어일 경우 머리 오브젝트를 보이도록 설정
+            headObject.layer = LayerMask.NameToLayer("Default");
         }
     }
 }
