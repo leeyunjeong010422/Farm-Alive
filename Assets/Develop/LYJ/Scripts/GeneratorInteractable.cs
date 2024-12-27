@@ -40,6 +40,7 @@ public class GeneratorInteractable : XRBaseInteractable
     private bool _isLeverDown = false;       // 레버가 내려간 상태인지에 대한 여부
     private bool _warningActive = false;     // 전조 증상 활성화 여부
     private bool _isKnobAtMax = false;       // 휠이 최대 위치에 있는지에 대한 여부
+    private bool _isStartSuccessful = false; // 발전기 시동 성공에 대한 여부
 
     private Coroutine warningCoroutine = null;  // 전조 증상 코루틴
 
@@ -219,6 +220,12 @@ public class GeneratorInteractable : XRBaseInteractable
                 return;
             }
 
+            if (_isStartSuccessful)
+            {
+                MessageDisplayManager.Instance.ShowMessage("발전기는 이미 가동 중입니다!");
+                return;
+            }
+
             _hasTriggered = true;
             _currentAttempts++;
 
@@ -239,6 +246,7 @@ public class GeneratorInteractable : XRBaseInteractable
         MessageDisplayManager.Instance.ShowMessage("발전기 시동 성공!");
         //Debug.Log("발전기 시동 성공!");
         _isGeneratorRunning = true;
+        _isStartSuccessful = true;
         _currentAttempts = 0;
 
         if (_headLight != null)
@@ -296,6 +304,7 @@ public class GeneratorInteractable : XRBaseInteractable
             //Debug.Log("고장이 발생했습니다!");
             photonView.RPC(nameof(SyncEnableRepair), RpcTarget.AllBuffered, true);
             _isGeneratorRunning = false;
+            _isStartSuccessful = false;
 
             //Debug.Log("TriggerBlackout 호출됨");
             if (_headLight != null)
