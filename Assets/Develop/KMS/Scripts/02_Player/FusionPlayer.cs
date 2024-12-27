@@ -33,7 +33,7 @@ public class FusionPlayer : NetworkBehaviour
 
     private void EnableLocalPlayerComponents()
     {
-        Debug.Log("로컬 플레이어 컴포넌트 활성화");
+        Debug.Log("Fusion 플레이어 컴포넌트 활성화");
 
         cam.enabled = true;
         audioListener.enabled = true;
@@ -47,7 +47,7 @@ public class FusionPlayer : NetworkBehaviour
 
     private void DisableNonLocalPlayerComponents()
     {
-        Debug.Log("로컬 플레이어가 아님. 컴포넌트 비활성화");
+        Debug.Log("Fusion 플레이어가 아님. 컴포넌트 비활성화");
 
         // 1. 카메라를 비활성화 시킨다.
         cam.enabled = false;

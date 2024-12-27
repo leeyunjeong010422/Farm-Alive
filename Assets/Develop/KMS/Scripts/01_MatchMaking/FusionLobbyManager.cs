@@ -12,18 +12,25 @@ public class FusionLobbyManager : MonoBehaviour
 
     private async void Start()
     {
+        if(!networkRunnerPrefab)
+        {
+            Debug.Log("networkRunnerPrefab이 존재하지 않습니다.");
+            Debug.Log("networkRunnerPrefab을 찾고 있는중입니다.");
+            networkRunnerPrefab = FindObjectOfType<NetworkRunner>();
+        }
+
         // Fusion 로비 시작
         await StartFusionLobby();
     }
 
     private async Task StartFusionLobby()
     {
-        _networkRunner = Instantiate(networkRunnerPrefab);
-        _networkRunner.ProvideInput = true;
+        //_networkRunner = Instantiate(networkRunnerPrefab);
+        networkRunnerPrefab.ProvideInput = true;
 
-        var startResult = await _networkRunner.StartGame(new StartGameArgs
+        var startResult = await networkRunnerPrefab.StartGame(new StartGameArgs
         {
-            GameMode = GameMode.AutoHostOrClient,
+            GameMode = GameMode.Shared,
             SessionName = "FusionLobby"
         });
 
