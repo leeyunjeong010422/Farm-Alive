@@ -135,7 +135,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5976323507112679848, guid: aced46f8819501543b62a88d5104b393, type: 3}
       propertyPath: debugEchoMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5976323507112679850, guid: aced46f8819501543b62a88d5104b393, type: 3}
       propertyPath: m_RootOrder
@@ -908,7 +908,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2019437395
 MonoBehaviour:
   m_ObjectHideFlags: 0
