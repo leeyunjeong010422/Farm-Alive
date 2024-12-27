@@ -40,7 +40,6 @@ public class GeneratorInteractable : XRBaseInteractable
     private bool _isLeverDown = false;       // 레버가 내려간 상태인지에 대한 여부
     private bool _warningActive = false;     // 전조 증상 활성화 여부
     private bool _isKnobAtMax = false;       // 휠이 최대 위치에 있는지에 대한 여부
-    private bool _isStartSuccessful = false; // 발전기 시동 성공에 대한 여부
 
     private Coroutine warningCoroutine = null;  // 전조 증상 코루틴
 
@@ -81,6 +80,8 @@ public class GeneratorInteractable : XRBaseInteractable
         {
             Debug.LogWarning("HeadLightInteractable을 찾을 수 없습니다.");
         }
+
+        _isGeneratorRunning = true;
     }
 
     // 휠 값이 변경될 때마다 호출
@@ -203,6 +204,12 @@ public class GeneratorInteractable : XRBaseInteractable
     {
         if (other.transform == _cordEndPosition && !_hasTriggered)
         {
+            if (_isGeneratorRunning)
+            {
+                MessageDisplayManager.Instance.ShowMessage("발전기는 이미 가동 중입니다!");
+                return;
+            }
+
             // 수리가 완료되었는지 확인
             // 망치로 수리를 먼저 하지 않으면 시동줄을 당기거나 휠을 돌려도 의미 없음
             if (!_repair.IsRepaired)
@@ -217,12 +224,6 @@ public class GeneratorInteractable : XRBaseInteractable
             {
                 MessageDisplayManager.Instance.ShowMessage("다른 플레이어가 휠을 최대치로 돌려야 시동줄을 당길 수 있습니다.");
                 //Debug.Log("다른 플레이어가 휠을 최대치로 돌려야 시동줄을 당길 수 있습니다.");
-                return;
-            }
-
-            if (_isStartSuccessful)
-            {
-                MessageDisplayManager.Instance.ShowMessage("발전기는 이미 가동 중입니다!");
                 return;
             }
 
@@ -246,7 +247,6 @@ public class GeneratorInteractable : XRBaseInteractable
         MessageDisplayManager.Instance.ShowMessage("발전기 시동 성공!");
         //Debug.Log("발전기 시동 성공!");
         _isGeneratorRunning = true;
-        _isStartSuccessful = true;
         _currentAttempts = 0;
 
         if (_headLight != null)
@@ -304,7 +304,6 @@ public class GeneratorInteractable : XRBaseInteractable
             //Debug.Log("고장이 발생했습니다!");
             photonView.RPC(nameof(SyncEnableRepair), RpcTarget.AllBuffered, true);
             _isGeneratorRunning = false;
-            _isStartSuccessful = false;
 
             //Debug.Log("TriggerBlackout 호출됨");
             if (_headLight != null)
