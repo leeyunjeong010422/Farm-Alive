@@ -9,8 +9,8 @@ public class BoxCover : MonoBehaviour
     [SerializeField] private GameObject _right;
     [SerializeField] private GameObject _left;
 
+    [field: SerializeField]
     public bool IsOpen {  get; private set; }
+    [field: SerializeField]
     public bool IsPackaged { get; private set; }
-
-
 }
