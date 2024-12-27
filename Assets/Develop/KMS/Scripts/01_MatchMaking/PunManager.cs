@@ -1,14 +1,11 @@
-using Fusion;
 using Photon.Pun;
 using Photon.Realtime;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PunManager : MonoBehaviourPunCallbacks
 {
-    public NetworkRunner FusionNetworkRunner; // Fusion 네트워크 러너
-
     [Tooltip("테스트를 위한 방 넘버 설정.")]
     public int RoomNum = 0;
 
@@ -74,14 +71,6 @@ public class PunManager : MonoBehaviourPunCallbacks
     /// </summary>
     public void CreateAndMoveToPunRoom()
     {
-        // Fusion 네트워크 종료
-        if (FusionNetworkRunner != null)
-        {
-            Debug.Log("Fusion 네트워크 종료...");
-            FusionNetworkRunner.Shutdown();
-            Destroy(FusionNetworkRunner.gameObject);
-        }
-
         // Pun 방 생성
         RoomOptions roomOptions = new RoomOptions
         {
@@ -100,6 +89,7 @@ public class PunManager : MonoBehaviourPunCallbacks
     {
         // Pun 이동
         Debug.Log($"방 입장 성공: {PhotonNetwork.CurrentRoom.Name}");
+        PhotonNetwork.LeaveLobby();
         PhotonNetwork.LoadLevel("04_PunWaitingRoom"); // 대기실 씬으로 이동
     }
 
@@ -122,5 +112,10 @@ public class PunManager : MonoBehaviourPunCallbacks
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         Debug.LogError("방 입장 실패: " + message);
+    }
+
+    public override void OnLeftRoom()
+    {
+        Debug.Log("Pun 방을 나갔습니다. Fusion 로비로 이동합니다.");
     }
 }
