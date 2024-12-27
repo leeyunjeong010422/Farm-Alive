@@ -55,7 +55,6 @@ public class PunManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Debug.Log("0. Photon Master Server와 연결!");
-        PhotonNetwork.JoinLobby();
     }
 
     /// <summary>
@@ -89,7 +88,7 @@ public class PunManager : MonoBehaviourPunCallbacks
     {
         // Pun 이동
         Debug.Log($"방 입장 성공: {PhotonNetwork.CurrentRoom.Name}");
-        PhotonNetwork.LeaveLobby();
+
         PhotonNetwork.LoadLevel("04_PunWaitingRoom"); // 대기실 씬으로 이동
     }
 

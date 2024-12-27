@@ -37,6 +37,9 @@ public class FusionLobbyManager : MonoBehaviour
         if (startResult.Ok)
         {
             Debug.Log("Fusion 로비 시작 성공");
+            // Pun 로비 접속.
+            // Pun에서 방에서 나왔을시 새로 갱신될때 Fusion과 Pun을 갱신할 수 있도록 한다.
+            PhotonNetwork.JoinLobby();
         }
         else
         {
