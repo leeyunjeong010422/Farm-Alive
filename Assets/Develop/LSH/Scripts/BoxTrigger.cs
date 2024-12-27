@@ -5,60 +5,90 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.XR.Interaction.Toolkit;
+using static QuestManager;
 
 public class BoxTrigger : MonoBehaviourPun
 {
     [SerializeField] public GameObject boxCover1;
     [SerializeField] public GameObject boxCover2;
     [SerializeField] public GameObject boxTape;
+    [SerializeField] public List<RequiredItem> requiredItems;
     [SerializeField] bool isBoxClose = false;
     [SerializeField] bool isBoxSealed = false;
 
+    private void OnEnable()
+    {
+        Debug.Log("리스트");
+        requiredItems = new List<RequiredItem>();
+    }
     private void OnTriggerEnter(Collider other)
-    {      
-        
+    {
+
         if (other.CompareTag("Crop"))
         {
             PhotonView itemView = other.GetComponent<PhotonView>();
             if (itemView == null || !itemView.IsMine)
                 return;
 
-            /*XRGrabInteractable grabInteractable = other.GetComponent<XRGrabInteractable>();
+            XRGrabInteractable grabInteractable = other.GetComponent<XRGrabInteractable>();
             if (grabInteractable != null && !grabInteractable.isSelected)
-                return;*/
+                return;
 
             if (QuestManager.Instance.currentQuest == null)
                 return;
+            #region 쓸모없어질? 코드
+            //List<QuestManager.Quest> requiredItem = QuestManager.Instance.questsList;
+            //bool isValidItem = false;
 
-            List<QuestManager.Quest> requiredItem = QuestManager.Instance.questsList;
-            bool isValidItem = false;
-
-            
-
+            /*int x = 0;
+            int y = 0;
             foreach (QuestManager.Quest item in requiredItem)
             {
-                
-                
-                /*if (item.requiredItems. == other.gameObject.name)
+                for (int i = 0; i < item.requiredItems.Count; i++)
                 {
-                    isValidItem = true;
-                    break;
-                }*/
+                    if (item.requiredItems[i].itemPrefab.name == other.gameObject.name)
+                    {
+                        if (item.requiredItems[i].count < item.requiredItems[i].requiredcount)
+                        {
+                            isValidItem = true;
+                            Debug.Log($"{x+1}번째의 퀘스트의 {y+1}번째 아이템");
+                            break;
+                        }
+                        else
+                        {
+                            Debug.Log("개수 초과");
+                        }
+                    }
+                    y++;
+                }
+                x++;
+            }*/
+            #endregion
+            foreach (QuestManager.RequiredItem item in requiredItems)
+            {
+                if (item.itemPrefab.name == other.gameObject.name)
+                {
+                    item.count++;
+                }
+                else
+                {
+                    requiredItems.Add(new RequiredItem(other.gameObject, 1));
+                }
             }
 
+            #region 쓸모없어질? 코드
+            //if (!isValidItem)
+            //    return;
 
+            //QuestManager.Instance.UpdateCount(x, y);
 
-            if (!isValidItem)
-                return;
-
-            QuestManager.Instance.UpdateCount();
-
-            if (QuestManager.Instance.IsQuestComplete())
+            /*if (QuestManager.Instance.IsQuestComplete())
             {
                 CloseCover();
-            }
+            }*/
+            #endregion
         }
-            
+
         else if (!isBoxSealed && other.CompareTag("Tape"))
         {
             Debug.Log("포장시작");
@@ -88,7 +118,22 @@ public class BoxTrigger : MonoBehaviourPun
             if (grabInteractable != null && !grabInteractable.isSelected)
                 return;
 
-            QuestManager.Instance.ExitItemCount();
+            if (requiredItems.Count > 0)
+            {
+                for (int i = requiredItems.Count - 1; i >= 0; i--)
+                {
+                    if (requiredItems[i].itemPrefab.name == other.gameObject.name)
+                    {
+                        requiredItems[i].count--;
+
+                        if (requiredItems[i].count == 0)
+                        {
+                            requiredItems.RemoveAt(i);
+                        }
+                    }
+                }
+            }
+            //QuestManager.Instance.ExitItemCount();
         }
     }
 

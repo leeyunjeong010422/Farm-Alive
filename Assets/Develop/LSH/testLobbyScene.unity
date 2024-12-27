@@ -1133,7 +1133,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &354958989
 Transform:
   m_ObjectHideFlags: 0
@@ -2135,6 +2135,7 @@ MonoBehaviour:
   boxCover1: {fileID: 0}
   boxCover2: {fileID: 0}
   boxTape: {fileID: 0}
+  requiredItems: []
   isBoxClose: 0
   isBoxSealed: 0
 --- !u!65 &775567239
@@ -3519,16 +3520,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79dc7a51d7416474faedbd8b6f159b98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemPrefabs:
+  - {fileID: 1331337494980994803, guid: 66772cdc3fb512549bf5133d05b01f83, type: 3}
+  - {fileID: 9217307988167323705, guid: 22c7395f080237c46bdbeb55bf20590b, type: 3}
+  - {fileID: 3538256223735237040, guid: f4535e913ac6b0649851d439cee5ca1d, type: 3}
+  - {fileID: 3180198504722258452, guid: 7df6b3c258319034388cc3622ae5a970, type: 3}
   questsList: []
   currentQuest:
     questName: deliveryPackage
-    itemPrefabs:
-    - {fileID: 1331337494980994803, guid: 66772cdc3fb512549bf5133d05b01f83, type: 3}
-    - {fileID: 9217307988167323705, guid: 22c7395f080237c46bdbeb55bf20590b, type: 3}
-    - {fileID: 3538256223735237040, guid: f4535e913ac6b0649851d439cee5ca1d, type: 3}
-    - {fileID: 3180198504722258452, guid: 7df6b3c258319034388cc3622ae5a970, type: 3}
     requiredItems: []
-    currentCount: 0
 --- !u!114 &1385944374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5325,6 +5325,7 @@ MonoBehaviour:
   boxCover1: {fileID: 119219894}
   boxCover2: {fileID: 1771280834}
   boxTape: {fileID: 354958988}
+  requiredItems: []
   isBoxClose: 0
   isBoxSealed: 0
 --- !u!4 &1960810207 stripped
