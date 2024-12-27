@@ -139,6 +139,7 @@ public class GeneratorInteractable : XRBaseInteractable
                 warningCoroutine = null;
                 _warningActive = false;
                 MessageDisplayManager.Instance.ShowMessage("레버가 내려가서 고장이 방지되었습니다.");
+                _isLeverDown = false;
                 //Debug.Log("레버가 내려가서 고장 방지됨.");
             }
         }
