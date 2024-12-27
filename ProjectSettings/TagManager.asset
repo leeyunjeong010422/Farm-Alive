@@ -12,6 +12,7 @@ TagManager:
   - DisappearingGround
   - Tape
   - Crop
+  - Box
   layers:
   - Default
   - TransparentFX

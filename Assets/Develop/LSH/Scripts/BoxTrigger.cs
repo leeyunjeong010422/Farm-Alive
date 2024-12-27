@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 using UnityEngine.XR.Interaction.Toolkit;
 using static QuestManager;
 
-public class BoxTrigger : MonoBehaviourPun
+public class BoxTrigger : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] public GameObject boxCover1;
     [SerializeField] public GameObject boxCover2;
@@ -15,15 +15,16 @@ public class BoxTrigger : MonoBehaviourPun
     [SerializeField] public List<RequiredItem> requiredItems;
     [SerializeField] bool isBoxClose = false;
     [SerializeField] bool isBoxSealed = false;
+    [SerializeField] bool isFirstItem = false;
 
     private void OnEnable()
     {
         Debug.Log("리스트");
         requiredItems = new List<RequiredItem>();
     }
+
     private void OnTriggerEnter(Collider other)
     {
-
         if (other.CompareTag("Crop"))
         {
             PhotonView itemView = other.GetComponent<PhotonView>();
@@ -36,46 +37,32 @@ public class BoxTrigger : MonoBehaviourPun
 
             if (QuestManager.Instance.currentQuest == null)
                 return;
-            #region 쓸모없어질? 코드
-            //List<QuestManager.Quest> requiredItem = QuestManager.Instance.questsList;
-            //bool isValidItem = false;
 
-            /*int x = 0;
-            int y = 0;
-            foreach (QuestManager.Quest item in requiredItem)
+            if (isFirstItem)
             {
-                for (int i = 0; i < item.requiredItems.Count; i++)
+                foreach (QuestManager.RequiredItem item in requiredItems)
                 {
-                    if (item.requiredItems[i].itemPrefab.name == other.gameObject.name)
+                    Debug.Log(requiredItems);
+                    if (item.itemPrefab.name == other.gameObject.name)
                     {
-                        if (item.requiredItems[i].count < item.requiredItems[i].requiredcount)
-                        {
-                            isValidItem = true;
-                            Debug.Log($"{x+1}번째의 퀘스트의 {y+1}번째 아이템");
-                            break;
-                        }
-                        else
-                        {
-                            Debug.Log("개수 초과");
-                        }
+                        item.requiredcount++;
+                        Debug.Log("카운트업");
                     }
-                    y++;
-                }
-                x++;
-            }*/
-            #endregion
-            foreach (QuestManager.RequiredItem item in requiredItems)
-            {
-                if (item.itemPrefab.name == other.gameObject.name)
-                {
-                    item.count++;
-                }
-                else
-                {
-                    requiredItems.Add(new RequiredItem(other.gameObject, 1));
+                    else
+                    {
+                        requiredItems.Add(new RequiredItem(other.gameObject, 1));
+                        Debug.Log("추가");
+                    }
                 }
             }
 
+            if (!isFirstItem)
+            {
+                requiredItems.Add(new RequiredItem(other.gameObject, 1));
+                isFirstItem = true;
+            }
+
+            Debug.Log("종료");
             #region 쓸모없어질? 코드
             //if (!isValidItem)
             //    return;
@@ -124,16 +111,16 @@ public class BoxTrigger : MonoBehaviourPun
                 {
                     if (requiredItems[i].itemPrefab.name == other.gameObject.name)
                     {
-                        requiredItems[i].count--;
+                        requiredItems[i].requiredcount--;
 
-                        if (requiredItems[i].count == 0)
+                        if (requiredItems[i].requiredcount == 0)
                         {
                             requiredItems.RemoveAt(i);
+                            isFirstItem = false;
                         }
                     }
                 }
             }
-            //QuestManager.Instance.ExitItemCount();
         }
     }
 
@@ -155,5 +142,37 @@ public class BoxTrigger : MonoBehaviourPun
     public bool IsCoverClosed()
     {
         return boxCover1 != null && boxCover2 != null && isBoxClose;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(isBoxClose);
+            stream.SendNext(isBoxSealed);
+            stream.SendNext(isFirstItem);
+
+            stream.SendNext(requiredItems.Count);
+            foreach (var item in requiredItems)
+            {
+                stream.SendNext(item.itemPrefab.name);
+                stream.SendNext(item.requiredcount);
+            }
+        }
+        else
+        {
+            isBoxClose = (bool)stream.ReceiveNext();
+            isBoxSealed = (bool)stream.ReceiveNext();
+            isFirstItem = (bool)stream.ReceiveNext();
+
+            int itemCount = (int)stream.ReceiveNext();
+            requiredItems.Clear();
+            for (int i = 0; i < itemCount; i++)
+            {
+                GameObject itemName = (GameObject)stream.ReceiveNext();
+                int itemCountReceived = (int)stream.ReceiveNext();
+                requiredItems.Add(new RequiredItem(itemName, itemCountReceived));
+            }
+        }
     }
 }

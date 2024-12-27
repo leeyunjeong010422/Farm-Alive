@@ -14,7 +14,7 @@ public class QuestManager : MonoBehaviourPun
     {
         public GameObject itemPrefab;
         public int requiredcount;
-        public int count = 0;
+        public bool isSuccess;
 
         public RequiredItem(GameObject prefab, int itemCount)
         {
@@ -28,10 +28,12 @@ public class QuestManager : MonoBehaviourPun
     {
         public string questName;
         public List<RequiredItem> requiredItems;
+        public bool isSuccess;
     }
 
-    [SerializeField] public GameObject[] itemPrefabs;
     [SerializeField] public List<Quest> questsList = new List<Quest>();
+    [SerializeField] public List<TruckQuest> truckList = new List<TruckQuest>();
+    [SerializeField] public GameObject[] itemPrefabs;
     public Quest currentQuest;
 
     private void Awake()
@@ -88,7 +90,6 @@ public class QuestManager : MonoBehaviourPun
     [PunRPC]
     public void SetQuest(string questName,int count, int[] itemIndexes, int[] itemCounts)
     {
-
         currentQuest = new Quest
         {
             questName = questName,
@@ -161,16 +162,17 @@ public class QuestManager : MonoBehaviourPun
         /*UIManager.Instance.UpdateQuestUI(currentQuest.questName, currentQuest.currentCount, currentQuest.requiredCount);*/
     }
 
-    private void QuestComplete()
+    public void SuccessQuest(int id, int number)
     {
         Debug.Log("퀘스트 완료!");
-        photonView.RPC(nameof(NextQuest), RpcTarget.AllBuffered);
+        photonView.RPC(nameof(SuccessCheck), RpcTarget.AllBuffered, id, number);
     }
 
     [PunRPC]
-    private void NextQuest()
+    private void SuccessCheck(int id, int number)
     {
-        Debug.Log("다음 퀘스트를 시작합니다!");
+        Debug.Log("퀘스트 성공 여부 동기화!");
+        questsList[id].requiredItems[number].isSuccess = true;
     }
 
     public bool IsQuestComplete()
