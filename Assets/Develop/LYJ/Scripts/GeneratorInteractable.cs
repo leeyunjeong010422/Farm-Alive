@@ -128,20 +128,17 @@ public class GeneratorInteractable : XRBaseInteractable
         {
             _isLeverDown = true;
             photonView.RPC(nameof(SyncLeverState), RpcTarget.AllBuffered, true);
-            MessageDisplayManager.Instance.ShowMessage("레버가 내려갔습니다.");
-            //Debug.Log("레버가 내려갔습니다.");
 
             if (warningCoroutine != null)
             {
                 StopCoroutine(warningCoroutine);
                 warningCoroutine = null;
                 _warningActive = false;
-                MessageDisplayManager.Instance.ShowMessage("레버가 내려가서 고장이 방지되었습니다.");
-                //Debug.Log("레버가 내려가서 고장 방지됨.");
             }
         }
         else
         {
+            _isLeverDown = false;
             Debug.Log("전조 증상이 발생전 레버 동작으로 동작 인정 X");
         }
     }
@@ -151,7 +148,6 @@ public class GeneratorInteractable : XRBaseInteractable
     {
         _isLeverDown = false;
         photonView.RPC(nameof(SyncLeverState), RpcTarget.AllBuffered, false);
-        MessageDisplayManager.Instance.ShowMessage("레버가 올라갔습니다.");
         //Debug.Log("레버가 올라갔습니다.");
     }
 
@@ -202,6 +198,12 @@ public class GeneratorInteractable : XRBaseInteractable
     {
         if (other.transform == _cordEndPosition && !_hasTriggered)
         {
+            if (_isGeneratorRunning)
+            {
+                MessageDisplayManager.Instance.ShowMessage("발전기는 이미 가동 중입니다!");
+                return;
+            }
+
             // 수리가 완료되었는지 확인
             // 망치로 수리를 먼저 하지 않으면 시동줄을 당기거나 휠을 돌려도 의미 없음
             if (!_repair.IsRepaired)
@@ -292,7 +294,7 @@ public class GeneratorInteractable : XRBaseInteractable
 
         if (!_isLeverDown)
         {
-            MessageDisplayManager.Instance.ShowMessage("고장이 발생했습니다!!");
+            MessageDisplayManager.Instance.ShowMessage("고장이 발생했습니다!! 망치로 1차 수리 해주세요!!");
             //Debug.Log("고장이 발생했습니다!");
             photonView.RPC(nameof(SyncEnableRepair), RpcTarget.AllBuffered, true);
             _isGeneratorRunning = false;
