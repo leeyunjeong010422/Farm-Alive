@@ -80,8 +80,6 @@ public class GeneratorInteractable : XRBaseInteractable
         {
             Debug.LogWarning("HeadLightInteractable을 찾을 수 없습니다.");
         }
-
-        _isGeneratorRunning = true;
     }
 
     // 휠 값이 변경될 때마다 호출
