@@ -3,7 +3,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PunPlayerSpawn : MonoBehaviour
+public class PunPlayerSpawn : MonoBehaviourPunCallbacks
 {
     [Tooltip("소환할 플레이어 프리팹")]
     public GameObject playerPrefab;
@@ -33,7 +33,7 @@ public class PunPlayerSpawn : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    public override void OnEnable()
     {
         SpawnPlayer();
     }
@@ -55,11 +55,32 @@ public class PunPlayerSpawn : MonoBehaviour
 
     public void ReturnToFusion()
     {
+        var voiceConnection = FindObjectOfType<Photon.Voice.Unity.VoiceConnection>();
+        if (voiceConnection != null)
+        {
+            Debug.Log("VoiceConnection 상태 초기화 중...");
+            if (voiceConnection.Client.InRoom)
+            {
+                Debug.Log("VoiceConnection 방에서 나가기...");
+                voiceConnection.Client.OpLeaveRoom(false);
+            }
+            voiceConnection.Client.Disconnect(); // 완전히 연결 해제
+        }
+
         if (_player != null)
         {
-            Debug.Log("Pun 플레이어 삭제...");
-            PhotonNetwork.Destroy(_player);
+            var photonView = _player.GetComponent<PhotonView>();
+            if (photonView != null && photonView.IsMine)
+            {
+                Debug.Log("Pun 플레이어 삭제...");
+                PhotonNetwork.Destroy(_player); // 네트워크 상에서 캐릭터 삭제
+            }
+            else
+            {
+                Debug.LogWarning("이 객체는 자신의 것이 아니므로 삭제할 수 없습니다.");
+            }
         }
+
 
         if (PhotonNetwork.InRoom)
         {
@@ -71,17 +92,10 @@ public class PunPlayerSpawn : MonoBehaviour
             Debug.LogWarning($"현재 상태에서는 LeaveRoom을 호출할 수 없습니다: {PhotonNetwork.NetworkClientState}");
         }
 
-        // VoiceConnection 초기화
-        var voiceConnection = FindObjectOfType<Photon.Voice.Unity.VoiceConnection>();
-        if (voiceConnection != null)
-        {
-            Debug.Log("VoiceConnection 상태 초기화 중...");
-            voiceConnection.Client.Disconnect();
-            Destroy(voiceConnection.gameObject); // VoiceConnection 객체 삭제
-        }
 
-        // 3. 로딩 씬 호출
-        Debug.Log("로딩 씬으로 이동...");
-        SceneManager.LoadScene("LoadingScene");
+        Debug.Log("서버 교체 중...");
+        Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}");
+        Debug.Log($"PhotonNetwork.InRoom = {PhotonNetwork.InRoom}");
+        Debug.Log($"PhotonNetwork.NetworkClientState = {PhotonNetwork.NetworkClientState}");
     }
 }
