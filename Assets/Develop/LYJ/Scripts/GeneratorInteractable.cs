@@ -85,15 +85,6 @@ public class GeneratorInteractable : XRBaseInteractable
         {
             _isKnobAtMax = true;
             photonView.RPC(nameof(SyncKnobState), RpcTarget.AllBuffered, true);
-
-            if (!_repair.IsRepaired)
-            {
-                Debug.Log("고장나지 않았기 때문에 시동줄 사용에 의미가 없습니다.");
-                return;
-            }
-
-            //MessageDisplayManager.Instance.ShowMessage("휠이 최대 범위까지 돌아가 시동줄을 당길 수 있습니다.");
-            //Debug.Log("휠이 최대 범위까지 돌아가 시동줄을 당길 수 있습니다.");
         }
 
         // 휠이 최대 범위를 벗어난 경우
@@ -101,8 +92,6 @@ public class GeneratorInteractable : XRBaseInteractable
         {
             _isKnobAtMax = false;
             photonView.RPC(nameof(SyncKnobState), RpcTarget.AllBuffered, false);
-            //MessageDisplayManager.Instance.ShowMessage("휠이 최대 범위에서 벗어나 시동줄을 당길 수 없습니다.");
-            //Debug.Log("휠이 최대 범위에서 벗어나 시동줄을 당길 수 없습니다.");
         }
     }
 
@@ -221,7 +210,6 @@ public class GeneratorInteractable : XRBaseInteractable
             if (!_repair || !_repair.IsRepaired)
             {
                 MessageDisplayManager.Instance.ShowMessage("먼저 망치로 수리를 완료하세요.");
-                //Debug.Log("먼저 망치로 수리를 완료하세요.");
                 return;
             }
 
@@ -229,7 +217,6 @@ public class GeneratorInteractable : XRBaseInteractable
             if (!_isKnobAtMax || _currentKnobValue < 1f)
             {
                 MessageDisplayManager.Instance.ShowMessage("다른 플레이어가 휠을 최대치로 돌려야 시동줄을 당길 수 있습니다.");
-                //Debug.Log("다른 플레이어가 휠을 최대치로 돌려야 시동줄을 당길 수 있습니다.");
                 return;
             }
 
@@ -237,7 +224,6 @@ public class GeneratorInteractable : XRBaseInteractable
             _currentAttempts++;
 
             MessageDisplayManager.Instance.ShowMessage($"발전기 시동 횟수: {_currentAttempts}/{_startAttemptsRequired}");
-            //Debug.Log($"발전기 시동 시도: {_currentAttempts}/{_startAttemptsRequired}");
 
             // 시동 성공 조건 확인
             if (_currentAttempts >= _startAttemptsRequired && _currentKnobValue >= 1f)
@@ -251,7 +237,6 @@ public class GeneratorInteractable : XRBaseInteractable
     private void SyncSuccessGeneratorStart()
     {
         MessageDisplayManager.Instance.ShowMessage("발전기 시동 성공!");
-        //Debug.Log("발전기 시동 성공!");
         _isGeneratorRunning = true;
         _currentAttempts = 0;
 
@@ -269,9 +254,7 @@ public class GeneratorInteractable : XRBaseInteractable
     // 전조 증상 시작
     public void TriggerWarning()
     {
-        //Debug.Log("TriggerWarning RPC 호출 시도");
         photonView.RPC(nameof(SyncTriggerWarning), RpcTarget.AllBuffered);
-        //Debug.Log("TriggerWarning RPC 호출 완료");
     }
 
     [PunRPC]
@@ -281,13 +264,9 @@ public class GeneratorInteractable : XRBaseInteractable
         _leverResetRequired = false;
         _isLeverDown = false;
         MessageDisplayManager.Instance.ShowMessage("전조 증상! 레버를 내려 고장을 방지하세요!!!");
-        //Debug.Log("전조 증상! 레버를 내려 고장을 방지하세요!!!");
-
-        //Debug.Log("SyncTriggerWarning 실행됨");
 
         if (warningCoroutine == null)
         {
-            //Debug.Log("BreakdownWarning 코루틴 시작");
             warningCoroutine = StartCoroutine(BreakdownWarning());
         }
     }
@@ -296,13 +275,11 @@ public class GeneratorInteractable : XRBaseInteractable
     // 여기서 처리하면 고장나지 않음 (처리하지 못하면 고장남)
     private IEnumerator BreakdownWarning()
     {
-        //Debug.Log("BreakdownWarning 실행됨");
         yield return new WaitForSeconds(_breakdownWarningDuration);
 
         if (!_isLeverDown)
         {
             MessageDisplayManager.Instance.ShowMessage("고장이 발생했습니다!! 망치로 1차 수리 해주세요!!");
-            //Debug.Log("고장이 발생했습니다!");
             photonView.RPC(nameof(SyncEnableRepair), RpcTarget.AllBuffered, true);
             _isGeneratorRunning = false;
 
