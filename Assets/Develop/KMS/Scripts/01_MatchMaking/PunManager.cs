@@ -1,13 +1,44 @@
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 public class PunManager : MonoBehaviourPunCallbacks
 {
     [Tooltip("테스트를 위한 방 넘버 설정.")]
     public int RoomNum = 0;
+
+    // 버튼 프리팹 동적 참조
+    public GameObject RoomMakeButtonPrefab;
+    private GameObject instantiatedRoomMakeButton;
+
+    public static PunManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // Resources 폴더에서 프리팹 동적 로드
+        RoomMakeButtonPrefab = Resources.Load<GameObject>("Room Make Button");
+
+        if (!RoomMakeButtonPrefab)
+        {
+            Debug.LogError("RoomMakeButtonPrefab이 Resources 폴더에 없습니다!");
+        }
+    }
 
     /// <summary>
     /// FirebaseManager가 초기화 완료되면 ConnectToPhoton() 호출.
@@ -16,6 +47,7 @@ public class PunManager : MonoBehaviourPunCallbacks
     /// </summary>
     private void Start()
     {
+        PhotonNetwork.AutomaticallySyncScene = false;
         // 호출의 순서가 FirebaseManager가 초기화 완료되고 나서
         // ConnectToPhoton() 호출해야하기에 이벤트로 연결.
         FirebaseManager.Instance.OnFirebaseInitialized += ConnectToPhoton;
@@ -54,7 +86,15 @@ public class PunManager : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnConnectedToMaster()
     {
-        Debug.Log("0. Photon Master Server와 연결!");
+        if (!PhotonNetwork.InLobby)
+        {
+            Debug.Log("0. Photon Master Server와 연결!");
+            PhotonNetwork.JoinLobby();
+        }
+        else
+        {
+            Debug.Log("Master Server 로비에 연결 중!");
+        }
     }
 
     /// <summary>
@@ -63,6 +103,54 @@ public class PunManager : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log("1. PUN 로비 입장!");
+        Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}");
+        if (SceneManager.GetActiveScene().name != "03_FusionLobby" && PhotonNetwork.InLobby)
+        {
+            Debug.Log("로딩 씬으로 이동...");
+            SceneManager.LoadScene("LoadingScene");
+        }
+    }
+
+    /// <summary>
+    /// 방 생성 및 방 목록 보기 버튼 생성
+    /// </summary>
+    public void CreateDynamicButtons()
+    {
+        Debug.Log("버튼 생성");
+        Canvas canvas = FindObjectOfType<Canvas>();
+
+        if (!canvas)
+        {
+            Debug.LogError("Canvas가 씬에 존재하지 않습니다!");
+            return;
+        }
+
+        // 기존 버튼 삭제
+        if (instantiatedRoomMakeButton)
+        {
+            Destroy(instantiatedRoomMakeButton);
+        }
+
+        // 방 생성 버튼 생성
+        if (RoomMakeButtonPrefab)
+        {
+            instantiatedRoomMakeButton = Instantiate(RoomMakeButtonPrefab, canvas.transform);
+            Button makeButton = instantiatedRoomMakeButton.GetComponent<Button>();
+            if (makeButton != null)
+            {
+                TMP_Text buttonText = instantiatedRoomMakeButton.GetComponentInChildren<TMP_Text>();
+                if (buttonText != null)
+                {
+                    buttonText.text = "Create Room";
+                }
+
+                makeButton.onClick.AddListener(() =>
+                {
+                    Debug.Log("Room Make 버튼 클릭됨!");
+                    CreateAndMoveToPunRoom();
+                });
+            }
+        }
     }
 
     /// <summary>
@@ -81,6 +169,11 @@ public class PunManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinOrCreateRoom($"PunRoom_{RoomNum}", roomOptions, TypedLobby.Default);
     }
 
+    public override void OnCreatedRoom()
+    {
+        Debug.Log($"방 생성 성공!");
+    }
+
     /// <summary>
     /// 방 입장 성공
     /// </summary>
@@ -88,7 +181,10 @@ public class PunManager : MonoBehaviourPunCallbacks
     {
         // Pun 이동
         Debug.Log($"방 입장 성공: {PhotonNetwork.CurrentRoom.Name}");
-
+        if (PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.LeaveLobby();
+        }
         PhotonNetwork.LoadLevel("04_PunWaitingRoom"); // 대기실 씬으로 이동
     }
 
@@ -100,6 +196,7 @@ public class PunManager : MonoBehaviourPunCallbacks
         foreach (RoomInfo room in roomList)
         {
             Debug.Log($"방 이름: {room.Name}, 플레이어: {room.PlayerCount}/{room.MaxPlayers}");
+            Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}");
         }
     }
 
@@ -115,6 +212,6 @@ public class PunManager : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        Debug.Log("Pun 방을 나갔습니다. Fusion 로비로 이동합니다.");
+        Debug.Log("Pun 방을 나갔습니다. 게임서버에서 마스터 서버로 교체!");
     }
 }
