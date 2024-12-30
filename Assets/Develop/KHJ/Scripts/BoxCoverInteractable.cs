@@ -31,6 +31,8 @@ public class BoxCoverInteractable : XRGrabInteractable
         base.OnSelectEntered(args);
 
         _bodyRigid.isKinematic = true;
+
+        _rigid.constraints = RigidbodyConstraints.None;
     }
 
     protected override void OnSelectExited(SelectExitEventArgs args)
@@ -59,6 +61,6 @@ public class BoxCoverInteractable : XRGrabInteractable
 
     private void Close()
     {
-        _rigid.isKinematic = true;
+        _rigid.constraints = RigidbodyConstraints.FreezeRotation;
     }
 }
