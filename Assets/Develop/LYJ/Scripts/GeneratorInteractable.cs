@@ -231,7 +231,7 @@ public class GeneratorInteractable : XRBaseInteractable
             }
 
             // 휠이 최대 위치가 아니면 시동줄을 당길 수 없음
-            if (!_isKnobAtMax)
+            if (!_isKnobAtMax || _currentKnobValue < 1f)
             {
                 MessageDisplayManager.Instance.ShowMessage("다른 플레이어가 휠을 최대치로 돌려야 시동줄을 당길 수 있습니다.");
                 //Debug.Log("다른 플레이어가 휠을 최대치로 돌려야 시동줄을 당길 수 있습니다.");
