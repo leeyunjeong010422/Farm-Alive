@@ -11,14 +11,14 @@ GameObject:
   - component: {fileID: 9185159451400431190}
   - component: {fileID: 4845525021650279972}
   - component: {fileID: 2239196309033829711}
-  - component: {fileID: 6035552181219993753}
+  - component: {fileID: 560696077593861353}
   m_Layer: 0
   m_Name: WheatA1_03_pf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &9185159451400431190
 Transform:
   m_ObjectHideFlags: 0
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6035552181219993753
-MeshCollider:
+--- !u!65 &560696077593861353
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -94,10 +94,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 7411245462344070846, guid: 45472f18b84c8fc4387355fe9c4fa38d, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 12.016577, y: 30.854427, z: 13.414699}
+  m_Center: {x: 0, y: 15.372768, z: -0.0000014305115}
 --- !u!1 &3327921510574647244
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,14 +108,14 @@ GameObject:
   - component: {fileID: 1233657529496240422}
   - component: {fileID: 8310253609478683265}
   - component: {fileID: 3836201590246461365}
-  - component: {fileID: 2148213499790637953}
+  - component: {fileID: 5445916773266844957}
   m_Layer: 0
   m_Name: WheatA1_04_pf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1233657529496240422
 Transform:
   m_ObjectHideFlags: 0
@@ -182,8 +181,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2148213499790637953
-MeshCollider:
+--- !u!65 &5445916773266844957
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -192,10 +191,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 7558330982217710239, guid: eb7dd94fe274d8d4abc1877ff46936a9, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 8.364481, y: 28.46844, z: 9.234761}
+  m_Center: {x: -0.3240763, y: -1.8541174, z: -0.4498434}
 --- !u!1 &4486989415375140261
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,7 +223,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4486989415375140261}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.86, y: 1.16, z: -9.92}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -244,8 +242,8 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -390,7 +388,7 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  m_AttachTransform: {fileID: 9213208154821890621}
+  m_AttachTransform: {fileID: 0}
   m_SecondaryAttachTransform: {fileID: 0}
   m_UseDynamicAttach: 0
   m_MatchAttachPosition: 1
@@ -434,7 +432,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   m_ThrowVelocityScale: 1.5
   m_ThrowAngularVelocityScale: 1
-  m_ForceGravityOnDetach: 1
+  m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
   m_StartingSingleGrabTransformers: []
@@ -476,14 +474,14 @@ GameObject:
   - component: {fileID: 1651390053749818962}
   - component: {fileID: 4089190517914133280}
   - component: {fileID: 1068961314231241912}
-  - component: {fileID: 1211882064177703560}
+  - component: {fileID: 8391205510041816971}
   m_Layer: 0
   m_Name: WheatA1_02_pf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1651390053749818962
 Transform:
   m_ObjectHideFlags: 0
@@ -549,8 +547,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1211882064177703560
-MeshCollider:
+--- !u!65 &8391205510041816971
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -559,10 +557,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 751147548447021973, guid: adc0f9199948a6f408295d474abe77ae, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 8.522524, y: 18.95477, z: 9.8761215}
+  m_Center: {x: 0.062977076, y: 8.839165, z: -0.19970942}
 --- !u!1 &7146461321999324291
 GameObject:
   m_ObjectHideFlags: 0
@@ -574,7 +571,7 @@ GameObject:
   - component: {fileID: 9213208154821890621}
   - component: {fileID: 4964514663402408283}
   - component: {fileID: 2452921337364221299}
-  - component: {fileID: 2370635540156608096}
+  - component: {fileID: 2348939644835051171}
   m_Layer: 0
   m_Name: WheatA1_01_pf
   m_TagString: Untagged
@@ -647,8 +644,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2370635540156608096
-MeshCollider:
+--- !u!65 &2348939644835051171
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -657,10 +654,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 6687834768158613304, guid: 6eb0ffa018c753745afdeeb9179878e7, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 9.390703, y: 9.229069, z: 9.71261}
+  m_Center: {x: 0, y: 4.6145344, z: 0.00005364418}
 --- !u!1 &7836058359238074085
 GameObject:
   m_ObjectHideFlags: 0

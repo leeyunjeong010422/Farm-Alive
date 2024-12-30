@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2660715662239018010}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.1845007, y: -0.6786709, z: -9.961}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -194,7 +194,7 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  m_AttachTransform: {fileID: 4790762671562384210}
+  m_AttachTransform: {fileID: 0}
   m_SecondaryAttachTransform: {fileID: 0}
   m_UseDynamicAttach: 0
   m_MatchAttachPosition: 1
@@ -238,7 +238,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   m_ThrowVelocityScale: 1.5
   m_ThrowAngularVelocityScale: 1
-  m_ForceGravityOnDetach: 1
+  m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
   m_StartingSingleGrabTransformers: []
@@ -280,14 +280,14 @@ GameObject:
   - component: {fileID: 357231454660962165}
   - component: {fileID: 2215119152386475002}
   - component: {fileID: 2905132433429730046}
-  - component: {fileID: 1386234998122025516}
+  - component: {fileID: 8702719995673776422}
   m_Layer: 0
   m_Name: PotatoA1_02_pf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &357231454660962165
 Transform:
   m_ObjectHideFlags: 0
@@ -353,8 +353,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1386234998122025516
-MeshCollider:
+--- !u!65 &8702719995673776422
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -363,10 +363,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 756631377415923271, guid: a4991179e7050fc47a7645c53b6069c5, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 16.923325, y: 14.904698, z: 14.950113}
+  m_Center: {x: -0.0017914772, y: 6.789598, z: -0.017539024}
 --- !u!1 &4473707562219863556
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,7 +377,7 @@ GameObject:
   - component: {fileID: 4790762671562384210}
   - component: {fileID: 8773650211728880259}
   - component: {fileID: 6833278289287700765}
-  - component: {fileID: 4029393167633096360}
+  - component: {fileID: 8230454559623280073}
   m_Layer: 0
   m_Name: PotatoA1_01_pf
   m_TagString: Untagged
@@ -451,8 +450,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4029393167633096360
-MeshCollider:
+--- !u!65 &8230454559623280073
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -461,10 +460,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 9051478175368133534, guid: 8e8272b614286c24bae03c477a8df1de, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 12.241425, y: 10.781314, z: 9.706896}
+  m_Center: {x: -0.14673853, y: 5.9769807, z: -0.3807056}
 --- !u!1 &8665197208563225398
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,14 +509,14 @@ GameObject:
   - component: {fileID: 7600720291073317000}
   - component: {fileID: 136963003312322274}
   - component: {fileID: 536134274233135158}
-  - component: {fileID: 1367190427792138984}
+  - component: {fileID: 4831361131537695295}
   m_Layer: 0
   m_Name: PotatoA1_04_pf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7600720291073317000
 Transform:
   m_ObjectHideFlags: 0
@@ -584,8 +582,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1367190427792138984
-MeshCollider:
+--- !u!65 &4831361131537695295
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -594,10 +592,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -2770035717670155143, guid: 781ed1e15899f074c99f0613b9a43a4f, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 6.2459946, y: 5.6605873, z: 11.726101}
+  m_Center: {x: 1.065086, y: 0.6691936, z: -0.91864395}
 --- !u!1 &9143123084449023808
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,14 +606,14 @@ GameObject:
   - component: {fileID: 3900677612964499205}
   - component: {fileID: 4119230022168877443}
   - component: {fileID: 5977644949096089685}
-  - component: {fileID: 7063919953684939782}
+  - component: {fileID: 1210422932794056275}
   m_Layer: 0
   m_Name: PotatoA1_03_pf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3900677612964499205
 Transform:
   m_ObjectHideFlags: 0
@@ -682,8 +679,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &7063919953684939782
-MeshCollider:
+--- !u!65 &1210422932794056275
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -692,7 +689,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 3852217170026272519, guid: a4a4d0ff4149b1640ac3a11846915da7, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 20.87009, y: 20.246225, z: 22.296333}
+  m_Center: {x: 0.012107372, y: 8.566485, z: -0.013864994}
