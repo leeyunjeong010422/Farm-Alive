@@ -40,6 +40,7 @@ public class GeneratorInteractable : XRBaseInteractable
     private bool _isLeverDown = false;       // 레버가 내려간 상태인지에 대한 여부
     private bool _warningActive = false;     // 전조 증상 활성화 여부
     private bool _isKnobAtMax = false;       // 휠이 최대 위치에 있는지에 대한 여부
+    private bool _leverResetRequired = false; // 전조 증상이 발생한 이후 레버를 올렸다가 내려야 함
 
     private Coroutine warningCoroutine = null;  // 전조 증상 코루틴
 
@@ -126,20 +127,31 @@ public class GeneratorInteractable : XRBaseInteractable
         // 전조 증상 전에 만진 레버는 의미 없음
         if (_warningActive)
         {
-            _isLeverDown = true;
-            photonView.RPC(nameof(SyncLeverState), RpcTarget.AllBuffered, true);
-
-            if (warningCoroutine != null)
+            if (_leverResetRequired)
             {
-                StopCoroutine(warningCoroutine);
-                warningCoroutine = null;
-                _warningActive = false;
+                // 레버가 한 번 올라갔다 내려왔을 때만 전조 증상 해소 가능
+                _isLeverDown = true;
+                photonView.RPC(nameof(SyncLeverState), RpcTarget.AllBuffered, true);
+
+                // 전조 증상 해소
+                if (warningCoroutine != null)
+                {
+                    StopCoroutine(warningCoroutine);
+                    warningCoroutine = null;
+                    _warningActive = false;
+                    _leverResetRequired = false; // 상태 초기화
+                    MessageDisplayManager.Instance.ShowMessage("전조 증상이 해결되었습니다!");
+                }
+            }
+            else
+            {
+                MessageDisplayManager.Instance.ShowMessage("레버를 올렸다가 내려야 전조 증상을 해결할 수 있습니다.");
             }
         }
         else
         {
-            _isLeverDown = false;
-            Debug.Log("전조 증상이 발생전 레버 동작으로 동작 인정 X");
+            _isLeverDown = true;
+            photonView.RPC(nameof(SyncLeverState), RpcTarget.AllBuffered, true);
         }
     }
 
@@ -148,7 +160,12 @@ public class GeneratorInteractable : XRBaseInteractable
     {
         _isLeverDown = false;
         photonView.RPC(nameof(SyncLeverState), RpcTarget.AllBuffered, false);
-        //Debug.Log("레버가 올라갔습니다.");
+
+        if (_warningActive)
+        {
+            // 전조 증상이 발생한 상태에서 레버를 한 번 올림
+            _leverResetRequired = true;
+        }
     }
 
     [PunRPC]
@@ -273,6 +290,8 @@ public class GeneratorInteractable : XRBaseInteractable
     private void SyncTriggerWarning()
     {
         _warningActive = true;
+        _leverResetRequired = false;
+        _isLeverDown = false;
         MessageDisplayManager.Instance.ShowMessage("전조 증상! 레버를 내려 고장을 방지하세요!!!");
         //Debug.Log("전조 증상! 레버를 내려 고장을 방지하세요!!!");
 
@@ -337,6 +356,8 @@ public class GeneratorInteractable : XRBaseInteractable
 
         _isGeneratorRunning = false;
         _isBeingPulled = false;
+
+        _warningActive = false;
     }
 
 }
