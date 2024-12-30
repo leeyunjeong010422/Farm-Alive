@@ -5,10 +5,8 @@ using UnityEngine;
 
 public class Taping : MonoBehaviour
 {
-    [SerializeField] BoxTrigger currentBox;
+    [SerializeField] BoxCover boxCover, currentBox;
     [SerializeField] bool isTaping = false;
-    [SerializeField] float tapeProgress = 0f;
-    [SerializeField] float requiredTapeProgress = 1f;
     [SerializeField] Vector3 firstPosition;
     [SerializeField] Vector3 secendPosition;
     
@@ -29,13 +27,12 @@ public class Taping : MonoBehaviour
         }
     }
 
-    public void StartTaping(BoxTrigger box)
+    public void StartTaping(BoxCover box)
     {
-        if (box == null || !box.IsCoverClosed()) return;
+       if (box == null || !box.IsOpen) return;
 
         currentBox = box;
         isTaping = true;
-        tapeProgress = 0f;
         Debug.Log($"테이핑 시작: {box.name}");
     }
 
@@ -53,13 +50,13 @@ public class Taping : MonoBehaviour
             firstPosition = this.gameObject.transform.position;
             Debug.Log(firstPosition);
             Debug.Log(gameObject.transform.position);
-            Debug.Log(currentBox.boxCover1.transform.position);
+           // Debug.Log(currentBox.boxCover1.transform.position);
 
-            if (Vector3.Distance(firstPosition, currentBox.boxCover1.transform.position) < 0.2f)
+            /*if (Vector3.Distance(firstPosition, currentBox.boxCover1.transform.position) < 0.2f)
             {
                 Debug.Log("첫거리가0.1이하");
                 isStart = true;
-            }
+            }*/
         }
         
     }
@@ -70,7 +67,7 @@ public class Taping : MonoBehaviour
         {
             secendPosition = this.gameObject.transform.position;
 
-            if (Vector3.Distance(secendPosition, currentBox.boxCover2.transform.position) < 0.2f)
+            /*if (Vector3.Distance(secendPosition, currentBox.boxCover2.transform.position) < 0.2f)
             {
                 Debug.Log("둘거리가0.1이하");
                 isEnd = true;
@@ -79,7 +76,7 @@ public class Taping : MonoBehaviour
             if(isStart && isEnd)
             {
                 currentBox.boxTape.SetActive(true);
-            }
+            }*/
         }
     }
 
@@ -88,7 +85,7 @@ public class Taping : MonoBehaviour
         isTaping = false;
         if (currentBox != null)
         {
-            currentBox.SealBox();
+            //currentBox.SealBox();
             Debug.Log($"테이핑 완료: {currentBox.name}");
         }
         currentBox = null;

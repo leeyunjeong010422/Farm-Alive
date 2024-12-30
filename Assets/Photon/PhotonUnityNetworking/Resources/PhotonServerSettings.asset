@@ -74,6 +74,9 @@ MonoBehaviour:
   - ExitItemCount
   - SetQuest
   - SuccessCheck
+  - DownCount
+  - UpCount
+  - CountCheck
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
