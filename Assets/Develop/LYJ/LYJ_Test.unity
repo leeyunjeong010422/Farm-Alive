@@ -733,10 +733,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c182002a113abce409ea1d79979f0af1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 1542965487}
-  messageText: {fileID: 1141188650}
-  displayTime: 2
-  distanceFromCamera: 1
+  _messageCanvas: {fileID: 1542965487}
+  _messageText: {fileID: 1141188650}
+  _displayTime: 2
+  _distanceFromCamera: 1
 --- !u!4 &528605146
 Transform:
   m_ObjectHideFlags: 0
@@ -5548,6 +5548,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1807215849684807209, guid: 2795cabf8f9f4c843a3ad847eb51aa59, type: 3}
+      propertyPath: m_HoverEntered.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1807215849684807209, guid: 2795cabf8f9f4c843a3ad847eb51aa59, type: 3}
+      propertyPath: m_HoverEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1807215849684807209, guid: 2795cabf8f9f4c843a3ad847eb51aa59, type: 3}
+      propertyPath: m_HoverEntered.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1807215849684807210, guid: 2795cabf8f9f4c843a3ad847eb51aa59, type: 3}
       propertyPath: _digCount
       value: 5
