@@ -8,7 +8,7 @@ public class Crop : MonoBehaviourPun
 {
     public enum E_CropState
     {
-        Growing, GrowStopped, GrowCompleted, SIZE
+        Seeding, Growing, GrowStopped, GrowCompleted, SIZE
     }
 
     [Header("작물 외형")]
@@ -49,6 +49,7 @@ public class Crop : MonoBehaviourPun
             _GFXs[i] = GFX.GetChild(i).gameObject;
         }
 
+        _states[(int)E_CropState.Seeding] = new SeedingState(this);
         _states[(int)E_CropState.Growing] = new GrowingState(this);
         _states[(int)E_CropState.GrowStopped] = new GrowStoppedState(this);
         _states[(int)E_CropState.GrowCompleted] = new GrowCompletedState(this);
@@ -77,7 +78,7 @@ public class Crop : MonoBehaviourPun
         for (int i = 1; i < _GFXs.Length; i++)
             _GFXs[i].SetActive(false);
 
-        _curState = E_CropState.GrowStopped;
+        _curState = E_CropState.Seeding;
         _states[(int)_curState].StateEnter();
 
         _elapsedTime = 0.0f;
@@ -116,6 +117,15 @@ public class Crop : MonoBehaviourPun
         {
             throw new System.NotImplementedException();
         }
+    }
+
+    private class SeedingState : CropState
+    {
+        public SeedingState(Crop crop) : base(crop) { }
+
+        public override void StateEnter() { }
+        public override void StateExit() { }
+        public override void StateUpdate() { }
     }
 
     private class GrowingState : CropState
@@ -185,10 +195,7 @@ public class Crop : MonoBehaviourPun
     {
         public GrowCompletedState(Crop crop) : base(crop) { }
 
-        public override void StateEnter()
-        {
-            crop._cropInteractable.interactionLayers = (1 << 1);
-        }
+        public override void StateEnter() { }
 
         public override void StateExit() { }
 

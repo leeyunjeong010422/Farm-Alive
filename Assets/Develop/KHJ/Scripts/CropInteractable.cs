@@ -7,14 +7,16 @@ public class CropInteractable : XRGrabInteractable
 {
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
+        Debug.Log("CropInteractable OnSelectEntered");
         base.OnSelectEntered(args);
 
         if (args.interactorObject is XRSocketInteractor)
         {
-            SectionManager.Instance.Crops[SectionManager.Instance.CurSection].Add(GetComponent<Crop>());
+            Debug.Log("with socket");
+            Crop crop = GetComponent<Crop>();
 
-            // 상호작용 X
-            interactionLayers = (1 << 29);
+            SectionManager.Instance.Crops[SectionManager.Instance.CurSection].Add(crop);
+            crop.ChangeState(Crop.E_CropState.GrowStopped);
         }
     }
 
@@ -25,9 +27,24 @@ public class CropInteractable : XRGrabInteractable
         if (args.interactorObject is XRSocketInteractor)
         {
             SectionManager.Instance.Crops[SectionManager.Instance.CurSection].Remove(GetComponent<Crop>());
+        }
+    }
 
-            // Plant 레이어 설정
-            interactionLayers = (1 << 1);
+    public override bool IsSelectableBy(IXRSelectInteractor interactor)
+    {
+        if (interactor is XRSocketInteractor)
+            return base.IsSelectableBy(interactor);
+
+        Crop crop = GetComponent<Crop>();
+        if (crop.CurState == Crop.E_CropState.Seeding || crop.CurState == Crop.E_CropState.GrowCompleted)
+        {
+            Debug.Log("return base");
+            return base.IsSelectableBy(interactor);
+        }
+        else
+        {
+            Debug.Log("return false");
+            return false;
         }
     }
 }

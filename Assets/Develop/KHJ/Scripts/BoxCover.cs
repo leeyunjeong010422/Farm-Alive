@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BoxCover : MonoBehaviour
 {
+    [Header("박스 커버")]
     [SerializeField] private GameObject _front;
     [SerializeField] private GameObject _back;
     [SerializeField] private GameObject _right;
