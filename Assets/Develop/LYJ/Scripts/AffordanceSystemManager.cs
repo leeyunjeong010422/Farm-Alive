@@ -6,7 +6,7 @@ public class AffordanceSystemManager : MonoBehaviour
     [Header("색상 변경")]
     private Renderer _targetRenderer;
     [Tooltip("오브젝트에 가져다 댔을 때 나타날 색상")]
-    [SerializeField] private Color _hoverColor;
+    [SerializeField] private Color _hoverColor = new Color(0, 0, 0, 0);
     private Color _defaultColor;
 
     [Header("사운드 변경")]
@@ -31,6 +31,11 @@ public class AffordanceSystemManager : MonoBehaviour
         _targetRenderer = GetComponentInChildren<Renderer>();
         _interactable = GetComponent<XRBaseInteractable>();
         _audioSource = GetComponent<AudioSource>();
+
+        if (ColorUtility.TryParseHtmlString("#E9FFFD", out Color fixedColor))
+        {
+            _hoverColor = fixedColor;
+        }
 
         if (_targetRenderer == null)
         {
