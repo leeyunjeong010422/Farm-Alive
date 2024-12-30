@@ -223,7 +223,7 @@ public class GeneratorInteractable : XRBaseInteractable
 
             // 수리가 완료되었는지 확인
             // 망치로 수리를 먼저 하지 않으면 시동줄을 당기거나 휠을 돌려도 의미 없음
-            if (!_repair.IsRepaired)
+            if (!_repair || !_repair.IsRepaired)
             {
                 MessageDisplayManager.Instance.ShowMessage("먼저 망치로 수리를 완료하세요.");
                 //Debug.Log("먼저 망치로 수리를 완료하세요.");
