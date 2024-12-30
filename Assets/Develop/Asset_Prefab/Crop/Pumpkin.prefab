@@ -11,14 +11,14 @@ GameObject:
   - component: {fileID: 5351339374537021287}
   - component: {fileID: 4335175941927069446}
   - component: {fileID: 4413590663441903026}
-  - component: {fileID: 1093112678032087812}
+  - component: {fileID: 3868087939518074274}
   m_Layer: 0
   m_Name: PumpkinA1_02_pf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5351339374537021287
 Transform:
   m_ObjectHideFlags: 0
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1093112678032087812
-MeshCollider:
+--- !u!65 &3868087939518074274
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -94,10 +94,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -8681266145970664721, guid: d154e65a899121a4bb18dd6e68fe093a, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 13.325605, y: 5.1642447, z: 17.079723}
+  m_Center: {x: -0.000059843063, y: 2.32163, z: -0.13175344}
 --- !u!1 &3503982817644653186
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,7 +108,7 @@ GameObject:
   - component: {fileID: 3184242629114927011}
   - component: {fileID: 6248270427565845687}
   - component: {fileID: 8513098919811427124}
-  - component: {fileID: 1822722920792530204}
+  - component: {fileID: 3498206761677534529}
   m_Layer: 0
   m_Name: PumpkinA1_01_pf
   m_TagString: Untagged
@@ -182,8 +181,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1822722920792530204
-MeshCollider:
+--- !u!65 &3498206761677534529
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -192,10 +191,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -7102481320194751604, guid: f8539b1f4ecb6654a99e85a4b8adc347, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 10.813377, y: 2.7696102, z: 10.033252}
+  m_Center: {x: -0.2715323, y: 2.4471588, z: -0.19963312}
 --- !u!1 &4286551024631264422
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,14 +205,14 @@ GameObject:
   - component: {fileID: 6669919121352633784}
   - component: {fileID: 8715658389657069596}
   - component: {fileID: 7306861575533001754}
-  - component: {fileID: 7015564871353984619}
+  - component: {fileID: 1033946807487972048}
   m_Layer: 0
   m_Name: PumpkinA1_04_pf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6669919121352633784
 Transform:
   m_ObjectHideFlags: 0
@@ -280,8 +278,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &7015564871353984619
-MeshCollider:
+--- !u!65 &1033946807487972048
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -290,10 +288,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 9186953649267989894, guid: 72f251186219b374da647ae5874fbb99, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 13.1490345, y: 11.629776, z: 13.149101}
+  m_Center: {x: 0.010523081, y: -0.55912566, z: -0.00013923645}
 --- !u!1 &5822719758366806337
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,7 +355,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5886277867669445981}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.9853306, y: -2.428671, z: -9.923}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -377,8 +374,8 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -523,7 +520,7 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  m_AttachTransform: {fileID: 3184242629114927011}
+  m_AttachTransform: {fileID: 0}
   m_SecondaryAttachTransform: {fileID: 0}
   m_UseDynamicAttach: 0
   m_MatchAttachPosition: 1
@@ -567,7 +564,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   m_ThrowVelocityScale: 1.5
   m_ThrowAngularVelocityScale: 1
-  m_ForceGravityOnDetach: 1
+  m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
   m_StartingSingleGrabTransformers: []
@@ -609,14 +606,14 @@ GameObject:
   - component: {fileID: 287337599729251142}
   - component: {fileID: 1058886433804860953}
   - component: {fileID: 1536458605521726105}
-  - component: {fileID: 1430498050012891633}
+  - component: {fileID: 8911260576481056974}
   m_Layer: 0
   m_Name: PumpkinA1_03_pf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &287337599729251142
 Transform:
   m_ObjectHideFlags: 0
@@ -682,8 +679,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1430498050012891633
-MeshCollider:
+--- !u!65 &8911260576481056974
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -692,7 +689,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 5562897538973448561, guid: 3cac58d33f7e3ee4b876e025342e43d5, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 22.256664, y: 8.632334, z: 25.434904}
+  m_Center: {x: 0, y: 5.261819, z: -0.010045052}
