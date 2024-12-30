@@ -83,7 +83,9 @@ public class MessageDisplayManager : MonoBehaviour
     /// 메시지를 표시
     /// </summary>
     /// <param name="message">플레이어에게 표시할 메시지</param>
-    public void ShowMessage(string message)
+    /// <param name="displayTime">메시지 표시 시간 (선택적)</param>
+    /// <param name="distanceFromCamera">메시지가 카메라에서 떨어진 거리 (선택적)</param>
+    public void ShowMessage(string message, float? displayTime = null, float? distanceFromCamera = null)
     {
         if (_playerCamera == null)
         {
@@ -93,8 +95,11 @@ public class MessageDisplayManager : MonoBehaviour
         if (_messageText != null && _messageCanvas != null)
         {
             _messageText.text = message;
+
+            _timer = displayTime ?? _displayTime;
+            _distanceFromCamera = distanceFromCamera ?? _distanceFromCamera;
+
             _messageCanvas.enabled = true;
-            _timer = _displayTime;
             _isShowing = true;
 
             // 메시지가 활성화될 때 캔버스 위치 업데이트
