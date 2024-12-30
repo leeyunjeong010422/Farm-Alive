@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class CupInteractable : MonoBehaviourPunCallbacks, IPunObservable
+public class CupInteractable : MonoBehaviourPun, IPunObservable
 {
     [Tooltip("액체가 흐르는 파티클")]
     [SerializeField] ParticleSystem _particleSystemLiquid;
@@ -15,10 +15,10 @@ public class CupInteractable : MonoBehaviourPunCallbacks, IPunObservable
     [Tooltip("기울일 경우 흘러내릴 비율")]
     [SerializeField] float _pourRate = 0.1f;
 
-    [Tooltip("액체가 흐르는 사운드")]
-    [SerializeField] AudioClip _pouringSound;
+    // [Tooltip("액체가 흐르는 사운드")]
+    // [SerializeField] AudioClip _pouringSound;
 
-    private AudioSource _audioSource;
+    // private AudioSource _audioSource;
 
     private bool _isPouring = false;
 
@@ -32,11 +32,11 @@ public class CupInteractable : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Start()
     {
-        _audioSource = GetComponent<AudioSource>();
-        if (_audioSource != null)
-        {
-            _audioSource.clip = _pouringSound;
-        }
+        // _audioSource = GetComponent<AudioSource>();
+        // if (_audioSource != null)
+        // {
+        //     _audioSource.clip = _pouringSound;
+        // }
     }
 
     private void Update()
@@ -72,8 +72,8 @@ public class CupInteractable : MonoBehaviourPunCallbacks, IPunObservable
             if (_particleSystemLiquid != null && _particleSystemLiquid.isStopped)
                 _particleSystemLiquid.Play();
 
-            if (_audioSource != null && !_audioSource.isPlaying)
-                _audioSource.Play();
+           // if (_audioSource != null && !_audioSource.isPlaying)
+           //     _audioSource.Play();
 
             // 레이캐스트 후 LiquidContainer 처리
             RaycastHit hit;
@@ -100,7 +100,7 @@ public class CupInteractable : MonoBehaviourPunCallbacks, IPunObservable
 
             // 파티클/사운드 정지
             if (_particleSystemLiquid != null) _particleSystemLiquid.Stop();
-            if (_audioSource != null) _audioSource.Stop();
+            // if (_audioSource != null) _audioSource.Stop();
         }
     }
 
@@ -111,14 +111,14 @@ public class CupInteractable : MonoBehaviourPunCallbacks, IPunObservable
             if (_particleSystemLiquid != null && _particleSystemLiquid.isStopped)
                 _particleSystemLiquid.Play();
 
-            if (_audioSource != null && !_audioSource.isPlaying)
-                _audioSource.Play();
+           // if (_audioSource != null && !_audioSource.isPlaying)
+           //     _audioSource.Play();
         }
         else
         {
             // 붓고 있지 않거나 액체가 없으면 정지
             if (_particleSystemLiquid != null) _particleSystemLiquid.Stop();
-            if (_audioSource != null) _audioSource.Stop();
+           //  if (_audioSource != null) _audioSource.Stop();
         }
     }
 

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2745245031179242804}
   - component: {fileID: 2755617090931504988}
   - component: {fileID: 6549486219961742888}
+  - component: {fileID: 1129517855291334021}
   m_Layer: 0
   m_Name: WaterBarrel
   m_TagString: Untagged
@@ -11372,6 +11373,19 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!114 &1129517855291334021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2768510764322930240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8ffd05e748f41e48a33f76dfe86dcda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fillAmount: 0
 --- !u!1 &3824800214969350678
 GameObject:
   m_ObjectHideFlags: 0
