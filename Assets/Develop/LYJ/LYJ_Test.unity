@@ -2933,6 +2933,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1005642501}
+    - target: {fileID: 1143741056392507273, guid: 8452126fdbeab0d4598d28936142fb13, type: 3}
+      propertyPath: m_VersionIndex
+      value: 52
+      objectReference: {fileID: 0}
     - target: {fileID: 2641167459539058432, guid: 8452126fdbeab0d4598d28936142fb13, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2949,6 +2953,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1518689809}
+    - target: {fileID: 4294814372317289818, guid: 8452126fdbeab0d4598d28936142fb13, type: 3}
+      propertyPath: m_VersionIndex
+      value: 52
+      objectReference: {fileID: 0}
     - target: {fileID: 4294814372317289822, guid: 8452126fdbeab0d4598d28936142fb13, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2965,6 +2973,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 465149247}
+    - target: {fileID: 4294814372925077619, guid: 8452126fdbeab0d4598d28936142fb13, type: 3}
+      propertyPath: m_VersionIndex
+      value: 52
+      objectReference: {fileID: 0}
     - target: {fileID: 4294814373190267545, guid: 8452126fdbeab0d4598d28936142fb13, type: 3}
       propertyPath: sceneViewId
       value: 16
@@ -2973,6 +2985,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1911270891}
+    - target: {fileID: 4294814373573276132, guid: 8452126fdbeab0d4598d28936142fb13, type: 3}
+      propertyPath: m_VersionIndex
+      value: 52
+      objectReference: {fileID: 0}
     - target: {fileID: 4294814373573276138, guid: 8452126fdbeab0d4598d28936142fb13, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2981,6 +2997,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1972800884}
+    - target: {fileID: 5021039551966645024, guid: 8452126fdbeab0d4598d28936142fb13, type: 3}
+      propertyPath: m_VersionIndex
+      value: 52
+      objectReference: {fileID: 0}
     - target: {fileID: 6221324058676556576, guid: 8452126fdbeab0d4598d28936142fb13, type: 3}
       propertyPath: sceneViewId
       value: 17
@@ -2997,6 +3017,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1716614799}
+    - target: {fileID: 6526986999696988798, guid: 8452126fdbeab0d4598d28936142fb13, type: 3}
+      propertyPath: m_VersionIndex
+      value: 52
+      objectReference: {fileID: 0}
     - target: {fileID: 6526986999696988798, guid: 8452126fdbeab0d4598d28936142fb13, type: 3}
       propertyPath: m_Tangents.Array.data[2027].x
       value: NaN
@@ -4101,6 +4125,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1845451348}
+    - target: {fileID: 7945905406238783170, guid: 8452126fdbeab0d4598d28936142fb13, type: 3}
+      propertyPath: m_VersionIndex
+      value: 52
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8452126fdbeab0d4598d28936142fb13, type: 3}
 --- !u!1 &1689990615

@@ -319,5 +319,24 @@ public class GeneratorInteractable : XRBaseInteractable
     {
         _repair.enabled = isRepaired;
         _repair.IsRepaired = isRepaired;
+
+        if (isRepaired)
+        {
+            ResetGeneratorState();
+        }
     }
+
+    // 발전기의 상태를 초기화
+    private void ResetGeneratorState()
+    {
+        _isKnobAtMax = false;
+        _currentKnobValue = 0f;
+
+        _currentAttempts = 0;
+        _hasTriggered = false;
+
+        _isGeneratorRunning = false;
+        _isBeingPulled = false;
+    }
+
 }
