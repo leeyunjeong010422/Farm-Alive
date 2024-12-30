@@ -224,7 +224,10 @@ MonoBehaviour:
   _back: {fileID: 3977191162318637640}
   _right: {fileID: 3977191162722810657}
   _left: {fileID: 3977191162952129743}
-  <IsOpen>k__BackingField: 0
+  leftPoint: {fileID: 0}
+  rightPoint: {fileID: 0}
+  tape: {fileID: 0}
+  <IsOpen>k__BackingField: 1
   <IsPackaged>k__BackingField: 0
 --- !u!54 &4124262596704421852
 Rigidbody:

@@ -5,13 +5,16 @@ using UnityEngine;
 public class BoxCover : MonoBehaviour
 {
     [Header("박스 커버")]
-    [SerializeField] private GameObject _front;
-    [SerializeField] private GameObject _back;
-    [SerializeField] private GameObject _right;
-    [SerializeField] private GameObject _left;
+    [SerializeField] private BoxCoverInteractable _front;
+    [SerializeField] private BoxCoverInteractable _back;
+    [SerializeField] private BoxCoverInteractable _right;
+    [SerializeField] private BoxCoverInteractable _left;
 
-    [field: SerializeField]
-    public bool IsOpen {  get; private set; }
-    [field: SerializeField]
-    public bool IsPackaged { get; private set; }
+    [Header("포장")]
+    public GameObject leftPoint;
+    public GameObject rightPoint;
+    public GameObject tape;
+
+    public bool IsOpen {  get { return _front.IsOpen || _back.IsOpen || _left.IsOpen || _right.IsOpen; } }
+    public bool IsPackaged { get; set; }
 }
