@@ -8,7 +8,16 @@ public class BoxCoverInteractable : XRGrabInteractable
     [Header("박스 몸체")]
     [SerializeField] private GameObject _body;
 
+    [Header("박스 커버")]
+    [Tooltip("RigidBody")]
+    [SerializeField] private Rigidbody _rigid;
+    [Tooltip("임계 각도 차이")]
+    [SerializeField] private float _angleRange;
+
     private Rigidbody _bodyRigid;
+
+    [field: SerializeField]
+    public bool IsOpen {  get; private set; }
 
     protected override void Awake()
     {
@@ -28,6 +37,24 @@ public class BoxCoverInteractable : XRGrabInteractable
     {
         base.OnSelectExited(args);
 
+        if (!CheckOpen())
+        {
+            Close();
+        }
+
         _bodyRigid.isKinematic = false;
+    }
+
+    private bool CheckOpen()
+    {
+        
+
+        return IsOpen;
+    }
+
+    private void Close()
+    {
+        _rigid.isKinematic = true;
+        transform.rotation = Quaternion.identity;
     }
 }
