@@ -143,10 +143,6 @@ public class GeneratorInteractable : XRBaseInteractable
                     MessageDisplayManager.Instance.ShowMessage("전조 증상이 해결되었습니다!");
                 }
             }
-            else
-            {
-                MessageDisplayManager.Instance.ShowMessage("레버를 올렸다가 내려야 전조 증상을 해결할 수 있습니다.");
-            }
         }
         else
         {
