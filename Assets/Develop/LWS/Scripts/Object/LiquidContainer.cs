@@ -8,7 +8,11 @@ using UnityEngine.Events;
 public class LiquidContainer : MonoBehaviourPunCallbacks, IPunObservable
 {
     [Tooltip("초기에 차 있을 정도 (0.0으로 시작이 기본)")]
-    [SerializeField] float _fillAmount = 0.0f;
+    [SerializeField] float _fillAmount = 0f;
+
+    public float FillAmount { get { return _fillAmount; } set { _fillAmount = value; } }
+
+
     float _maxAmount = 1.0f;
 
     /// <summary>

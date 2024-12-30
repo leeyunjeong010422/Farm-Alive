@@ -53,27 +53,40 @@ public class SectionManager : MonoBehaviour
     /// <summary>
     /// 물주기 버튼용 함수
     /// </summary>
+    [SerializeField] LiquidContainer waterBarrel;
     public void IncreaseMoisture()
     {
+        if (waterBarrel.FillAmount <= 0)
+            return;
+
         foreach (Crop crop in _crops[_curSection])
         {
             crop.IncreaseMoisture();
         }
 
         PlayParticle(_curSection, false);
+
+        waterBarrel.FillAmount -= 0.1f;
+
     }
 
     /// <summary>
     /// 비료주기 버튼용 함수
     /// </summary>
+    [SerializeField] LiquidContainer nutrientBarrel;
     public void IncreaseNutrient()
     {
+        if (nutrientBarrel.FillAmount <= 0)
+            return;
+
         foreach (Crop crop in _crops[_curSection])
         {
             crop.IncreaseNutrient();
         }
 
         PlayParticle(_curSection, true);
+
+        nutrientBarrel.FillAmount -= 0.1f;
     }
 
     private void PlayParticle(int sectionIndex, bool isNutrient)
