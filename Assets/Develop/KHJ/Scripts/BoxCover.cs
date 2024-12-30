@@ -15,10 +15,6 @@ public class BoxCover : MonoBehaviour
     public GameObject rightPoint;
     public GameObject tape;
 
-    [field: SerializeField]
-    public bool IsOpen {  get; private set; }
-    [field: SerializeField]
-    public bool IsPackaged { get; private set; }
-
-    public bool CheckOpen() => _front.IsOpen || _back.IsOpen || _left.IsOpen || _right.IsOpen;
+    public bool IsOpen {  get { return _front.IsOpen || _back.IsOpen || _left.IsOpen || _right.IsOpen; } }
+    public bool IsPackaged { get; set; }
 }

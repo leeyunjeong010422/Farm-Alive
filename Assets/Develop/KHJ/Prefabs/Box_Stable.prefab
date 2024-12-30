@@ -587,7 +587,6 @@ MonoBehaviour:
   m_AddDefaultGrabTransformers: 1
   _body: {fileID: 3663111138833697998}
   _rigid: {fileID: 1869330717069160320}
-  _axis: 0
   _angleRange: 0.05
   <IsOpen>k__BackingField: 1
 --- !u!1 &1869330717137060967
@@ -873,7 +872,6 @@ MonoBehaviour:
   m_AddDefaultGrabTransformers: 1
   _body: {fileID: 3663111138833697998}
   _rigid: {fileID: 1869330717137060987}
-  _axis: 1
   _angleRange: 0.05
   <IsOpen>k__BackingField: 1
 --- !u!1 &1869330717202915045
@@ -1159,7 +1157,6 @@ MonoBehaviour:
   m_AddDefaultGrabTransformers: 1
   _body: {fileID: 3663111138833697998}
   _rigid: {fileID: 1869330717202915071}
-  _axis: 1
   _angleRange: 0.05
   <IsOpen>k__BackingField: 1
 --- !u!1 &1869330717643491426
@@ -1445,7 +1442,6 @@ MonoBehaviour:
   m_AddDefaultGrabTransformers: 1
   _body: {fileID: 3663111138833697998}
   _rigid: {fileID: 1869330717643491428}
-  _axis: 0
   _angleRange: 0.05
   <IsOpen>k__BackingField: 1
 --- !u!1 &2231136958553999785
@@ -1583,6 +1579,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3663111138833697999}
+  - component: {fileID: 4382902654315332885}
+  - component: {fileID: 2869567786671777783}
   - component: {fileID: 3663111138833697984}
   - component: {fileID: 1728452974897206129}
   - component: {fileID: 8690499209189553666}
@@ -1613,6 +1611,45 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4382902654315332885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3663111138833697998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 1
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 2869567786671777783}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &2869567786671777783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3663111138833697998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!114 &3663111138833697984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1632,8 +1669,6 @@ MonoBehaviour:
   leftPoint: {fileID: 6107422179673997540}
   rightPoint: {fileID: 4410297880513693061}
   tape: {fileID: 5963837168929263894}
-  <IsOpen>k__BackingField: 1
-  <IsPackaged>k__BackingField: 0
 --- !u!54 &1728452974897206129
 Rigidbody:
   m_ObjectHideFlags: 0

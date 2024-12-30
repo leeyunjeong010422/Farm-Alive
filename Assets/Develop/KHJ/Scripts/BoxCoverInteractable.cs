@@ -47,14 +47,18 @@ public class BoxCoverInteractable : XRGrabInteractable
 
     private bool CheckOpen()
     {
-        
+        bool isPerpendicular = Vector3.Dot(transform.up, _body.transform.up) <= _angleRange;
+        bool isInner = 1 - Vector3.Dot(transform.forward, _body.transform.up) <= _angleRange;
 
+        Debug.Log($"Perpendicular: {Vector3.Dot(transform.up, _body.transform.up) <= _angleRange}");
+        Debug.Log($"Inner: {1 - Vector3.Dot(transform.forward, _body.transform.up) <= _angleRange}");
+
+        IsOpen = !(isPerpendicular && isInner);
         return IsOpen;
     }
 
     private void Close()
     {
         _rigid.isKinematic = true;
-        transform.rotation = Quaternion.identity;
     }
 }
