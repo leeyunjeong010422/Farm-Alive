@@ -29,7 +29,6 @@ public class GeneratorInteractable : XRBaseInteractable
     private XRLever _lever;
 
     private Repair _repair;
-    private HeadLightInteractable _headLight;
 
     private Vector3 _initialCordPosition;   // 시동줄의 초기 위치
     private int _currentAttempts = 0;        // 현재 시동 시도 횟수
@@ -63,8 +62,6 @@ public class GeneratorInteractable : XRBaseInteractable
         _repair = GetComponentInParent<Repair>();
         _repair.enabled = false;
 
-        _headLight = FindObjectOfType<HeadLightInteractable>();
-
         _knob = transform.root.GetComponentInChildren<XRKnobGenerator>();
         _lever = transform.root.GetComponentInChildren<XRLever>();
 
@@ -75,11 +72,6 @@ public class GeneratorInteractable : XRBaseInteractable
         if (_cordObject != null)
         {
             _initialCordPosition = _cordObject.position;
-        }
-
-        if (_headLight == null)
-        {
-            Debug.LogWarning("HeadLightInteractable을 찾을 수 없습니다.");
         }
     }
 
@@ -256,14 +248,7 @@ public class GeneratorInteractable : XRBaseInteractable
         _isGeneratorRunning = true;
         _currentAttempts = 0;
 
-        if (_headLight != null)
-        {
-            _headLight.RecoverFromBlackout(); // 조명 복구
-        }
-        else
-        {
-            Debug.LogWarning("HeadLightInteractable이 설정되지 않았습니다!");
-        }
+        LightingManager.Instance.EndBlackout();
     }
 
     private void OnTriggerExit(Collider other)
@@ -314,15 +299,7 @@ public class GeneratorInteractable : XRBaseInteractable
             photonView.RPC(nameof(SyncEnableRepair), RpcTarget.AllBuffered, true);
             _isGeneratorRunning = false;
 
-            //Debug.Log("TriggerBlackout 호출됨");
-            if (_headLight != null)
-            {
-                _headLight.TriggerBlackout(); // 정전 발생
-            }
-            else
-            {
-                Debug.LogWarning("HeadLightInteractable이 설정되지 않았습니다!");
-            }
+            LightingManager.Instance.StartBlackout();
         }
 
         _warningActive = false; // 전조 증상이 더 이상 진행되지 않음
