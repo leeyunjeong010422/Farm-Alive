@@ -77,10 +77,10 @@ public class QuestManager : MonoBehaviourPun
 
             }
 
-            int[] itemCounts = new int[5];
+            int[] itemCounts = new int[rand];
             for (int i = 0; i < itemCounts.Length; i++)
             {
-                itemCounts[i] = Random.Range(1, itemCounts.Length);
+                itemCounts[i] = Random.Range(1, 15);
             }
 
             photonView.RPC(nameof(SetQuest), RpcTarget.AllBuffered, "택배포장", rand, choseIndex, itemCounts);
@@ -96,11 +96,8 @@ public class QuestManager : MonoBehaviourPun
             requiredItems = new List<RequiredItem>()
         };
 
-        Debug.Log(itemIndexes.Length);
         for (int i = 0; i < count; i++)
         {
-            Debug.Log(itemIndexes[i]);
-            Debug.Log(itemPrefabs[itemIndexes[i]]);
             GameObject itemPrefab = itemPrefabs[itemIndexes[i]];            
             int requiredCount = itemCounts[i];
             currentQuest.requiredItems.Add(new RequiredItem(itemPrefab, requiredCount));
@@ -162,6 +159,25 @@ public class QuestManager : MonoBehaviourPun
         /*UIManager.Instance.UpdateQuestUI(currentQuest.questName, currentQuest.currentCount, currentQuest.requiredCount);*/
     }
 
+    public void CountUpdate(int id, int number, int count)
+    {
+        Debug.Log("카운트 업데이트");
+        photonView.RPC(nameof(CountCheck), RpcTarget.AllBuffered, id, number, count);
+    }
+
+    [PunRPC]
+    private void CountCheck(int id, int number, int count)
+    {
+        Debug.Log("카운트 감소");
+        questsList[id].requiredItems[number].requiredcount -= count;
+
+        if (questsList[id].requiredItems[number].requiredcount <= 0)
+        {
+            Debug.Log("납품완료");
+            QuestManager.Instance.SuccessQuest(id, number);
+        }
+    }
+
     public void SuccessQuest(int id, int number)
     {
         Debug.Log("퀘스트 완료!");
@@ -173,6 +189,14 @@ public class QuestManager : MonoBehaviourPun
     {
         Debug.Log("퀘스트 성공 여부 동기화!");
         questsList[id].requiredItems[number].isSuccess = true;
+
+        foreach (QuestManager.Quest list in questsList)
+        {
+            for (int i = 0; i < list.requiredItems.Count; i++)
+            {
+                //if (list.requiredItems[i].isSuccess)
+            }
+        }
     }
 
     public bool IsQuestComplete()
