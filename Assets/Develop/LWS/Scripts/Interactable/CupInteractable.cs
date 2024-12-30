@@ -7,13 +7,13 @@ using UnityEngine;
 public class CupInteractable : MonoBehaviourPun, IPunObservable
 {
     [Tooltip("액체가 흐르는 파티클")]
-    [SerializeField] ParticleSystem _particleSystemLiquid;
+    [SerializeField] public ParticleSystem particleSystemLiquid;
     
     [Tooltip("액체가 차 있을 초기값 (1.0이면 꽉 참)")]
     [SerializeField] float _fillAmount = 1.0f;
 
     [Tooltip("기울일 경우 흘러내릴 비율")]
-    [SerializeField] float _pourRate = 0.1f;
+    [SerializeField] public float pourRate = 0.1f;
 
     // [Tooltip("액체가 흐르는 사운드")]
     // [SerializeField] AudioClip _pouringSound;
@@ -24,9 +24,10 @@ public class CupInteractable : MonoBehaviourPun, IPunObservable
 
     private void OnEnable()
     {
-        if (_particleSystemLiquid != null)
+        if (particleSystemLiquid != null)
         {
-            _particleSystemLiquid.Stop();
+            Debug.LogWarning("물 흐르는 파티클 정지");
+            particleSystemLiquid.Stop();
         }
     }
 
@@ -58,6 +59,7 @@ public class CupInteractable : MonoBehaviourPun, IPunObservable
 
         if (shouldPour)
         {
+            Debug.LogWarning("뒤집혀서물이나오는상태");
             // 붓는 중이 아닌데 새로 붓기 시작 -> 상태 전환
             if (!_isPouring)
             {
@@ -65,41 +67,27 @@ public class CupInteractable : MonoBehaviourPun, IPunObservable
             }
 
             // 액체량 감소
-            _fillAmount -= _pourRate * Time.deltaTime;
+            _fillAmount -= pourRate * Time.deltaTime;
             if (_fillAmount < 0f) _fillAmount = 0f;
 
             // 파티클/사운드 (로컬에서 재생)
-            if (_particleSystemLiquid != null && _particleSystemLiquid.isStopped)
-                _particleSystemLiquid.Play();
+            if (particleSystemLiquid != null && particleSystemLiquid.isStopped)
+                particleSystemLiquid.Play();
 
            // if (_audioSource != null && !_audioSource.isPlaying)
            //     _audioSource.Play();
-
-            // 레이캐스트 후 LiquidContainer 처리
-            RaycastHit hit;
-            if (_particleSystemLiquid != null)
-            {
-                if (Physics.Raycast(_particleSystemLiquid.transform.position, Vector3.down, out hit, 50.0f))
-                {
-                    LiquidContainer receiver = hit.collider.GetComponent<LiquidContainer>();
-                    if (receiver != null)
-                    {
-                        float amount = _pourRate * Time.deltaTime;
-                        receiver.ReceiveLiquid(amount);
-                    }
-                }
-            }
         }
         else
         {
             // 더 이상 붓지 않는 상황
             if (_isPouring)
             {
+                Debug.LogWarning("뒤집힘정지");
                 _isPouring = false;
             }
 
             // 파티클/사운드 정지
-            if (_particleSystemLiquid != null) _particleSystemLiquid.Stop();
+            if (particleSystemLiquid != null) particleSystemLiquid.Stop();
             // if (_audioSource != null) _audioSource.Stop();
         }
     }
@@ -108,8 +96,8 @@ public class CupInteractable : MonoBehaviourPun, IPunObservable
     {
         if (_isPouring && _fillAmount > 0)
         {
-            if (_particleSystemLiquid != null && _particleSystemLiquid.isStopped)
-                _particleSystemLiquid.Play();
+            if (particleSystemLiquid != null && particleSystemLiquid.isStopped)
+                particleSystemLiquid.Play();
 
            // if (_audioSource != null && !_audioSource.isPlaying)
            //     _audioSource.Play();
@@ -117,7 +105,7 @@ public class CupInteractable : MonoBehaviourPun, IPunObservable
         else
         {
             // 붓고 있지 않거나 액체가 없으면 정지
-            if (_particleSystemLiquid != null) _particleSystemLiquid.Stop();
+            if (particleSystemLiquid != null) particleSystemLiquid.Stop();
            //  if (_audioSource != null) _audioSource.Stop();
         }
     }
