@@ -37,7 +37,6 @@ public class FusionLobbyManager : MonoBehaviour
         if (startResult.Ok)
         {
             Debug.Log("Fusion 로비 시작 성공");
-            PunManager.Instance.CreateDynamicButtons();
         }
         else
         {
