@@ -1,5 +1,6 @@
 using Photon.Pun;
 using Photon.Realtime;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -11,10 +12,6 @@ public class PunManager : MonoBehaviourPunCallbacks
 {
     [Tooltip("테스트를 위한 방 넘버 설정.")]
     public int RoomNum = 0;
-
-    // 버튼 프리팹 동적 참조
-    public GameObject RoomMakeButtonPrefab;
-    private GameObject instantiatedRoomMakeButton;
 
     public static PunManager Instance { get; private set; }
 
@@ -29,14 +26,6 @@ public class PunManager : MonoBehaviourPunCallbacks
         {
             Destroy(gameObject);
             return;
-        }
-
-        // Resources 폴더에서 프리팹 동적 로드
-        RoomMakeButtonPrefab = Resources.Load<GameObject>("Room Make Button");
-
-        if (!RoomMakeButtonPrefab)
-        {
-            Debug.LogError("RoomMakeButtonPrefab이 Resources 폴더에 없습니다!");
         }
     }
 
@@ -112,53 +101,29 @@ public class PunManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// 방 생성 및 방 목록 보기 버튼 생성
-    /// </summary>
-    public void CreateDynamicButtons()
-    {
-        Debug.Log("버튼 생성");
-        Canvas canvas = FindObjectOfType<Canvas>();
-
-        if (!canvas)
-        {
-            Debug.LogError("Canvas가 씬에 존재하지 않습니다!");
-            return;
-        }
-
-        // 기존 버튼 삭제
-        if (instantiatedRoomMakeButton)
-        {
-            Destroy(instantiatedRoomMakeButton);
-        }
-
-        // 방 생성 버튼 생성
-        if (RoomMakeButtonPrefab)
-        {
-            instantiatedRoomMakeButton = Instantiate(RoomMakeButtonPrefab, canvas.transform);
-            Button makeButton = instantiatedRoomMakeButton.GetComponent<Button>();
-            if (makeButton != null)
-            {
-                TMP_Text buttonText = instantiatedRoomMakeButton.GetComponentInChildren<TMP_Text>();
-                if (buttonText != null)
-                {
-                    buttonText.text = "Create Room";
-                }
-
-                makeButton.onClick.AddListener(() =>
-                {
-                    Debug.Log("Room Make 버튼 클릭됨!");
-                    CreateAndMoveToPunRoom();
-                });
-            }
-        }
-    }
-
-    /// <summary>
     /// Fusion 네트워크 종료 및 Pun 방 생성 후 이동
     /// </summary>
     public void CreateAndMoveToPunRoom()
     {
-        // Pun 방 생성
+        // 5초 카운트다운 및 방 생성 시작
+        StartCoroutine(PunRoomCountdown(5f));
+    }
+
+    /// <summary>
+    /// Coroutine으로 5초 동안 카운트다운 메시지를 갱신하고 방 생성 및 이동
+    /// </summary>
+    private IEnumerator PunRoomCountdown(float countdown)
+    {
+        float remainingTime = countdown;
+
+        while (remainingTime > 0)
+        {
+            // 메시지 갱신
+            MessageDisplayManager.Instance.ShowMessage($"After {(int)remainingTime} seconds, you enter the room.", 1f, 3f);
+            yield return new WaitForSeconds(1f);
+            remainingTime--;
+        }
+
         RoomOptions roomOptions = new RoomOptions
         {
             MaxPlayers = 2,
@@ -166,6 +131,7 @@ public class PunManager : MonoBehaviourPunCallbacks
             IsOpen = true
         };
 
+        Debug.Log("방 생성 시도 중...");
         PhotonNetwork.JoinOrCreateRoom($"PunRoom_{RoomNum}", roomOptions, TypedLobby.Default);
     }
 
