@@ -37,4 +37,15 @@ public class Repair : MonoBehaviourPunCallbacks
             // TODO: 수리 완료 로직 (ex: 오브젝트 파괴, 애니메이션, 상태 변환 등)
         }
     }
+
+    /// <summary>
+    /// 수리 상태를 초기화 (수리 횟수 초기화)
+    /// </summary>
+    public void ResetRepairState()
+    {
+        Debug.Log($"수리 상태 초기화: _curRepairCount={_curRepairCount}, IsRepaired={IsRepaired}");
+        _curRepairCount = 0;
+        IsRepaired = false;  // 수리 완료 상태 초기화
+        enabled = true;      // 스크립트 다시 활성화
+    }
 }

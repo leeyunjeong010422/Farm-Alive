@@ -342,6 +342,11 @@ public class GeneratorInteractable : XRBaseInteractable
         if (isRepaired)
         {
             ResetGeneratorState();
+            _repair.ResetRepairState();
+        }
+        else
+        {
+            _repair.ResetRepairState();
         }
     }
 
