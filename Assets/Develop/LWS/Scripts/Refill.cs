@@ -1,5 +1,6 @@
 using UnityEngine;
 using Photon.Pun;
+using System.Collections.Generic;
 
 public class Refill : MonoBehaviourPun
 {
@@ -7,7 +8,7 @@ public class Refill : MonoBehaviourPun
     [SerializeField] GameObject _refillPrefab; // 재생성할 프리팹
     [SerializeField] int _maxCount = 10;       // 최대 생성 횟수
     [SerializeField] string _triggerZoneName;
-
+    [SerializeField] List<int> idList = new List<int>();
 
     private int _curCount = 0;      // 현재 몇 번 생성했는지
     private Vector3 _originalPos;       // 시작 위치
@@ -27,15 +28,17 @@ public class Refill : MonoBehaviourPun
             if (!PhotonNetwork.IsMasterClient)
                 return;
 
-            int objectID = GetInstanceID();
+            PhotonView objectID = gameObject.GetComponent<PhotonView>();
+            if (idList.Contains(objectID.ViewID))
+                return;
 
             TrySpawnRefill();
+            idList.Add(objectID.ViewID);
         }
     }
 
     private void TrySpawnRefill()
     {
-        
         // 10회 이상이면 재생성 x
         if (_curCount >= _maxCount)
         {
@@ -47,7 +50,18 @@ public class Refill : MonoBehaviourPun
         GameObject NewObject = PhotonNetwork.Instantiate(_refillPrefab.name, _originalPos, Quaternion.identity);
         Refill refill = NewObject.GetComponent<Refill>();
         refill._curCount = _curCount;
+        refill.idList = idList;
 
         Debug.Log($"리필 횟수 {_curCount} / 맥스 횟수 {_maxCount}");
+    }
+
+    private void OnDestroy()
+    {
+        PhotonView objectID = gameObject.GetComponent<PhotonView>();
+        if (idList.Contains(objectID.ViewID))
+        {
+            idList.Remove(objectID.ViewID);
+            Debug.Log($"리스트에서 {objectID} 제거");
+        }
     }
 }
