@@ -1627,6 +1627,7 @@ GameObject:
   - component: {fileID: 1728452974897206129}
   - component: {fileID: 8690499209189553666}
   - component: {fileID: 6351406989767851777}
+  - component: {fileID: 5683883131817791361}
   m_Layer: 0
   m_Name: Box_Stable
   m_TagString: Box
@@ -1901,6 +1902,19 @@ MonoBehaviour:
   isBoxSealed: 0
   isFirstItem: 0
   boxCover: {fileID: 0}
+--- !u!65 &5683883131817791361
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3663111138833697998}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.45, y: 0.28, z: 0.35}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4410297880513693061
 GameObject:
   m_ObjectHideFlags: 0
@@ -1946,7 +1960,6 @@ GameObject:
   - component: {fileID: 9128269240687463362}
   - component: {fileID: 1106543076185779895}
   - component: {fileID: 8163546158204052788}
-  - component: {fileID: 8315625549400236889}
   m_Layer: 0
   m_Name: GFX
   m_TagString: Untagged
@@ -2036,19 +2049,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.43, y: 0.01, z: 0.33}
   m_Center: {x: 0, y: -0.145, z: 0}
---- !u!65 &8315625549400236889
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4473365247958288658}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.45, y: 0.28, z: 0.35}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4491083844321352535
 GameObject:
   m_ObjectHideFlags: 0
