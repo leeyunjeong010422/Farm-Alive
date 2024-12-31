@@ -5528,6 +5528,7 @@ GameObject:
   - component: {fileID: 722585473625070584}
   - component: {fileID: 5532603957521922439}
   - component: {fileID: 4212050405224803700}
+  - component: {fileID: 6931954193600881174}
   m_Layer: 0
   m_Name: WaterHose
   m_TagString: Untagged
@@ -5721,7 +5722,7 @@ MonoBehaviour:
   m_StartingSingleGrabTransformers: []
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
-  _wateringParticle: {fileID: 1753046559550183124}
+  wateringParticle: {fileID: 0}
   _pourRate: 0.1
 --- !u!114 &5532603957521922439
 MonoBehaviour:
@@ -5762,6 +5763,18 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &6931954193600881174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1753046559565137774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1baea44ee8f4e448a95a2e9246e119d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1753046559565239724
 GameObject:
   m_ObjectHideFlags: 0

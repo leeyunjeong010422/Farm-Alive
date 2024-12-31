@@ -1,3 +1,5 @@
+using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,14 +7,17 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class HoseInteractable : XRGrabInteractable
 {
-    [SerializeField] ParticleSystem _wateringParticle;
+    [SerializeField] public ParticleSystem wateringParticle;
     [SerializeField] float _pourRate;
+
+    public event Action OnHoseActivated;
+    public event Action OnHoseDeactivated;
 
     protected override void OnEnable()
     {
         base.OnEnable();
 
-        _wateringParticle.Stop();
+        wateringParticle.Stop();
     }
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
@@ -28,7 +33,7 @@ public class HoseInteractable : XRGrabInteractable
                 receiver.ReceiveLiquid(amount);
             }
 
-            _wateringParticle.Stop();
+            wateringParticle.Stop();
         }
     }
 
@@ -36,15 +41,13 @@ public class HoseInteractable : XRGrabInteractable
     {
         base.OnActivated(args);
 
-        if (_wateringParticle != null)
-            _wateringParticle.Play();
+        OnHoseActivated?.Invoke();
     }
 
     protected override void OnDeactivated(DeactivateEventArgs args)
     {
         base.OnDeactivated(args);
 
-        if (_wateringParticle != null && _wateringParticle.isPlaying)
-            _wateringParticle.Stop();
+        OnHoseDeactivated?.Invoke();
     }
 }

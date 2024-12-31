@@ -13,7 +13,8 @@ public class SectionManager : MonoBehaviour
     [SerializeField] private int _curSection;
 
     // 섹션별 파티클 배열
-    [SerializeField] private SectionParticles[] _sectionParticles;
+    //[SerializeField] private SectionParticles[] _sectionParticles;
+    [SerializeField] private ParticleSystem[] _sectionParticles;
 
     public List<Crop>[] Crops { get { return _crops; } }
     public int CurSection { get { return _curSection; } set { _curSection = value; } }
@@ -34,6 +35,11 @@ public class SectionManager : MonoBehaviour
     private void OnEnable()
     {
         SceneManager.sceneLoaded += Init;
+
+        foreach (ParticleSystem particle in _sectionParticles)
+        {
+            particle.Stop();
+        }
     }
 
     private void OnDisable()
@@ -91,12 +97,12 @@ public class SectionManager : MonoBehaviour
 
     private void PlayParticle(int sectionIndex, bool isNutrient)
     {
-        if (_sectionParticles.Length <= sectionIndex)
-            return;
+        //if (_sectionParticles.Length <= sectionIndex)
+        //    return;
 
-        var particles = _sectionParticles[sectionIndex].moistureParticles;
+        //var particles = _sectionParticles[sectionIndex];//.moistureParticles;
         
-        foreach ( var particle in particles )
+        foreach ( ParticleSystem particle in _sectionParticles )
         {
             StartCoroutine(PlayParticleRoutine(particle, isNutrient));
         }
