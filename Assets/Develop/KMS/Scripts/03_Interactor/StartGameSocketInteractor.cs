@@ -8,6 +8,6 @@ public class StartGameSocketInteractor : XRSocketInteractor
 {
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
-        SceneManager.LoadSceneAsync("LoadingScene");
+        SceneManager.LoadSceneAsync("AssetScene");
     }
 }
