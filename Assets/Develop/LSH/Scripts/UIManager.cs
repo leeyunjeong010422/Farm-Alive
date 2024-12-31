@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    public Text questText;
+    public List<Text> questText;
 
     private void Awake()
     {
@@ -15,8 +15,22 @@ public class UIManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public void UpdateQuestUI(string questName, int currentCount, int requiredCount)
+    public void UpdateQuestUI(List<QuestManager.Quest> questList, int number)
     {
-        questText.text = $"{questName}: {currentCount}/{requiredCount}";
+        string displayText = "";
+
+        QuestManager.Quest quest = questList[number];
+        displayText += $"<b>{number+1}번째 {quest.questName}</b>\n";
+        
+        foreach (var item in quest.requiredItems)
+        {
+            displayText += $"작물 이름 : {item.itemPrefab.name}\n\t-필요한 개수 : {item.requiredcount}\n\t-성공 여부: {(item.isSuccess ? "완료" : "미완료")})\n";
+        }
+
+        displayText += $"퀘스트 완료 여부: {(quest.isSuccess ? "완료" : "미완료")}\n\n";
+
+
+        questText[number].text = displayText;
     }
+
 }

@@ -1,8 +1,10 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.PackageManager.Requests;
 using UnityEngine;
+using UnityEngine.UI;
 using static QuestManager;
 
 public class QuestManager : MonoBehaviourPun
@@ -34,7 +36,8 @@ public class QuestManager : MonoBehaviourPun
     [SerializeField] public List<Quest> questsList = new List<Quest>();
     [SerializeField] public List<TruckQuest> truckList = new List<TruckQuest>();
     [SerializeField] public GameObject[] itemPrefabs;
-    public Quest currentQuest;
+    [SerializeField] public Quest currentQuest;
+    [SerializeField] public int maxItemCount;
 
     private void Awake()
     {
@@ -56,6 +59,7 @@ public class QuestManager : MonoBehaviourPun
     [PunRPC]
     public void QuestStart()
     {
+        maxItemCount = 0;
         if (PhotonNetwork.IsMasterClient)
         {
             int rand = Random.Range(1, itemPrefabs.Length);
@@ -63,13 +67,48 @@ public class QuestManager : MonoBehaviourPun
             List<int> randomPrefabIndexes = new List<int>();
             int[] choseIndex = new int[rand];
 
-
+            // 아이템 목록화
             for (int i = 0; i < itemPrefabs.Length; i++)
             {
                 randomPrefabIndexes.Add(i);
             }
 
-            for (int i = 0; i < rand; i++)
+            // 아이템 개수 설정
+            int checkItemLength = 0;
+            int[] maxItemCounts = new int[rand];
+            for (int i = 0; i < maxItemCounts.Length; i++)
+            {
+                maxItemCounts[i] = Random.Range(1, 15);
+                maxItemCount += maxItemCounts[i];
+                checkItemLength++;
+                if (maxItemCount >= 30)
+                {
+                    int deleteCount = maxItemCounts.Max();
+                    maxItemCount -= 30;
+
+                    for (int j = 0; j < maxItemCounts.Length; j++)
+                    {
+                        if (maxItemCounts[j] == deleteCount)
+                        {
+                            if (maxItemCounts[j] > maxItemCount)
+                            {
+                                maxItemCounts[j] -= maxItemCount;
+                            }
+                        }
+                    }
+                    break;
+                }
+                    
+            }
+
+            int[] itemCounts = new int[checkItemLength];
+            for (int i = 0; i < itemCounts.Length; i++)
+            {
+                itemCounts[i] = maxItemCounts[i];
+            }
+
+            // 아이템 선정
+            for (int i = 0; i < itemCounts.Length; i++)
             {
                 int randomIndex = Random.Range(0, randomPrefabIndexes.Count);
                 choseIndex[i] = randomPrefabIndexes[randomIndex];
@@ -77,13 +116,7 @@ public class QuestManager : MonoBehaviourPun
 
             }
 
-            int[] itemCounts = new int[rand];
-            for (int i = 0; i < itemCounts.Length; i++)
-            {
-                itemCounts[i] = Random.Range(1, 15);
-            }
-
-            photonView.RPC(nameof(SetQuest), RpcTarget.AllBuffered, "택배포장", rand, choseIndex, itemCounts);
+            photonView.RPC(nameof(SetQuest), RpcTarget.AllBuffered, "택배포장", itemCounts.Length, choseIndex, itemCounts);
         }
     }
 
@@ -107,56 +140,9 @@ public class QuestManager : MonoBehaviourPun
         UpdateUI();
     }
 
-    public void NewQuest(string questName, GameObject[] itemPrefabs, int[] itemCounts)
-    {
-        /*currentQuest = new Quest(questName, itemPrefabs, itemCounts);
-
-        questsList.Add(currentQuest);
-        UpdateUI();*/
-    }
-
-   /* public void UpdateCount(int x, int y)
-    {
-        Debug.Log("업데이트");
-        photonView.RPC(nameof(UpdateItemCount), RpcTarget.AllBuffered, x, y);
-    }*/
-
-   /* [PunRPC]
-    public void UpdateItemCount(int x, int y)
-    {
-        Debug.Log(currentQuest.currentCount);
-        questsList[x].requiredItems[y].count++;
-        UpdateUI();
-
-        foreach (Quest item in questsList)
-        {
-            for (int i = 0; i < item.requiredItems.Count; i++)
-            {
-
-            }
-        }
-        if (currentQuest.currentCount >= currentQuest.requiredItems.Count)
-        {
-            QuestComplete();
-        }
-    }*/
-
-   /* [PunRPC]
-    public void ExitItemCount()
-    {
-        currentQuest.currentCount--;
-        Debug.Log(currentQuest.currentCount);
-        UpdateUI();
-
-        *//*if (currentQuest.currentCount >= currentQuest.requiredCount)
-        {
-            QuestComplete();
-        }*//*
-    }*/
-
     private void UpdateUI()
     {
-        /*UIManager.Instance.UpdateQuestUI(currentQuest.questName, currentQuest.currentCount, currentQuest.requiredCount);*/
+        UIManager.Instance.UpdateQuestUI(questsList, questsList.Count-1);
     }
 
     public void CountUpdate(int id, int number, int count)
@@ -174,7 +160,7 @@ public class QuestManager : MonoBehaviourPun
         if (questsList[id].requiredItems[number].requiredcount <= 0)
         {
             Debug.Log("납품완료");
-            QuestManager.Instance.SuccessQuest(id, number);
+            SuccessQuest(id, number);
         }
     }
 
@@ -194,9 +180,17 @@ public class QuestManager : MonoBehaviourPun
         {
             for (int i = 0; i < list.requiredItems.Count; i++)
             {
-                //if (list.requiredItems[i].isSuccess)
+                if (list.requiredItems[i].isSuccess == false)
+                    break;
+
+                if (i == list.requiredItems.Count - 1)
+                {
+                    list.isSuccess = true;
+                }
             }
         }
+
+        UpdateUI();
     }
 
     public bool IsQuestComplete()
