@@ -62,7 +62,7 @@ public class QuestManager : MonoBehaviourPun
         maxItemCount = 0;
         if (PhotonNetwork.IsMasterClient)
         {
-            int rand = Random.Range(1, itemPrefabs.Length);
+            int rand = Random.Range(2, 3);
 
             List<int> randomPrefabIndexes = new List<int>();
             int[] choseIndex = new int[rand];
