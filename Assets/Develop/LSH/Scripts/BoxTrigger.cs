@@ -55,7 +55,7 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
             if (taping != null && !isBoxSealed)
             {
                 Debug.Log("상자테이핑시작준비");
-                taping.StartTaping(boxCover);
+                taping.StartTaping(this.boxCover);
             }
         }
     }

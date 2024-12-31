@@ -9,7 +9,9 @@ public class Taping : MonoBehaviour
     [SerializeField] bool isTaping = false;
     [SerializeField] Vector3 firstPosition;
     [SerializeField] Vector3 secendPosition;
-    
+    [SerializeField] GameObject startPoint;
+    [SerializeField] GameObject endPoint;
+
     [SerializeField] bool isCanSealed;
     [SerializeField] bool isStart = false;
     [SerializeField] bool isEnd = false;
@@ -50,33 +52,43 @@ public class Taping : MonoBehaviour
             firstPosition = this.gameObject.transform.position;
             Debug.Log(firstPosition);
             Debug.Log(gameObject.transform.position);
-           // Debug.Log(currentBox.boxCover1.transform.position);
+            Debug.Log(currentBox.rightPoint.transform.position);
 
-            /*if (Vector3.Distance(firstPosition, currentBox.boxCover1.transform.position) < 0.2f)
+            if (Vector3.Distance(firstPosition, currentBox.rightPoint.transform.position) < 0.2f)
             {
                 Debug.Log("첫거리가0.1이하");
                 isStart = true;
-            }*/
+                startPoint = currentBox.rightPoint;
+                endPoint = currentBox.leftPoint;
+            }
+            else if(Vector3.Distance(firstPosition, currentBox.leftPoint.transform.position) < 0.2f)
+            {
+                Debug.Log("첫거리가0.1이하");
+                isStart = true;
+                startPoint = currentBox.leftPoint;
+                endPoint = currentBox.rightPoint;
+            }
         }
         
     }
 
     public void EndPosition()
     {
-        if (isCanSealed)
+        if (isCanSealed && isStart)
         {
             secendPosition = this.gameObject.transform.position;
 
-            /*if (Vector3.Distance(secendPosition, currentBox.boxCover2.transform.position) < 0.2f)
+            if (Vector3.Distance(secendPosition, endPoint.transform.position) < 0.2f)
             {
                 Debug.Log("둘거리가0.1이하");
                 isEnd = true;
             }
 
-            if(isStart && isEnd)
+            if (isStart && isEnd)
             {
-                currentBox.boxTape.SetActive(true);
-            }*/
+                currentBox.tape.SetActive(true);
+                CompleteTaping();
+            }
         }
     }
 
@@ -85,7 +97,7 @@ public class Taping : MonoBehaviour
         isTaping = false;
         if (currentBox != null)
         {
-            //currentBox.SealBox();
+            boxCover.IsPackaged = true;
             Debug.Log($"테이핑 완료: {currentBox.name}");
         }
         currentBox = null;
