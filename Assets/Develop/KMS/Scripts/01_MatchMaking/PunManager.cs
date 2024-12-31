@@ -99,7 +99,7 @@ public class PunManager : MonoBehaviourPunCallbacks
         if (SceneManager.GetActiveScene().name != "03_FusionLobby" && PhotonNetwork.InLobby)
         {
             Debug.Log("로딩 씬으로 이동...");
-            SceneManager.LoadScene("LoadingScene");
+            SceneLoader.LoadSceneWithLoading("03_FusionLobby");
         }
     }
 

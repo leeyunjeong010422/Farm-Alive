@@ -3,7 +3,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PunPlayerSpawn : MonoBehaviourPunCallbacks
+public class PunPlayerSpawn : MonoBehaviour
 {
     [Tooltip("소환할 플레이어 프리팹")]
     public GameObject playerPrefab;
@@ -33,7 +33,7 @@ public class PunPlayerSpawn : MonoBehaviourPunCallbacks
         }
     }
 
-    public override void OnEnable()
+    public void OnEnable()
     {
         SpawnPlayer();
     }
@@ -60,6 +60,27 @@ public class PunPlayerSpawn : MonoBehaviourPunCallbacks
 
     public void ReturnToFusion()
     {
+        ClearPunObject();
+
+        if (PhotonNetwork.InRoom)
+        {
+            Debug.Log("Pun 방 나가기...");
+            PhotonNetwork.LeaveRoom();
+        }
+        else
+        {
+            Debug.LogWarning($"현재 상태에서는 LeaveRoom을 호출할 수 없습니다: {PhotonNetwork.NetworkClientState}");
+        }
+
+
+        Debug.Log("서버 교체 중...");
+        Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}");
+        Debug.Log($"PhotonNetwork.InRoom = {PhotonNetwork.InRoom}");
+        Debug.Log($"PhotonNetwork.NetworkClientState = {PhotonNetwork.NetworkClientState}");
+    }
+
+    public void ClearPunObject()
+    {
         var voiceConnection = FindObjectOfType<Photon.Voice.Unity.VoiceConnection>();
         if (voiceConnection != null)
         {
@@ -85,22 +106,6 @@ public class PunPlayerSpawn : MonoBehaviourPunCallbacks
                 Debug.LogWarning("이 객체는 자신의 것이 아니므로 삭제할 수 없습니다.");
             }
         }
-
-
-        if (PhotonNetwork.InRoom)
-        {
-            Debug.Log("Pun 방 나가기...");
-            PhotonNetwork.LeaveRoom();
-        }
-        else
-        {
-            Debug.LogWarning($"현재 상태에서는 LeaveRoom을 호출할 수 없습니다: {PhotonNetwork.NetworkClientState}");
-        }
-
-
-        Debug.Log("서버 교체 중...");
-        Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}");
-        Debug.Log($"PhotonNetwork.InRoom = {PhotonNetwork.InRoom}");
-        Debug.Log($"PhotonNetwork.NetworkClientState = {PhotonNetwork.NetworkClientState}");
     }
+
 }

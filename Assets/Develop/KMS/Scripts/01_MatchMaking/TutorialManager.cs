@@ -41,6 +41,6 @@ public class TutorialManager : MonoBehaviour
     public void OnTutorialComplete()
     {
         Debug.Log("Loading Scene ¿Ãµø...");
-        SceneManager.LoadScene("LoadingScene");
+        SceneLoader.LoadSceneWithLoading("03_FusionLobby");
     }
 }
