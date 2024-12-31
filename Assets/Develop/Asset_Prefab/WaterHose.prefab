@@ -5722,7 +5722,7 @@ MonoBehaviour:
   m_StartingSingleGrabTransformers: []
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
-  wateringParticle: {fileID: 0}
+  wateringParticle: {fileID: 1753046559550183124}
   _pourRate: 0.1
 --- !u!114 &5532603957521922439
 MonoBehaviour:
