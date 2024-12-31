@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 7193072386913371081}
   m_Layer: 0
   m_Name: CarrotA1_04_pf
-  m_TagString: Untagged
+  m_TagString: Crop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
