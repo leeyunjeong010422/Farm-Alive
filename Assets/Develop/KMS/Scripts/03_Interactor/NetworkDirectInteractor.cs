@@ -23,6 +23,7 @@ public class NetworkDirectInteractor : XRDirectInteractor
 
         // 1. 잡은 플레이어가 잡은 물체의 소유권을 가져오기.
         PhotonView interactablePV = selectInteractable.transform.GetComponent<PhotonView>();
+        if (!interactablePV) return;
         interactablePV.TransferOwnership(PhotonNetwork.LocalPlayer);
         Debug.Log("소유권 변경");
 
@@ -45,6 +46,7 @@ public class NetworkDirectInteractor : XRDirectInteractor
 
         // 1. 놓은 플레이어가 잡은 물체의 소유권을 방장에게 다시 돌려주기.
         PhotonView interactablePV = selectInteractable.transform.GetComponent<PhotonView>();
+        if (!interactablePV) return;
         interactablePV.TransferOwnership(PhotonNetwork.MasterClient);
 
         // 2. 놓은 사실 알리기
