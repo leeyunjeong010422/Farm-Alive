@@ -72,7 +72,7 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
         }
         else if (other.CompareTag("Crop"))
         {
-            XRGrabInteractable grabInteractable = other.GetComponent<XRGrabInteractable>();
+            XRGrabInteractable grabInteractable = other.transform.parent.parent.GetComponent<XRGrabInteractable>();
             if (grabInteractable != null && !grabInteractable.isSelected)
                 return;
 
