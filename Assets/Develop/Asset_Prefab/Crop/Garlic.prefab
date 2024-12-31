@@ -243,6 +243,7 @@ GameObject:
   - component: {fileID: 6381686798323755497}
   - component: {fileID: 473097813858836400}
   - component: {fileID: 6424881197436175813}
+  - component: {fileID: 3675469520256989132}
   m_Layer: 0
   m_Name: Garlic
   m_TagString: Crop
@@ -498,6 +499,21 @@ MonoBehaviour:
   _curMoisture: 3
   _maxNutrient: 3
   _curNutrient: 3
+--- !u!114 &3675469520256989132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2633438804839631412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe162967c6c2aa4c9c062b40d139938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _refillPrefab: {fileID: 2633438804839631412}
+  _maxCount: 10
+  _triggerZoneName: CropRefillZone
 --- !u!1 &3047085672882276293
 GameObject:
   m_ObjectHideFlags: 0

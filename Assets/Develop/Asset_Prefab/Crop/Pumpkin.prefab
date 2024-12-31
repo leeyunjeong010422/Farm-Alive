@@ -340,6 +340,7 @@ GameObject:
   - component: {fileID: 1735490905474878613}
   - component: {fileID: 8527956134235353950}
   - component: {fileID: 8973512707093106083}
+  - component: {fileID: -5271553385700312961}
   m_Layer: 0
   m_Name: Pumpkin
   m_TagString: Crop
@@ -595,6 +596,21 @@ MonoBehaviour:
   _curMoisture: 3
   _maxNutrient: 3
   _curNutrient: 3
+--- !u!114 &-5271553385700312961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5886277867669445981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe162967c6c2aa4c9c062b40d139938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _refillPrefab: {fileID: 5886277867669445981}
+  _maxCount: 10
+  _triggerZoneName: CropRefillZone
 --- !u!1 &6170553595380224054
 GameObject:
   m_ObjectHideFlags: 0

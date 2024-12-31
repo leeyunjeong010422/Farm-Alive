@@ -340,6 +340,7 @@ GameObject:
   - component: {fileID: 8719597174483300193}
   - component: {fileID: 6969811172370055647}
   - component: {fileID: 43662635725963578}
+  - component: {fileID: 9106542585032376436}
   m_Layer: 0
   m_Name: Carrot
   m_TagString: Crop
@@ -595,6 +596,21 @@ MonoBehaviour:
   _curMoisture: 3
   _maxNutrient: 3
   _curNutrient: 3
+--- !u!114 &9106542585032376436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5131138091925150385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe162967c6c2aa4c9c062b40d139938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _refillPrefab: {fileID: 5131138091925150385}
+  _maxCount: 10
+  _triggerZoneName: CropRefillZone
 --- !u!1 &6261804610707412814
 GameObject:
   m_ObjectHideFlags: 0
