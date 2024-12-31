@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class BoxCoverInteractable : XRGrabInteractable
     [SerializeField] private GameObject _body;
 
     [Header("박스 커버")]
-    [Tooltip("RigidBody")]
+    [SerializeField] private PhotonView _photonView;
     [SerializeField] private Rigidbody _rigid;
     [Tooltip("임계 각도 차이")]
     [SerializeField] private float _angleRange;
@@ -40,15 +41,27 @@ public class BoxCoverInteractable : XRGrabInteractable
     {
         base.OnSelectEntered(args);
 
-        _bodyRigid.isKinematic = true;
-
-        _rigid.constraints = RigidbodyConstraints.None;
+        _photonView.RPC(nameof(SelectEnterBox), RpcTarget.All);
     }
 
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
         base.OnSelectExited(args);
 
+        _photonView.RPC(nameof(SelectExitBox), RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void SelectEnterBox()
+    {
+        _bodyRigid.isKinematic = true;
+
+        _rigid.constraints = RigidbodyConstraints.None;
+    }
+
+    [PunRPC]
+    private void SelectExitBox()
+    {
         if (!CheckOpen())
         {
             Close();
