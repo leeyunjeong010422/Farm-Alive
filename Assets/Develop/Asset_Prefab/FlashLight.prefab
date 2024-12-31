@@ -45,9 +45,9 @@ Light:
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 2.1
-  m_Range: 10
-  m_SpotAngle: 62
-  m_InnerSpotAngle: 46.715996
+  m_Range: 30
+  m_SpotAngle: 40
+  m_InnerSpotAngle: 4
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -439,8 +439,7 @@ MonoBehaviour:
   m_StartingSingleGrabTransformers: []
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
-  _lightingIntensity: 1
-  _reflectionIntensity: 1
+  _headLight: {fileID: 0}
 --- !u!1 &3202943891877314862
 GameObject:
   m_ObjectHideFlags: 0
