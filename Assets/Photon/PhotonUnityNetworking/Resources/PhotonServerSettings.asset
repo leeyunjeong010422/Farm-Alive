@@ -79,6 +79,8 @@ MonoBehaviour:
   - CountCheck
   - RPC_PlayParticleEffect
   - RPC_StopParticleEffect
+  - SelectEnterBox
+  - SelectExitBox
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

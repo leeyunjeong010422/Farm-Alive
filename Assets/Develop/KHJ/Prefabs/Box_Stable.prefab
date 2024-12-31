@@ -600,6 +600,7 @@ MonoBehaviour:
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
   _body: {fileID: 3663111138833697998}
+  _photonView: {fileID: 1869330717069160326}
   _rigid: {fileID: 1869330717069160320}
   _angleRange: 0.05
   <IsOpen>k__BackingField: 1
@@ -885,6 +886,7 @@ MonoBehaviour:
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
   _body: {fileID: 3663111138833697998}
+  _photonView: {fileID: 1869330717137060985}
   _rigid: {fileID: 1869330717137060987}
   _angleRange: 0.05
   <IsOpen>k__BackingField: 1
@@ -1170,6 +1172,7 @@ MonoBehaviour:
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
   _body: {fileID: 3663111138833697998}
+  _photonView: {fileID: 1869330717202915066}
   _rigid: {fileID: 1869330717202915071}
   _angleRange: 0.05
   <IsOpen>k__BackingField: 1
@@ -1455,6 +1458,7 @@ MonoBehaviour:
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
   _body: {fileID: 3663111138833697998}
+  _photonView: {fileID: 1869330717643491424}
   _rigid: {fileID: 1869330717643491428}
   _angleRange: 0.05
   <IsOpen>k__BackingField: 1
