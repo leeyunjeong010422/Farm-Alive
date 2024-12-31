@@ -18,6 +18,9 @@ public class MessageDisplayManager : MonoBehaviour
 
     private void Awake()
     {
+        _messageCanvas = GetComponentInChildren<Canvas>();
+        _messageText = GetComponentInChildren<TextMeshProUGUI>();
+
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
