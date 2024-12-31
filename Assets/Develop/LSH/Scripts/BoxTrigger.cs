@@ -32,7 +32,7 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
     {
         if (other.CompareTag("Crop"))
         {
-            PhotonView itemView = other.GetComponent<PhotonView>();
+            PhotonView itemView = other.transform.parent.parent.GetComponent<PhotonView>();
             if (itemView == null || !itemView.IsMine)
                 return;
 
