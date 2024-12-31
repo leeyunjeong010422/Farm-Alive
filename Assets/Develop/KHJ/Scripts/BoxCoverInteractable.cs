@@ -15,6 +15,7 @@ public class BoxCoverInteractable : XRGrabInteractable
     [SerializeField] private float _angleRange;
 
     private Rigidbody _bodyRigid;
+    private BoxCover _bodyBoxCover;
 
     [field: SerializeField]
     public bool IsOpen {  get; private set; }
@@ -24,6 +25,15 @@ public class BoxCoverInteractable : XRGrabInteractable
         base.Awake();
 
         _bodyRigid = _body.GetComponent<Rigidbody>();
+        _bodyBoxCover = _body.GetComponent<BoxCover>();
+    }
+
+    public override bool IsSelectableBy(IXRSelectInteractor interactor)
+    {
+        if (_bodyBoxCover.IsPackaged)
+            return false;
+        else
+            return base.IsSelectableBy(interactor);
     }
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
