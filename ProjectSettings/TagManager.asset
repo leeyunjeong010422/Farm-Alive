@@ -13,6 +13,8 @@ TagManager:
   - Tape
   - Crop
   - Box
+  - CropRefillZone
+  - BoxRefillZone
   layers:
   - Default
   - TransparentFX
