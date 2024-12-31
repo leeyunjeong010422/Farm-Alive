@@ -13,6 +13,8 @@ public class PunManager : MonoBehaviourPunCallbacks
     [Tooltip("테스트를 위한 방 넘버 설정.")]
     public int RoomNum = 0;
 
+    private List<RoomInfo> cachedRoomList = new List<RoomInfo>();
+
     public static PunManager Instance { get; private set; }
 
     private void Awake()
@@ -119,7 +121,8 @@ public class PunManager : MonoBehaviourPunCallbacks
         while (remainingTime > 0)
         {
             // 메시지 갱신
-            MessageDisplayManager.Instance.ShowMessage($"After {(int)remainingTime} seconds, you enter the room.", 1f, 3f);
+            //MessageDisplayManager.Instance.ShowMessage($"After {(int)remainingTime} seconds, you enter the room.", 1f, 3f);
+            Debug.Log($"After {(int)remainingTime} seconds, you enter the room.");
             yield return new WaitForSeconds(1f);
             remainingTime--;
         }
@@ -159,6 +162,8 @@ public class PunManager : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        // 방 목록 업데이트
+        cachedRoomList = roomList;
         foreach (RoomInfo room in roomList)
         {
             Debug.Log($"방 이름: {room.Name}, 플레이어: {room.PlayerCount}/{room.MaxPlayers}");
@@ -179,5 +184,23 @@ public class PunManager : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         Debug.Log("Pun 방을 나갔습니다. 게임서버에서 마스터 서버로 교체!");
+    }
+
+    /// <summary>
+    /// 방 목록 가져오기.
+    /// </summary>
+    /// <returns></returns>
+    public List<RoomInfo> GetRoomList()
+    {
+        return cachedRoomList;
+    }
+
+    /// <summary>
+    /// 방제로 방 입장.
+    /// </summary>
+    /// <param name="roomName"></param>
+    public void JoinRoom(string roomName)
+    {
+        PhotonNetwork.JoinRoom(roomName);
     }
 }

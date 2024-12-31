@@ -46,6 +46,11 @@ public class PunPlayerSpawn : MonoBehaviourPunCallbacks
         if (_player)
         {
             Debug.Log($"플레이어 소환 완료: {FirebaseManager.Instance.GetUserId()}");
+            if (SceneManager.GetActiveScene().name == "04_PunWaitingRoom")
+            {
+                PhotonNetwork.AutomaticallySyncScene = true;
+                Debug.Log("04_대기실 입장으로 맵동기화 진행.");
+            }
         }
         else
         {
