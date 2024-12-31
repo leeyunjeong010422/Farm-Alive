@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 666108191511032858}
   - component: {fileID: 682844278176094580}
   - component: {fileID: 3977344314352464268}
+  - component: {fileID: -747370110027353044}
   m_Layer: 0
   m_Name: Potato
   m_TagString: Crop
@@ -269,6 +270,21 @@ MonoBehaviour:
   _curMoisture: 3
   _maxNutrient: 3
   _curNutrient: 3
+--- !u!114 &-747370110027353044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2660715662239018010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe162967c6c2aa4c9c062b40d139938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _refillPrefab: {fileID: 2660715662239018010}
+  _maxCount: 10
+  _triggerZoneName: CropRefillZone
 --- !u!1 &4212061325008721967
 GameObject:
   m_ObjectHideFlags: 0

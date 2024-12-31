@@ -608,7 +608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fe162967c6c2aa4c9c062b40d139938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _refillPrefab: {fileID: 6295794427390498477}
+  _refillPrefab: {fileID: 6295794427390498477, guid: 3f5fdd966244bc243ad39b2ed373c05a, type: 3}
   _maxCount: 10
   _triggerZoneName: CropRefillZone
 --- !u!1 &7175010474405170043

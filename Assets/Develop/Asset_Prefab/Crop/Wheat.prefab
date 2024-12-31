@@ -208,6 +208,7 @@ GameObject:
   - component: {fileID: 8048971397724316976}
   - component: {fileID: 6534624702015419784}
   - component: {fileID: 1898273102538942858}
+  - component: {fileID: -6251706639403646157}
   m_Layer: 0
   m_Name: Wheat
   m_TagString: Crop
@@ -463,6 +464,21 @@ MonoBehaviour:
   _curMoisture: 3
   _maxNutrient: 3
   _curNutrient: 3
+--- !u!114 &-6251706639403646157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4486989415375140261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe162967c6c2aa4c9c062b40d139938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _refillPrefab: {fileID: 4486989415375140261}
+  _maxCount: 10
+  _triggerZoneName: CropRefillZone
 --- !u!1 &6392974456320302996
 GameObject:
   m_ObjectHideFlags: 0
