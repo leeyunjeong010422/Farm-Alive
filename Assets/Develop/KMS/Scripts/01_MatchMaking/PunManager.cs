@@ -122,7 +122,7 @@ public class PunManager : MonoBehaviourPunCallbacks
         while (remainingTime > 0)
         {
             // 메시지 갱신
-            //MessageDisplayManager.Instance.ShowMessage($"After {(int)remainingTime} seconds, you enter the room.", 1f, 3f);
+            MessageDisplayManager.Instance.ShowMessage($"After {(int)remainingTime} seconds, you enter the room.", 1f, 3f);
             Debug.Log($"After {(int)remainingTime} seconds, you enter the room.");
             yield return new WaitForSeconds(1f);
             remainingTime--;

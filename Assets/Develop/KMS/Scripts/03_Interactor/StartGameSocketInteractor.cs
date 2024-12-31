@@ -15,8 +15,6 @@ public class StartGameSocketInteractor : XRSocketInteractor
         if (PhotonNetwork.IsMasterClient && !isSelected)
         {
             isSelected = true;
-            //PunPlayerSpawn punPlayerSpawn = FindObjectOfType<PunPlayerSpawn>();
-            //punPlayerSpawn.ClearPunObject();
             StartCoroutine(GameCountdown(3f));
         }
     }
@@ -28,7 +26,7 @@ public class StartGameSocketInteractor : XRSocketInteractor
         while (remainingTime > 0)
         {
             // 메시지 갱신
-            //MessageDisplayManager.Instance.ShowMessage($"After {(int)remainingTime} seconds, you enter the room.", 1f, 3f);
+            MessageDisplayManager.Instance.ShowMessage($"After {(int)remainingTime} seconds, you enter the Game.", 1f, 3f);
             Debug.Log($"After {(int)remainingTime} seconds, you enter the room.");
             yield return new WaitForSeconds(1f);
             remainingTime--;
