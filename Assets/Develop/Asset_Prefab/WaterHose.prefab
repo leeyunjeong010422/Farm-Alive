@@ -5159,6 +5159,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1753046559565323816}
+  - component: {fileID: 615959525560637305}
   m_Layer: 0
   m_Name: Models
   m_TagString: Untagged
@@ -5182,6 +5183,19 @@ Transform:
   m_Father: {fileID: 1753046559565318936}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &615959525560637305
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1753046559565054124}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.048211847, y: 0.16265729, z: 0.2639706}
+  m_Center: {x: 0.007394453, y: -0.0710632, z: 0.00072860776}
 --- !u!1 &1753046559565059608
 GameObject:
   m_ObjectHideFlags: 0
@@ -5722,7 +5736,7 @@ MonoBehaviour:
   m_StartingSingleGrabTransformers: []
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
-  wateringParticle: {fileID: 0}
+  wateringParticle: {fileID: 1753046559550183124}
   _pourRate: 0.1
 --- !u!114 &5532603957521922439
 MonoBehaviour:

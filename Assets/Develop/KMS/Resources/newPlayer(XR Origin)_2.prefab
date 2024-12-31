@@ -2104,7 +2104,7 @@ PrefabInstance:
       objectReference: {fileID: 8443358506025383845}
     - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: modelHeight
-      value: 0
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: righttHandIK

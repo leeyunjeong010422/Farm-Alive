@@ -7,6 +7,7 @@ public class VR_MatchMaking : MonoBehaviourPunCallbacks
     public GameObject xrOriginPrefab;       // XR Origin 프리팹
     public GameObject characterPrefab;      // 캐릭터 프리팹
     public GameObject newcharacterPrefab;   // 캐릭터 프리팹
+    public Vector3 PlayerSpawn;
 
     [Tooltip("테스트를 위한 방 넘버 설정.")]
     public int RoomNum = 0;
@@ -101,7 +102,7 @@ public class VR_MatchMaking : MonoBehaviourPunCallbacks
     {
         // TODO: 플레이어 스폰을 담당하는 곳.
         Debug.Log("방에 입장했습니다. XR Origin 및 캐릭터 생성 중...");
-        GameObject Player = PhotonNetwork.Instantiate(newcharacterPrefab.name, Vector3.zero, Quaternion.identity);
+        GameObject Player = PhotonNetwork.Instantiate(newcharacterPrefab.name, PlayerSpawn, Quaternion.identity);
 
         if (Player)
         {

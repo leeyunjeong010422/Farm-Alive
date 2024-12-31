@@ -12,6 +12,7 @@ public class PunManager : MonoBehaviourPunCallbacks
 {
     [Tooltip("테스트를 위한 방 넘버 설정.")]
     public int RoomNum = 0;
+    public int maxPlayer = 5;
 
     private List<RoomInfo> cachedRoomList = new List<RoomInfo>();
 
@@ -129,7 +130,7 @@ public class PunManager : MonoBehaviourPunCallbacks
 
         RoomOptions roomOptions = new RoomOptions
         {
-            MaxPlayers = 2,
+            MaxPlayers = maxPlayer,
             IsVisible = true,
             IsOpen = true
         };
