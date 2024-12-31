@@ -56,6 +56,11 @@ public class GeneratorInteractable : XRBaseInteractable
 
     private void Start()
     {
+        Transform generatorParent = transform.parent;
+        _cordStartPosition = generatorParent.Find("CordStartPosition");
+        _cordEndPosition = generatorParent.Find("CordEndPosition");
+        _cordObject = transform;
+
         rigid = GetComponent<Rigidbody>();
         startPos = transform.position;
 
