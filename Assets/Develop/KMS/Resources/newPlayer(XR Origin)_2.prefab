@@ -2012,6 +2012,10 @@ PrefabInstance:
       propertyPath: _holder
       value: 
       objectReference: {fileID: 576993768803080863}
+    - target: {fileID: 7028858566085525326, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7028858566865378848, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -2096,7 +2100,7 @@ PrefabInstance:
       objectReference: {fileID: 4608710727954308140}
     - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: leftHandIK
@@ -2239,9 +2243,33 @@ PrefabInstance:
       value: 0.69116044
       objectReference: {fileID: 0}
     - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: hmd
+      value: 
+      objectReference: {fileID: 7261734078042661224}
+    - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: headIK
+      value: 
+      objectReference: {fileID: 4608710727954308140}
+    - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: leftHandIK
+      value: 
+      objectReference: {fileID: 8443358506025383845}
+    - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: righttHandIK
+      value: 
+      objectReference: {fileID: 1479064106603695084}
+    - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: leftHandController
+      value: 
+      objectReference: {fileID: 2558512163534156088}
+    - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: rightHandController
+      value: 
+      objectReference: {fileID: 2047899354014995917}
     - target: {fileID: 8945109869299949692, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: m_Controller
       value: 

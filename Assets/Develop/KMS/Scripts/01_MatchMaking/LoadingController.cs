@@ -20,13 +20,20 @@ public class LoadingController : MonoBehaviour
     private void Start()
     {
         loadingUI.SetActive(true);
-        StartCoroutine(LoadFusionLobbyAsync());
+        string targetSceneName = SceneLoader.TargetScene;
+
+        if (string.IsNullOrEmpty(targetSceneName))
+        {
+            Debug.LogError("TargetScene이 설정되지 않았습니다.");
+            return;
+        }
+        StartCoroutine(LoadSceneAsync(targetSceneName));
     }
 
-    private IEnumerator LoadFusionLobbyAsync()
+    private IEnumerator LoadSceneAsync(string targetSceneName)
     {
         // FusionLobby 씬을 비동기로 로드
-        var asyncLoad = SceneManager.LoadSceneAsync("03_FusionLobby");
+        var asyncLoad = SceneManager.LoadSceneAsync(targetSceneName);
 
         // 씬 자동 활성화 비활성화
         asyncLoad.allowSceneActivation = false;
