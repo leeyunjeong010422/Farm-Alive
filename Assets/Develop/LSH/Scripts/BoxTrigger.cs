@@ -86,8 +86,6 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
     [PunRPC]
     private void UpCount(int viewId)
     {
-        if (!PhotonNetwork.IsMasterClient)
-            return;
         PhotonView itemView = PhotonView.Find(viewId);
         if (isFirstItem)
         {
@@ -98,6 +96,7 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
                 {
                     item.requiredcount++;
                     Debug.Log("카운트업");
+                    return;
                 }
                 else
                 {
@@ -117,8 +116,6 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
     [PunRPC]
     private void DownCount(int viewId)
     {
-        if (!PhotonNetwork.IsMasterClient)
-            return;
         PhotonView itemView = PhotonView.Find(viewId);
         if (requiredItems.Count > 0)
         {
