@@ -40,6 +40,8 @@ public class TruckQuest : MonoBehaviour
                     }
                 }
             }
+
+            Destroy(other.gameObject);
         }
     }
 }
