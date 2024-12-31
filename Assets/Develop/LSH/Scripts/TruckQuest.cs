@@ -25,8 +25,8 @@ public class TruckQuest : MonoBehaviour
                     {
                         Debug.Log("이름이 같음");
                         Debug.Log($"{QuestManager.Instance.questsList[truckId].requiredItems[i].requiredcount} <= {item.requiredcount}");
-                        if (QuestManager.Instance.questsList[truckId].requiredItems[i].requiredcount >= 0)
-                            return;
+                        if (QuestManager.Instance.questsList[truckId].requiredItems[i].requiredcount <= 0)
+                            break;
                         Debug.Log("갯수 통과");
 
                         QuestManager.Instance.CountUpdate(truckId, i, item.requiredcount);
