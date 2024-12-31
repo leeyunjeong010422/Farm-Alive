@@ -36,7 +36,7 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
             if (itemView == null || !itemView.IsMine)
                 return;
 
-            XRGrabInteractable grabInteractable = other.GetComponent<XRGrabInteractable>();
+            CropInteractable grabInteractable = other.transform.parent.parent.GetComponent<CropInteractable>();
             if (grabInteractable != null && !grabInteractable.isSelected)
                 return;
 
@@ -72,7 +72,7 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
         }
         else if (other.CompareTag("Crop"))
         {
-            XRGrabInteractable grabInteractable = other.GetComponent<XRGrabInteractable>();
+            CropInteractable grabInteractable = other.transform.parent.parent.GetComponent<CropInteractable>();
             if (grabInteractable != null && !grabInteractable.isSelected)
                 return;
 
