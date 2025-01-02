@@ -183,7 +183,11 @@ public class QuestManager : MonoBehaviourPun
                 listNum++;
             }
 
-            photonView.RPC(nameof(IsQuestComplete), RpcTarget.AllBuffered, listNums);
+            if(listNums.Count != 0)
+            {
+                photonView.RPC(nameof(IsQuestComplete), RpcTarget.AllBuffered, listNums);
+            }
+            
             UpdateUI();
         }
     }
