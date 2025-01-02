@@ -21,7 +21,7 @@ public class Refill : MonoBehaviourPun
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("트리거 탈출");
+        Debug.Log($"{gameObject} <-> {other.gameObject} 트리거 탈출");
         if (other.gameObject.CompareTag(_triggerZoneName))
         {
             Debug.Log("트리거 존 탈출");

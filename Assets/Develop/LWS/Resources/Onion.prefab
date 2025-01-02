@@ -51,9 +51,9 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &6273259321364793926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,19 +257,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee49e885baee7e04ab49091d36bc635c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _GFXs:
-  - {fileID: 2272534226292015864}
-  - {fileID: 3742657854087546692, guid: 4d770b6ca369f5e4280dbdca374da705, type: 3}
-  - {fileID: 7752985146453078044, guid: bf3724c3b3b25214ba4e698775b0d0b9, type: 3}
-  - {fileID: 578880006135441895, guid: 2e4aa91c6c031704192cb0071761b57e, type: 3}
+  _GFXs: []
   _curState: 0
   _digCount: 2
   _growthTime: 10
   _elapsedTime: 0
   _maxMoisture: 3
-  _curMoisture: 3
+  _curMoisture: 0
   _maxNutrient: 3
-  _curNutrient: 3
+  _curNutrient: 0
 --- !u!114 &-4060475432405555179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,6 +281,7 @@ MonoBehaviour:
   _refillPrefab: {fileID: 2272534226292015864, guid: d298dace80e9e0148a4c45fac9ba184a, type: 3}
   _maxCount: 10
   _triggerZoneName: CropRefillZone
+  idList: 
 --- !u!1 &3757432546765258387
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,16 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class TruckQuest : MonoBehaviour
 {
     [SerializeField] int truckId;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         Debug.Log("충돌");
         if (other.CompareTag("Box"))
         {
+            XRGrabInteractable interactable = other.GetComponent<XRGrabInteractable>();
+            if (interactable.isSelected)
+                return;
+
             Debug.Log("박스");
             BoxTrigger boxTrigger = other.GetComponent<BoxTrigger>();
             if (boxTrigger == null)

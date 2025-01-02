@@ -13,7 +13,6 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
 {
     [SerializeField] public GameObject boxTape;
     [SerializeField] public List<RequiredItem> requiredItems;
-    [SerializeField] bool isFirstItem = false;
     [SerializeField] BoxCover boxCover;
     [SerializeField] public List<int> idList = new List<int>();
     [SerializeField] Collider openCollider;
@@ -44,8 +43,6 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
 
             if (idList.Contains(itemView.ViewID))
                 return;
-
-            idList.Add(itemView.ViewID);
 
             CropInteractable grabInteractable = other.transform.parent.parent.GetComponent<CropInteractable>();
             Debug.Log(grabInteractable);
@@ -101,7 +98,13 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
     private void UpCount(int viewId)
     {
         PhotonView itemView = PhotonView.Find(viewId);
-        if (isFirstItem)
+        idList.Add(viewId);
+
+        Rigidbody itemRigid = itemView.GetComponent<Rigidbody>();
+        itemRigid.drag = 10;
+        itemRigid.angularDrag = 1;
+
+        if (requiredItems.Count > 0)
         {
             foreach (QuestManager.RequiredItem item in requiredItems)
             {
@@ -112,23 +115,13 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
                     Debug.Log("카운트업");
                     return;
                 }
-                else
-                {
-                    requiredItems.Add(new RequiredItem(itemView.gameObject, 1));
-                    Debug.Log("추가");
-                }
             }
+            requiredItems.Add(new RequiredItem(itemView.gameObject, 1));
         }
-
-        if (!isFirstItem)
+        else
         {
             requiredItems.Add(new RequiredItem(itemView.gameObject, 1));
-            isFirstItem = true;
         }
-
-        Rigidbody itemRigid = itemView.GetComponent<Rigidbody>();
-        itemRigid.drag = 10;
-        itemRigid.angularDrag = 1;
     }
 
     [PunRPC]
@@ -155,7 +148,6 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
                             Debug.Log($"리스트에서 {itemView} 제거");
                         }
                         requiredItems.RemoveAt(i);
-                        isFirstItem = false;
                     }
                 }
             }

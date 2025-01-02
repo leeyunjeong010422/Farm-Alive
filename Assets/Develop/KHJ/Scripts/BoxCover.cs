@@ -17,4 +17,9 @@ public class BoxCover : MonoBehaviour
 
     public bool IsOpen {  get { return _front.IsOpen || _back.IsOpen || _left.IsOpen || _right.IsOpen; } }
     public bool IsPackaged { get; set; }
+
+    private void Awake()
+    {
+        IsPackaged = false;
+    }
 }
