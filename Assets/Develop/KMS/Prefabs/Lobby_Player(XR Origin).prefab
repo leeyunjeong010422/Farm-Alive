@@ -1871,10 +1871,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8443358506025383845}
     - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
-      propertyPath: cameraOffset
-      value: 
-      objectReference: {fileID: 5816299683468540763}
-    - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: righttHandIK
       value: 
       objectReference: {fileID: 1479064106603695084}

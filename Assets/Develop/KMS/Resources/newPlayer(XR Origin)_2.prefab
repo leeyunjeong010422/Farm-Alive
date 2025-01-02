@@ -988,8 +988,8 @@ MonoBehaviour:
   m_GroupName: Left
   m_InteractionManager: {fileID: 0}
   m_StartingGroupMembers:
-  - {fileID: 3915977995224929322}
   - {fileID: 8011763247794510613}
+  - {fileID: 3915977995224929322}
   m_StartingInteractionOverridesMap:
   - groupMember: {fileID: 8011763247794510613}
     overrideGroupMembers:
@@ -1755,8 +1755,8 @@ MonoBehaviour:
   m_GroupName: Right
   m_InteractionManager: {fileID: 0}
   m_StartingGroupMembers:
-  - {fileID: 8135551747400908000}
   - {fileID: 8515143821666998839}
+  - {fileID: 8135551747400908000}
   m_StartingInteractionOverridesMap:
   - groupMember: {fileID: 8515143821666998839}
     overrideGroupMembers:
@@ -1991,7 +1991,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8598080413633301849}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.4, z: 0}
+  m_LocalPosition: {x: 0, y: 1.1176, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2100,7 +2100,7 @@ PrefabInstance:
       objectReference: {fileID: 4608710727954308140}
     - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: leftHandIK
@@ -2108,20 +2108,12 @@ PrefabInstance:
       objectReference: {fileID: 8443358506025383845}
     - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: modelHeight
-      value: 4.4
+      value: 1.5
       objectReference: {fileID: 0}
-    - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
-      propertyPath: cameraOffset
-      value: 
-      objectReference: {fileID: 5816299683468540763}
     - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: righttHandIK
       value: 
       objectReference: {fileID: 1479064106603695084}
-    - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
-      propertyPath: heightAdjustSpeed
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: leftHandController
       value: 
@@ -2260,7 +2252,7 @@ PrefabInstance:
       objectReference: {fileID: 4608710727954308140}
     - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: leftHandIK
@@ -2270,10 +2262,6 @@ PrefabInstance:
       propertyPath: modelHeight
       value: 4.4
       objectReference: {fileID: 0}
-    - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
-      propertyPath: cameraOffset
-      value: 
-      objectReference: {fileID: 5816299683468540763}
     - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: righttHandIK
       value: 
