@@ -57,7 +57,7 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
             Debug.Log("종료");
         }
 
-        else if (!boxCover.IsPackaged && other.CompareTag("Tape"))
+        else if (/*!boxCover.IsPackaged &&*/ other.CompareTag("Tape"))
         {
             Debug.Log("포장시작");
             if (boxCover.IsOpen)

@@ -39,19 +39,27 @@ MonoBehaviour:
   - ChangeState
   - ClickRpc
   - CloseAllShutters
+  - CompleteBox
   - ConnectHose
+  - CountCheck
   - DestroyRpc
   - DestroySpaceship
+  - DownCount
   - Fire
   - HeresWhy
-  - NextQuest
+  - IsQuestComplete
   - OpenAllShutters
   - QuestStart
   - RespawnSpaceship
   - RPC_OnButtonPressed
   - RPC_OnButtonReleased
+  - RPC_PlayParticleEffect
   - RPC_PlusRepairCount
+  - RPC_StopParticleEffect
   - SelectCubeRPC
+  - SelectEnterBox
+  - SelectExitBox
+  - SetQuest
   - StartFollowingRPC
   - StartWater
   - StopFollowingRPC
@@ -59,30 +67,18 @@ MonoBehaviour:
   - SyncAnimationRPC
   - SyncDestination
   - SyncDig
+  - SyncEnableRepair
   - SyncIKRPC
-  - SyncSelect
-  - UpdateItemCount
-  - SyncTransform
   - SyncKnobState
   - SyncLeverState
   - SyncPullState
-  - SyncTriggerWarning
   - SyncRecoverFromBlackout
-  - SyncTriggerBlackout
+  - SyncSelect
   - SyncSuccessGeneratorStart
-  - SyncEnableRepair
-  - ExitItemCount
-  - SetQuest
-  - SuccessCheck
-  - DownCount
+  - SyncTransform
+  - SyncTriggerBlackout
+  - SyncTriggerWarning
   - UpCount
-  - CountCheck
-  - RPC_PlayParticleEffect
-  - RPC_StopParticleEffect
-  - SelectEnterBox
-  - SelectExitBox
-  - IsQuestComplete
-  - CompleteBox
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
