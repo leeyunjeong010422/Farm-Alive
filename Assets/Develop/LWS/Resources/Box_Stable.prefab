@@ -141,7 +141,7 @@ Transform:
   m_GameObject: {fileID: 1681703920980649739}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 53.661877, y: 5.17, z: 18.480003}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1214887450213267565}
@@ -395,10 +395,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boxTape: {fileID: 0}
   requiredItems: []
-  isBoxClose: 0
-  isBoxSealed: 0
   isFirstItem: 0
   boxCover: {fileID: 0}
+  idList: 
+  openCollider: {fileID: 0}
+  closedCollider: {fileID: 0}
 --- !u!65 &7737841094017082436
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -410,8 +411,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.45, y: 0.28, z: 0.35}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.45, y: 0.35, z: 0.35}
+  m_Center: {x: 0, y: 0.04, z: 0}
 --- !u!114 &1937337343425682673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,7 +426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _refillPrefab: {fileID: 3663111138833697998, guid: 012a45eec4aa8514c82500dadae5f273, type: 3}
-  _maxCount: 10
+  _maxCount: 100
   _triggerZoneName: BoxRefillZone
   idList: 
 --- !u!1 &1781145530659122752
@@ -2632,7 +2633,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8593060146301090515}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.28, z: 0}
   m_LocalScale: {x: 0.45, y: 0.04, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

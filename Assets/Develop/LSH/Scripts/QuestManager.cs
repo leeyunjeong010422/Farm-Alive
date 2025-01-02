@@ -2,8 +2,8 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.UI;
 using static QuestManager;
 
@@ -62,6 +62,7 @@ public class QuestManager : MonoBehaviourPun
         maxItemCount = 0;
         if (PhotonNetwork.IsMasterClient)
         {
+            //int rand = Random.Range(1, itemPrefabs.Length);
             int rand = Random.Range(2, 3);
 
             List<int> randomPrefabIndexes = new List<int>();
@@ -78,6 +79,7 @@ public class QuestManager : MonoBehaviourPun
             int[] maxItemCounts = new int[rand];
             for (int i = 0; i < maxItemCounts.Length; i++)
             {
+                //maxItemCounts[i] = Random.Range(1, 15);
                 maxItemCounts[i] = 1;
                 maxItemCount += maxItemCounts[i];
                 checkItemLength++;
@@ -160,42 +162,52 @@ public class QuestManager : MonoBehaviourPun
         if (questsList[id].requiredItems[number].requiredcount <= 0)
         {
             Debug.Log("납품완료");
-            SuccessQuest(id, number);
-        }
-    }
+            //SuccessQuest(id, number);
+            Debug.Log("퀘스트 성공 여부 동기화!");
+            questsList[id].requiredItems[number].isSuccess = true;
 
-    public void SuccessQuest(int id, int number)
-    {
-        Debug.Log("퀘스트 완료!");
-        photonView.RPC(nameof(SuccessCheck), RpcTarget.AllBuffered, id, number);
+            int listNum = 0;
+            List<int> listNums = new List<int>();
+            foreach (QuestManager.Quest list in questsList)
+            {
+                for (int i = 0; i < list.requiredItems.Count; i++)
+                {
+                    if (list.requiredItems[i].isSuccess == false)
+                        break;
+
+                    if (i == list.requiredItems.Count - 1)
+                    {
+                        Debug.Log("퀘스트 완료");
+                        list.isSuccess = true;
+                        listNums.Add(listNum);
+                    }
+                }
+                listNum++;
+            }
+
+            if (listNums.Count != 0)
+            {
+                int[] listArray = listNums.ToArray();
+                photonView.RPC(nameof(IsQuestComplete), RpcTarget.AllBuffered, listArray);
+            }
+
+            UpdateUI();
+        }
     }
 
     [PunRPC]
-    private void SuccessCheck(int id, int number)
+    public void IsQuestComplete(int[] listNums)
     {
-        Debug.Log("퀘스트 성공 여부 동기화!");
-        questsList[id].requiredItems[number].isSuccess = true;
-
-        foreach (QuestManager.Quest list in questsList)
+        for (int i = 0; i < listNums.Length; i++)
         {
-            for (int i = 0; i < list.requiredItems.Count; i++)
-            {
-                if (list.requiredItems[i].isSuccess == false)
-                    break;
-
-                if (i == list.requiredItems.Count - 1)
-                {
-                    list.isSuccess = true;
-                }
-            }
+            questsList.RemoveAt(listNums[i]);
+        }
+        
+        if(questsList.Count == 0)
+        {
+            SceneLoader.LoadSceneWithLoading("03_FusionLobby");
         }
 
         UpdateUI();
-    }
-
-    public bool IsQuestComplete()
-    {
-        /*return currentQuest != null && currentQuest.currentCount >= currentQuest.requiredCount;*/
-        return true;
     }
 }
