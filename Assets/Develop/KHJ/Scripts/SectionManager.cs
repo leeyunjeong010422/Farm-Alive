@@ -111,13 +111,15 @@ public class SectionManager : MonoBehaviour
     private IEnumerator PlayParticleRoutine(ParticleSystem particle, bool isNutrient)
     {
         var main = particle.main;
-        // 원래 색 저장
-        var originColor = main.startColor;
 
         // isNutrient인 경우만 색을 초록색으로 변경
         if (isNutrient)
         {
             main.startColor = Color.green;
+        }
+        else
+        {
+            main.startColor = Color.white;
         }
 
         particle.Play();
@@ -125,11 +127,5 @@ public class SectionManager : MonoBehaviour
         yield return new WaitForSeconds(5f);
 
         particle.Stop();
-
-        // 비료 였다면 색 원상복구
-        if (isNutrient)
-        {
-            main.startColor = originColor;
-        }
     }
 }
