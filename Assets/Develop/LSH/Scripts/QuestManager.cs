@@ -192,7 +192,7 @@ public class QuestManager : MonoBehaviourPun
                 for (int i = 0; i < listArray.Length; i++)
                 {
                 }
-                photonView.RPC(nameof(IsQuestComplete), RpcTarget.AllBuffered, listArray);
+                photonView.RPC(nameof(IsQuestComplete), RpcTarget.All, listArray);
             }
 
             UpdateUI();
@@ -202,6 +202,7 @@ public class QuestManager : MonoBehaviourPun
     [PunRPC]
     public void IsQuestComplete(int[] listNums)
     {
+
         for (int i = 0; i < listNums.Length; i++)
         {
             questsList.RemoveAt(listNums[i]);
