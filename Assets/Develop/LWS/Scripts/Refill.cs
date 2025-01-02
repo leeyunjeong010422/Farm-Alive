@@ -21,7 +21,7 @@ public class Refill : MonoBehaviourPun
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log($"{gameObject} <-> {other.gameObject} 트리거 탈출");
+        //Debug.Log($"{gameObject} <-> {other.gameObject} 트리거 탈출");
         if (other.gameObject.CompareTag(_triggerZoneName))
         {
             Debug.Log("트리거 존 탈출");
@@ -61,7 +61,7 @@ public class Refill : MonoBehaviourPun
         if (idList.Contains(objectID.ViewID))
         {
             idList.Remove(objectID.ViewID);
-            Debug.Log($"리스트에서 {objectID} 제거");
+            //Debug.Log($"리스트에서 {objectID} 제거");
         }
     }
 }
