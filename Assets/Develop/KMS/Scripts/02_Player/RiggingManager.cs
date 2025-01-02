@@ -42,14 +42,14 @@ public class RiggingManager : MonoBehaviourPun
             // 로컬 플레이어의 동작 처리
             MappingHandTranform(leftHandIK, leftHandController, true);
             MappingHandTranform(righttHandIK, rightHandController, false);
-            MappingBodyTransform(headIK, hmd);
+            MappingBodyTransform(hmd);
             MappingHeadTransform(headIK, hmd);
 
             // 동기화된 위치 및 회전을 RPC로 전송
-            photonView.RPC("SyncIKRPC", RpcTarget.Others, 
-                leftHandIK.position, leftHandIK.rotation,
-                righttHandIK.position, righttHandIK.rotation, 
-                headIK.position, headIK.rotation);
+            photonView.RPC("SyncIKRPC", RpcTarget.Others,
+                leftHandIK.localPosition, leftHandIK.localRotation,
+                righttHandIK.localPosition, righttHandIK.localRotation,
+                headIK.localPosition, headIK.localRotation);
         }
     }
 
@@ -86,7 +86,14 @@ public class RiggingManager : MonoBehaviourPun
         var offset = isLeft ? leftOffset : rightOffset;
 
         // 컨트롤러 위치 값. [0]
-        ik.position = controller.TransformPoint(offset[0]);
+        Vector3 scaleAdjustment = new Vector3(
+            1f / controller.lossyScale.x,
+            1f / controller.lossyScale.y,
+            1f / controller.lossyScale.z
+        );
+
+        Vector3 scaledOffset = Vector3.Scale(offset[0], scaleAdjustment);
+        ik.position = controller.TransformPoint(scaledOffset);
         // 컨트롤러 회전 값. [1]
         ik.rotation = controller.rotation * Quaternion.Euler(offset[1]);
     }
@@ -96,9 +103,12 @@ public class RiggingManager : MonoBehaviourPun
     /// </summary>
     /// <param name="ik"></param>
     /// <param name="hmd"></param>
-    private void MappingBodyTransform(Transform ik, Transform hmd)
+    private void MappingBodyTransform(Transform hmd)
     {
-        this.transform.position = new Vector3(hmd.position.x, modelHeight, hmd.position.z);
+        // 스케일에 따른 높이 보정
+        float adjustedHeight = modelHeight / hmd.lossyScale.y;
+
+        this.transform.position = new Vector3(hmd.position.x, hmd.position.y - adjustedHeight, hmd.position.z);
         float yaw = hmd.eulerAngles.y;
         var targetRotation = new Vector3(this.transform.eulerAngles.x, yaw, this.transform.eulerAngles.z);
         this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.Euler(targetRotation), smoothValue);
@@ -125,16 +135,17 @@ public class RiggingManager : MonoBehaviourPun
     /// <param name="headPos"></param>
     /// <param name="headRot"></param>
     [PunRPC]
-    private void SyncIKRPC(Vector3 leftHandPos, Quaternion leftHandRot,
-        Vector3 rightHandPos, Quaternion rightHandRot, Vector3 headPos, Quaternion headRot)
+    private void SyncIKRPC(Vector3 leftHandLocalPos, Quaternion leftHandLocalRot,
+    Vector3 rightHandLocalPos, Quaternion rightHandLocalRot,
+    Vector3 headLocalPos, Quaternion headLocalRot)
     {
-        leftHandIK.position = leftHandPos;
-        leftHandIK.rotation = leftHandRot;
+        leftHandIK.localPosition = leftHandLocalPos;
+        leftHandIK.localRotation = leftHandLocalRot;
 
-        righttHandIK.position = rightHandPos;
-        righttHandIK.rotation = rightHandRot;
+        righttHandIK.localPosition = rightHandLocalPos;
+        righttHandIK.localRotation = rightHandLocalRot;
 
-        headIK.position = headPos;
-        headIK.rotation = headRot;
+        headIK.localPosition = headLocalPos;
+        headIK.localRotation = headLocalRot;
     }
 }
