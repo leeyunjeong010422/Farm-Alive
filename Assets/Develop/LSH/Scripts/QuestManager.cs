@@ -100,7 +100,7 @@ public class QuestManager : MonoBehaviourPun
                     }
                     break;
                 }
-                    
+
             }
 
             int[] itemCounts = new int[checkItemLength];
@@ -123,7 +123,7 @@ public class QuestManager : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void SetQuest(string questName,int count, int[] itemIndexes, int[] itemCounts)
+    public void SetQuest(string questName, int count, int[] itemIndexes, int[] itemCounts)
     {
         currentQuest = new Quest
         {
@@ -133,7 +133,7 @@ public class QuestManager : MonoBehaviourPun
 
         for (int i = 0; i < count; i++)
         {
-            GameObject itemPrefab = itemPrefabs[itemIndexes[i]];            
+            GameObject itemPrefab = itemPrefabs[itemIndexes[i]];
             int requiredCount = itemCounts[i];
             currentQuest.requiredItems.Add(new RequiredItem(itemPrefab, requiredCount));
         }
@@ -144,7 +144,7 @@ public class QuestManager : MonoBehaviourPun
 
     private void UpdateUI()
     {
-        UIManager.Instance.UpdateQuestUI(questsList, questsList.Count-1);
+        UIManager.Instance.UpdateQuestUI(questsList, questsList.Count - 1);
     }
 
     public void CountUpdate(int id, int number, int count)
@@ -189,10 +189,7 @@ public class QuestManager : MonoBehaviourPun
             {
                 int[] listArray = listNums.ToArray();
 
-                for (int i = 0; i < listArray.Length; i++)
-                {
-                }
-                photonView.RPC(nameof(IsQuestComplete), RpcTarget.All, listArray);
+                photonView.RPC(nameof(IsQuestComplete), RpcTarget.AllBuffered, listArray);
             }
 
             UpdateUI();
@@ -202,13 +199,15 @@ public class QuestManager : MonoBehaviourPun
     [PunRPC]
     public void IsQuestComplete(int[] listNums)
     {
-
-        for (int i = 0; i < listNums.Length; i++)
+        if (PhotonNetwork.IsMasterClient)
         {
-            questsList.RemoveAt(listNums[i]);
+            for (int i = 0; i < listNums.Length; i++)
+            {
+                questsList.RemoveAt(listNums[i]);
+            }
         }
-        
-        if(questsList.Count == 0)
+
+        if (questsList.Count == 0)
         {
             GameSpawn gameSpawn = FindObjectOfType<GameSpawn>();
             gameSpawn.ReturnToFusion();
