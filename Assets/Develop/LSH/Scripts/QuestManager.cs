@@ -38,7 +38,6 @@ public class QuestManager : MonoBehaviourPun
     [SerializeField] public GameObject[] itemPrefabs;
     [SerializeField] public Quest currentQuest;
     [SerializeField] public int maxItemCount;
-    [SerializeField] List<int> listNums = new List<int>();
 
     private void Awake()
     {
@@ -183,7 +182,7 @@ public class QuestManager : MonoBehaviourPun
         //questsList[id].requiredItems[number].isSuccess = true;
 
         int listNum = 0;
-
+        List<int> listNums = new List<int>();
         foreach (QuestManager.Quest list in questsList)
         {
             for (int i = 0; i < list.requiredItems.Count; i++)
