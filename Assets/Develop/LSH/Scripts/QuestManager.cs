@@ -223,8 +223,8 @@ public class QuestManager : MonoBehaviourPun
 
         if (questsList.Count == 0)
         {
-            //GameSpawn gameSpawn = FindObjectOfType<GameSpawn>();
-            //gameSpawn.ReturnToFusion();
+            GameSpawn gameSpawn = FindObjectOfType<GameSpawn>();
+            gameSpawn.ReturnToFusion();
             //SceneLoader.LoadSceneWithLoading("03_FusionLobby");
         }
 
