@@ -147,24 +147,39 @@ public class QuestManager : MonoBehaviourPun
         UIManager.Instance.UpdateQuestUI(questsList, questsList.Count - 1);
     }
 
-    public void CountUpdate(int id, int number, int count)
+    public void CountUpdate(int[] id, int[] number, int[] count)
     {
         Debug.Log("카운트 업데이트");
         photonView.RPC(nameof(CountCheck), RpcTarget.AllBuffered, id, number, count);
     }
 
     [PunRPC]
-    private void CountCheck(int id, int number, int count)
+    private void CountCheck(int[] id, int[] number, int[] count)
     {
         Debug.Log("카운트 감소");
-        questsList[id].requiredItems[number].requiredcount -= count;
 
-        if (questsList[id].requiredItems[number].requiredcount <= 0)
+        for (int i = 0; i < id.Length; i++)
         {
-            Debug.Log("납품완료");
+            questsList[id[i]].requiredItems[number[i]].requiredcount -= count[i];
+        }
+        //questsList[id].requiredItems[number].requiredcount -= count;
+
+        for (int i = 0; i < id.Length; i++)
+        {
+            if (questsList[id[i]].requiredItems[number[i]].requiredcount <= 0)
+            {
+                Debug.Log("납품완료");
+                Debug.Log("퀘스트 성공 여부 동기화!");
+                questsList[id[i]].requiredItems[number[i]].isSuccess = true;
+            }
+        }
+
+       /* if (questsList[id].requiredItems[number].requiredcount <= 0)
+        {
+            */
             //SuccessQuest(id, number);
-            Debug.Log("퀘스트 성공 여부 동기화!");
-            questsList[id].requiredItems[number].isSuccess = true;
+            
+            //questsList[id].requiredItems[number].isSuccess = true;
 
             int listNum = 0;
             List<int> listNums = new List<int>();
@@ -193,7 +208,7 @@ public class QuestManager : MonoBehaviourPun
             }
 
             UpdateUI();
-        }
+      //  }
     }
 
     [PunRPC]

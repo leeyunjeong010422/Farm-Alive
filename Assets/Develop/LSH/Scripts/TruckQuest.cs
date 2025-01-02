@@ -25,6 +25,10 @@ public class TruckQuest : MonoBehaviour
                 if (boxTrigger == null)
                     return;
 
+                List<int> truckIds = new List<int>();
+                List<int> itemIndexes = new List<int>();
+                List<int> requiredCounts = new List<int>();
+
                 foreach (QuestManager.RequiredItem item in boxTrigger.requiredItems)
                 {
                     for (int i = 0; i < QuestManager.Instance.questsList[truckId].requiredItems.Count; i++)
@@ -37,7 +41,9 @@ public class TruckQuest : MonoBehaviour
                                 break;
                             Debug.Log("°¹¼ö Åë°ú");
 
-                            QuestManager.Instance.CountUpdate(truckId, i, item.requiredcount);
+                            truckIds.Add(truckId);
+                            itemIndexes.Add(i);
+                            requiredCounts.Add(item.requiredcount);
                             break;
                             /*if (item.requiredcount == QuestManager.Instance.questsList[truckId].requiredItems[i].requiredcount)
                             {
@@ -48,6 +54,11 @@ public class TruckQuest : MonoBehaviour
                         }
                     }
                 }
+
+                int[] truckIdArray = truckIds.ToArray();
+                int[] itemIndexArray = itemIndexes.ToArray();
+                int[] requiredCountArray = requiredCounts.ToArray();
+                QuestManager.Instance.CountUpdate(truckIdArray, itemIndexArray, requiredCountArray);
 
                 /*for (int i = 0; i < boxTrigger.requiredItems.Count; i++)
                 {
