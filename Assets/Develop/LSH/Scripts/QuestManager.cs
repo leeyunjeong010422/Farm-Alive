@@ -199,12 +199,9 @@ public class QuestManager : MonoBehaviourPun
     [PunRPC]
     public void IsQuestComplete(int[] listNums)
     {
-        if (PhotonNetwork.IsMasterClient)
+        for (int i = listNums.Length - 1; i >= 0; i--)
         {
-            for (int i = 0; i < listNums.Length; i++)
-            {
-                questsList.RemoveAt(listNums[i]);
-            }
+            questsList.RemoveAt(listNums[i]);
         }
 
         if (questsList.Count == 0)
