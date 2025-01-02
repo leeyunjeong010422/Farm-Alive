@@ -46,16 +46,16 @@ public class TruckQuest : MonoBehaviour
                 }
             }*/
 
-            for (int i = 0; i < boxTrigger.requiredItems.Count; i++)
+            for (int j = 0; j < boxTrigger.requiredItems.Count; j++)
             {
-                QuestManager.RequiredItem item = boxTrigger.requiredItems[i];
-                for (int j = 0; j < QuestManager.Instance.questsList[truckId].requiredItems.Count; j++)
+                var item = boxTrigger.requiredItems[j];
+                for (int i = 0; i < QuestManager.Instance.questsList[truckId].requiredItems.Count; i++)
                 {
-                    if (item.itemPrefab.name == QuestManager.Instance.questsList[truckId].requiredItems[j].itemPrefab.name)
+                    if (item.itemPrefab.name == QuestManager.Instance.questsList[truckId].requiredItems[i].itemPrefab.name)
                     {
                         Debug.Log("이름이 같음");
-                        Debug.Log($"{QuestManager.Instance.questsList[truckId].requiredItems[j].requiredcount} <= {item.requiredcount}");
-                        if (QuestManager.Instance.questsList[truckId].requiredItems[j].requiredcount <= 0)
+                        Debug.Log($"{QuestManager.Instance.questsList[truckId].requiredItems[i].requiredcount} <= {item.requiredcount}");
+                        if (QuestManager.Instance.questsList[truckId].requiredItems[i].requiredcount <= 0)
                             break;
                         Debug.Log("갯수 통과");
 
