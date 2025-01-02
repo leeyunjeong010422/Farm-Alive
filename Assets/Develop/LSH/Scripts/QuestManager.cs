@@ -188,6 +188,10 @@ public class QuestManager : MonoBehaviourPun
             if (listNums.Count != 0)
             {
                 int[] listArray = listNums.ToArray();
+
+                for (int i = 0; i < listArray.Length; i++)
+                {
+                }
                 photonView.RPC(nameof(IsQuestComplete), RpcTarget.AllBuffered, listArray);
             }
 
