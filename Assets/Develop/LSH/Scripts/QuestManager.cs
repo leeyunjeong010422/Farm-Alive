@@ -166,6 +166,7 @@ public class QuestManager : MonoBehaviourPun
             questsList[id].requiredItems[number].isSuccess = true;
 
             int listNum = 0;
+            List<int> listNums = new List<int>();
             foreach (QuestManager.Quest list in questsList)
             {
                 for (int i = 0; i < list.requiredItems.Count; i++)
@@ -176,12 +177,13 @@ public class QuestManager : MonoBehaviourPun
                     if (i == list.requiredItems.Count - 1)
                     {
                         list.isSuccess = true;
-                        photonView.RPC(nameof(IsQuestComplete), RpcTarget.AllBuffered, listNum);
+                        listNums.Add(listNum);
                     }
                 }
                 listNum++;
             }
 
+            photonView.RPC(nameof(IsQuestComplete), RpcTarget.AllBuffered, listNums);
             UpdateUI();
         }
     }
@@ -216,9 +218,18 @@ public class QuestManager : MonoBehaviourPun
     }*/
 
     [PunRPC]
-    public void IsQuestComplete(int listNum)
+    public void IsQuestComplete(List<int> listNums)
     {
-        questsList.RemoveAt(listNum);
+        for (int i = 0; i < listNums.Count; i++)
+        {
+            questsList.RemoveAt(listNums[i]);
+        }
+        
+        if(questsList.Count == 0)
+        {
+            SceneLoader.LoadSceneWithLoading("03_FusionLobby");
+        }
+
         UpdateUI();
     }
 }
