@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR.Content.Interaction;
 
-public class Taping : MonoBehaviour
+public class Taping : MonoBehaviourPun
 {
     [SerializeField] BoxCover boxCover, currentBox;
     [SerializeField] BoxTrigger boxTrigger;
@@ -91,8 +91,10 @@ public class Taping : MonoBehaviour
 
             if (isStart && isEnd)
             {
-                currentBox.tape.SetActive(true);
-                CompleteTaping();
+                //currentBox.tape.SetActive(true);
+                //CompleteTaping();
+
+                photonView.RPC(nameof(CompleteBox), RpcTarget.All);
             }
         }
     }
@@ -112,5 +114,15 @@ public class Taping : MonoBehaviour
             Debug.Log($"테이핑 완료: {currentBox.name}");
         }
         currentBox = null;
+    }
+
+    [PunRPC]
+    private void CompleteBox()
+    {
+        if (currentBox != null)
+        {
+            currentBox.tape.SetActive(true);
+            CompleteTaping();
+        }
     }
 }

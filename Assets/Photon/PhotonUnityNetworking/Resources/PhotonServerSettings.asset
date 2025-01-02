@@ -82,6 +82,7 @@ MonoBehaviour:
   - SelectEnterBox
   - SelectExitBox
   - IsQuestComplete
+  - CompleteBox
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
