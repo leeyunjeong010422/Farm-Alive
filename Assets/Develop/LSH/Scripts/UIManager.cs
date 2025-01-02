@@ -17,6 +17,9 @@ public class UIManager : MonoBehaviour
 
     public void UpdateQuestUI(List<QuestManager.Quest> questList, int number)
     {
+        if (number < 0 || number >= questList.Count)
+            return;
+
         string displayText = "";
 
         QuestManager.Quest quest = questList[number];
