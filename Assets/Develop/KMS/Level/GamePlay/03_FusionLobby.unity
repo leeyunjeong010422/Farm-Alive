@@ -2061,7 +2061,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RoomNum: 99999
-  maxPlayer: 5
+  maxPlayer: 2
 --- !u!4 &1775972423
 Transform:
   m_ObjectHideFlags: 0

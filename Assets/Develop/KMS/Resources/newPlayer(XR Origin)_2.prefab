@@ -2100,7 +2100,7 @@ PrefabInstance:
       objectReference: {fileID: 4608710727954308140}
     - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: leftHandIK
@@ -2108,7 +2108,7 @@ PrefabInstance:
       objectReference: {fileID: 8443358506025383845}
     - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: modelHeight
-      value: 1.5
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 610904508181947817, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: righttHandIK
@@ -2252,7 +2252,7 @@ PrefabInstance:
       objectReference: {fileID: 4608710727954308140}
     - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: leftHandIK
