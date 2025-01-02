@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.UI;
 using static QuestManager;
 
@@ -176,6 +177,7 @@ public class QuestManager : MonoBehaviourPun
 
                     if (i == list.requiredItems.Count - 1)
                     {
+                        Debug.Log("퀘스트 완료");
                         list.isSuccess = true;
                         listNums.Add(listNum);
                     }
@@ -183,48 +185,20 @@ public class QuestManager : MonoBehaviourPun
                 listNum++;
             }
 
-            if(listNums.Count != 0)
+            if (listNums.Count != 0)
             {
-                photonView.RPC(nameof(IsQuestComplete), RpcTarget.AllBuffered, listNums);
+                int[] listArray = listNums.ToArray();
+                photonView.RPC(nameof(IsQuestComplete), RpcTarget.AllBuffered, listArray);
             }
-            
+
             UpdateUI();
         }
     }
 
-    /*public void SuccessQuest(int id, int number)
-    {
-        Debug.Log("퀘스트 완료!");
-        photonView.RPC(nameof(SuccessCheck), RpcTarget.AllBuffered, id, number);
-    }
-
     [PunRPC]
-    private void SuccessCheck(int id, int number)
+    public void IsQuestComplete(int[] listNums)
     {
-        Debug.Log("퀘스트 성공 여부 동기화!");
-        questsList[id].requiredItems[number].isSuccess = true;
-
-        foreach (QuestManager.Quest list in questsList)
-        {
-            for (int i = 0; i < list.requiredItems.Count; i++)
-            {
-                if (list.requiredItems[i].isSuccess == false)
-                    break;
-
-                if (i == list.requiredItems.Count - 1)
-                {
-                    list.isSuccess = true;
-                }
-            }
-        }
-
-        UpdateUI();
-    }*/
-
-    [PunRPC]
-    public void IsQuestComplete(List<int> listNums)
-    {
-        for (int i = 0; i < listNums.Count; i++)
+        for (int i = 0; i < listNums.Length; i++)
         {
             questsList.RemoveAt(listNums[i]);
         }

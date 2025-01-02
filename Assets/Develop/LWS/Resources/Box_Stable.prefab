@@ -395,11 +395,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boxTape: {fileID: 0}
   requiredItems: []
-  isBoxClose: 0
-  isBoxSealed: 0
   isFirstItem: 0
   boxCover: {fileID: 0}
   idList: 
+  openCollider: {fileID: 0}
+  closedCollider: {fileID: 0}
 --- !u!65 &7737841094017082436
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -411,8 +411,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.45, y: 0.28, z: 0.35}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.45, y: 0.35, z: 0.35}
+  m_Center: {x: 0, y: 0.04, z: 0}
 --- !u!114 &1937337343425682673
 MonoBehaviour:
   m_ObjectHideFlags: 0

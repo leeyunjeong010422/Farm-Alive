@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR.Content.Interaction;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class Taping : MonoBehaviourPun
 {
@@ -15,6 +16,7 @@ public class Taping : MonoBehaviourPun
     [SerializeField] Vector3 secendPosition;
     [SerializeField] GameObject startPoint;
     [SerializeField] GameObject endPoint;
+    [SerializeField] Collider objCollider;
 
     [SerializeField] bool isCanSealed;
     [SerializeField] bool isStart = false;
@@ -35,7 +37,8 @@ public class Taping : MonoBehaviourPun
 
     public void StartTaping(BoxTrigger boxTriggerBox, BoxCover box)
     {
-       if (box == null || !box.IsOpen) return;
+        Debug.Log($"boxTriggerBox: {boxTriggerBox}, box: {box}");
+        if (box == null || box.IsOpen) return;
 
         currentBox = box;
         boxTrigger = boxTriggerBox;
@@ -59,14 +62,14 @@ public class Taping : MonoBehaviourPun
             Debug.Log(gameObject.transform.position);
             Debug.Log(currentBox.rightPoint.transform.position);
 
-            if (Vector3.Distance(firstPosition, currentBox.rightPoint.transform.position) < 0.2f)
+            if (Vector3.Distance(firstPosition, currentBox.rightPoint.transform.position) < 0.5f)
             {
                 Debug.Log("첫거리가0.1이하");
                 isStart = true;
                 startPoint = currentBox.rightPoint;
                 endPoint = currentBox.leftPoint;
             }
-            else if(Vector3.Distance(firstPosition, currentBox.leftPoint.transform.position) < 0.2f)
+            else if(Vector3.Distance(firstPosition, currentBox.leftPoint.transform.position) < 0.5f)
             {
                 Debug.Log("첫거리가0.1이하");
                 isStart = true;
@@ -83,7 +86,7 @@ public class Taping : MonoBehaviourPun
         {
             secendPosition = this.gameObject.transform.position;
 
-            if (Vector3.Distance(secendPosition, endPoint.transform.position) < 0.2f)
+            if (Vector3.Distance(secendPosition, endPoint.transform.position) < 0.5f)
             {
                 Debug.Log("둘거리가0.1이하");
                 isEnd = true;
@@ -123,6 +126,22 @@ public class Taping : MonoBehaviourPun
         {
             currentBox.tape.SetActive(true);
             CompleteTaping();
+        }
+    }
+
+    public void OnGrab(SelectEnterEventArgs args)
+    {
+        if (objCollider != null)
+        {
+            objCollider.isTrigger = true;
+        }
+    }
+
+    public void OnRelease(SelectExitEventArgs args)
+    {
+        if (objCollider != null)
+        {
+            objCollider.isTrigger = false;
         }
     }
 }
