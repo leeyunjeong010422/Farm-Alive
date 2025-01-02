@@ -50,6 +50,7 @@ public class Taping : MonoBehaviourPun
     {
         isTaping = false;
         currentBox = null;
+        boxTrigger = null;
         Debug.Log("테이핑 중단");
     }
 
@@ -108,10 +109,10 @@ public class Taping : MonoBehaviourPun
         if (currentBox != null)
         {
             currentBox.IsPackaged = true;
-            foreach (var item in boxTrigger.idList)
+            foreach (var id in boxTrigger.idList)
             {
-                GameObject gameObject = PhotonView.Find(item).gameObject;
-                Destroy(gameObject);
+                GameObject crop = PhotonView.Find(id).gameObject;
+                crop.SetActive(false);
             }
             
             Debug.Log($"테이핑 완료: {currentBox.name}");
