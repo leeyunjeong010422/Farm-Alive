@@ -174,55 +174,56 @@ public class QuestManager : MonoBehaviourPun
             }
         }
 
-       /* if (questsList[id].requiredItems[number].requiredcount <= 0)
+        /* if (questsList[id].requiredItems[number].requiredcount <= 0)
+         {
+             */
+        //SuccessQuest(id, number);
+
+        //questsList[id].requiredItems[number].isSuccess = true;
+
+        int listNum = 0;
+        List<int> listNums = new List<int>();
+        foreach (QuestManager.Quest list in questsList)
         {
-            */
-            //SuccessQuest(id, number);
-            
-            //questsList[id].requiredItems[number].isSuccess = true;
-
-            int listNum = 0;
-            List<int> listNums = new List<int>();
-            foreach (QuestManager.Quest list in questsList)
+            for (int i = 0; i < list.requiredItems.Count; i++)
             {
-                for (int i = 0; i < list.requiredItems.Count; i++)
+                if (list.requiredItems[i].isSuccess == false)
+                    break;
+
+                if (i == list.requiredItems.Count - 1)
                 {
-                    if (list.requiredItems[i].isSuccess == false)
-                        break;
-
-                    if (i == list.requiredItems.Count - 1)
-                    {
-                        Debug.Log("Äù½ºÆ® ¿Ï·á");
-                        list.isSuccess = true;
-                        listNums.Add(listNum);
-                    }
+                    Debug.Log("Äù½ºÆ® ¿Ï·á");
+                    list.isSuccess = true;
+                    listNums.Add(listNum);
+                    Debug.Log($"{listNums[i]}");
                 }
-                listNum++;
             }
+            listNum++;
+        }
 
-            if (listNums.Count != 0)
-            {
-                int[] listArray = listNums.ToArray();
+        if (listNums.Count != 0)
+        {
+            int[] listArray = listNums.ToArray();
 
-                photonView.RPC(nameof(IsQuestComplete), RpcTarget.AllBuffered, listArray);
-            }
+            photonView.RPC(nameof(IsQuestComplete), RpcTarget.All, listArray);
+        }
 
-            UpdateUI();
-      //  }
+        UpdateUI();
+        //  }
     }
 
     [PunRPC]
     public void IsQuestComplete(int[] listNums)
     {
-        for (int i = listNums.Length - 1; i >= 0; i--)
+        for (int i = 0; i < listNums.Length; i++)
         {
             questsList.RemoveAt(listNums[i]);
         }
 
         if (questsList.Count == 0)
         {
-            GameSpawn gameSpawn = FindObjectOfType<GameSpawn>();
-            gameSpawn.ReturnToFusion();
+            //GameSpawn gameSpawn = FindObjectOfType<GameSpawn>();
+            //gameSpawn.ReturnToFusion();
             //SceneLoader.LoadSceneWithLoading("03_FusionLobby");
         }
 
