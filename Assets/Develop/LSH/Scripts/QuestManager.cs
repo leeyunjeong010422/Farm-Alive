@@ -228,7 +228,7 @@ public class QuestManager : MonoBehaviourPun
             //SceneLoader.LoadSceneWithLoading("03_FusionLobby");
         }
 
-        if (questsList != null)
+        if (questsList.Count != 0)
             UpdateUI();
     }
 }
