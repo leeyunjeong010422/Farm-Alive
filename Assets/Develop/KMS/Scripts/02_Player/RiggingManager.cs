@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class RiggingManager : MonoBehaviourPun
 {
@@ -12,6 +13,7 @@ public class RiggingManager : MonoBehaviourPun
     public Transform leftHandController;    // 왼손 컨트롤러
     public Transform rightHandController;   // 오른손 컨트롤러
     public Transform hmd;                   // HMD
+    public Transform cameraOffset;
 
     public Vector3[] leftOffset;            // 왼손 Offset
     public Vector3[] rightOffset;           // 오른손 Offset
@@ -19,7 +21,9 @@ public class RiggingManager : MonoBehaviourPun
 
     public float smoothValue = 0.1f;        // 부드럽게 움직일 값
     public float modelHeight = 1.1176f;     // 캐릭터 높이 값
+    public float heightAdjustSpeed = 1f; // 높이 조절 속도
 
+    private float _cameraHeightAdjustment = 0;
 
     #region XR Origin과 캐릭터 분리시
     //private void Start()
@@ -39,10 +43,12 @@ public class RiggingManager : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
+            AdjustModelHeight();
+
             // 로컬 플레이어의 동작 처리
             MappingHandTranform(leftHandIK, leftHandController, true);
             MappingHandTranform(righttHandIK, rightHandController, false);
-            MappingBodyTransform(headIK, hmd);
+            MappingBodyTransform(hmd);
             MappingHeadTransform(headIK, hmd);
 
             // 동기화된 위치 및 회전을 RPC로 전송
@@ -51,6 +57,20 @@ public class RiggingManager : MonoBehaviourPun
                 righttHandIK.position, righttHandIK.rotation, 
                 headIK.position, headIK.rotation);
         }
+    }
+
+    private void AdjustModelHeight()
+    {
+        InputDevice rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+        if (rightController.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 joystickInput))
+        {
+            if (Mathf.Abs(joystickInput.y) > 0.01f)
+            {
+                _cameraHeightAdjustment = joystickInput.y * heightAdjustSpeed * Time.deltaTime;
+                cameraOffset.position = new Vector3(cameraOffset.position.x, cameraOffset.position.y + _cameraHeightAdjustment, cameraOffset.position.z);
+            }
+        }
+
     }
 
     #region XR Origin과 캐릭터 분리시
@@ -96,9 +116,9 @@ public class RiggingManager : MonoBehaviourPun
     /// </summary>
     /// <param name="ik"></param>
     /// <param name="hmd"></param>
-    private void MappingBodyTransform(Transform ik, Transform hmd)
+    private void MappingBodyTransform(Transform hmd)
     {
-        this.transform.position = new Vector3(hmd.position.x, modelHeight, hmd.position.z);
+        this.transform.position = new Vector3(hmd.position.x, hmd.position.y - modelHeight, hmd.position.z);
         float yaw = hmd.eulerAngles.y;
         var targetRotation = new Vector3(this.transform.eulerAngles.x, yaw, this.transform.eulerAngles.z);
         this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.Euler(targetRotation), smoothValue);

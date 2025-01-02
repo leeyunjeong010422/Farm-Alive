@@ -1690,7 +1690,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5845125219956739443, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.1176
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5845125219956739443, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1745,9 +1745,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8443358506025383845}
     - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: CameraHeight
+      value: 
+      objectReference: {fileID: 5816299683468540763}
+    - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: cameraOffset
+      value: 
+      objectReference: {fileID: 5816299683468540763}
+    - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: righttHandIK
       value: 
       objectReference: {fileID: 1479064106603695084}
+    - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: heightAdjustSpeed
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: leftHandController
       value: 

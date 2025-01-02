@@ -18,6 +18,14 @@ public class PunPlayerSpawn : MonoBehaviour
         RemoveNetworkRunner();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            ReturnToFusion();
+        }
+    }
+
     private void RemoveNetworkRunner()
     {
         var runner = FindObjectOfType<NetworkRunner>();
