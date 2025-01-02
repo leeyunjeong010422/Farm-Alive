@@ -81,6 +81,7 @@ MonoBehaviour:
   - RPC_StopParticleEffect
   - SelectEnterBox
   - SelectExitBox
+  - IsQuestComplete
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

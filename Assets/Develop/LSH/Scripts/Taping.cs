@@ -1,11 +1,15 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.XR.Content.Interaction;
 
 public class Taping : MonoBehaviour
 {
     [SerializeField] BoxCover boxCover, currentBox;
+    [SerializeField] BoxTrigger boxTrigger;
     [SerializeField] bool isTaping = false;
     [SerializeField] Vector3 firstPosition;
     [SerializeField] Vector3 secendPosition;
@@ -29,11 +33,12 @@ public class Taping : MonoBehaviour
         }
     }
 
-    public void StartTaping(BoxCover box)
+    public void StartTaping(BoxTrigger boxTriggerBox, BoxCover box)
     {
        if (box == null || !box.IsOpen) return;
 
         currentBox = box;
+        boxTrigger = boxTriggerBox;
         isTaping = true;
         Debug.Log($"테이핑 시작: {box.name}");
     }
@@ -97,7 +102,13 @@ public class Taping : MonoBehaviour
         isTaping = false;
         if (currentBox != null)
         {
-            boxCover.IsPackaged = true;
+            currentBox.IsPackaged = true;
+            foreach (var item in boxTrigger.idList)
+            {
+                GameObject gameObject = PhotonView.Find(item).gameObject;
+                Destroy(gameObject);
+            }
+            
             Debug.Log($"테이핑 완료: {currentBox.name}");
         }
         currentBox = null;

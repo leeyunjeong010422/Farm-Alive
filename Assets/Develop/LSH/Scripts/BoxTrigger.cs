@@ -13,11 +13,11 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
 {
     [SerializeField] public GameObject boxTape;
     [SerializeField] public List<RequiredItem> requiredItems;
-    [SerializeField] bool isBoxClose = false;
-    [SerializeField] bool isBoxSealed = false;
     [SerializeField] bool isFirstItem = false;
     [SerializeField] BoxCover boxCover;
-    [SerializeField] List<int> idList = new List<int>();
+    [SerializeField] public List<int> idList = new List<int>();
+    [SerializeField] Collider openCollider;
+    [SerializeField] Collider closedCollider;
 
     private void Start()
     {
@@ -32,10 +32,14 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
 
     private void OnTriggerEnter(Collider other)
     {
+        
         if (other.CompareTag("Crop"))
         {
             PhotonView itemView = other.transform.parent.parent.GetComponent<PhotonView>();
             if (itemView == null || !itemView.IsMine)
+                return;
+
+            if (!boxCover.IsOpen)
                 return;
 
             if (idList.Contains(itemView.ViewID))
@@ -56,15 +60,17 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
             Debug.Log("종료");
         }
 
-        else if (!isBoxSealed && other.CompareTag("Tape"))
+        else if (!boxCover.IsPackaged && other.CompareTag("Tape"))
         {
             Debug.Log("포장시작");
+            if (boxCover.IsOpen)
+                return;
 
             Taping taping = other.GetComponent<Taping>();
-            if (taping != null && !isBoxSealed)
+            if (taping != null && !boxCover.IsPackaged)
             {
                 Debug.Log("상자테이핑시작준비");
-                taping.StartTaping(this.boxCover);
+                taping.StartTaping(this, this.boxCover);
             }
         }
     }
