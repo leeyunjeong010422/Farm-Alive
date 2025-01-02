@@ -1933,7 +1933,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _refillPrefab: {fileID: 3663111138833697998}
-  _maxCount: 10
+  _maxCount: 100
   _triggerZoneName: BoxRefillZone
   idList: 
 --- !u!1 &4410297880513693061

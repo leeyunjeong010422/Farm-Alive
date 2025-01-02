@@ -611,6 +611,7 @@ MonoBehaviour:
   _refillPrefab: {fileID: 5131138091925150385}
   _maxCount: 10
   _triggerZoneName: CropRefillZone
+  idList: 
 --- !u!1 &6261804610707412814
 GameObject:
   m_ObjectHideFlags: 0
