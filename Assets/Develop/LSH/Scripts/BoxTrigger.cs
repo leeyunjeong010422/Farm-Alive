@@ -119,6 +119,10 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
             requiredItems.Add(new RequiredItem(itemView.gameObject, 1));
             isFirstItem = true;
         }
+
+        Rigidbody itemRigid = itemView.GetComponent<Rigidbody>();
+        itemRigid.drag = 10;
+        itemRigid.angularDrag = 1;
     }
 
     [PunRPC]
@@ -132,6 +136,10 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
                 if (requiredItems[i].itemPrefab.name == itemView.gameObject.name)
                 {
                     requiredItems[i].requiredcount--;
+
+                    Rigidbody itemRigid = itemView.GetComponent<Rigidbody>();
+                    itemRigid.drag = 0;
+                    itemRigid.angularDrag = 0.05f;
 
                     if (requiredItems[i].requiredcount == 0)
                     {
