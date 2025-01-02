@@ -33,6 +33,6 @@ public class StartGameSocketInteractor : XRSocketInteractor
         }
 
         Debug.Log("게임 씬 이동 중...");
-        SceneLoader.LoadNetworkSceneWithLoading(/*"05_AssetScene"*/"05_2_AssetScene");
+        SceneLoader.LoadNetworkSceneWithLoading("AssetScene");
     }
 }
