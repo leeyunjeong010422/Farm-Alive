@@ -8,15 +8,11 @@ public class TruckQuest : MonoBehaviour
 {
     [SerializeField] int truckId;
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         Debug.Log("충돌");
         if (other.CompareTag("Box"))
         {
-            XRGrabInteractable interactable = other.GetComponent<XRGrabInteractable>();
-            if (interactable.isSelected)
-                return;
-
             Debug.Log("박스");
             BoxTrigger boxTrigger = other.GetComponent<BoxTrigger>();
             if (boxTrigger == null)
@@ -46,16 +42,16 @@ public class TruckQuest : MonoBehaviour
                 }
             }*/
 
-            for (int j = 0; j < boxTrigger.requiredItems.Count; j++)
+            for (int i = 0; i < boxTrigger.requiredItems.Count; i++)
             {
-                var item = boxTrigger.requiredItems[j];
-                for (int i = 0; i < QuestManager.Instance.questsList[truckId].requiredItems.Count; i++)
+                QuestManager.RequiredItem item = boxTrigger.requiredItems[i];
+                for (int j = 0; j < QuestManager.Instance.questsList[truckId].requiredItems.Count; j++)
                 {
-                    if (item.itemPrefab.name == QuestManager.Instance.questsList[truckId].requiredItems[i].itemPrefab.name)
+                    if (item.itemPrefab.name == QuestManager.Instance.questsList[truckId].requiredItems[j].itemPrefab.name)
                     {
                         Debug.Log("이름이 같음");
-                        Debug.Log($"{QuestManager.Instance.questsList[truckId].requiredItems[i].requiredcount} <= {item.requiredcount}");
-                        if (QuestManager.Instance.questsList[truckId].requiredItems[i].requiredcount <= 0)
+                        Debug.Log($"{QuestManager.Instance.questsList[truckId].requiredItems[j].requiredcount} <= {item.requiredcount}");
+                        if (QuestManager.Instance.questsList[truckId].requiredItems[j].requiredcount <= 0)
                             break;
                         Debug.Log("갯수 통과");
 
