@@ -38,6 +38,7 @@ public class QuestManager : MonoBehaviourPun
     [SerializeField] public GameObject[] itemPrefabs;
     [SerializeField] public Quest currentQuest;
     [SerializeField] public int maxItemCount;
+    [SerializeField] List<int> listNums = new List<int>();
 
     private void Awake()
     {
@@ -182,7 +183,7 @@ public class QuestManager : MonoBehaviourPun
         //questsList[id].requiredItems[number].isSuccess = true;
 
         int listNum = 0;
-        List<int> listNums = new List<int>();
+        
         foreach (QuestManager.Quest list in questsList)
         {
             for (int i = 0; i < list.requiredItems.Count; i++)
@@ -190,12 +191,14 @@ public class QuestManager : MonoBehaviourPun
                 if (list.requiredItems[i].isSuccess == false)
                     break;
 
+                Debug.Log($"i의 값 : {i} Count의 값 : {list.requiredItems.Count}");
                 if (i == list.requiredItems.Count - 1)
                 {
                     Debug.Log("퀘스트 완료");
                     list.isSuccess = true;
                     listNums.Add(listNum);
-                    Debug.Log($"{listNums[i]}");
+                    Debug.Log($"{listNums.Count}");
+                    Debug.Log($"{listNums[0]}");
                 }
             }
             listNum++;
@@ -205,14 +208,13 @@ public class QuestManager : MonoBehaviourPun
         {
             int[] listArray = listNums.ToArray();
 
-            photonView.RPC(nameof(IsQuestComplete), RpcTarget.All, listArray);
+            IsQuestComplete(listArray);
         }
 
         UpdateUI();
         //  }
     }
 
-    [PunRPC]
     public void IsQuestComplete(int[] listNums)
     {
         for (int i = 0; i < listNums.Length; i++)
