@@ -8,7 +8,7 @@ public class TruckQuest : MonoBehaviour
 {
     [SerializeField] int truckId;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         Debug.Log("Ãæµ¹");
         if (other.CompareTag("Box"))
