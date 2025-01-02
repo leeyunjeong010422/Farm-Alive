@@ -183,7 +183,7 @@ public class QuestManager : MonoBehaviourPun
         //questsList[id].requiredItems[number].isSuccess = true;
 
         int listNum = 0;
-        
+
         foreach (QuestManager.Quest list in questsList)
         {
             for (int i = 0; i < list.requiredItems.Count; i++)
@@ -229,6 +229,7 @@ public class QuestManager : MonoBehaviourPun
             //SceneLoader.LoadSceneWithLoading("03_FusionLobby");
         }
 
-        UpdateUI();
+        if (questsList != null)
+            UpdateUI();
     }
 }
