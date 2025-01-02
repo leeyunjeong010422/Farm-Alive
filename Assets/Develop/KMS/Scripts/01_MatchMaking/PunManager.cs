@@ -136,7 +136,7 @@ public class PunManager : MonoBehaviourPunCallbacks
         };
 
         Debug.Log("방 생성 시도 중...");
-        PhotonNetwork.JoinOrCreateRoom($"PunRoom_{RoomNum}", roomOptions, TypedLobby.Default);
+        PhotonNetwork.JoinOrCreateRoom($"PunRoom_{Random.RandomRange(100,1000)}", roomOptions, TypedLobby.Default);
     }
 
     public override void OnCreatedRoom()
