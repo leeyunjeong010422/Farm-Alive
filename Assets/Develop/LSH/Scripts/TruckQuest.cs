@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class TruckQuest : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class TruckQuest : MonoBehaviour
         Debug.Log("충돌");
         if (other.CompareTag("Box"))
         {
+            XRGrabInteractable interactable = other.GetComponent<XRGrabInteractable>();
+            if (interactable.isSelected)
+                return;
+
             Debug.Log("박스");
             BoxTrigger boxTrigger = other.GetComponent<BoxTrigger>();
             if (boxTrigger == null)
