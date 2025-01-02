@@ -29,7 +29,7 @@ public class TruckQuest : MonoBehaviour
                 List<int> itemIndexes = new List<int>();
                 List<int> requiredCounts = new List<int>();
 
-                foreach (QuestManager.RequiredItem item in boxTrigger.requiredItems)
+                /*foreach (QuestManager.RequiredItem item in boxTrigger.requiredItems)
                 {
                     for (int i = 0; i < QuestManager.Instance.questsList[truckId].requiredItems.Count; i++)
                     {
@@ -46,22 +46,17 @@ public class TruckQuest : MonoBehaviour
                             itemIndexes.Add(i);
                             requiredCounts.Add(item.requiredcount);
                             break;
-                            /*if (item.requiredcount == QuestManager.Instance.questsList[truckId].requiredItems[i].requiredcount)
+                            *//*if (item.requiredcount == QuestManager.Instance.questsList[truckId].requiredItems[i].requiredcount)
                             {
                                 Debug.Log("카운트가 같음");
                                 QuestManager.Instance.SuccessQuest(truckId, i);
                                 break;
-                            }*/
+                            }*//*
                         }
                     }
-                }
+                }*/
 
-                int[] truckIdArray = truckIds.ToArray();
-                int[] itemIndexArray = itemIndexes.ToArray();
-                int[] requiredCountArray = requiredCounts.ToArray();
-                QuestManager.Instance.CountUpdate(truckIdArray, itemIndexArray, requiredCountArray);
-
-                /*for (int i = 0; i < boxTrigger.requiredItems.Count; i++)
+                for (int i = 0; i < boxTrigger.requiredItems.Count; i++)
                 {
                     QuestManager.RequiredItem item = boxTrigger.requiredItems[i];
                     for (int j = 0; j < QuestManager.Instance.questsList[truckId].requiredItems.Count; j++)
@@ -74,11 +69,18 @@ public class TruckQuest : MonoBehaviour
                                 break;
                             Debug.Log("갯수 통과");
 
-                            QuestManager.Instance.CountUpdate(truckId, i, item.requiredcount);
+                            truckIds.Add(truckId);
+                            itemIndexes.Add(i);
+                            requiredCounts.Add(item.requiredcount);
                             break;
                         }
                     }
-                }*/
+                }
+
+                int[] truckIdArray = truckIds.ToArray();
+                int[] itemIndexArray = itemIndexes.ToArray();
+                int[] requiredCountArray = requiredCounts.ToArray();
+                QuestManager.Instance.CountUpdate(truckIdArray, itemIndexArray, requiredCountArray);
 
                 PhotonNetwork.Destroy(other.gameObject);
             }
