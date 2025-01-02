@@ -61,6 +61,7 @@ public class QuestManager : MonoBehaviourPun
         maxItemCount = 0;
         if (PhotonNetwork.IsMasterClient)
         {
+            //int rand = Random.Range(1, itemPrefabs.Length);
             int rand = Random.Range(2, 3);
 
             List<int> randomPrefabIndexes = new List<int>();
@@ -77,6 +78,7 @@ public class QuestManager : MonoBehaviourPun
             int[] maxItemCounts = new int[rand];
             for (int i = 0; i < maxItemCounts.Length; i++)
             {
+                //maxItemCounts[i] = Random.Range(1, 15);
                 maxItemCounts[i] = 1;
                 maxItemCount += maxItemCounts[i];
                 checkItemLength++;
@@ -159,11 +161,32 @@ public class QuestManager : MonoBehaviourPun
         if (questsList[id].requiredItems[number].requiredcount <= 0)
         {
             Debug.Log("납품완료");
-            SuccessQuest(id, number);
+            //SuccessQuest(id, number);
+            Debug.Log("퀘스트 성공 여부 동기화!");
+            questsList[id].requiredItems[number].isSuccess = true;
+
+            int listNum = 0;
+            foreach (QuestManager.Quest list in questsList)
+            {
+                for (int i = 0; i < list.requiredItems.Count; i++)
+                {
+                    if (list.requiredItems[i].isSuccess == false)
+                        break;
+
+                    if (i == list.requiredItems.Count - 1)
+                    {
+                        list.isSuccess = true;
+                        photonView.RPC(nameof(IsQuestComplete), RpcTarget.AllBuffered, listNum);
+                    }
+                }
+                listNum++;
+            }
+
+            UpdateUI();
         }
     }
 
-    public void SuccessQuest(int id, int number)
+    /*public void SuccessQuest(int id, int number)
     {
         Debug.Log("퀘스트 완료!");
         photonView.RPC(nameof(SuccessCheck), RpcTarget.AllBuffered, id, number);
@@ -190,11 +213,12 @@ public class QuestManager : MonoBehaviourPun
         }
 
         UpdateUI();
-    }
+    }*/
 
-    public bool IsQuestComplete()
+    [PunRPC]
+    public void IsQuestComplete(int listNum)
     {
-        /*return currentQuest != null && currentQuest.currentCount >= currentQuest.requiredCount;*/
-        return true;
+        questsList.RemoveAt(listNum);
+        UpdateUI();
     }
 }

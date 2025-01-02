@@ -1,5 +1,6 @@
 using Fusion;
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -16,6 +17,7 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
     [SerializeField] bool isBoxSealed = false;
     [SerializeField] bool isFirstItem = false;
     [SerializeField] BoxCover boxCover;
+    [SerializeField] List<int> idList = new List<int>();
 
     private void Start()
     {
@@ -36,6 +38,11 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
             if (itemView == null || !itemView.IsMine)
                 return;
 
+            if (idList.Contains(itemView.ViewID))
+                return;
+
+            idList.Add(itemView.ViewID);
+
             CropInteractable grabInteractable = other.transform.parent.parent.GetComponent<CropInteractable>();
             Debug.Log(grabInteractable);
             if (grabInteractable != null && !grabInteractable.isSelected)
@@ -43,8 +50,9 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
 
             if (QuestManager.Instance.currentQuest == null)
                 return;
-
+            
             photonView.RPC(nameof(UpCount), RpcTarget.All, itemView.ViewID);
+            
             Debug.Log("종료");
         }
 
@@ -127,6 +135,11 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
 
                     if (requiredItems[i].requiredcount == 0)
                     {
+                        if (idList.Contains(itemView.ViewID))
+                        {
+                            idList.Remove(itemView.ViewID);
+                            Debug.Log($"리스트에서 {itemView} 제거");
+                        }
                         requiredItems.RemoveAt(i);
                         isFirstItem = false;
                     }
