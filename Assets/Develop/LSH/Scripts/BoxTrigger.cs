@@ -44,8 +44,6 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
             if (idList.Contains(itemView.ViewID))
                 return;
 
-            idList.Add(itemView.ViewID);
-
             CropInteractable grabInteractable = other.transform.parent.parent.GetComponent<CropInteractable>();
             Debug.Log(grabInteractable);
             if (grabInteractable != null && !grabInteractable.isSelected)
