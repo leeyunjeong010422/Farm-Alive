@@ -7,6 +7,8 @@ public class AffordanceSystemManager : MonoBehaviour
     private Renderer _targetRenderer;
     [Tooltip("오브젝트에 가져다 댔을 때 나타날 색상")]
     [SerializeField] private Color _hoverColor = new Color(0, 0, 0, 0);
+    [Tooltip("오브젝트를 잡았을 때 나타날 색상")]
+    [SerializeField] private Color _selectColor = new Color(0, 0, 0, 0);
     private Color _defaultColor;
 
     [Header("사운드 변경")]
@@ -32,9 +34,14 @@ public class AffordanceSystemManager : MonoBehaviour
         _interactable = GetComponent<XRBaseInteractable>();
         _audioSource = GetComponent<AudioSource>();
 
-        if (ColorUtility.TryParseHtmlString("#E9FFFD", out Color fixedColor))
+        if (ColorUtility.TryParseHtmlString("#FF00B3", out Color hover_FixedColor))
         {
-            _hoverColor = fixedColor;
+            _hoverColor = hover_FixedColor;
+        }
+
+        if (ColorUtility.TryParseHtmlString("#0031FF", out Color select_FixedColor))
+        {
+            _selectColor = select_FixedColor;
         }
 
         if (_targetRenderer == null)
@@ -52,7 +59,7 @@ public class AffordanceSystemManager : MonoBehaviour
             return;
         }
 
-        if ( _audioSource == null)
+        if (_audioSource == null)
         {
             _audioSource = gameObject.AddComponent<AudioSource>();
         }
@@ -95,7 +102,7 @@ public class AffordanceSystemManager : MonoBehaviour
     private void OnSelectEnter(SelectEnterEventArgs args)
     {
         Debug.Log("SelectEnter");
-        InitialStateReset();
+        ChangeColor(_selectColor);
         PlaySound(_selectSound);
     }
 
