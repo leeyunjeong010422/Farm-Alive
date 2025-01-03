@@ -25,6 +25,8 @@ public class TruckQuest : MonoBehaviour
                 if (boxTrigger == null)
                     return;
 
+                PhotonView boxView = other.GetComponent<PhotonView>();
+
                 List<int> truckIds = new List<int>();
                 List<int> itemIndexes = new List<int>();
                 List<int> requiredCounts = new List<int>();
@@ -61,7 +63,8 @@ public class TruckQuest : MonoBehaviour
                     QuestManager.RequiredItem item = boxTrigger.requiredItems[i];
                     for (int j = 0; j < QuestManager.Instance.questsList[truckId].requiredItems.Count; j++)
                     {
-                        if (item.itemPrefab.name == QuestManager.Instance.questsList[truckId].requiredItems[j].itemPrefab.name)
+                        if (item.itemPrefab.name == QuestManager.Instance.questsList[truckId].requiredItems[j].itemPrefab.name ||
+                            item.itemPrefab.name + "(Clone)" == QuestManager.Instance.questsList[truckId].requiredItems[i].itemPrefab.name)
                         {
                             Debug.Log("이름이 같음");
                             Debug.Log($"{QuestManager.Instance.questsList[truckId].requiredItems[j].requiredcount} <= {item.requiredcount}");
@@ -70,7 +73,7 @@ public class TruckQuest : MonoBehaviour
                             Debug.Log("갯수 통과");
 
                             truckIds.Add(truckId);
-                            itemIndexes.Add(i);
+                            itemIndexes.Add(j);
                             requiredCounts.Add(item.requiredcount);
                             break;
                         }
@@ -80,9 +83,7 @@ public class TruckQuest : MonoBehaviour
                 int[] truckIdArray = truckIds.ToArray();
                 int[] itemIndexArray = itemIndexes.ToArray();
                 int[] requiredCountArray = requiredCounts.ToArray();
-                QuestManager.Instance.CountUpdate(truckIdArray, itemIndexArray, requiredCountArray);
-
-                PhotonNetwork.Destroy(other.gameObject);
+                QuestManager.Instance.CountUpdate(truckIdArray, itemIndexArray, requiredCountArray, boxView.ViewID);
             }
         }
     }
