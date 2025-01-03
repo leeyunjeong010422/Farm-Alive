@@ -156,6 +156,7 @@ GameObject:
   - component: {fileID: 8013961565201855434}
   - component: {fileID: 6378326647714868341}
   - component: {fileID: 571211999968795229}
+  - component: {fileID: -3310418300662541647}
   m_Layer: 0
   m_Name: Hammer
   m_TagString: Untagged
@@ -424,6 +425,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3b49a74b638c66439d835714723f203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-3310418300662541647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7930165123872129829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e368e8f2be45bde4ab3dbeda78335a6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverColor: {r: 0, g: 0, b: 0, a: 0}
+  _audioSource: {fileID: 0}
+  _hoverSound: {fileID: 0}
+  _selectSound: {fileID: 0}
+  _hoverScaleValue: 1
 --- !u!1 &8903111796186187988
 GameObject:
   m_ObjectHideFlags: 0

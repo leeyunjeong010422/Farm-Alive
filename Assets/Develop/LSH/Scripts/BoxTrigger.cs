@@ -18,6 +18,10 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
     [SerializeField] Collider openCollider;
     [SerializeField] Collider closedCollider;
 
+    [SerializeField] public delegate void OnRequiredItemsChanged(List<RequiredItem> items);
+    [SerializeField] public event OnRequiredItemsChanged RequiredItemsChanged;
+
+
     private void Start()
     {
         boxCover = GetComponent<BoxCover>();
@@ -26,7 +30,8 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
     private void OnEnable()
     {
         Debug.Log("리스트");
-        requiredItems = new List<RequiredItem>();        
+        requiredItems = new List<RequiredItem>();
+        NotifyRequiredItemsChanged();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -113,6 +118,7 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
                 {
                     item.requiredcount++;
                     Debug.Log("카운트업");
+                    NotifyRequiredItemsChanged();
                     return;
                 }
             }
@@ -122,6 +128,8 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
         {
             requiredItems.Add(new RequiredItem(itemView.gameObject, 1));
         }
+
+        NotifyRequiredItemsChanged();
     }
 
     [PunRPC]
@@ -149,8 +157,16 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
                         }
                         requiredItems.RemoveAt(i);
                     }
+
+                    NotifyRequiredItemsChanged();
+                    return;
                 }
             }
         }
+    }
+
+    private void NotifyRequiredItemsChanged()
+    {
+        RequiredItemsChanged?.Invoke(requiredItems);
     }
 }
