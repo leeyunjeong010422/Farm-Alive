@@ -54,32 +54,33 @@ public class VR_Anim_Leg_Controller : MonoBehaviourPun
                 photonView.RPC("SyncAnimationRPC", RpcTarget.Others, inputAxis.magnitude);
             }
 
-            InputDevice rightController = InputDevices.GetDeviceAtXRNode(rightControllerNode);
-            bool isPressed;
-            if (rightController.TryGetFeatureValue(CommonUsages.primaryButton, out isPressed))
+            // 캐릭터 속도 조절 버튼
             {
-                if (isPressed && !_isPrimaryPressed) // 눌림이 시작되었을 때만 처리
+                InputDevice rightController = InputDevices.GetDeviceAtXRNode(rightControllerNode);
+                if (rightController.TryGetFeatureValue(CommonUsages.primaryButton, out bool isPressed))
                 {
-                    _isPrimaryPressed = true; // 버튼 눌림 상태 기록
-                    moveSpeed *= 2f;
+                    if (isPressed && !_isPrimaryPressed) // 눌림이 시작되었을 때만 처리
+                    {
+                        _isPrimaryPressed = true; // 버튼 눌림 상태 기록
+                        moveSpeed *= 2f;
+                    }
+                    else if (!isPressed) // 버튼이 떼어졌을 때 상태 초기화
+                    {
+                        _isPrimaryPressed = false;
+                    }
                 }
-                else if (!isPressed) // 버튼이 떼어졌을 때 상태 초기화
-                {
-                    _isPrimaryPressed = false;
-                }
-            }
-            else if (rightController.TryGetFeatureValue(CommonUsages.secondaryButton, out isPressed))
-            {
-                //Debug.Log("입력 받음.");
 
-                if (isPressed && !_isSecondaryPressed) // 눌림이 시작되었을 때만 처리
+                if (rightController.TryGetFeatureValue(CommonUsages.secondaryButton, out bool isPressed2))
                 {
-                    _isSecondaryPressed = true; // 버튼 눌림 상태 기록
-                    moveSpeed /= 2f;
-                }
-                else if (!isPressed) // 버튼이 떼어졌을 때 상태 초기화
-                {
-                    _isSecondaryPressed = false;
+                    if (isPressed2 && !_isSecondaryPressed)
+                    {
+                        _isSecondaryPressed = true;
+                        moveSpeed /= 2f;
+                    }
+                    else if (!isPressed2)
+                    {
+                        _isSecondaryPressed = false;
+                    }
                 }
             }
         }
