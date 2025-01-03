@@ -56,7 +56,7 @@ public class Fusion_VR_Anim_Controller : NetworkBehaviour
     }
 
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
-    private void RPC_SyncAnimation(float speed)
+    public void RPC_SyncAnimation(float speed)
     {
         if (animator != null)
         {
