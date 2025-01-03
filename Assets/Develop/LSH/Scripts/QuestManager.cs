@@ -53,7 +53,8 @@ public class QuestManager : MonoBehaviourPun
 
     public void FirstStart()
     {
-        photonView.RPC(nameof(QuestStart), RpcTarget.AllBuffered);
+        if (questsList.Count < 7)
+            photonView.RPC(nameof(QuestStart), RpcTarget.AllBuffered);
     }
 
     [PunRPC]
