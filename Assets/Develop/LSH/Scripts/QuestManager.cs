@@ -144,7 +144,7 @@ public class QuestManager : MonoBehaviourPun
 
     private void UpdateUI()
     {
-        UIManager.Instance.UpdateQuestUI(questsList, questsList.Count - 1);
+        UIManager.Instance.UpdateQuestUI(questsList);
     }
 
     public void CountUpdate(int[] questId, int[] number, int[] count, int boxView)
@@ -202,10 +202,6 @@ public class QuestManager : MonoBehaviourPun
         if (box != null && box.IsMine)
         {
             PhotonNetwork.Destroy(box.gameObject);
-        }
-        else
-        {
-            Debug.LogError("Cannot destroy the object: Ownership not confirmed or PhotonView not found.");
         }
         
         UpdateUI();
