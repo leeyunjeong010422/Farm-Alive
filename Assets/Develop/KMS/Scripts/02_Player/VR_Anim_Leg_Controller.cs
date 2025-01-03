@@ -123,7 +123,7 @@ public class VR_Anim_Leg_Controller : MonoBehaviourPun
     }
 
     [PunRPC]
-    private void SyncAnimationRPC(float speed)
+    public void SyncAnimationRPC(float speed)
     {
         if (animator != null)
         {
