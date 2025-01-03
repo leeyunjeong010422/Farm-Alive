@@ -147,14 +147,14 @@ public class QuestManager : MonoBehaviourPun
         UIManager.Instance.UpdateQuestUI(questsList, questsList.Count - 1);
     }
 
-    public void CountUpdate(int[] questId, int[] number, int[] count)
+    public void CountUpdate(int[] questId, int[] number, int[] count, int boxView)
     {
         Debug.Log("카운트 업데이트");
-        photonView.RPC(nameof(CountCheck), RpcTarget.AllBuffered, questId, number, count);
+        photonView.RPC(nameof(CountCheck), RpcTarget.AllBuffered, questId, number, count, boxView);
     }
 
     [PunRPC]
-    private void CountCheck(int[] questId, int[] number, int[] count)
+    private void CountCheck(int[] questId, int[] number, int[] count, int boxView)
     {
         Debug.Log("카운트 감소");
 
@@ -198,6 +198,8 @@ public class QuestManager : MonoBehaviourPun
             IsQuestComplete(listArray);
         }
 
+        PhotonView box = PhotonView.Find(boxView);
+        PhotonNetwork.Destroy(box.gameObject);
         UpdateUI();
     }
 

@@ -25,6 +25,8 @@ public class TruckQuest : MonoBehaviour
                 if (boxTrigger == null)
                     return;
 
+                PhotonView boxView = other.GetComponent<PhotonView>();
+
                 List<int> truckIds = new List<int>();
                 List<int> itemIndexes = new List<int>();
                 List<int> requiredCounts = new List<int>();
@@ -80,9 +82,7 @@ public class TruckQuest : MonoBehaviour
                 int[] truckIdArray = truckIds.ToArray();
                 int[] itemIndexArray = itemIndexes.ToArray();
                 int[] requiredCountArray = requiredCounts.ToArray();
-                QuestManager.Instance.CountUpdate(truckIdArray, itemIndexArray, requiredCountArray);
-
-                PhotonNetwork.Destroy(other.gameObject);
+                QuestManager.Instance.CountUpdate(truckIdArray, itemIndexArray, requiredCountArray, boxView.ViewID);
             }
         }
     }
