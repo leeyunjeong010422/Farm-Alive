@@ -15,7 +15,7 @@ public class GameStartManager : MonoBehaviour
 
     [SerializeField] private string[] gameInstructions = new string[]
     {
-        "Welcome VR World!",
+        "Welcome VR World! Press B key",
         "This is Intro Text.",
         "10",
         "9",
