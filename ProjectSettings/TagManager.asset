@@ -3,7 +3,18 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Flame
+  - Projectile
+  - Destroyer
+  - MiniWorldCamera
+  - Water
+  - DisappearingGround
+  - Tape
+  - Crop
+  - Box
+  - CropRefillZone
+  - BoxRefillZone
   layers:
   - Default
   - TransparentFX
@@ -11,6 +22,8 @@ TagManager:
   - 
   - Water
   - UI
+  - HeadLayer
+  - Room
   - 
   - 
   - 
@@ -31,12 +44,10 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Pushable
+  - Character Collider
+  - Character Controller
+  - Teleport
   m_SortingLayers:
   - name: Default
     uniqueID: 0
