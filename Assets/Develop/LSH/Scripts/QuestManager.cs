@@ -199,7 +199,15 @@ public class QuestManager : MonoBehaviourPun
         }
 
         PhotonView box = PhotonView.Find(boxView);
-        PhotonNetwork.Destroy(box.gameObject);
+        if (box != null && box.IsMine)
+        {
+            PhotonNetwork.Destroy(box.gameObject);
+        }
+        else
+        {
+            Debug.LogError("Cannot destroy the object: Ownership not confirmed or PhotonView not found.");
+        }
+        
         UpdateUI();
     }
 

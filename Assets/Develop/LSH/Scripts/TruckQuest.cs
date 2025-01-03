@@ -63,7 +63,8 @@ public class TruckQuest : MonoBehaviour
                     QuestManager.RequiredItem item = boxTrigger.requiredItems[i];
                     for (int j = 0; j < QuestManager.Instance.questsList[truckId].requiredItems.Count; j++)
                     {
-                        if (item.itemPrefab.name == QuestManager.Instance.questsList[truckId].requiredItems[j].itemPrefab.name)
+                        if (item.itemPrefab.name == QuestManager.Instance.questsList[truckId].requiredItems[j].itemPrefab.name ||
+                            item.itemPrefab.name + "(Clone)" == QuestManager.Instance.questsList[truckId].requiredItems[i].itemPrefab.name)
                         {
                             Debug.Log("이름이 같음");
                             Debug.Log($"{QuestManager.Instance.questsList[truckId].requiredItems[j].requiredcount} <= {item.requiredcount}");
