@@ -72,7 +72,7 @@ public class TruckQuest : MonoBehaviour
                             Debug.Log("°¹¼ö Åë°ú");
 
                             truckIds.Add(truckId);
-                            itemIndexes.Add(i);
+                            itemIndexes.Add(j);
                             requiredCounts.Add(item.requiredcount);
                             break;
                         }
