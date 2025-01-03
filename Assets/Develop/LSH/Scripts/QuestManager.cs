@@ -53,7 +53,8 @@ public class QuestManager : MonoBehaviourPun
 
     public void FirstStart()
     {
-        photonView.RPC(nameof(QuestStart), RpcTarget.AllBuffered);
+        if (questsList.Count < 7)
+            photonView.RPC(nameof(QuestStart), RpcTarget.AllBuffered);
     }
 
     [PunRPC]
@@ -144,81 +145,74 @@ public class QuestManager : MonoBehaviourPun
 
     private void UpdateUI()
     {
-        UIManager.Instance.UpdateQuestUI(questsList, questsList.Count - 1);
+        UIManager.Instance.UpdateQuestUI(questsList);
     }
 
-    public void CountUpdate(int[] id, int[] number, int[] count)
+    public void CountUpdate(int[] questId, int[] number, int[] count, int boxView)
     {
         Debug.Log("카운트 업데이트");
-        photonView.RPC(nameof(CountCheck), RpcTarget.AllBuffered, id, number, count);
+        photonView.RPC(nameof(CountCheck), RpcTarget.AllBuffered, questId, number, count, boxView);
     }
 
     [PunRPC]
-    private void CountCheck(int[] id, int[] number, int[] count)
+    private void CountCheck(int[] questId, int[] number, int[] count, int boxView)
     {
         Debug.Log("카운트 감소");
 
-        for (int i = 0; i < id.Length; i++)
+        for (int i = 0; i < questId.Length; i++)
         {
-            questsList[id[i]].requiredItems[number[i]].requiredcount -= count[i];
-        }
-        //questsList[id].requiredItems[number].requiredcount -= count;
+            questsList[questId[i]].requiredItems[number[i]].requiredcount -= count[i];
 
-        for (int i = 0; i < id.Length; i++)
-        {
-            if (questsList[id[i]].requiredItems[number[i]].requiredcount <= 0)
+            if (questsList[questId[i]].requiredItems[number[i]].requiredcount <= 0)
             {
                 Debug.Log("납품완료");
                 Debug.Log("퀘스트 성공 여부 동기화!");
-                questsList[id[i]].requiredItems[number[i]].isSuccess = true;
+                questsList[questId[i]].requiredItems[number[i]].isSuccess = true;
             }
         }
 
-        /* if (questsList[id].requiredItems[number].requiredcount <= 0)
-         {
-             */
-        //SuccessQuest(id, number);
-
-        //questsList[id].requiredItems[number].isSuccess = true;
-
-        int listNum = 0;
-        List<int> listNums = new List<int>();
-        foreach (QuestManager.Quest list in questsList)
+        List<int> completedIndexes = new List<int>();
+        for (int i = 0; i < questsList.Count; i++)
         {
-            for (int i = 0; i < list.requiredItems.Count; i++)
+            bool allCompleted = true;
+
+            for (int j = 0; j < questsList[i].requiredItems.Count; j++)
             {
-                if (list.requiredItems[i].isSuccess == false)
-                    break;
-
-                Debug.Log($"i의 값 : {i} Count의 값 : {list.requiredItems.Count}");
-                if (i == list.requiredItems.Count - 1)
+                if (!questsList[i].requiredItems[j].isSuccess)
                 {
-                    Debug.Log("퀘스트 완료");
-                    list.isSuccess = true;
-                    listNums.Add(listNum);
-                    Debug.Log($"{listNums.Count}");
-                    Debug.Log($"{listNums[0]}");
-                }
+                    allCompleted = false;
+                    break;
+                } 
             }
-            listNum++;
+
+            if (allCompleted)
+            {
+                questsList[i].isSuccess = true;
+                completedIndexes.Add(i);
+            }
         }
 
-        if (listNums.Count != 0)
+        if (completedIndexes.Count > 0)
         {
-            int[] listArray = listNums.ToArray();
+            int[] listArray = completedIndexes.ToArray();
 
             IsQuestComplete(listArray);
         }
 
+        PhotonView box = PhotonView.Find(boxView);
+        if (box != null && box.IsMine)
+        {
+            PhotonNetwork.Destroy(box.gameObject);
+        }
+        
         UpdateUI();
-        //  }
     }
 
-    public void IsQuestComplete(int[] listNums)
+    public void IsQuestComplete(int[] completedIndexes)
     {
-        for (int i = 0; i < listNums.Length; i++)
+        foreach (int index in completedIndexes.OrderByDescending(x => x))
         {
-            questsList.RemoveAt(listNums[i]);
+            questsList.RemoveAt(index);
         }
 
         if (questsList.Count == 0)
@@ -227,8 +221,9 @@ public class QuestManager : MonoBehaviourPun
             gameSpawn.ReturnToFusion();
             //SceneLoader.LoadSceneWithLoading("03_FusionLobby");
         }
-
-        if (questsList.Count != 0)
+        else
+        {
             UpdateUI();
+        }
     }
 }

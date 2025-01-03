@@ -1214,7 +1214,7 @@ MonoBehaviour:
   introPanel: {fileID: 1024331107}
   introText: {fileID: 1181113287}
   gameInstructions:
-  - Welcome VR World!
+  - Press B key
   - This is Intro Text.
   - 10
   - 9

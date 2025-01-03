@@ -207,4 +207,11 @@ public class Crop : MonoBehaviourPun
         public override void StateUpdate() { }
     }
     #endregion
+
+    #region TestCode
+    public void CompleteGrowth()
+    {
+        ChangeState(E_CropState.GrowCompleted);
+    }
+    #endregion
 }
