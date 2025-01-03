@@ -44,7 +44,8 @@ public class BoxUI : MonoBehaviour
         string displayText = "Box 안 내용물:\n";
         foreach (var item in requiredItems)
         {
-            displayText += $"{item.itemPrefab.name}: {item.requiredcount}\n";
+            string cropName = item.itemPrefab.name.Contains("(Clone)") ? item.itemPrefab.name.Replace("(Clone)", "").Trim() : item.itemPrefab.name;
+            displayText += $"{cropName}: {item.requiredcount}\n";
         }
 
         boxTextInstance.text = displayText;
