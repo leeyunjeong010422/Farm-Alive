@@ -112,6 +112,7 @@ GameObject:
   - component: {fileID: 6751383468104419323}
   - component: {fileID: 6776324872234789671}
   - component: {fileID: 3653885878964960905}
+  - component: {fileID: 3458554698635541142}
   m_Layer: 0
   m_Name: Eggplant
   m_TagString: Crop
@@ -379,6 +380,21 @@ MonoBehaviour:
   _maxCount: 10
   _triggerZoneName: CropRefillZone
   idList: 
+--- !u!114 &3458554698635541142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2586067803078274020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a39052be188ff2439968011866d2134, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameTextPrefab: {fileID: 5425592634578222487, guid: 6cb0f7b8439806a47bb13ec9a53e5e6c, type: 3}
+  height: 1
+  rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
 --- !u!1 &3550606691173875447
 GameObject:
   m_ObjectHideFlags: 0

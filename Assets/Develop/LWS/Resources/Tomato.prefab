@@ -112,6 +112,7 @@ GameObject:
   - component: {fileID: 9049727417419758724}
   - component: {fileID: 2376318792814636124}
   - component: {fileID: -7047265026094808091}
+  - component: {fileID: 4913690635051482339}
   m_Layer: 0
   m_Name: Tomato
   m_TagString: Crop
@@ -379,6 +380,21 @@ MonoBehaviour:
   _maxCount: 10
   _triggerZoneName: CropRefillZone
   idList: 
+--- !u!114 &4913690635051482339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621033155637086704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a39052be188ff2439968011866d2134, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameTextPrefab: {fileID: 5425592634578222487, guid: 6cb0f7b8439806a47bb13ec9a53e5e6c, type: 3}
+  height: 1
+  rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
 --- !u!1 &2100209833399566211
 GameObject:
   m_ObjectHideFlags: 0
