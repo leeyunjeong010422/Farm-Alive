@@ -87,7 +87,7 @@ public class AffordanceSystemManager : MonoBehaviour
 
     private void OnHoverEnter(HoverEnterEventArgs args)
     {
-        Debug.Log("HoverEnter");
+        //Debug.Log("HoverEnter");
         ChangeColor(_hoverColor);
         ChangeScale(_hoverScale);
         PlaySound(_hoverSound);
@@ -95,20 +95,20 @@ public class AffordanceSystemManager : MonoBehaviour
 
     private void OnHoverExit(HoverExitEventArgs args)
     {
-        Debug.Log("HoverExit");
+        //Debug.Log("HoverExit");
         InitialStateReset();
     }
 
     private void OnSelectEnter(SelectEnterEventArgs args)
     {
-        Debug.Log("SelectEnter");
+       //Debug.Log("SelectEnter");
         ChangeColor(_selectColor);
         PlaySound(_selectSound);
     }
 
     private void OnSelectExit(SelectExitEventArgs args)
     {
-        Debug.Log("SelectExit");
+        //Debug.Log("SelectExit");
         InitialStateReset();
     }
 
