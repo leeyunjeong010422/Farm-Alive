@@ -238,7 +238,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a152815c43985648b63ddc5340b1772, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controllerNode: 4
+  leftControllerNode: 4
+  rightControllerNode: 5
   moveSpeed: 4
   cameraTransform: {fileID: 7261734078042661224}
   animator: {fileID: 3499155542520994851}

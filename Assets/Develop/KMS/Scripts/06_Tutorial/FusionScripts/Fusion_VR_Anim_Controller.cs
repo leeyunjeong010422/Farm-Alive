@@ -28,14 +28,14 @@ public class Fusion_VR_Anim_Controller : NetworkBehaviour
                 {
                     MoveCharacter();
                     animator.SetFloat("Speed", _inputAxis.magnitude); // Speed 파라미터 전달
+
+                    // 다른 클라이언트와 애니메이션 동기화
+                    RPC_SyncAnimation(_inputAxis.magnitude);
                 }
                 else
                 {
                     animator.SetFloat("Speed", 0f); // 정지 상태
                 }
-
-                // 다른 클라이언트와 애니메이션 동기화
-                RPC_SyncAnimation(_inputAxis.magnitude);
             }
         }
     }
