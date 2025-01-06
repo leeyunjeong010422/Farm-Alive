@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.PlayerLoop;
 using UnityEngine.SocialPlatforms;
 
-public class TimeSystem : MonoBehaviour
+public class TimeManager : MonoBehaviour
 {
     /// <summary>
     /// 스테이지별 제한시간과 관련된 타임 시스템

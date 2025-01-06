@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EventSystem : MonoBehaviour
+public class EventManager : MonoBehaviour
 {
-    [SerializeField] TimeSystem _timeSystem;
+    [SerializeField] TimeManager _timeManager;
 
     private void Start()
     {
