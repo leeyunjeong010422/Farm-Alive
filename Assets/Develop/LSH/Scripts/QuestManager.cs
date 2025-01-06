@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 using static QuestManager;
 
 public class QuestManager : MonoBehaviourPun
@@ -35,8 +36,11 @@ public class QuestManager : MonoBehaviourPun
 
     [SerializeField] public List<Quest> questsList = new List<Quest>();
     [SerializeField] public List<TruckQuest> truckList = new List<TruckQuest>();
+
     [SerializeField] public GameObject[] itemPrefabs;
     [SerializeField] public Quest currentQuest;
+    [SerializeField] TruckController truckController;
+
     [SerializeField] public int maxItemCount;
 
     private void Awake()
@@ -53,7 +57,7 @@ public class QuestManager : MonoBehaviourPun
 
     public void FirstStart()
     {
-        if (questsList.Count < 7)
+        if (questsList.Count < 4)
             photonView.RPC(nameof(QuestStart), RpcTarget.AllBuffered);
     }
 
@@ -61,6 +65,7 @@ public class QuestManager : MonoBehaviourPun
     public void QuestStart()
     {
         maxItemCount = 0;
+
         if (PhotonNetwork.IsMasterClient)
         {
             //int rand = Random.Range(1, itemPrefabs.Length);
@@ -102,6 +107,11 @@ public class QuestManager : MonoBehaviourPun
                     break;
                 }
 
+                if(i==maxItemCounts.Length-1 && maxItemCount < 30)
+                {
+                    int temp = 30 - maxItemCount;
+                    maxItemCounts[i] += temp;
+                }
             }
 
             int[] itemCounts = new int[checkItemLength];
@@ -140,6 +150,7 @@ public class QuestManager : MonoBehaviourPun
         }
 
         questsList.Add(currentQuest);
+        truckController.CreateTruck();        
         UpdateUI();
     }
 
@@ -192,17 +203,17 @@ public class QuestManager : MonoBehaviourPun
             }
         }
 
+        PhotonView box = PhotonView.Find(boxView);
+        if (box != null && box.IsMine)
+        {
+            PhotonNetwork.Destroy(box.gameObject);
+        }
+
         if (completedIndexes.Count > 0)
         {
             int[] listArray = completedIndexes.ToArray();
 
             IsQuestComplete(listArray);
-        }
-
-        PhotonView box = PhotonView.Find(boxView);
-        if (box != null && box.IsMine)
-        {
-            PhotonNetwork.Destroy(box.gameObject);
         }
         
         UpdateUI();
@@ -213,6 +224,7 @@ public class QuestManager : MonoBehaviourPun
         foreach (int index in completedIndexes.OrderByDescending(x => x))
         {
             questsList.RemoveAt(index);
+            PhotonNetwork.Destroy(truckList[index].gameObject);
         }
 
         if (questsList.Count == 0)
