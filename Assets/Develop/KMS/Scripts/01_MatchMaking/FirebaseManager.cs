@@ -168,7 +168,7 @@ public class FirebaseManager : MonoBehaviour
                 Debug.Log($"Firebase에서 UID {uid} 발견!");
                 userId = uid;
                 UpdateLastLogin();
-                //NotifyInitializationComplete();
+                NotifyInitializationComplete();
             }
             else
             {
@@ -206,7 +206,7 @@ public class FirebaseManager : MonoBehaviour
             {
                 Debug.Log("사용자 데이터 저장 완료!");
                 UpdateLastLogin();
-                //NotifyInitializationComplete();
+                NotifyInitializationComplete();
                 return;
             }
             else
