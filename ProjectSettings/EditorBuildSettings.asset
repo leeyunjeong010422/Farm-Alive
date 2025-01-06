@@ -17,16 +17,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Develop/KMS/Level/GamePlay/03_FusionLobby.unity
     guid: 86c2db4b0dcb7d142a78a49d7df95af3
-  - enabled: 0
+  - enabled: 1
     path: Assets/Develop/KMS/Level/GamePlay/04_PunWaitingRoom.unity
     guid: 30b99ff453ed5b24bb868cd683b696b4
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/AssetScene.unity
     guid: a3c27a463a825c540aa71a2c82ba2595
   - enabled: 0
     path: Assets/Develop/KMS/Level/GamePlay/05_AssetScene.unity
     guid: 37de9e2d438b75541975c9e3a187bbae
-  - enabled: 1
+  - enabled: 0
     path: Assets/Develop/KMS/Level/GamePlay/05_1_AssetScene.unity
     guid: b762d22f3de321e4588f7b97b3cc8e12
   m_configObjects:
