@@ -265,6 +265,51 @@ Transform:
   m_Father: {fileID: 605036815}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &302110173
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 302110175}
+  - component: {fileID: 302110174}
+  m_Layer: 0
+  m_Name: VoiceLogger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &302110174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302110173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a86f533fd9917dd4da8601e9eb542c96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LogLevel: 2
+--- !u!4 &302110175
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302110173}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &371206071
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,7 +324,7 @@ GameObject:
   - component: {fileID: 371206073}
   - component: {fileID: 371206072}
   m_Layer: 0
-  m_Name: Object (1)
+  m_Name: Repairable (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -299,18 +344,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnSymptomRaised:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 371206072}
+        m_TargetAssemblyTypeName: Repair, Assembly-CSharp
+        m_MethodName: Symptom
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnSymptomSolved:
     m_PersistentCalls:
       m_Calls: []
   OnBrokenRaised:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 371206072}
+        m_TargetAssemblyTypeName: Repair, Assembly-CSharp
+        m_MethodName: Broken
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnBrokenSolved:
     m_PersistentCalls:
       m_Calls: []
   _invokePeriod: 3
-  _invokeRate: 50
+  _invokeRate: 0.5
   _limitTime: 5
   _maxRepairCount: 3
 --- !u!65 &371206073
@@ -389,7 +458,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &502301799
 PrefabInstance:
@@ -529,7 +598,7 @@ Transform:
   - {fileID: 2079360572}
   - {fileID: 200147991}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1163858962
 GameObject:
@@ -627,7 +696,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1207004299
 GameObject:
@@ -643,7 +712,7 @@ GameObject:
   - component: {fileID: 1207004301}
   - component: {fileID: 1207004300}
   m_Layer: 0
-  m_Name: Object
+  m_Name: Repairable (0)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -663,18 +732,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnSymptomRaised:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1207004300}
+        m_TargetAssemblyTypeName: Repair, Assembly-CSharp
+        m_MethodName: Symptom
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnSymptomSolved:
     m_PersistentCalls:
       m_Calls: []
   OnBrokenRaised:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1207004300}
+        m_TargetAssemblyTypeName: Repair, Assembly-CSharp
+        m_MethodName: Broken
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnBrokenSolved:
     m_PersistentCalls:
       m_Calls: []
   _invokePeriod: 3
-  _invokeRate: 50
+  _invokeRate: 0.5
   _limitTime: 5
   _maxRepairCount: 3
 --- !u!65 &1207004301
@@ -753,7 +846,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1213422404
 GameObject:
@@ -785,7 +878,7 @@ Transform:
   m_Children:
   - {fileID: 1471968072}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1471968071
 GameObject:
@@ -863,7 +956,7 @@ GameObject:
   - component: {fileID: 1525951343}
   - component: {fileID: 1525951342}
   m_Layer: 0
-  m_Name: Object (2)
+  m_Name: Repairable (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -883,18 +976,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnSymptomRaised:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1525951342}
+        m_TargetAssemblyTypeName: Repair, Assembly-CSharp
+        m_MethodName: Symptom
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnSymptomSolved:
     m_PersistentCalls:
       m_Calls: []
   OnBrokenRaised:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1525951342}
+        m_TargetAssemblyTypeName: Repair, Assembly-CSharp
+        m_MethodName: Broken
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnBrokenSolved:
     m_PersistentCalls:
       m_Calls: []
   _invokePeriod: 3
-  _invokeRate: 50
+  _invokeRate: 0.5
   _limitTime: 5
   _maxRepairCount: 3
 --- !u!65 &1525951343
@@ -973,8 +1090,69 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1679452926
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5976323507112679849, guid: aced46f8819501543b62a88d5104b393, type: 3}
+      propertyPath: ApplyDontDestroyOnLoad
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976323507112679850, guid: aced46f8819501543b62a88d5104b393, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976323507112679850, guid: aced46f8819501543b62a88d5104b393, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976323507112679850, guid: aced46f8819501543b62a88d5104b393, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976323507112679850, guid: aced46f8819501543b62a88d5104b393, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976323507112679850, guid: aced46f8819501543b62a88d5104b393, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976323507112679850, guid: aced46f8819501543b62a88d5104b393, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976323507112679850, guid: aced46f8819501543b62a88d5104b393, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976323507112679850, guid: aced46f8819501543b62a88d5104b393, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976323507112679850, guid: aced46f8819501543b62a88d5104b393, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976323507112679850, guid: aced46f8819501543b62a88d5104b393, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976323507112679850, guid: aced46f8819501543b62a88d5104b393, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5976323507112679855, guid: aced46f8819501543b62a88d5104b393, type: 3}
+      propertyPath: m_Name
+      value: Voice Manager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: aced46f8819501543b62a88d5104b393, type: 3}
 --- !u!1001 &2023375326
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -984,7 +1162,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3604204490506911593, guid: baab30aa7cc4fcc46b16d3af6d5aee48, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3604204490506911593, guid: baab30aa7cc4fcc46b16d3af6d5aee48, type: 3}
       propertyPath: m_LocalPosition.x
