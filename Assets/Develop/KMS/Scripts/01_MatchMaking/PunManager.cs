@@ -42,7 +42,9 @@ public class PunManager : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = false;
         // 호출의 순서가 FirebaseManager가 초기화 완료되고 나서
         // ConnectToPhoton() 호출해야하기에 이벤트로 연결.
+        Debug.Log("Firebase 이벤트 등록");
         FirebaseManager.Instance.OnFirebaseInitialized += ConnectToPhoton;
+        FirebaseManager.Instance.NotifyInitializationComplete();
     }
 
     /// <summary>
