@@ -38,18 +38,26 @@ public class LoadingController : MonoBehaviour
         // 씬 자동 활성화 비활성화
         asyncLoad.allowSceneActivation = false;
 
+        float simulatedProgress = 0f;
+        float smoothSpeed = 0.2f;
+
         while (!asyncLoad.isDone)
         {
+            float realProgress = asyncLoad.progress / 0.9f;
+
+            simulatedProgress = Mathf.MoveTowards(simulatedProgress, realProgress, smoothSpeed * Time.deltaTime);
+
+            progressBar.value = simulatedProgress;
+            progressText.text = $"{(simulatedProgress * 100f):0}%";
+
             // 씬 로드가 완료되었을 때
-            if (asyncLoad.progress >= 0.9f && !_isSceneReady)
+            if (simulatedProgress >= 1f && !_isSceneReady)
             {
-                Debug.Log("씬 로딩 완료. 프로그레스 바 준비.");
+                Debug.Log("씬 로딩 완료. 씬 활성화 준비.");
                 _isSceneReady = true;
 
-                // 3초 동안 프로그레스 바를 자연스럽게 진행
-                yield return StartCoroutine(SimulateProgressBar(3f));
-
-                // 씬 활성화
+                // 약간의 지연 시간 후 씬 활성화
+                yield return new WaitForSeconds(0.5f);
                 asyncLoad.allowSceneActivation = true;
             }
 

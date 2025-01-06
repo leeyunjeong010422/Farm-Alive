@@ -25,7 +25,7 @@ public class Local_Rigging : MonoBehaviour
         // 로컬 플레이어의 동작 처리
         MappingHandTranform(leftHandIK, leftHandController, true);
         MappingHandTranform(righttHandIK, rightHandController, false);
-        MappingBodyTransform(headIK, hmd);
+        MappingBodyTransform(hmd);
         MappingHeadTransform(headIK, hmd);
 
     }
@@ -52,12 +52,12 @@ public class Local_Rigging : MonoBehaviour
     /// </summary>
     /// <param name="ik"></param>
     /// <param name="hmd"></param>
-    private void MappingBodyTransform(Transform ik, Transform hmd)
+    private void MappingBodyTransform(Transform hmd)
     {
         this.transform.position = new Vector3(hmd.position.x, hmd.position.y - modelHeight, hmd.position.z);
-        float yaw = hmd.eulerAngles.y;
-        var targetRotation = new Vector3(this.transform.eulerAngles.x, yaw, this.transform.eulerAngles.z);
-        this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.Euler(targetRotation), smoothValue);
+        //float yaw = hmd.eulerAngles.y;
+        //var targetRotation = new Vector3(this.transform.eulerAngles.x, yaw, this.transform.eulerAngles.z);
+        //this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.Euler(targetRotation), smoothValue);
     }
 
     /// <summary>

@@ -23,10 +23,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/AssetScene.unity
     guid: a3c27a463a825c540aa71a2c82ba2595
-  - enabled: 1
+  - enabled: 0
     path: Assets/Develop/KMS/Level/GamePlay/05_AssetScene.unity
     guid: 37de9e2d438b75541975c9e3a187bbae
-  - enabled: 1
+  - enabled: 0
     path: Assets/Develop/KMS/Level/GamePlay/05_1_AssetScene.unity
     guid: b762d22f3de321e4588f7b97b3cc8e12
   m_configObjects:
