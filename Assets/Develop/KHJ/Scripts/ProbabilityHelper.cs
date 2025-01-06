@@ -6,11 +6,21 @@ public static class ProbabilityHelper
     /// <summary>
     /// ´çÃ· ¿©ºÎ È®ÀÎ ÇÔ¼ö
     /// </summary>
-    /// <param name="percentage">´çÃ· È®·ü</param>
+    /// <param name="percentage">´çÃ· È®·ü, [0, 100]ÀÇ Á¤¼ö</param>
     /// <returns>´çÃ· ¿©ºÎ</returns>
     public static bool Draw(int percentage)
     {
         return Random.Range(0, 100) < percentage;
+    }
+
+    /// <summary>
+    /// ´çÃ· ¿©ºÎ È®ÀÎ ÇÔ¼ö
+    /// </summary>
+    /// <param name="rate">´çÃ· È®·ü, [0, 1]ÀÇ °ª</param>
+    /// <returns>´çÃ· ¿©ºÎ</returns>
+    public static bool Draw(float rate)
+    {
+        return Random.Range(0f, 1f) < rate;
     }
 
     /// <summary>
