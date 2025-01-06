@@ -64,11 +64,10 @@ public class GeneratorInteractable : XRBaseInteractable
         rigid = GetComponent<Rigidbody>();
         startPos = transform.position;
 
-        _repair = GetComponentInParent<Repair>();
-        _repair.enabled = false;
-
         _knob = transform.root.GetComponentInChildren<XRKnobGenerator>();
         _lever = transform.root.GetComponentInChildren<XRLever>();
+
+        _repair = GetComponentInParent<Repair>();
 
         _knob.onValueChange.AddListener(OnKnobValueChanged);
         _lever.onLeverActivate.AddListener(OnLeverActivate);
@@ -298,7 +297,6 @@ public class GeneratorInteractable : XRBaseInteractable
     [PunRPC]
     private void SyncEnableRepair(bool isRepaired)
     {
-        _repair.enabled = isRepaired;
         _repair.IsRepaired = isRepaired;
 
         if (isRepaired)
