@@ -129,6 +129,7 @@ MonoBehaviour:
   - {fileID: 8623049082110364434}
   - {fileID: 6330834745711844645}
   - {fileID: 8786325825434338083}
+  - {fileID: 8584416799543730122}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &-765375501826874901
 MonoBehaviour:
@@ -1904,6 +1905,29 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5845125219956739443, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
   m_PrefabInstance: {fileID: 5524814367918095455}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2917495896350642718 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7264607921442958913, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+  m_PrefabInstance: {fileID: 5524814367918095455}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8584416799543730122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2917495896350642718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 506319458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animator: {fileID: 3499155542520994851}
+  ApplyTiming: 2
+  SyncSettings: 79
+  StateHashes: 000000008a18fce49c422a26
+  TriggerHashes: 00000000
+  TotalWords: 2
 --- !u!95 &3499155542520994851 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 8945109869299949692, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
