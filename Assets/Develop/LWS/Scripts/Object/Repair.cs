@@ -81,7 +81,9 @@ public class Repair : MonoBehaviourPun
         while (IsSymptom == false)
         {
             Debug.Log($"{gameObject.name} 전조증상 발생 확인...");
+            Debug.Log($"{gameObject.name} IsSymptom({IsSymptom})");
             IsSymptom = ProbabilityHelper.Draw(_invokeRate);
+            Debug.Log($"{gameObject.name} IsSymptom({IsSymptom})");
             if (IsSymptom)
                 InvokeBroken();
 
@@ -94,6 +96,13 @@ public class Repair : MonoBehaviourPun
     private void InvokeBroken()
     {
         Debug.Log($"{gameObject.name} 고장 {_limitTime}초 후 발생");
+
+        if (_invokeSymptomCoroutine != null)
+        {
+            StopCoroutine(_invokeSymptomCoroutine);
+            _invokeSymptomCoroutine = null;
+        }
+
         if (_invokeBrokenCoroutine == null)
             _invokeBrokenCoroutine = StartCoroutine(InvokeBrokenRoutine());
     }
@@ -133,22 +142,35 @@ public class Repair : MonoBehaviourPun
     /// </summary>
     public void ResetRepairState()
     {
-        IsSymptom = true;
-        IsRepaired = true;
+        if (_isSymptom) _isSymptom = false;
+        else return;
+        if (!_isRepaired) _isRepaired = true;
+        else return;
         _curRepairCount = 0;
+
+        StopAllCoroutines();
         _invokeSymptomCoroutine = null;
         _invokeBrokenCoroutine = null;
 
-        InvokeSymptom();
+        Debug.Log($"{gameObject.name} 수리 상태 초기화: _curRepairCount={_curRepairCount}, IsSymptom={IsSymptom}, IsRepaired={IsRepaired}");
 
-        Debug.Log($"{gameObject.name} 수리 상태 초기화: _curRepairCount={_curRepairCount}, IsRepaired={IsRepaired}");
+        InvokeSymptom();
     }
 
     #region TestCode
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            Solve();
             ResetRepairState();
+        }
+    }
+
+    public void Solve()
+    {
+        Debug.Log($"{gameObject.name} 문제 해결!");
+        GetComponent<Renderer>().material.color = Color.blue;
     }
 
     public void Symptom()
