@@ -1,13 +1,17 @@
+using Fusion;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class TruckQuest : MonoBehaviour
 {
     [SerializeField] int truckId;
+    [SerializeField] TruckController truckSpawner;
+    [SerializeField] public Text questText;
 
     private void OnTriggerStay(Collider other)
     {
@@ -58,6 +62,29 @@ public class TruckQuest : MonoBehaviour
                 int[] requiredCountArray = requiredCounts.ToArray();
                 QuestManager.Instance.CountUpdate(truckIdArray, itemIndexArray, requiredCountArray, boxView.ViewID);
             }
+        }
+    }
+
+    public void SetID(int truckId, TruckController truckController)
+    {
+        this.truckId = truckId;
+        this.truckSpawner = truckController;
+        Debug.Log($"오브젝트 ID: {truckId}");
+    }
+
+    public void ChangeID(int truckId)
+    {
+        this.truckId = truckId;
+        Debug.Log($"오브젝트 ID: {truckId}");
+    }
+
+    private void OnDestroy()
+    {
+        if (truckSpawner != null)
+        {
+            QuestManager.Instance.truckList.RemoveAt(truckId);
+            truckSpawner.ClearSlot(truckId);            
+            Debug.Log("삭제완료");
         }
     }
 }

@@ -45,7 +45,7 @@ public class SectionMover : MonoBehaviourPun
         {
             middlePosition[i] = new Vector3(
                 targetSection[i].transform.position.x,
-                targetSection[i].transform.position.y - 18,
+                targetSection[i].transform.position.y + 14,
                 targetSection[i].transform.position.z
                 );
 
@@ -57,7 +57,7 @@ public class SectionMover : MonoBehaviourPun
         {
             endPosition[i] = new Vector3(
                 targetPosition.x,
-                targetPosition.y - 18,
+                targetPosition.y + 14,
                 targetPosition.z
                 );
 
@@ -69,7 +69,7 @@ public class SectionMover : MonoBehaviourPun
         {
             middleBackPosition[i] = new Vector3(
                 targetSection[i].transform.position.x,
-                targetSection[i].transform.position.y + 18,
+                targetSection[i].transform.position.y + 28,
                 targetSection[i].transform.position.z
                 );
         }
@@ -79,7 +79,7 @@ public class SectionMover : MonoBehaviourPun
         {
             endBackPosition[i] = new Vector3(
                 targetPosition.x,
-                targetPosition.y + 18,
+                targetPosition.y + 28,
                 targetPosition.z
                 );
         }
@@ -153,27 +153,6 @@ public class SectionMover : MonoBehaviourPun
                 }
             }
         }
-
-        /*if (selectedSection != null)
-        {
-            selectedSection.transform.position = Vector3.MoveTowards(selectedSection.transform.position, targetPosition, moveSpeed * Time.deltaTime);
-
-            if (Vector3.Distance(selectedSection.transform.position, targetPosition) < 0.01f)
-            {
-                if (*//*!isUpperLowerShutterOpen ||*//* !isLeftRightShutterOpen)
-                {
-                    SectorDistance();
-                }
-            }
-        }
-
-        for (int i = 0; i < targetSection.Length; i++)
-        {
-            if (targetSection[i] != selectedSection)
-            {
-                targetSection[i].transform.position = Vector3.MoveTowards(targetSection[i].transform.position, firstPosition[i], moveSpeed * Time.deltaTime);
-            }
-        }*/
     }
 
     public void sel1()
