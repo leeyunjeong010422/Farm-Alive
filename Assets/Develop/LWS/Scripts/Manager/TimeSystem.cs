@@ -21,7 +21,7 @@ public class TimeSystem : MonoBehaviour
     [Tooltip("게임 내부 시간 배속 사용 시 조절")]
     [SerializeField] float _timeScale = 1f; // = 실제 속도
 
-    [Header("스테이지 시간 관련 이벤트")]
+    [Header("타이머 종료 이벤트")]
     [Tooltip("스테이지 시간이 모두 소진되었을 때 호출할 이벤트")]
     // 신 전환 등
     [SerializeField] UnityEvent _onStageTimeOver;
@@ -34,6 +34,17 @@ public class TimeSystem : MonoBehaviour
     // 시간변경 통지받을 스크립트 등록
     // ex) UI등에서 구독 후 사용, 비활성화 될 경우 해제 필요
     public event Action<float, float> onTimeUpdate;
+
+    /// <summary>
+    /// stageManager에서 스크립터블 오브젝트를 읽어와 제한시간을 변경하기 위한 public 함수
+    /// timeSystem.SetTimeLimit(stageDataSO.timeLimit);
+    /// timeSystem.StartStageTimer();
+    /// </summary>
+    /// <param name="seconds"></param>
+    public void SetTimeLimit(float seconds)
+    {
+        _stageTimeLimit = seconds;
+    }
 
     /// <summary>
     /// 카운트 시작 함수
@@ -87,5 +98,4 @@ public class TimeSystem : MonoBehaviour
         // 남은 시간
         return Mathf.Max(0, _stageTimeLimit - _curStageTime);
     }
-
 }
