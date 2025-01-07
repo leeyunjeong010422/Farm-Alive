@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TruckController : MonoBehaviour
+public class TruckController : MonoBehaviourPun
 {
     [SerializeField] GameObject truckPrefab;
 
     [SerializeField] Transform[] transformCounts;
+    [SerializeField] bool[] transformNumbers = new bool[4];
     [SerializeField] public GameObject[] truckObjects = new GameObject[4];
 
     public void ClearSlot(int truckId)
@@ -24,21 +25,45 @@ public class TruckController : MonoBehaviour
         }
     }
 
+    public void ClearPositionSlot(int truckId)
+    {
+        transformNumbers[truckId] = false;
+    }
+
     public void CreateTruck()
     {
-        for (int i = 0; i < truckObjects.Length; i++)
+        for (int i = 0; i < transformNumbers.Length; i++)
         {
-            if (truckObjects[i] == null)
+            if (!transformNumbers[i])
             {
-                GameObject truck = PhotonNetwork.Instantiate(truckPrefab.name, transformCounts[i].position, Quaternion.identity);
-                TruckQuest truckQuest = truck.GetComponent<TruckQuest>();
-                QuestManager.Instance.truckList.Add(truckQuest);
+                for (int j = 0; j < truckObjects.Length; j++)
+                {
+                    if (truckObjects[j] == null)
+                    {
+                        GameObject truck = PhotonNetwork.Instantiate(truckPrefab.name, transformCounts[i].position, Quaternion.identity);
+                        PhotonView truckView = truck.GetComponent<PhotonView>();
 
-                truckQuest.SetID(i, this);
-
-                truckObjects[i] = truck;
-                break;
+                        transformNumbers[i] = true;
+                        photonView.RPC(nameof(SyncTruck), RpcTarget.AllBuffered, j, truckView.ViewID);
+                        return;
+                    }
+                }
             }
         }
     }
-}
+
+        [PunRPC]
+        public void SyncTruck(int j, int viewId)
+        {
+            PhotonView truckView = PhotonView.Find(viewId);
+            TruckQuest truckQuest = truckView.GetComponent<TruckQuest>();
+
+            truckQuest.SetID(j, this);
+
+            QuestManager.Instance.truckList.Add(truckQuest);
+
+            truckObjects[j] = truckView.gameObject;
+
+            QuestManager.Instance.UpdateUI();
+        }
+    }

@@ -80,6 +80,7 @@ MonoBehaviour:
   - SyncTriggerWarning
   - UpCount
   - SyncTargetPlayer
+  - SyncTruck
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
