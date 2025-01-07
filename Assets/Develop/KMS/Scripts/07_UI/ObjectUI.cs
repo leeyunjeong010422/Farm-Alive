@@ -31,7 +31,6 @@ public class ObjectUI : MonoBehaviour
             }
 
             nameTextInstance.transform.SetParent(transform);
-            Debug.Log(nameTextInstance.text);
         }
         else
         {
