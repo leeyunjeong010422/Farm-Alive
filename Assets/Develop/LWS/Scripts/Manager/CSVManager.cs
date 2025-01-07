@@ -20,8 +20,22 @@ public class CSVManager : MonoBehaviour
     const string stageCorCSVPath = "https://docs.google.com/spreadsheets/d/1Sd5x4Mt1fnIVY-X97tvYx1lTE8bh-nQ0/export?gid=169149848&format=csv"; // 스테이지별 거래처 시트
 
     public List<CROP> Crops;
+
+    public List<FACILITY> Facilities;
+    
+    public List<CORRESPONDENT> Correspondents;
+    public List<CORRESPONDENT_REQUIRECROPS> Correspondents_RequireCrops;
+    public List<CORRESPONDENT_CROPSTYPECOUNT> Correspondents_CropsType;
+    public List<CORRESPONDENT_CROPSCOUNT> Correspondents_CropsCount;
+
+    public List<EVENT> Events;
+    public List<EVENT_SEASON> Events_Seasons;
+
+    public List<STAGE> Stages;
+    public List<STAGE_CORRESPONDENT> Stages_Correspondents;
+
     public bool downloadCheck;
-    public static CSVManager Instance;    
+    public static CSVManager Instance;
 
     private void Start()
     {
@@ -45,12 +59,12 @@ public class CSVManager : MonoBehaviour
 
     IEnumerator DownloadRoutine()
     {
+        // 작물 다운로드
+
         UnityWebRequest request = UnityWebRequest.Get(cropCSVPath); // 링크를 통해서 웹사이트에 다운로드 요청
         yield return request.SendWebRequest();                  // 링크를 진행하고 완료될 때까지 대기
 
         string receiveText = request.downloadHandler.text;      // 다운로드 완료한 파일을 텍스트로 읽기
-
-        Debug.Log(receiveText);
 
         string[] lines = receiveText.Split('\n');
         for (int y = 2; y < lines.Length; y++)
@@ -59,20 +73,241 @@ public class CSVManager : MonoBehaviour
 
             string[] values = lines[y].Split(',', '\t');
 
-            crop.cropID = int.Parse(values[0]);
-            crop.cropName = values[1];
-            crop.maxShovelCount = int.Parse(values[2]);
-            crop.maxWaterCount = int.Parse(values[3]);
-            crop.maxNutrientCount = int.Parse(values[4]);
-            crop.maxGrowthTime = float.Parse(values[5]);
-            crop.droughtMaxWaterCount = int.Parse(values[6]);
-            crop.droughtMaxNutrientCount = int.Parse(values[7]);
-            crop.damagePercent = float.Parse(values[8]);
-            crop.damageTime = float.Parse(values[9]);
-            crop.lowTemperTime = float.Parse(values[10]);
-            crop.highTemperTime = float.Parse(values[11]);
+            crop.crop_ID = int.Parse(values[0]);
+            crop.crop_Name = values[1];
+            crop.crop_maxShovelCount = int.Parse(values[2]);
+            crop.crop_maxWaterCount = float.Parse(values[3]);
+            crop.crop_maxNutrientCount = float.Parse(values[4]);
+            crop.crop_maxGrowthTime = float.Parse(values[5]);
+            crop.crop_droughtMaxWaterCount = int.Parse(values[6]);
+            crop.crop_droughtMaxNutrientCount = int.Parse(values[7]);
+            crop.crop_damagePercent = float.Parse(values[8]);
+            crop.crop_damageTime = float.Parse(values[9]);
+            crop.crop_lowTemperTime = float.Parse(values[10]);
+            crop.crop_highTemperTime = float.Parse(values[11]);
 
             Crops.Add(crop);
+        }
+
+        // 시설 다운로드
+
+        request = UnityWebRequest.Get(facilityCSVPath);
+        yield return request.SendWebRequest();
+
+        receiveText = request.downloadHandler.text;
+
+        lines = receiveText.Split('\n');
+        for (int y = 2; y < lines.Length; y++)
+        {
+            FACILITY facility = new FACILITY();
+
+            string[] values = lines[y].Split(',', '\t');
+
+            facility.facility_ID = int.Parse(values[0]);
+            facility.facility_name = values[1];
+            facility.facility_symptomPercent = float.Parse(values[2]);
+            facility.facility_stormSymptomPercent = float.Parse(values[3]);
+            facility.facility_timeLimit = float.Parse(values[4]);
+            facility.facility_maxHammeringCount = int.Parse(values[5]);
+            int.TryParse(values[6], out facility.facility_maxBootCount);
+
+            Facilities.Add(facility);
+        }
+
+        // 거래처 다운로드
+
+        request = UnityWebRequest.Get(correspondentCSVPath);
+        yield return request.SendWebRequest();
+
+        receiveText = request.downloadHandler.text;
+
+        lines = receiveText.Split('\n');
+        for (int y = 2; y < lines.Length; y++)
+        {
+            CORRESPONDENT correspondent = new CORRESPONDENT();
+
+            string[] values = lines[y].Split(',', '\t');
+
+            correspondent.correspondent_ID = int.Parse(values[0]);
+            correspondent.correspondent_name = values[1];
+            correspondent.correspondent_timeLimit = float.Parse(values[2]);
+
+            Correspondents.Add(correspondent);
+        }
+
+        // 거래처-요구작물 다운로드
+
+        request = UnityWebRequest.Get(corNeedCropCSVPath);
+        yield return request.SendWebRequest();
+
+        receiveText = request.downloadHandler.text;
+
+        lines = receiveText.Split('\n');
+        for (int y = 2; y < lines.Length; y++)
+        {
+            CORRESPONDENT_REQUIRECROPS correspondent_requireCrops = new CORRESPONDENT_REQUIRECROPS();
+
+            string[] values = lines[y].Split(',', '\t');
+
+            correspondent_requireCrops.correspondent_corID = int.Parse(values[0]);
+            correspondent_requireCrops.correspondent_cropID = new int[3];
+
+            for (int i = 0; i < 3; i++)
+            {
+                int.TryParse(values[i + 1], out int value);
+                correspondent_requireCrops.correspondent_cropID[i] = value;
+            }
+
+            Correspondents_RequireCrops.Add(correspondent_requireCrops);
+        }
+
+        // 거래처-작물종류개수 다운로드
+
+        request = UnityWebRequest.Get(corCropTypeCSVPath);
+        yield return request.SendWebRequest();
+
+        receiveText = request.downloadHandler.text;
+
+        lines = receiveText.Split('\n');
+        for (int y = 2; y < lines.Length; y++)
+        {
+            CORRESPONDENT_CROPSTYPECOUNT correspondent_cropsTypeCount = new CORRESPONDENT_CROPSTYPECOUNT();
+
+            string[] values = lines[y].Split(',', '\t');
+            
+            correspondent_cropsTypeCount.correspondent_corID = int.Parse(values[0]);
+            correspondent_cropsTypeCount.correspondent_stage = new int[10];
+
+            for (int i = 0; i < 10; i++)
+            {
+                int.TryParse(values[i + 1], out int value);
+                correspondent_cropsTypeCount.correspondent_stage[i] = value;
+            }
+
+            Correspondents_CropsType.Add(correspondent_cropsTypeCount);
+        }
+
+        // 거래처-요구 작물 개수 다운로드
+
+        request = UnityWebRequest.Get(corCountCropCSVPath);
+        yield return request.SendWebRequest();
+
+        receiveText = request.downloadHandler.text;
+
+        lines = receiveText.Split('\n');
+        for (int y = 2; y < lines.Length; y++)
+        {
+            CORRESPONDENT_CROPSCOUNT correspondent_cropsCount = new CORRESPONDENT_CROPSCOUNT();
+
+            string[] values = lines[y].Split(',', '\t');
+
+            correspondent_cropsCount.correspondent_corID = int.Parse(values[0]);
+            correspondent_cropsCount.correspondent_stage = new int[10];
+
+            for (int i = 0; i < 10; i++)
+            {
+                int.TryParse(values[i + 1], out int value);
+                correspondent_cropsCount.correspondent_stage[i] = value;
+            }
+
+            Correspondents_CropsCount.Add(correspondent_cropsCount);
+        }
+
+        // 이벤트 개수 다운로드
+
+        request = UnityWebRequest.Get(eventCSVPath); 
+        yield return request.SendWebRequest();
+
+        receiveText = request.downloadHandler.text;
+
+        lines = receiveText.Split('\n');
+        for (int y = 2; y < lines.Length; y++)
+        {
+            EVENT events = new EVENT();
+
+            string[] values = lines[y].Split(',', '\t');
+
+            events.event_ID = int.Parse(values[0]);
+            events.event_name = values[1];
+            events.event_occurPercent = float.Parse(values[2]);
+            events.event_occurPlusPercent = float.Parse(values[3]);
+            events.event_continueTime = float.Parse(values[4]);
+
+            Events.Add(events);
+        }
+
+        // 이벤트 확률 증가 계절 다운로드
+
+        request = UnityWebRequest.Get(eventSeasonCSVPath);
+        yield return request.SendWebRequest();
+
+        receiveText = request.downloadHandler.text;
+
+        lines = receiveText.Split('\n');
+        for (int y = 2; y < lines.Length; y++)
+        {
+            EVENT_SEASON events_seasons = new EVENT_SEASON();
+
+            string[] values = lines[y].Split(',', '\t');
+
+            events_seasons.event_ID = int.Parse(values[0]);
+            events_seasons.event_seasonID = new int[4];
+
+            for (int i = 0; i < 4; i++)
+            {
+                int.TryParse(values[i + 1], out int value);
+                events_seasons.event_seasonID[i] = value;
+            }
+
+            Events_Seasons.Add(events_seasons);
+        }
+
+        // 스테이지 다운로드
+
+        request = UnityWebRequest.Get(stageCSVPath);
+        yield return request.SendWebRequest();
+
+        receiveText = request.downloadHandler.text;
+
+        lines = receiveText.Split('\n');
+        for (int y = 2; y < lines.Length; y++)
+        {
+            STAGE stage = new STAGE();
+
+            string[] values = lines[y].Split(',', '\t');
+
+            stage.stage_ID = int.Parse(values[0]);
+            stage.stage_seasonID = int.Parse(values[1]);
+            stage.stage_allowSymptomFacilityCount = int.Parse(values[2]);
+
+            Stages.Add(stage);
+        }
+
+        // 스테이지 등장 가능 거래처 다운로드
+
+        request = UnityWebRequest.Get(stageCorCSVPath);
+        yield return request.SendWebRequest();
+
+        receiveText = request.downloadHandler.text;
+
+        lines = receiveText.Split('\n');
+        for(int y = 2;y < lines.Length; y++)
+        {
+            STAGE_CORRESPONDENT stage_correspondent = new STAGE_CORRESPONDENT();
+           
+            string[] values = lines[y].Split(',', '\t');
+
+            stage_correspondent.stage_ID = int.Parse(values[0]);
+            stage_correspondent.stage_corCount = int.Parse(values[1]);
+            stage_correspondent.stage_corList = new int[3];
+
+            for (int i = 0; i < 3; i++)
+            {
+                int.TryParse(values[i + 2], out int value);
+                stage_correspondent.stage_corList[i] = value;
+            }
+
+            Stages_Correspondents.Add(stage_correspondent);
         }
     }
 }
