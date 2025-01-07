@@ -29,20 +29,12 @@ public class Repair : MonoBehaviourPun
 
     public bool IsSymptom { 
         get { return _isSymptom; } 
-        set 
-        {
-            _isSymptom = value;
-            (_isSymptom ? OnSymptomRaised : OnSymptomSolved)?.Invoke();
-        } 
+        set { photonView.RPC(nameof(SyncSymptom), RpcTarget.All, value); }
     }
     public bool IsRepaired
     {
         get { return _isRepaired; }
-        set
-        {
-            _isRepaired = value;
-            (_isRepaired ? OnBrokenSolved : OnBrokenRaised)?.Invoke();
-        }
+        set { photonView.RPC(nameof(SyncRepaired), RpcTarget.All, value); }
     }
 
     private void Awake()
@@ -70,6 +62,9 @@ public class Repair : MonoBehaviourPun
 
     private void InvokeSymptom()
     {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
         if (_invokeSymptomCoroutine == null)
             _invokeSymptomCoroutine = StartCoroutine(InvokeSymptomRoutine());
     }
@@ -81,9 +76,7 @@ public class Repair : MonoBehaviourPun
         while (IsSymptom == false)
         {
             Debug.Log($"{gameObject.name} 전조증상 발생 확인...");
-            Debug.Log($"{gameObject.name} IsSymptom({IsSymptom})");
             IsSymptom = ProbabilityHelper.Draw(_invokeRate);
-            Debug.Log($"{gameObject.name} IsSymptom({IsSymptom})");
             if (IsSymptom)
                 InvokeBroken();
 
@@ -137,6 +130,20 @@ public class Repair : MonoBehaviourPun
         }
     }
 
+    [PunRPC]
+    private void SyncSymptom(bool value)
+    {
+        _isSymptom = value;
+        (_isSymptom ? OnSymptomRaised : OnSymptomSolved)?.Invoke();
+    }
+
+    [PunRPC]
+    private void SyncRepaired(bool value)
+    {
+        _isRepaired = value;
+        (_isRepaired ? OnBrokenSolved : OnBrokenRaised)?.Invoke();
+    }
+
     /// <summary>
     /// 수리 상태를 초기화(전조증상 해결 완료 or 고장 수리 완료)
     /// </summary>
@@ -164,6 +171,11 @@ public class Repair : MonoBehaviourPun
         {
             Solve();
             ResetRepairState();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            InvokeSymptom();
         }
     }
 
