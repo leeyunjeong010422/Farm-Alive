@@ -70,7 +70,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 7261734078042661224}
   animator: {fileID: 3499155542520994851}
-  moveSpeed: 1
+  moveSpeed: 4
   rotationSpeed: 100
   hmdRotationThreshold: 350
   hmdLerpSpeed: 0.07
@@ -1921,6 +1921,10 @@ PrefabInstance:
       propertyPath: rightHandController
       value: 
       objectReference: {fileID: 2047899354014995917}
+    - target: {fileID: 8945109869299949692, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 41f081d5c6d286c47a33bed3f84de79a, type: 3}
     - target: {fileID: 8945109869299949692, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: m_Controller
       value: 
