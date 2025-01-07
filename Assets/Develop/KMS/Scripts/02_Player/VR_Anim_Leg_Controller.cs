@@ -12,7 +12,7 @@ public class VR_Anim_Leg_Controller : MonoBehaviourPun
     public Animator animator;        
     public float moveSpeed = 1.0f;   
     public float rotationSpeed = 100.0f;
-    public float hmdRotationThreshold = 350f;
+    public float hmdRotationThreshold = 30f;
     public float hmdLerpSpeed = 0.07f;
 
     private Vector2 _leftInputAxis;
