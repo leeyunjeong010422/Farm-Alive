@@ -24,10 +24,18 @@ public class Fusion_VR_Anim_Controller : NetworkBehaviour
 
     private float _previousHmdYaw;
 
+    private InputDevice _leftController;
+    private InputDevice _rightController;
+
     private void Start()
     {
         // 초기 기준 HMD Yaw 값 설정
         _previousHmdYaw = cameraTransform.eulerAngles.y;
+
+        // InputDevice를 캐싱
+        _leftController = InputDevices.GetDeviceAtXRNode(_leftControllerNode);
+        _rightController = InputDevices.GetDeviceAtXRNode(_rightControllerNode);
+
     }
 
     public override void FixedUpdateNetwork()
@@ -35,8 +43,7 @@ public class Fusion_VR_Anim_Controller : NetworkBehaviour
         if (Object.HasInputAuthority)
         {
             // 컨트롤러 조이스틱 입력 가져오기
-            InputDevice controller = InputDevices.GetDeviceAtXRNode(_leftControllerNode);
-            if (controller.TryGetFeatureValue(CommonUsages.primary2DAxis, out _leftInputAxis))
+            if (_leftController.TryGetFeatureValue(CommonUsages.primary2DAxis, out _leftInputAxis))
             {
                 if (_leftInputAxis != Vector2.zero)
                 {
@@ -50,8 +57,7 @@ public class Fusion_VR_Anim_Controller : NetworkBehaviour
             }
 
             // 오른손 컨트롤러 입력 처리 (회전)
-            InputDevice rightController = InputDevices.GetDeviceAtXRNode(_rightControllerNode);
-            if (rightController.TryGetFeatureValue(CommonUsages.primary2DAxis, out _rightInputAxis))
+            if (_rightController.TryGetFeatureValue(CommonUsages.primary2DAxis, out _rightInputAxis))
             {
                 if (Mathf.Abs(_rightInputAxis.x) > 0.1f)
                 {

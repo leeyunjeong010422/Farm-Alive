@@ -31,8 +31,8 @@ Transform:
   m_GameObject: {fileID: 1865248795837646416}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5816299683468540763}
   - {fileID: 2139802521685307692}
@@ -68,10 +68,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e99bc3d957fb3a498c0b1c04e50b5a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controllerNode: 4
-  moveSpeed: 1
   cameraTransform: {fileID: 7261734078042661224}
   animator: {fileID: 3499155542520994851}
+  moveSpeed: 1
+  rotationSpeed: 100
+  hmdRotationThreshold: 350
+  hmdLerpSpeed: 0.07
 --- !u!114 &7594104593235513931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,7 +140,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1865248795837646416}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
@@ -1799,6 +1801,22 @@ PrefabInstance:
       propertyPath: rightOffset.Array.data[1].z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 4933791351454453986, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933791351454453986, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933791351454453986, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933791351454453986, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5319662046946083354, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: sceneViewId
       value: 0
@@ -1851,6 +1869,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: mini simple skeleton demo
       objectReference: {fileID: 0}
+    - target: {fileID: 7405356167255908195, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7405356167255908195, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7405356167255908195, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7405356167255908195, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8491778060818387133, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.69116044
@@ -1871,6 +1905,10 @@ PrefabInstance:
       propertyPath: leftHandIK
       value: 
       objectReference: {fileID: 8443358506025383845}
+    - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: modelHeight
+      value: 4.4
+      objectReference: {fileID: 0}
     - target: {fileID: 8890254832570613381, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: righttHandIK
       value: 
