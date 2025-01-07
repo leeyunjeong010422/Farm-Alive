@@ -19,7 +19,7 @@ public class CSVManager : MonoBehaviour
     const string stageCSVPath = "https://docs.google.com/spreadsheets/d/1Sd5x4Mt1fnIVY-X97tvYx1lTE8bh-nQ0/export?gid=1766045491&format=csv"; // 스테이지 시트
     const string stageCorCSVPath = "https://docs.google.com/spreadsheets/d/1Sd5x4Mt1fnIVY-X97tvYx1lTE8bh-nQ0/export?gid=169149848&format=csv"; // 스테이지별 거래처 시트
 
-    public List<CROP> Crops;
+    public List<CropData> cropDatas;
 
     public List<FACILITY> Facilities;
     
@@ -69,25 +69,22 @@ public class CSVManager : MonoBehaviour
         string[] lines = receiveText.Split('\n');
         for (int y = 2; y < lines.Length; y++)
         {
-            CROP crop = new CROP();
-
             string[] values = lines[y].Split(',', '\t');
 
-            crop.crop_ID = int.Parse(values[0]);
-            crop.crop_Name = values[1];
-            crop.crop_maxShovelCount = int.Parse(values[2]);
-            crop.crop_maxWaterCount = float.Parse(values[3]);
-            crop.crop_maxNutrientCount = float.Parse(values[4]);
-            crop.crop_maxGrowthTime = float.Parse(values[5]);
-            crop.crop_droughtMaxWaterCount = int.Parse(values[6]);
-            crop.crop_droughtMaxNutrientCount = int.Parse(values[7]);
-            crop.crop_damagePercent = float.Parse(values[8]);
-            crop.crop_damageTime = float.Parse(values[9]);
-            crop.crop_lowTemperTime = float.Parse(values[10]);
-            crop.crop_highTemperTime = float.Parse(values[11]);
-
-            Crops.Add(crop);
+            cropDatas[y-2].ID = int.Parse(values[0]);
+            cropDatas[y-2].cropName = values[1];
+            cropDatas[y-2].digCount = int.Parse(values[2]);
+            cropDatas[y-2].maxMoisture = int.Parse(values[3]);
+            cropDatas[y-2].maxNutrient = int.Parse(values[4]);
+            cropDatas[y-2].growthTime = float.Parse(values[5]);
+            cropDatas[y-2].droughtMaxMoisture = int.Parse(values[6]);
+            cropDatas[y-2].droughtMaxNutrient = int.Parse(values[7]);
+            cropDatas[y-2].damageRate = float.Parse(values[8]);
+            cropDatas[y-2].damageLimitTime = float.Parse(values[9]);
+            cropDatas[y-2].temperatureDecreaseLimitTime = float.Parse(values[10]);
+            cropDatas[y-2].temperatureIncreaseLimitTime = float.Parse(values[11]);
         }
+        Debug.Log("Download crops completed");
 
         // 시설 다운로드
 
