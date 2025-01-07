@@ -34,6 +34,7 @@ public class QuestManager : MonoBehaviourPun
         public string questName;
         public List<RequiredItem> requiredItems;
         public bool isSuccess;
+        public float questTimer;
     }
 
     [SerializeField] public List<Quest> questsList = new List<Quest>();
@@ -138,34 +139,39 @@ public class QuestManager : MonoBehaviourPun
 
                 int corTemp = CSVManager.Instance.Stages_Correspondents[stageLevel].stage_corList[i] - 311;
                 int corList = 0;
+                float qTimer = 0;
                 if (corTemp < 20)
                 {
                     corList = corTemp / 10;
+                    qTimer = CSVManager.Instance.Correspondents[corList].correspondent_timeLimit;
                 }
                 else
                 {
                     corList = corTemp - 18;
+                    qTimer = CSVManager.Instance.Correspondents[corList].correspondent_timeLimit;
                 }
 
-                photonView.RPC(nameof(SetQuest), RpcTarget.AllBuffered, "택배포장", itemCounts.Length, choseIndex, itemCounts, corList);
+                photonView.RPC(nameof(SetQuest), RpcTarget.AllBuffered, "택배포장", itemCounts.Length, choseIndex, itemCounts, corList, qTimer);
             }
 
         }
     }
 
     [PunRPC]
-    public void SetQuest(string questName, int count, int[] itemIndexes, int[] itemCounts, int x)
+    public void SetQuest(string questName, int count, int[] itemIndexes, int[] itemCounts, int x, float qTimer)
     {
         currentQuest = new Quest
         {
             questName = questName,
-            requiredItems = new List<RequiredItem>()
+            requiredItems = new List<RequiredItem>(),
+            questTimer = qTimer
         };
 
         for (int i = 0; i < count; i++)
         {
             int y = CSVManager.Instance.Correspondents_RequireCrops[x].correspondent_cropID[itemIndexes[i]];
             y = 4 * ((y % 100 - y % 10) / 10 - 1) + y % 10;
+
 
             GameObject itemPrefab = itemPrefabs[y - 1];
             int requiredCount = itemCounts[i];
