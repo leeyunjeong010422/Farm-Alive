@@ -81,11 +81,11 @@ public class GeneratorInteractable : XRBaseInteractable
     private void Update()
     {
         // T 키를 눌러 전조 증상 강제 발생
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            Debug.Log("전조 증상 강제 발생");
-            _repair.InvokeSymptom();
-        }
+        //if (Input.GetKeyDown(KeyCode.T))
+        //{
+        //    Debug.Log("전조 증상 강제 발생");
+        //    _repair.InvokeSymptom();
+        //}
     }
 
     private void OnKnobValueChanged(float value)
