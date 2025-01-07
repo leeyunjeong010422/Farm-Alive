@@ -74,18 +74,6 @@ public class GeneratorInteractable : XRBaseInteractable
         // Repair 이벤트 연결
         _repair.OnSymptomRaised.AddListener(Symptom);      // 전조 증상 발생
         _repair.OnBrokenRaised.AddListener(Broken);        // 고장 발생
-        _repair.OnSymptomSolved.AddListener(SolveSymptom); // 전조 증상 해결
-        _repair.OnBrokenSolved.AddListener(SolveBroken);   // 고장 수리
-    }
-
-    private void Update()
-    {
-        // T 키를 눌러 전조 증상 강제 발생
-        //if (Input.GetKeyDown(KeyCode.T))
-        //{
-        //    Debug.Log("전조 증상 강제 발생");
-        //    _repair.InvokeSymptom();
-        //}
     }
 
     private void OnKnobValueChanged(float value)
