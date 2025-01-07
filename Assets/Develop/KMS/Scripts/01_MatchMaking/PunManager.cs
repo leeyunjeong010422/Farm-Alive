@@ -13,7 +13,8 @@ public class PunManager : MonoBehaviourPunCallbacks
     [Tooltip("테스트를 위한 방 넘버 설정.")]
     public int RoomNum = 0;
     public int maxPlayer = 5;
-
+    [Tooltip("스테이지 ID")]
+    public int selectedStage = 511;
     private List<RoomInfo> cachedRoomList = new List<RoomInfo>();
 
     public static PunManager Instance { get; private set; }
@@ -44,7 +45,7 @@ public class PunManager : MonoBehaviourPunCallbacks
         // ConnectToPhoton() 호출해야하기에 이벤트로 연결.
         Debug.Log("Firebase 이벤트 등록");
         FirebaseManager.Instance.OnFirebaseInitialized += ConnectToPhoton;
-        FirebaseManager.Instance.NotifyInitializationComplete();
+        //FirebaseManager.Instance.NotifyInitializationComplete();
     }
 
     /// <summary>
@@ -98,7 +99,7 @@ public class PunManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("1. PUN 로비 입장!");
         Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}");
-        if (SceneManager.GetActiveScene().name != "03_FusionLobby" && PhotonNetwork.InLobby)
+        if (SceneManager.GetActiveScene().name != "03_Lobby" && PhotonNetwork.InLobby)
         {
             Debug.Log("로딩 씬으로 이동...");
             SceneLoader.LoadSceneWithLoading("03_FusionLobby");
@@ -110,9 +111,13 @@ public class PunManager : MonoBehaviourPunCallbacks
     /// </summary>
     public void CreateAndMoveToPunRoom()
     {
-        // 5초 카운트다운 및 방 생성 시작
-        StartCoroutine(PunRoomCountdown(5f));
+        Debug.Log("방생성 시작!");
+
+        //// 5초 카운트다운 및 방 생성 시작
+        //StartCoroutine(PunRoomCountdown(5f));
     }
+
+
 
     /// <summary>
     /// Coroutine으로 5초 동안 카운트다운 메시지를 갱신하고 방 생성 및 이동

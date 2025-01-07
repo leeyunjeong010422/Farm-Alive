@@ -11,6 +11,10 @@ public class Crop : MonoBehaviourPun
         Seeding, Growing, GrowStopped, GrowCompleted, SIZE
     }
 
+    [SerializeField] private CropData _cropData;
+    [SerializeField] private int _ID;
+    [SerializeField] private string _name;
+
     [Header("작물 외형")]
     [Tooltip("성장 단계에 따라 변화하는 외형")]
     [SerializeField] private GameObject[] _GFXs;
@@ -27,12 +31,24 @@ public class Crop : MonoBehaviourPun
     [SerializeField] private float _elapsedTime;
     [Tooltip("성장가능 상태가 되기 위해 필요한 수분")]
     [SerializeField] private int _maxMoisture;
+    [Tooltip("가뭄일 때 성장가능 상태가 되기 위해 필요한 수분")]
+    [SerializeField] private int _droughtMaxMoisture;
     [Tooltip("작물의 현재 수분")]
     [SerializeField] private int _curMoisture;
     [Tooltip("성장가능 상태가 되기 위해 필요한 영양분")]
     [SerializeField] private int _maxNutrient;
+    [Tooltip("가뭄일 때 성장가능 상태가 되기 위해 필요한 영양분")]
+    [SerializeField] private int _droughtMaxNutrient;
     [Tooltip("작물의 현재 영양분")]
     [SerializeField] private int _curNutrient;
+    [Tooltip("병충해 발생 시 피해 배율")]
+    [SerializeField] private float _damageRate;
+    [Tooltip("병충해 해결 제한시간")]
+    [SerializeField] private float _damageLimitTime;
+    [Tooltip("온도하강 해결 제한시간")]
+    [SerializeField] private float _temperatureDecreaseLimitTime;
+    [Tooltip("온도상승 해결 제한시간")]
+    [SerializeField] private float _temperatureIncreaseLimitTime;
 
     private BaseState[] _states = new BaseState[(int)E_CropState.SIZE];
     private CropInteractable _cropInteractable;
@@ -74,6 +90,22 @@ public class Crop : MonoBehaviourPun
         _states[(int)_curState].StateExit();
     }
 
+    public void UpdateData()
+    {
+        _ID = _cropData.ID;
+        _name = _cropData.cropName;
+        _digCount = _cropData.digCount;
+        _maxMoisture = _cropData.maxMoisture;
+        _maxNutrient = _cropData.maxNutrient;
+        _growthTime = _cropData.growthTime;
+        _droughtMaxMoisture = _cropData.droughtMaxMoisture;
+        _droughtMaxNutrient = _cropData.droughtMaxNutrient;
+        _damageRate = _cropData.damageRate;
+        _damageLimitTime = _cropData.damageLimitTime;
+        _temperatureDecreaseLimitTime = _cropData.temperatureDecreaseLimitTime;
+        _temperatureIncreaseLimitTime = _cropData.temperatureIncreaseLimitTime;
+    }
+
     private void Init()
     {
         _GFXs[0].SetActive(true);
@@ -86,6 +118,8 @@ public class Crop : MonoBehaviourPun
         _elapsedTime = 0.0f;
         _curMoisture = 0;
         _curNutrient = 0;
+
+        UpdateData();
     }
 
     [PunRPC]

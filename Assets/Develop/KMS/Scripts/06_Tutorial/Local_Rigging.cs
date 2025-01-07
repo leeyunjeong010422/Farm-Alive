@@ -55,9 +55,9 @@ public class Local_Rigging : MonoBehaviour
     private void MappingBodyTransform(Transform hmd)
     {
         this.transform.position = new Vector3(hmd.position.x, hmd.position.y - modelHeight, hmd.position.z);
-        //float yaw = hmd.eulerAngles.y;
-        //var targetRotation = new Vector3(this.transform.eulerAngles.x, yaw, this.transform.eulerAngles.z);
-        //this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.Euler(targetRotation), smoothValue);
+        float yaw = hmd.eulerAngles.y;
+        var targetRotation = new Vector3(this.transform.eulerAngles.x, yaw, this.transform.eulerAngles.z);
+        this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.Euler(targetRotation), smoothValue);
     }
 
     /// <summary>

@@ -109,9 +109,9 @@ public class RiggingManager : MonoBehaviourPun
         float adjustedHeight = modelHeight / hmd.lossyScale.y;
 
         this.transform.position = new Vector3(hmd.position.x, hmd.position.y - adjustedHeight, hmd.position.z);
-        //float yaw = hmd.eulerAngles.y;
-        //var targetRotation = new Vector3(this.transform.eulerAngles.x, yaw, this.transform.eulerAngles.z);
-        //this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.Euler(targetRotation), smoothValue);
+        float yaw = hmd.eulerAngles.y;
+        var targetRotation = new Vector3(this.transform.eulerAngles.x, yaw, this.transform.eulerAngles.z);
+        this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.Euler(targetRotation), smoothValue);
     }
 
     /// <summary>
