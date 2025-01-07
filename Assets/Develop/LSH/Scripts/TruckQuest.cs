@@ -1,5 +1,6 @@
 using Fusion;
 using Photon.Pun;
+using Photon.Pun.Demo.SlotRacer.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -67,6 +68,7 @@ public class TruckQuest : MonoBehaviour
 
     public void SetID(int truckId, TruckController truckController)
     {
+        Debug.Log("실행");
         this.truckId = truckId;
         this.truckSpawner = truckController;
         Debug.Log($"오브젝트 ID: {truckId}");
@@ -83,7 +85,8 @@ public class TruckQuest : MonoBehaviour
         if (truckSpawner != null)
         {
             QuestManager.Instance.truckList.RemoveAt(truckId);
-            truckSpawner.ClearSlot(truckId);            
+            truckSpawner.ClearSlot(truckId);
+            truckSpawner.ClearPositionSlot(truckId);
             Debug.Log("삭제완료");
         }
     }

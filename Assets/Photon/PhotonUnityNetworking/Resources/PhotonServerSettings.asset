@@ -80,6 +80,7 @@ MonoBehaviour:
   - SyncTriggerWarning
   - UpCount
   - SyncTargetPlayer
+  - SyncTruck
   - SyncSymptom
   - SyncRepaired
   DisableAutoOpenWizard: 1

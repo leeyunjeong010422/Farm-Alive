@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using GameData;
-using Unity.Collections.LowLevel.Unsafe;
 
 public class CSVManager : MonoBehaviour
 {

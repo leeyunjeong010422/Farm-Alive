@@ -1,7 +1,9 @@
+using GameData;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.UI;
@@ -32,6 +34,7 @@ public class QuestManager : MonoBehaviourPun
         public string questName;
         public List<RequiredItem> requiredItems;
         public bool isSuccess;
+        public float questTimer;
     }
 
     [SerializeField] public List<Quest> questsList = new List<Quest>();
@@ -40,8 +43,11 @@ public class QuestManager : MonoBehaviourPun
     [SerializeField] public GameObject[] itemPrefabs;
     [SerializeField] public Quest currentQuest;
     [SerializeField] TruckController truckController;
+    [SerializeField] QuestController questController;
 
-    [SerializeField] public int maxItemCount;
+    [SerializeField] public int maxRequiredCount;
+    [SerializeField] public int questCount;
+    [SerializeField] public int itemTypeCount;
 
     private void Awake()
     {
@@ -57,104 +63,128 @@ public class QuestManager : MonoBehaviourPun
 
     public void FirstStart()
     {
+        int stageLevel = 10;
         if (questsList.Count < 4)
-            photonView.RPC(nameof(QuestStart), RpcTarget.AllBuffered);
+            photonView.RPC(nameof(QuestStart), RpcTarget.AllBuffered, stageLevel - 1);
     }
 
     [PunRPC]
-    public void QuestStart()
+    public void QuestStart(int stageLevel)
     {
-        maxItemCount = 0;
-
         if (PhotonNetwork.IsMasterClient)
         {
-            //int rand = Random.Range(1, itemPrefabs.Length);
-            int rand = Random.Range(2, 3);
-
-            List<int> randomPrefabIndexes = new List<int>();
-            int[] choseIndex = new int[rand];
-
-            // 아이템 목록화
-            for (int i = 0; i < itemPrefabs.Length; i++)
+            for (int i = 0; i < CSVManager.Instance.Stages_Correspondents[stageLevel].stage_corCount; i++)
             {
-                randomPrefabIndexes.Add(i);
-            }
+                maxRequiredCount = CSVManager.Instance.Correspondents_CropsCount[i].correspondent_stage[stageLevel];
+                Debug.Log($"max아이템갯수는 : {maxRequiredCount}");
 
-            // 아이템 개수 설정
-            int checkItemLength = 0;
-            int[] maxItemCounts = new int[rand];
-            for (int i = 0; i < maxItemCounts.Length; i++)
-            {
-                //maxItemCounts[i] = Random.Range(1, 15);
-                maxItemCounts[i] = 1;
-                maxItemCount += maxItemCounts[i];
-                checkItemLength++;
-                if (maxItemCount >= 30)
+                int rand = CSVManager.Instance.Stages_Correspondents[stageLevel].stage_corCount;
+
+                List<int> randomPrefabIndexes = new List<int>();
+                int[] choseIndex = new int[rand];
+
+                // 아이템 목록화
+                for (int j = 0; j < 3; j++)
                 {
-                    int deleteCount = maxItemCounts.Max();
-                    maxItemCount -= 30;
+                    randomPrefabIndexes.Add(j);
+                }
 
-                    for (int j = 0; j < maxItemCounts.Length; j++)
+                // 아이템 개수 설정
+                int checkItemLength = 0;
+                int[] curItemCounts = new int[CSVManager.Instance.Correspondents_CropsType[i].correspondent_stage[stageLevel]];
+                int curCount = 0;
+                for (int j = 0; j < curItemCounts.Length; j++)
+                {
+                    curItemCounts[j] = Random.Range(1, 8);
+                    curCount += curItemCounts[j];
+                    checkItemLength++;
+                    if (curCount >= maxRequiredCount)
                     {
-                        if (maxItemCounts[j] == deleteCount)
+                        int deleteCount = curItemCounts.Max();
+                        curCount -= maxRequiredCount;
+
+                        for (int a = 0; a < curItemCounts.Length; a++)
                         {
-                            if (maxItemCounts[j] > maxItemCount)
+                            if (curItemCounts[a] == deleteCount)
                             {
-                                maxItemCounts[j] -= maxItemCount;
+                                if (curItemCounts[a] > curCount)
+                                {
+                                    curItemCounts[a] -= curCount;
+                                }
                             }
                         }
+                        break;
                     }
-                    break;
+
+                    if (j == curItemCounts.Length - 1 && curCount < maxRequiredCount)
+                    {
+                        int temp = maxRequiredCount - curCount;
+                        curItemCounts[j] += temp;
+                    }
                 }
 
-                if(i==maxItemCounts.Length-1 && maxItemCount < 30)
+                int[] itemCounts = new int[checkItemLength];
+                for (int j = 0; j < itemCounts.Length; j++)
                 {
-                    int temp = 30 - maxItemCount;
-                    maxItemCounts[i] += temp;
+                    itemCounts[j] = curItemCounts[j];
                 }
+
+                // 아이템 선정
+                for (int j = 0; j < itemCounts.Length; j++)
+                {
+                    int randomIndex = Random.Range(0, randomPrefabIndexes.Count);
+                    choseIndex[j] = randomPrefabIndexes[randomIndex];
+                    randomPrefabIndexes.RemoveAt(randomIndex);
+                }
+
+                int corTemp = CSVManager.Instance.Stages_Correspondents[stageLevel].stage_corList[i] - 311;
+                int corList = 0;
+                float qTimer = 0;
+                if (corTemp < 20)
+                {
+                    corList = corTemp / 10;
+                    qTimer = CSVManager.Instance.Correspondents[corList].correspondent_timeLimit;
+                }
+                else
+                {
+                    corList = corTemp - 18;
+                    qTimer = CSVManager.Instance.Correspondents[corList].correspondent_timeLimit;
+                }
+
+                photonView.RPC(nameof(SetQuest), RpcTarget.AllBuffered, "택배포장", itemCounts.Length, choseIndex, itemCounts, corList, qTimer);
             }
 
-            int[] itemCounts = new int[checkItemLength];
-            for (int i = 0; i < itemCounts.Length; i++)
-            {
-                itemCounts[i] = maxItemCounts[i];
-            }
-
-            // 아이템 선정
-            for (int i = 0; i < itemCounts.Length; i++)
-            {
-                int randomIndex = Random.Range(0, randomPrefabIndexes.Count);
-                choseIndex[i] = randomPrefabIndexes[randomIndex];
-                randomPrefabIndexes.RemoveAt(randomIndex);
-
-            }
-
-            photonView.RPC(nameof(SetQuest), RpcTarget.AllBuffered, "택배포장", itemCounts.Length, choseIndex, itemCounts);
         }
     }
 
     [PunRPC]
-    public void SetQuest(string questName, int count, int[] itemIndexes, int[] itemCounts)
+    public void SetQuest(string questName, int count, int[] itemIndexes, int[] itemCounts, int x, float qTimer)
     {
         currentQuest = new Quest
         {
             questName = questName,
-            requiredItems = new List<RequiredItem>()
+            requiredItems = new List<RequiredItem>(),
+            questTimer = qTimer
         };
 
         for (int i = 0; i < count; i++)
         {
-            GameObject itemPrefab = itemPrefabs[itemIndexes[i]];
+            int y = CSVManager.Instance.Correspondents_RequireCrops[x].correspondent_cropID[itemIndexes[i]];
+            y = 4 * ((y % 100 - y % 10) / 10 - 1) + y % 10;
+
+
+            GameObject itemPrefab = itemPrefabs[y - 1];
             int requiredCount = itemCounts[i];
             currentQuest.requiredItems.Add(new RequiredItem(itemPrefab, requiredCount));
         }
 
         questsList.Add(currentQuest);
-        truckController.CreateTruck();        
-        UpdateUI();
+
+        if (PhotonNetwork.IsMasterClient)
+            truckController.CreateTruck();
     }
 
-    private void UpdateUI()
+    public void UpdateUI()
     {
         UIManager.Instance.UpdateQuestUI(questsList);
     }
@@ -193,7 +223,7 @@ public class QuestManager : MonoBehaviourPun
                 {
                     allCompleted = false;
                     break;
-                } 
+                }
             }
 
             if (allCompleted)
@@ -215,7 +245,7 @@ public class QuestManager : MonoBehaviourPun
 
             IsQuestComplete(listArray);
         }
-        
+
         UpdateUI();
     }
 
