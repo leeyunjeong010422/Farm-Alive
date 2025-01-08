@@ -860,7 +860,7 @@ MonoBehaviour:
   uiOffset: {x: -2, y: 0, z: 0.5}
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
-  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1ff0f8852dba09f44a33463b31d011bc, type: 3}
+  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
 --- !u!54 &261644476
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1743,7 +1743,7 @@ MonoBehaviour:
   uiOffset: {x: -2, y: 0, z: 0.5}
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
-  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1ff0f8852dba09f44a33463b31d011bc, type: 3}
+  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
 --- !u!54 &358600214
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2293,7 +2293,7 @@ MonoBehaviour:
   uiOffset: {x: -2, y: 0, z: 0.5}
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
-  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1ff0f8852dba09f44a33463b31d011bc, type: 3}
+  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
 --- !u!54 &446242182
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3872,7 +3872,7 @@ MonoBehaviour:
   uiOffset: {x: -2, y: 0, z: 0.5}
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
-  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1ff0f8852dba09f44a33463b31d011bc, type: 3}
+  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
 --- !u!54 &755828454
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4956,7 +4956,7 @@ MonoBehaviour:
   uiOffset: {x: -2, y: 0, z: 0.5}
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
-  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1ff0f8852dba09f44a33463b31d011bc, type: 3}
+  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
 --- !u!54 &946428570
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5328,7 +5328,7 @@ MonoBehaviour:
   uiOffset: {x: -2, y: 0, z: 0.5}
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
-  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1ff0f8852dba09f44a33463b31d011bc, type: 3}
+  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
 --- !u!54 &1061886003
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5982,7 +5982,7 @@ MonoBehaviour:
   uiOffset: {x: -2, y: 0, z: 0.5}
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
-  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1ff0f8852dba09f44a33463b31d011bc, type: 3}
+  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
 --- !u!54 &1187606395
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7992,7 +7992,7 @@ MonoBehaviour:
   uiOffset: {x: -2, y: 0, z: 0.5}
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
-  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1ff0f8852dba09f44a33463b31d011bc, type: 3}
+  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
 --- !u!54 &1606571075
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10014,7 +10014,7 @@ MonoBehaviour:
   uiOffset: {x: -2, y: 0, z: 0.5}
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
-  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1ff0f8852dba09f44a33463b31d011bc, type: 3}
+  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
 --- !u!54 &2002305157
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10318,7 +10318,7 @@ MonoBehaviour:
   uiOffset: {x: -2, y: 0, z: 0.5}
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
-  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1ff0f8852dba09f44a33463b31d011bc, type: 3}
+  globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
 --- !u!54 &2007295438
 Rigidbody:
   m_ObjectHideFlags: 0
