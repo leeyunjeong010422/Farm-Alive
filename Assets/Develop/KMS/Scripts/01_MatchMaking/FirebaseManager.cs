@@ -189,8 +189,8 @@ public class FirebaseManager : MonoBehaviour
         {
             { "uid", userId },
             { "nickname", "" },
-            { "createdAt", DateTime.Now.ToString("o") },
-            { "lastLogin", DateTime.Now.ToString("o") },
+            { "createdAt", DateTime.UtcNow.ToString("o") },
+            { "lastLogin", DateTime.UtcNow.ToString("o") },
             { "settings", new Dictionary<string, object>()
                 {
                     { "level", 1 },
@@ -226,7 +226,7 @@ public class FirebaseManager : MonoBehaviour
 
         //DatabaseReference userRef = dataBase.GetReference($"users/{userId}/lastLogin");
 
-        //userRef.SetValueAsync(DateTime.Now.ToString("o")).ContinueWithOnMainThread(task =>
+        //userRef.SetValueAsync(DateTime.UtcNow.ToString("o")).ContinueWithOnMainThread(task =>
         //{
         //    if (task.IsCompleted && !task.IsFaulted)
         //    {
