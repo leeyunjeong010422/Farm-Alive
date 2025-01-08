@@ -13,6 +13,8 @@ public class TruckQuest : MonoBehaviour
     [SerializeField] int truckId;
     [SerializeField] TruckController truckSpawner;
     [SerializeField] public Text questText;
+    [SerializeField] GameObject[] npcPrefabs;
+    [SerializeField] Transform npcPosition;
 
     private void OnTriggerStay(Collider other)
     {
@@ -66,18 +68,27 @@ public class TruckQuest : MonoBehaviour
         }
     }
 
-    public void SetID(int truckId, TruckController truckController)
+    public void SetID(int truckId, TruckController truckController, int npcNumber)
     {
         Debug.Log("실행");
         this.truckId = truckId;
         this.truckSpawner = truckController;
         Debug.Log($"오브젝트 ID: {truckId}");
+
+        SpawnNpc(npcNumber);
     }
 
     public void ChangeID(int truckId)
     {
         this.truckId = truckId;
         Debug.Log($"오브젝트 ID: {truckId}");
+    }
+
+    public void SpawnNpc(int npcNumber)
+    {
+        GameObject npcObj = PhotonNetwork.Instantiate(npcPrefabs[npcNumber].name, npcPosition.position, Quaternion.identity);
+        npcObj.transform.SetParent(npcPosition.transform);
+        Debug.Log($"오브젝트 ID: {npcPrefabs[npcNumber].name}");
     }
 
     private void OnDestroy()
