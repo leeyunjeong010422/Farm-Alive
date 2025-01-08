@@ -1,68 +1,43 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static QuestManager;
 
 public class QuestController : MonoBehaviour
 {
-    public void MaxItemCountReturn(int stageLevel, out int questCount, out int itemTypeCount, out int itemCount)
+    public IEnumerator QuestCountdown(Quest quest)
     {
-        switch (stageLevel)
+        float startTime = Time.time;
+
+        while (quest.questTimer > 0)
         {
-            case 1:
-                questCount = 1;
-                itemTypeCount = 1;
-                itemCount = 10;
-                break;
-            case 2:
-                questCount = 1;
-                itemTypeCount = 1;
-                itemCount = 15;
-                break;
-            case 3:
-                questCount = 1;
-                itemTypeCount = 1;
-                itemCount = 20;
-                break;
-            case 4:
-                questCount = 1;
-                itemTypeCount = 1;
-                itemCount = 25;
-                break;
-            case 5:
-                questCount = 2;
-                itemTypeCount = 1;
-                itemCount = 10;
-                break;
-            case 6:
-                questCount = 2;
-                itemTypeCount = 1;
-                itemCount = 10;
-                break;
-            case 7:
-                questCount = 2;
-                itemTypeCount = 1;
-                itemCount = 10;
-                break;
-            case 8:
-                questCount = 5;
-                itemTypeCount = 1;
-                itemCount = 10;
-                break;
-            case 9:
-                questCount = 5;
-                itemTypeCount = 1;
-                itemCount = 10;
-                break;
-            case 10:
-                questCount = 5;
-                itemTypeCount = 1;
-                itemCount = 10;
-                break;
-            default:
-                questCount = -1;
-                itemTypeCount = -1;
-                itemCount = -1;
-                break;
+            yield return null;
+            quest.questTimer -= Time.deltaTime;
+
+            QuestManager.Instance.UpdateUI();
+
+            if (quest.isSuccess)
+            {
+                yield break;
+            }
+        }
+
+        QuestFailed(quest);
+    }
+
+    private void QuestFailed(Quest quest)
+    {
+        if (QuestManager.Instance.questsList.Contains(quest))
+        {
+            int index = QuestManager.Instance.questsList.IndexOf(quest);
+            if (index >= 0 && QuestManager.Instance.truckList.Count > index)
+            {
+                PhotonNetwork.Destroy(QuestManager.Instance.truckList[index].gameObject);
+            }
+
+            QuestManager.Instance.questsList.Remove(quest);
+            QuestManager.Instance.UpdateUI();
         }
     }
 }

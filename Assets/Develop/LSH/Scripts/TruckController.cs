@@ -30,7 +30,7 @@ public class TruckController : MonoBehaviourPun
         transformNumbers[truckId] = false;
     }
 
-    public void CreateTruck()
+    public void CreateTruck(int npcNumber)
     {
         for (int i = 0; i < transformNumbers.Length; i++)
         {
@@ -44,7 +44,7 @@ public class TruckController : MonoBehaviourPun
                         PhotonView truckView = truck.GetComponent<PhotonView>();
 
                         transformNumbers[i] = true;
-                        photonView.RPC(nameof(SyncTruck), RpcTarget.AllBuffered, j, truckView.ViewID);
+                        photonView.RPC(nameof(SyncTruck), RpcTarget.AllBuffered, j, truckView.ViewID, npcNumber);
                         return;
                     }
                 }
@@ -53,12 +53,12 @@ public class TruckController : MonoBehaviourPun
     }
 
         [PunRPC]
-        public void SyncTruck(int j, int viewId)
+        public void SyncTruck(int j, int viewId, int npcNumber)
         {
             PhotonView truckView = PhotonView.Find(viewId);
             TruckQuest truckQuest = truckView.GetComponent<TruckQuest>();
 
-            truckQuest.SetID(j, this);
+            truckQuest.SetID(j, this, npcNumber);
 
             QuestManager.Instance.truckList.Add(truckQuest);
 

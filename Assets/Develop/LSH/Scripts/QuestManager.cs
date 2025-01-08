@@ -48,6 +48,8 @@ public class QuestManager : MonoBehaviourPun
     [SerializeField] public int maxRequiredCount;
     [SerializeField] public int questCount;
     [SerializeField] public int itemTypeCount;
+    [SerializeField] public int clearQuestCount;
+    [SerializeField] public int totalQuestCount;
 
     private void Awake()
     {
@@ -65,7 +67,11 @@ public class QuestManager : MonoBehaviourPun
     {
         int stageLevel = 10;
         if (questsList.Count < 4)
+        {
+            totalQuestCount = CSVManager.Instance.Stages_Correspondents[stageLevel].stage_corCount;
             photonView.RPC(nameof(QuestStart), RpcTarget.AllBuffered, stageLevel - 1);
+        }
+            
     }
 
     [PunRPC]
@@ -180,8 +186,11 @@ public class QuestManager : MonoBehaviourPun
 
         questsList.Add(currentQuest);
 
+        StartCoroutine(questController.QuestCountdown(currentQuest));
+        
+
         if (PhotonNetwork.IsMasterClient)
-            truckController.CreateTruck();
+            truckController.CreateTruck(x);
     }
 
     public void UpdateUI()
@@ -253,15 +262,13 @@ public class QuestManager : MonoBehaviourPun
     {
         foreach (int index in completedIndexes.OrderByDescending(x => x))
         {
-            questsList.RemoveAt(index);
+            //questsList.RemoveAt(index);
             PhotonNetwork.Destroy(truckList[index].gameObject);
         }
 
         if (questsList.Count == 0)
         {
-            GameSpawn gameSpawn = FindObjectOfType<GameSpawn>();
-            gameSpawn.ReturnToFusion();
-            //SceneLoader.LoadSceneWithLoading("03_FusionLobby");
+            // TODO 로비 복귀ㅣ 함수
         }
         else
         {
