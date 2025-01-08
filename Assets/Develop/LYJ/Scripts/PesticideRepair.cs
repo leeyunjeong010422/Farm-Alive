@@ -28,17 +28,6 @@ public class PesticideRepair : BaseRepairable
         if (Mathf.Approximately(value, 1.0f))
         {
             SolveSymptom();
-
-            ResetKnobValue();
-        }
-    }
-
-    // Knob 값을 0으로 초기화
-    private void ResetKnobValue()
-    {
-        if (_pesticideDial != null)
-        {
-            _pesticideDial.value = 0.0f;
         }
     }
 }
