@@ -106,9 +106,9 @@ public class StageManager : MonoBehaviour
     {
         int star = 0;
 
-        int successCount = QuestManager.Instance.ClearQuestCount;
+        int successCount = QuestManager.Instance.clearQuestCount;
 
-        int totalDealer = QuestManager.Instance.TotalQuestCount;
+        int totalDealer = QuestManager.Instance.totalQuestCount;
 
         if (totalDealer == 3)
         {

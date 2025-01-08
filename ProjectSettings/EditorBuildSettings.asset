@@ -26,9 +26,6 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Develop/KMS/Level/TestGamePlay/05_AssetScene.unity
     guid: 37de9e2d438b75541975c9e3a187bbae
-  - enabled: 0
-    path: Assets/Develop/KMS/Level/TestGamePlay/05_1_AssetScene.unity
-    guid: b762d22f3de321e4588f7b97b3cc8e12
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: efb7b87eb8ecd9d46b3a0351222f323f, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: fba6072275013e6448e381f83d131b7f, type: 2}
