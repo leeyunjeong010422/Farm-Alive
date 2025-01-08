@@ -8,7 +8,7 @@ public class Crop : MonoBehaviourPun
 {
     public enum E_CropState
     {
-        Seeding, Growing, GrowStopped, GrowCompleted, SIZE
+        Seeding, Growing, GrowStopped, GrowCompleted, Rotten, SIZE
     }
 
     [SerializeField] private CropData _cropData;
@@ -53,6 +53,7 @@ public class Crop : MonoBehaviourPun
     private BaseState[] _states = new BaseState[(int)E_CropState.SIZE];
     private CropInteractable _cropInteractable;
     private int _maxGrowthStep;
+    private int _curGrowthStep;
 
     public E_CropState CurState { get { return _curState; } }
     public int DigCount {  get { return _digCount; } }
@@ -66,11 +67,13 @@ public class Crop : MonoBehaviourPun
             _GFXs[i] = GFX.GetChild(i).gameObject;
         }
         _maxGrowthStep = _GFXs.Length - 1;
+        _curGrowthStep = 0;
 
         _states[(int)E_CropState.Seeding] = new SeedingState(this);
         _states[(int)E_CropState.Growing] = new GrowingState(this);
         _states[(int)E_CropState.GrowStopped] = new GrowStoppedState(this);
         _states[(int)E_CropState.GrowCompleted] = new GrowCompletedState(this);
+        _states[(int)E_CropState.Rotten] = new RottenState(this);
 
         _cropInteractable = GetComponent<CropInteractable>();
     }
@@ -166,8 +169,6 @@ public class Crop : MonoBehaviourPun
 
     private class GrowingState : CropState
     {
-        private int curGrowthStep = 0;
-
         public GrowingState(Crop crop) : base(crop) { }
 
         public override void StateEnter() { }
@@ -192,10 +193,10 @@ public class Crop : MonoBehaviourPun
             crop._elapsedTime += Time.deltaTime;
 
             // 성장치에 따른 외형 변화
-            if (crop._elapsedTime >= crop._growthTime * (curGrowthStep + 1) / crop._maxGrowthStep)
+            if (crop._elapsedTime >= crop._growthTime * (crop._curGrowthStep + 1) / crop._maxGrowthStep)
             {
-                crop._GFXs[curGrowthStep].SetActive(false);
-                crop._GFXs[++curGrowthStep].SetActive(true);
+                crop._GFXs[crop._curGrowthStep].SetActive(false);
+                crop._GFXs[++crop._curGrowthStep].SetActive(true);
             }
         }
     }
@@ -234,6 +235,20 @@ public class Crop : MonoBehaviourPun
         {
             crop._GFXs[crop._maxGrowthStep - 1].SetActive(false);
             crop._GFXs[crop._maxGrowthStep].SetActive(true);
+        }
+
+        public override void StateExit() { }
+
+        public override void StateUpdate() { }
+    }
+
+    private class RottenState : CropState
+    {
+        public RottenState(Crop crop) : base(crop) { }
+
+        public override void StateEnter()
+        {
+            crop._GFXs[crop._curGrowthStep].GetComponent<Renderer>().material.color = Color.black;
         }
 
         public override void StateExit() { }
