@@ -7,7 +7,7 @@ public class DialInteractable : XRBaseInteractable, IPunObservable
 {
     [Header("다이얼 세팅")]
     [Tooltip("다이얼이 회전할 수 있는 최대 각도 (ex:0~90)")]
-    [SerializeField] float _maxAngle = 90f;
+    [SerializeField] public float maxAngle = 90f;
 
     [Tooltip("단계 수 (0이면 지속적 회전, 2이면 3단계로 분리 => 90도, 3단계면 0, 45, 90)")]
     [SerializeField] int _steps = 0;
@@ -16,8 +16,8 @@ public class DialInteractable : XRBaseInteractable, IPunObservable
     [SerializeField] bool _snapOnRelease = true;
 
     [Header("이벤트")]
-    [SerializeField] UnityEvent<int> _onStepChanged;
-    [SerializeField] UnityEvent<float> _onAngleChanged;
+    [SerializeField] public UnityEvent<int> _onStepChanged;
+    [SerializeField] public UnityEvent<float> _onAngleChanged;
 
     private XRBaseInteractor _directInteractor;
     private float _currentAngle = 0f;
@@ -34,7 +34,7 @@ public class DialInteractable : XRBaseInteractable, IPunObservable
         _photonView = GetComponent<PhotonView>();
 
         if (_steps > 0)
-            _stepSize = _maxAngle / _steps;
+            _stepSize = maxAngle / _steps;
         // 90도, 2단계 -> stepSize = 45
     }
 
@@ -85,7 +85,7 @@ public class DialInteractable : XRBaseInteractable, IPunObservable
             float angle = Quaternion.Angle(Quaternion.identity, relativeRotation);
 
             // 3. 최댓값 = maxAngle로 고정
-            angle = Mathf.Clamp(angle, 0f, _maxAngle);
+            angle = Mathf.Clamp(angle, 0f, maxAngle);
 
             if (!_snapOnRelease && _steps > 0)
             {

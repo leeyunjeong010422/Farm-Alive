@@ -11,11 +11,38 @@ public class InteractionButton : MonoBehaviour
     [Header("물 주기")]
     private bool _isWatering = false;
 
+    [SerializeField] private WaterBarrelRepair _waterBarrelRepair;
+
+    private void Start()
+    {
+        if (_waterBarrelRepair == null)
+        {
+            _waterBarrelRepair = FindObjectOfType<WaterBarrelRepair>();
+            if (_waterBarrelRepair == null)
+            {
+                Debug.LogError("WaterBarrelRepair 컴포넌트를 찾을 수 없습니다!");
+            }
+        }
+    }
+
     public void Watering()
     {
         if (_isWatering) return;
 
-        SectionManager.Instance.IncreaseMoisture();
+        if (_waterBarrelRepair == null)
+        {
+            Debug.LogError("WaterBarrelRepair가 연결되지 않았습니다!");
+            return;
+        }
+
+        // 고장 상태 확인
+        if (_waterBarrelRepair.IsBroken()) // 고장 상태일 경우
+        {
+            MessageDisplayManager.Instance.ShowMessage("고장을 먼저 수리해야 물을 줄 수 있습니다!");
+            return;
+        }
+
+        SectionManager.Instance.IncreaseMoisture(); // 물 주기 동작
     }
 
 
