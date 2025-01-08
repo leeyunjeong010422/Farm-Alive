@@ -8,10 +8,19 @@ using UnityEngine.EventSystems;
 
 public class UIBinder : MonoBehaviour
 {
+    [SerializeField] bool _includeComponents = true;
     [SerializeField] bool _includeInactive = true;
 
     private Dictionary<string, GameObject> gameObjectDic;
     private Dictionary<(string, System.Type), Component> componentDic;
+
+    protected virtual void Awake()
+    {
+        if (_includeComponents)
+            BindIncludingComponents();
+        else
+            Bind();
+    }
 
     // 빠른 시간에 게임오브젝트만 바인딩
     protected void Bind()
