@@ -99,6 +99,6 @@ public class PlantGround : MonoBehaviourPun
         if (plant == null) return false;
 
         // 식물의 요구 삽질 횟수와 땅의 DigCount 비교
-        return plant.DigCount == _digCount;
+        return plant.DigCount <= _digCount;
     }
 }

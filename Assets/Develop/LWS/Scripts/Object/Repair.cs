@@ -51,8 +51,39 @@ public class Repair : MonoBehaviourPun
 
     private void Start()
     {
-        InvokeSymptom();
+        if (PhotonNetwork.MasterClient != null && PhotonNetwork.IsMasterClient)
+        {
+            InvokeSymptom();
+        }
+        else
+        {
+            StartCoroutine(CheckMasterClient());
+        }
     }
+
+    private IEnumerator CheckMasterClient()
+    {
+        while (true)
+        {
+            // 현재 클라이언트가 MasterClient인 경우에만 InvokeSymptom 실행
+            if (PhotonNetwork.IsMasterClient)
+            {
+                if (_invokeSymptomCoroutine == null)
+                {
+                    _invokeSymptomCoroutine = StartCoroutine(InvokeSymptomRoutine());
+                }
+                yield break; // MasterClient 확인 후 코루틴 종료
+            }
+            else if (PhotonNetwork.MasterClient != null) 
+            {
+                yield break; // 다른 클라이언트가 MasterClient라면 종료
+            }
+
+            Debug.Log("MasterClient 찾는 중");
+            yield return new WaitForSeconds(1f); // 1초마다 MasterClient 상태 확인
+        }
+    }
+
 
     private void OnDisable()
     {
@@ -164,37 +195,4 @@ public class Repair : MonoBehaviourPun
         InvokeSymptom();
     }
 
-    #region TestCode
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            Solve();
-            ResetRepairState();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            InvokeSymptom();
-        }
-    }
-
-    public void Solve()
-    {
-        Debug.Log($"{gameObject.name} 문제 해결!");
-        GetComponent<Renderer>().material.color = Color.blue;
-    }
-
-    public void Symptom()
-    {
-        Debug.Log($"{gameObject.name} 전조증상 발생!");
-        GetComponent<Renderer>().material.color = Color.gray;
-    }
-
-    public void Broken()
-    {
-        Debug.Log($"{gameObject.name} 고장 발생!");
-        GetComponent<Renderer>().material.color = Color.black;
-    }
-    #endregion
 }
