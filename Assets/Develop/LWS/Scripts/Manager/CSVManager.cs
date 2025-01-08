@@ -21,7 +21,7 @@ public class CSVManager : MonoBehaviour
     public List<CropData> cropDatas;
 
     public List<FACILITY> Facilities;
-    
+
     public List<CORRESPONDENT> Correspondents;
     public List<CORRESPONDENT_REQUIRECROPS> Correspondents_RequireCrops;
     public List<CORRESPONDENT_CROPSTYPECOUNT> Correspondents_CropsType;
@@ -70,18 +70,18 @@ public class CSVManager : MonoBehaviour
         {
             string[] values = lines[y].Split(',', '\t');
 
-            cropDatas[y-2].ID = int.Parse(values[0]);
-            cropDatas[y-2].cropName = values[1];
-            cropDatas[y-2].digCount = int.Parse(values[2]);
-            cropDatas[y-2].maxMoisture = int.Parse(values[3]);
-            cropDatas[y-2].maxNutrient = int.Parse(values[4]);
-            cropDatas[y-2].growthTime = float.Parse(values[5]);
-            cropDatas[y-2].droughtMaxMoisture = int.Parse(values[6]);
-            cropDatas[y-2].droughtMaxNutrient = int.Parse(values[7]);
-            cropDatas[y-2].damageRate = float.Parse(values[8]);
-            cropDatas[y-2].damageLimitTime = float.Parse(values[9]);
-            cropDatas[y-2].temperatureDecreaseLimitTime = float.Parse(values[10]);
-            cropDatas[y-2].temperatureIncreaseLimitTime = float.Parse(values[11]);
+            cropDatas[y - 2].ID = int.Parse(values[0]);
+            cropDatas[y - 2].cropName = values[1];
+            cropDatas[y - 2].digCount = int.Parse(values[2]);
+            cropDatas[y - 2].maxMoisture = int.Parse(values[3]);
+            cropDatas[y - 2].maxNutrient = int.Parse(values[4]);
+            cropDatas[y - 2].growthTime = float.Parse(values[5]);
+            cropDatas[y - 2].droughtMaxMoisture = int.Parse(values[6]);
+            cropDatas[y - 2].droughtMaxNutrient = int.Parse(values[7]);
+            cropDatas[y - 2].damageRate = float.Parse(values[8]);
+            cropDatas[y - 2].damageLimitTime = float.Parse(values[9]);
+            cropDatas[y - 2].temperatureDecreaseLimitTime = float.Parse(values[10]);
+            cropDatas[y - 2].temperatureIncreaseLimitTime = float.Parse(values[11]);
         }
         Debug.Log("Download crops completed");
 
@@ -99,6 +99,7 @@ public class CSVManager : MonoBehaviour
 
             string[] values = lines[y].Split(',', '\t');
 
+            facility.idx = y - 2;
             facility.facility_ID = int.Parse(values[0]);
             facility.facility_name = values[1];
             facility.facility_symptomPercent = float.Parse(values[2]);
@@ -124,6 +125,7 @@ public class CSVManager : MonoBehaviour
 
             string[] values = lines[y].Split(',', '\t');
 
+            correspondent.idx = y - 2;
             correspondent.correspondent_ID = int.Parse(values[0]);
             correspondent.correspondent_name = values[1];
             correspondent.correspondent_timeLimit = float.Parse(values[2]);
@@ -145,6 +147,7 @@ public class CSVManager : MonoBehaviour
 
             string[] values = lines[y].Split(',', '\t');
 
+            correspondent_requireCrops.idx = y - 2;
             correspondent_requireCrops.correspondent_corID = int.Parse(values[0]);
             correspondent_requireCrops.correspondent_cropID = new int[3];
 
@@ -170,7 +173,8 @@ public class CSVManager : MonoBehaviour
             CORRESPONDENT_CROPSTYPECOUNT correspondent_cropsTypeCount = new CORRESPONDENT_CROPSTYPECOUNT();
 
             string[] values = lines[y].Split(',', '\t');
-            
+
+            correspondent_cropsTypeCount.idx = y - 2;
             correspondent_cropsTypeCount.correspondent_corID = int.Parse(values[0]);
             correspondent_cropsTypeCount.correspondent_stage = new int[10];
 
@@ -197,6 +201,7 @@ public class CSVManager : MonoBehaviour
 
             string[] values = lines[y].Split(',', '\t');
 
+            correspondent_cropsCount.idx = y - 2;
             correspondent_cropsCount.correspondent_corID = int.Parse(values[0]);
             correspondent_cropsCount.correspondent_stage = new int[10];
 
@@ -211,7 +216,7 @@ public class CSVManager : MonoBehaviour
 
         // 이벤트 개수 다운로드
 
-        request = UnityWebRequest.Get(eventCSVPath); 
+        request = UnityWebRequest.Get(eventCSVPath);
         yield return request.SendWebRequest();
 
         receiveText = request.downloadHandler.text;
@@ -223,6 +228,7 @@ public class CSVManager : MonoBehaviour
 
             string[] values = lines[y].Split(',', '\t');
 
+            events.idx = y - 2;
             events.event_ID = int.Parse(values[0]);
             events.event_name = values[1];
             events.event_occurPercent = float.Parse(values[2]);
@@ -246,6 +252,7 @@ public class CSVManager : MonoBehaviour
 
             string[] values = lines[y].Split(',', '\t');
 
+            events_seasons.idx = y - 2;
             events_seasons.event_ID = int.Parse(values[0]);
             events_seasons.event_seasonID = new int[4];
 
@@ -272,6 +279,7 @@ public class CSVManager : MonoBehaviour
 
             string[] values = lines[y].Split(',', '\t');
 
+            stage.idx = y - 2;
             stage.stage_ID = int.Parse(values[0]);
             stage.stage_seasonID = int.Parse(values[1]);
             stage.stage_allowSymptomFacilityCount = int.Parse(values[2]);
@@ -287,12 +295,13 @@ public class CSVManager : MonoBehaviour
         receiveText = request.downloadHandler.text;
 
         lines = receiveText.Split('\n');
-        for(int y = 2;y < lines.Length; y++)
+        for (int y = 2; y < lines.Length; y++)
         {
             STAGE_CORRESPONDENT stage_correspondent = new STAGE_CORRESPONDENT();
-           
+
             string[] values = lines[y].Split(',', '\t');
 
+            stage_correspondent.idx = y - 2;
             stage_correspondent.stage_ID = int.Parse(values[0]);
             stage_correspondent.stage_corCount = int.Parse(values[1]);
             stage_correspondent.stage_corList = new int[3];
@@ -305,5 +314,7 @@ public class CSVManager : MonoBehaviour
 
             Stages_Correspondents.Add(stage_correspondent);
         }
+
+        downloadCheck = true;
     }
 }

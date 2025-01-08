@@ -101,7 +101,10 @@ public class AffordanceSystemManager : MonoBehaviour
 
     private void OnSelectEnter(SelectEnterEventArgs args)
     {
-       //Debug.Log("SelectEnter");
+        if (args.interactorObject is XRSocketInteractor)
+            return;
+           
+        //Debug.Log("SelectEnter");
         ChangeColor(_selectColor);
         PlaySound(_selectSound);
     }

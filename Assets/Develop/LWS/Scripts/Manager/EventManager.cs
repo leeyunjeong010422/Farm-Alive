@@ -3,18 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using GameData;
+using System;
 
+/// <summary>
+/// 시스템 기획서 상 같은 색 동시에 일어나지 않는 로직 추가 필요
+/// 스테이지 매니저의 현재 날씨 받아와서 occurPlusPercent 설정 필요
+/// </summary>
 public class EventManager : MonoBehaviour
 {
     [Header("이벤트 계산 주기")]
-    [SerializeField] float checkInterval = 1.0f;
+    [SerializeField] float _checkInterval = 1.0f;
 
-    // 이벤트가 진행 중인가
+    // 이벤트가 진행 중이면 새 이벤트 발생 불가
     private bool _isEventPlaying = false;
 
-    [Header("이벤트 발생/종료 알림")]
-    [SerializeField] UnityEvent onEventStarted;
-    [SerializeField] UnityEvent onEventEnded;
+    public event Action<EVENT> onEventStarted;
+    public event Action<EVENT> onEventEnded;
+
+    [SerializeField] EVENT _currentEvent; // 현재 진행 중인 이벤트
+
 
     private void Start()
     {
@@ -23,61 +30,72 @@ public class EventManager : MonoBehaviour
 
     private IEnumerator EventRoutine()
     {
-        // csv 다운로드가 완료될때까지 기다리기.
+        // CSV 다운로드가 끝날 때까지 대기
         while (!CSVManager.Instance.downloadCheck)
-        {
             yield return null;
-        }
 
-        List<EVENT> events = CSVManager.Instance.Events;
+        // 2) 이벤트 리스트
+        List<EVENT> eventList = CSVManager.Instance.Events;
+        List<EVENT_SEASON> seasonList = CSVManager.Instance.Events_Seasons;
 
         while (true)
         {
-            yield return new WaitForSeconds(checkInterval);
+            yield return new WaitForSeconds(_checkInterval);
 
-            // 이벤트 진행중이면 패스
+            // 이벤트 진행중이면 계산 패스
             if (_isEventPlaying)
                 continue;
 
-            float sumWeight = 0f;
-            foreach(var ev in events)
+            // 모든 이벤트 각각 확률 체크 후,
+            // 두개 이상 발생 시 1개만 랜덤
+            List<EVENT> triggered = new List<EVENT>();
+            foreach (var ev in eventList)
             {
-                float finalChance = ev.event_occurPercent + ev.event_occurPlusPercent;
-                sumWeight += finalChance;
-            }
+                float finalRate = ev.event_occurPercent + ev.event_occurPlusPercent;
 
-            // 0퍼센트면 패스
-            if (sumWeight <= 0f)
-                continue;
-
-            float rand = Random.value * sumWeight;
-
-            float cumulative = 0f;
-            EVENT selectedevent = default;
-            bool found = false;
-
-            foreach (var ev in events)
-            {
-                float finalChance = ev.event_occurPercent + ev.event_occurPlusPercent;
-                cumulative += finalChance;
-                if (rand <= cumulative)
+                if (ProbabilityHelper.Draw(finalRate))
                 {
-                    selectedevent = ev;
-                    found = true;
-                    break;
+                    triggered.Add(ev);
                 }
             }
-
-            if(found)
+            if (triggered.Count > 0)
             {
-                // TODO : 이벤트 실행
+                // 둘 이상 발생하면 1개만 랜덤
+                var chosenEvent = ProbabilityHelper.Draw(triggered);
+                StartEvent(chosenEvent);
             }
         }
     }
 
-    // TODO : 이벤트 실행 메서드
+    private void StartEvent(EVENT evData)
+    {
+        _isEventPlaying = true;
+        _currentEvent = evData;
 
-    // TODO : 해결 메서드
+        onEventStarted?.Invoke(evData);
 
-    // TODO : 이벤트 해결 알리기
+        // 지속시간 있으면 자동 종료
+        if (evData.event_continueTime > 0)
+        {
+            StartCoroutine(EndRoutine(evData.event_continueTime));
+        }
+    }
+
+    private IEnumerator EndRoutine(float dur)
+    {
+        yield return new WaitForSeconds(dur);
+        EventResolve();
+    }
+
+    /// <summary>
+    /// 이벤트 해결 시 호출 부탁드립니다
+    /// </summary>
+    public void EventResolve()
+    {
+        if (!_isEventPlaying) return;
+
+        _isEventPlaying = false;
+
+        onEventEnded?.Invoke(_currentEvent);
+    }
 }
