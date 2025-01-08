@@ -76,6 +76,7 @@ public class WaterBarrelRepair : MonoBehaviour
     public void SolveBroken()
     {
         _isBroken = false;
+        _repair.ResetRepairState();
         MessageDisplayManager.Instance.ShowMessage("수리되었습니다!");
     }
 }

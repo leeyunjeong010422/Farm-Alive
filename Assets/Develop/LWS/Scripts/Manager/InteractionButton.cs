@@ -23,6 +23,15 @@ public class InteractionButton : MonoBehaviour
                 Debug.LogError("WaterBarrelRepair 컴포넌트를 찾을 수 없습니다!");
             }
         }
+
+        if (_nutrientBarrelRepair == null)
+        {
+            _nutrientBarrelRepair = FindObjectOfType<NutrientBarrelRepair>();
+            if (_nutrientBarrelRepair == null)
+            {
+                Debug.LogError("NutrientBarrelRepair 컴포넌트를 찾을 수 없습니다!");
+            }
+        }
     }
 
     public void Watering()
@@ -51,9 +60,25 @@ public class InteractionButton : MonoBehaviour
     /// </summary>
     private bool _isNutrienting = false;
 
+    [SerializeField] private NutrientBarrelRepair _nutrientBarrelRepair;
+
+
+
     public void Nutrienting()
     {
         if (_isNutrienting) return;
+
+        if (_nutrientBarrelRepair == null)
+        {
+            Debug.LogError("NutrientBarrelRepair가 연결되지 않았습니다!");
+            return;
+        }
+
+        if (_nutrientBarrelRepair.IsBroken())
+        {
+            MessageDisplayManager.Instance.ShowMessage("고장을 먼저 수리해야 비료를 줄 수 있습니다!");
+            return;
+        }
 
         SectionManager.Instance.IncreaseNutrient();
     }
