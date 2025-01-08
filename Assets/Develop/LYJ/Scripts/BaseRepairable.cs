@@ -22,6 +22,7 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
     public virtual void Symptom()
     {
         _isBroken = false;
+        _isSymptomSolved = false; // 전조 증상 해결 여부 초기화
         MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 전조 증상 발생!");
     }
 
@@ -39,7 +40,13 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
 
     public virtual void SolveSymptom()
     {
-        _isBroken = false;
+        // 고장 상태에서는 전조 증상 해결 불가
+        if (_isBroken)
+        {
+            MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 이미 고장난 상태에서는 전조 증상을 해결할 수 없습니다.");
+            return;
+        }
+
         _repair.IsSymptom = false;
         _repair.ResetRepairState();
         _isSymptomSolved = true;
