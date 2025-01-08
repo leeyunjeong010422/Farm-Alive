@@ -48,8 +48,8 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
         }
 
         _repair.IsSymptom = false;
-        _repair.ResetRepairState();
         _isSymptomSolved = true;
+        _repair.ResetRepairState();
         MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 전조 증상이 해결되었습니다!");
     }
 

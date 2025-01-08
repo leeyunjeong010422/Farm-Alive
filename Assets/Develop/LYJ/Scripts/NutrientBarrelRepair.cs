@@ -3,13 +3,13 @@ using UnityEngine.XR.Content.Interaction;
 
 public class NutrientBarrelRepair : BaseRepairable
 {
-    [SerializeField] private XRKnob _nutrientDial;
+    [SerializeField] private XRKnobDial _nutrientDial;
 
     protected override void Start()
     {
         base.Start();
 
-        _nutrientDial = GetComponentInChildren<XRKnob>();
+        _nutrientDial = GetComponentInChildren<XRKnobDial>();
         if (_nutrientDial == null)
         {
             Debug.LogError("NutrientDial이 존재하지 않습니다.");
