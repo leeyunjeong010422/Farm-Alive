@@ -33,6 +33,7 @@ public class GeneratorInteractable : XRBaseInteractable
     private bool _isGeneratorRunning = true; // 발전기가 작동 중인지 여부
     private bool _isKnobAtMax = false;     // 휠이 최대 위치인지 여부
     private bool _isLeverDown = false;     // 레버가 내려간 상태인지 여부
+    private bool _isSymptomSolved = false; // 전조 증상 해결 여부
 
     protected override void Awake()
     {
@@ -104,6 +105,7 @@ public class GeneratorInteractable : XRBaseInteractable
     {
         if (_repair.IsSymptom)
         {
+            Debug.Log("전조 증상을 해결합니다.");
             _isLeverDown = true;
             SolveSymptom(); // 전조 증상 해결
 
@@ -217,6 +219,12 @@ public class GeneratorInteractable : XRBaseInteractable
     // 고장 발생 처리
     public void Broken()
     {
+        if (_isSymptomSolved)
+        {
+            Debug.Log("전조 증상이 해결되었으므로 고장이 발생하지 않습니다.");
+            return;
+        }
+
         MessageDisplayManager.Instance.ShowMessage("발전기가 고장났습니다!");
         LightingManager.Instance.StartBlackout();
         _isGeneratorRunning = false;
@@ -225,7 +233,9 @@ public class GeneratorInteractable : XRBaseInteractable
     // 전조 증상 해결 처리
     public void SolveSymptom()
     {
+        _repair.IsSymptom = false;
         _repair.ResetRepairState();
+        _isSymptomSolved = true;
         MessageDisplayManager.Instance.ShowMessage("전조 증상이 해결되었습니다!");
     }
 

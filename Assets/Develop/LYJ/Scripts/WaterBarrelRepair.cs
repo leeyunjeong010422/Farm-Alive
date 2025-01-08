@@ -53,6 +53,12 @@ public class WaterBarrelRepair : MonoBehaviour
     // 고장 발생 처리
     public void Broken()
     {
+        if (_isBroken == false)
+        {
+            Debug.Log("전조 증상이 해결되었으므로 고장이 발생하지 않습니다.");
+            return;
+        }
+
         _isBroken = true;
         MessageDisplayManager.Instance.ShowMessage("급수장치가 고장났습니다!");
     }
