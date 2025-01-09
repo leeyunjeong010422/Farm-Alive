@@ -20,18 +20,18 @@ public class CSVManager : MonoBehaviour
 
     public List<CropData> cropDatas;
 
-    public List<FACILITY> Facilities;
+    public Dictionary<int, FACILITY> Facilities;
 
-    public List<CORRESPONDENT> Correspondents;
-    public List<CORRESPONDENT_REQUIRECROPS> Correspondents_RequireCrops;
-    public List<CORRESPONDENT_CROPSTYPECOUNT> Correspondents_CropsType;
-    public List<CORRESPONDENT_CROPSCOUNT> Correspondents_CropsCount;
+    public Dictionary<int, CORRESPONDENT> Correspondents;
+    public Dictionary<int, CORRESPONDENT_REQUIRECROPS> Correspondents_RequireCrops;
+    public Dictionary<int, CORRESPONDENT_CROPSTYPECOUNT> Correspondents_CropsType;
+    public Dictionary<int, CORRESPONDENT_CROPSCOUNT> Correspondents_CropsCount;
 
-    public List<EVENT> Events;
-    public List<EVENT_SEASON> Events_Seasons;
+    public Dictionary<int, EVENT> Events;
+    public Dictionary<int, EVENT_SEASON> Events_Seasons;
 
-    public List<STAGE> Stages;
-    public List<STAGE_CORRESPONDENT> Stages_Correspondents;
+    public Dictionary<int, STAGE> Stages;
+    public Dictionary<int, STAGE_CORRESPONDENT> Stages_Correspondents;
 
     public bool downloadCheck;
     public static CSVManager Instance;
@@ -98,9 +98,8 @@ public class CSVManager : MonoBehaviour
             FACILITY facility = new FACILITY();
 
             string[] values = lines[y].Split(',', '\t');
+            int ID = int.Parse(values[0]);
 
-            facility.idx = y - 2;
-            facility.facility_ID = int.Parse(values[0]);
             facility.facility_name = values[1];
             facility.facility_symptomPercent = float.Parse(values[2]);
             facility.facility_stormSymptomPercent = float.Parse(values[3]);
@@ -108,7 +107,7 @@ public class CSVManager : MonoBehaviour
             facility.facility_maxHammeringCount = int.Parse(values[5]);
             int.TryParse(values[6], out facility.facility_maxBootCount);
 
-            Facilities.Add(facility);
+            Facilities.Add(ID, facility);
         }
 
         // 거래처 다운로드
@@ -124,13 +123,12 @@ public class CSVManager : MonoBehaviour
             CORRESPONDENT correspondent = new CORRESPONDENT();
 
             string[] values = lines[y].Split(',', '\t');
+            int ID = int.Parse(values[0]);
 
-            correspondent.idx = y - 2;
-            correspondent.correspondent_ID = int.Parse(values[0]);
             correspondent.correspondent_name = values[1];
             correspondent.correspondent_timeLimit = float.Parse(values[2]);
 
-            Correspondents.Add(correspondent);
+            Correspondents.Add(ID, correspondent);
         }
 
         // 거래처-요구작물 다운로드
@@ -146,9 +144,8 @@ public class CSVManager : MonoBehaviour
             CORRESPONDENT_REQUIRECROPS correspondent_requireCrops = new CORRESPONDENT_REQUIRECROPS();
 
             string[] values = lines[y].Split(',', '\t');
+            int ID = int.Parse(values[0]);
 
-            correspondent_requireCrops.idx = y - 2;
-            correspondent_requireCrops.correspondent_corID = int.Parse(values[0]);
             correspondent_requireCrops.correspondent_cropID = new int[3];
 
             for (int i = 0; i < 3; i++)
@@ -157,7 +154,7 @@ public class CSVManager : MonoBehaviour
                 correspondent_requireCrops.correspondent_cropID[i] = value;
             }
 
-            Correspondents_RequireCrops.Add(correspondent_requireCrops);
+            Correspondents_RequireCrops.Add(ID, correspondent_requireCrops);
         }
 
         // 거래처-작물종류개수 다운로드
@@ -173,9 +170,8 @@ public class CSVManager : MonoBehaviour
             CORRESPONDENT_CROPSTYPECOUNT correspondent_cropsTypeCount = new CORRESPONDENT_CROPSTYPECOUNT();
 
             string[] values = lines[y].Split(',', '\t');
+            int ID = int.Parse(values[0]);
 
-            correspondent_cropsTypeCount.idx = y - 2;
-            correspondent_cropsTypeCount.correspondent_corID = int.Parse(values[0]);
             correspondent_cropsTypeCount.correspondent_stage = new int[10];
 
             for (int i = 0; i < 10; i++)
@@ -184,7 +180,7 @@ public class CSVManager : MonoBehaviour
                 correspondent_cropsTypeCount.correspondent_stage[i] = value;
             }
 
-            Correspondents_CropsType.Add(correspondent_cropsTypeCount);
+            Correspondents_CropsType.Add(ID, correspondent_cropsTypeCount);
         }
 
         // 거래처-요구 작물 개수 다운로드
@@ -200,9 +196,8 @@ public class CSVManager : MonoBehaviour
             CORRESPONDENT_CROPSCOUNT correspondent_cropsCount = new CORRESPONDENT_CROPSCOUNT();
 
             string[] values = lines[y].Split(',', '\t');
+            int ID = int.Parse(values[0]);
 
-            correspondent_cropsCount.idx = y - 2;
-            correspondent_cropsCount.correspondent_corID = int.Parse(values[0]);
             correspondent_cropsCount.correspondent_stage = new int[10];
 
             for (int i = 0; i < 10; i++)
@@ -211,7 +206,7 @@ public class CSVManager : MonoBehaviour
                 correspondent_cropsCount.correspondent_stage[i] = value;
             }
 
-            Correspondents_CropsCount.Add(correspondent_cropsCount);
+            Correspondents_CropsCount.Add(ID, correspondent_cropsCount);
         }
 
         // 이벤트 개수 다운로드
@@ -227,15 +222,14 @@ public class CSVManager : MonoBehaviour
             EVENT events = new EVENT();
 
             string[] values = lines[y].Split(',', '\t');
+            int ID = int.Parse(values[0]);
 
-            events.idx = y - 2;
-            events.event_ID = int.Parse(values[0]);
             events.event_name = values[1];
             events.event_occurPercent = float.Parse(values[2]);
             events.event_occurPlusPercent = float.Parse(values[3]);
             events.event_continueTime = float.Parse(values[4]);
 
-            Events.Add(events);
+            Events.Add(ID, events);
         }
 
         // 이벤트 확률 증가 계절 다운로드
@@ -251,9 +245,8 @@ public class CSVManager : MonoBehaviour
             EVENT_SEASON events_seasons = new EVENT_SEASON();
 
             string[] values = lines[y].Split(',', '\t');
+            int ID = int.Parse(values[0]);
 
-            events_seasons.idx = y - 2;
-            events_seasons.event_ID = int.Parse(values[0]);
             events_seasons.event_seasonID = new int[4];
 
             for (int i = 0; i < 4; i++)
@@ -262,7 +255,7 @@ public class CSVManager : MonoBehaviour
                 events_seasons.event_seasonID[i] = value;
             }
 
-            Events_Seasons.Add(events_seasons);
+            Events_Seasons.Add(ID, events_seasons);
         }
 
         // 스테이지 다운로드
@@ -278,13 +271,13 @@ public class CSVManager : MonoBehaviour
             STAGE stage = new STAGE();
 
             string[] values = lines[y].Split(',', '\t');
+            int ID = int.Parse(values[0]);
 
             stage.idx = y - 2;
-            stage.stage_ID = int.Parse(values[0]);
             stage.stage_seasonID = int.Parse(values[1]);
             stage.stage_allowSymptomFacilityCount = int.Parse(values[2]);
 
-            Stages.Add(stage);
+            Stages.Add(ID, stage);
         }
 
         // 스테이지 등장 가능 거래처 다운로드
@@ -300,9 +293,8 @@ public class CSVManager : MonoBehaviour
             STAGE_CORRESPONDENT stage_correspondent = new STAGE_CORRESPONDENT();
 
             string[] values = lines[y].Split(',', '\t');
+            int ID = int.Parse(values[0]);
 
-            stage_correspondent.idx = y - 2;
-            stage_correspondent.stage_ID = int.Parse(values[0]);
             stage_correspondent.stage_corCount = int.Parse(values[1]);
             stage_correspondent.stage_corList = new int[3];
 
@@ -312,7 +304,7 @@ public class CSVManager : MonoBehaviour
                 stage_correspondent.stage_corList[i] = value;
             }
 
-            Stages_Correspondents.Add(stage_correspondent);
+            Stages_Correspondents.Add(ID, stage_correspondent);
         }
 
         downloadCheck = true;
