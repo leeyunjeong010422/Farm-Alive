@@ -1,4 +1,5 @@
 using Fusion;
+using Mono.Cecil;
 using Photon.Pun;
 using Photon.Pun.Demo.SlotRacer.Utils;
 using System.Collections;
@@ -6,15 +7,17 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class TruckQuest : MonoBehaviour
+public class TruckQuest : MonoBehaviourPun
 {
     [SerializeField] int truckId;
     [SerializeField] TruckController truckSpawner;
     [SerializeField] public Text questText;
     [SerializeField] GameObject[] npcPrefabs;
     [SerializeField] Transform npcPosition;
+    [SerializeField] public GameObject npcPrefab;
 
     private void OnTriggerStay(Collider other)
     {
@@ -34,17 +37,18 @@ public class TruckQuest : MonoBehaviour
 
                 PhotonView boxView = other.GetComponent<PhotonView>();
 
-                List<int> truckIds = new List<int>();
+                //List<int> truckIds = new List<int>();
                 List<int> itemIndexes = new List<int>();
                 List<int> requiredCounts = new List<int>();
 
+                int otherItem = 0;
                 for (int i = 0; i < boxTrigger.requiredItems.Count; i++)
                 {
                     QuestManager.RequiredItem item = boxTrigger.requiredItems[i];
                     for (int j = 0; j < QuestManager.Instance.questsList[truckId].requiredItems.Count; j++)
                     {
                         if (item.itemPrefab.name == QuestManager.Instance.questsList[truckId].requiredItems[j].itemPrefab.name ||
-                            item.itemPrefab.name == QuestManager.Instance.questsList[truckId].requiredItems[i].itemPrefab.name + "(Clone)")
+                            item.itemPrefab.name == QuestManager.Instance.questsList[truckId].requiredItems[j].itemPrefab.name + "(Clone)")
                         {
                             Debug.Log("이름이 같음");
                             Debug.Log($"{QuestManager.Instance.questsList[truckId].requiredItems[j].requiredcount} <= {item.requiredcount}");
@@ -52,18 +56,34 @@ public class TruckQuest : MonoBehaviour
                                 break;
                             Debug.Log("갯수 통과");
 
-                            truckIds.Add(truckId);
+                            //truckIds.Add(truckId);
                             itemIndexes.Add(j);
                             requiredCounts.Add(item.requiredcount);
                             break;
                         }
+                        if (item.itemPrefab.name != QuestManager.Instance.questsList[truckId].requiredItems[j].itemPrefab.name ||
+                            item.itemPrefab.name != QuestManager.Instance.questsList[truckId].requiredItems[j].itemPrefab.name + "(Clone)")
+                        {
+                            Debug.Log($"다른 작물 : {item.itemPrefab.name}, 아이템 카운트는 : {boxTrigger.requiredItems.Count} <= {otherItem}");
+                            otherItem++;
+
+                            if (boxTrigger.requiredItems.Count <= otherItem)
+                            {
+                                Debug.Log("Null텍스트");
+                                photonView.RPC(nameof(FieldItem), RpcTarget.AllBuffered);
+                                PhotonNetwork.Destroy(other.gameObject);
+                            }
+                        }
                     }
                 }
 
-                int[] truckIdArray = truckIds.ToArray();
-                int[] itemIndexArray = itemIndexes.ToArray();
-                int[] requiredCountArray = requiredCounts.ToArray();
-                QuestManager.Instance.CountUpdate(truckIdArray, itemIndexArray, requiredCountArray, boxView.ViewID);
+                if (itemIndexes.Count != 0 || requiredCounts.Count != 0)
+                {
+                    int[] itemIndexArray = itemIndexes.ToArray();
+                    int[] requiredCountArray = requiredCounts.ToArray();
+                    QuestManager.Instance.CountUpdate(/*truckIdArray*/truckId, itemIndexArray, requiredCountArray, boxView.ViewID, otherItem);
+                }
+                
             }
         }
     }
@@ -86,9 +106,19 @@ public class TruckQuest : MonoBehaviour
 
     public void SpawnNpc(int npcNumber)
     {
-        GameObject npcObj = PhotonNetwork.Instantiate(npcPrefabs[npcNumber].name, npcPosition.position, Quaternion.identity);
-        npcObj.transform.SetParent(npcPosition.transform);
-        Debug.Log($"오브젝트 ID: {npcPrefabs[npcNumber].name}");
+        int corTemp = npcNumber - 311;
+        if (corTemp < 20)
+        {
+            corTemp = corTemp / 10;
+        }
+        else
+        {
+            corTemp = corTemp - 18;
+        }
+
+        npcPrefab = PhotonNetwork.Instantiate(npcPrefabs[corTemp].name, npcPosition.position, Quaternion.identity);
+        npcPrefab.transform.SetParent(npcPosition.transform);
+        Debug.Log($"오브젝트 ID: {npcPrefab.name}");
     }
 
     private void OnDestroy()
@@ -100,5 +130,11 @@ public class TruckQuest : MonoBehaviour
             truckSpawner.ClearPositionSlot(truckId);
             Debug.Log("삭제완료");
         }
+    }
+
+    [PunRPC]
+    public void FieldItem()
+    {
+        npcPrefab.GetComponent<NpcTextView>().NpcText();
     }
 }

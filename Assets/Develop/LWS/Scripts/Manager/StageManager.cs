@@ -12,17 +12,16 @@ public class StageManager : MonoBehaviour
     [SerializeField] float _curStageTime = 0;
     [SerializeField] bool _isTimerRunning = false;
 
-    public int WeatherID => _curStageData.stage_seasonID;
-    private int _weatherID;
-
     private STAGE _curStageData;
+    private int _weatherID;
+    public int WeatherID { get { return _weatherID; } set { value = _weatherID; } }
 
-    private int _maxBrokenMachineCount; // TODO : CSVMANAGER에서 읽어오기
+    private int _maxBrokenMachineCount;
     private int _maxDamagedCropCount = 0; // 0으로 설정 (현재 데이터 테이블에서는 성공여부만 따짐)
 
-    // 기계 고장나면 true로 변경
+    // 기계가 고장난 횟수 (다른곳에서 고장나면 ++필요)
     public int brokenMachineCount = 0;
-    // 작물 손상되면 true로 변경
+    // 작물이 손상된 횟수 (다른곳에서 손상되면 ++필요)
     public int damagedCropCount = 0;
 
 
@@ -47,27 +46,15 @@ public class StageManager : MonoBehaviour
         while (!CSVManager.Instance.downloadCheck)
             yield return null;
 
-        List<STAGE> stages = CSVManager.Instance.Stages;
-        STAGE foundStage = default;
-        for (int i = 0; i < stages.Count; i++)
-        {
-            if (stages[i].stage_ID == _curStageID)
-            {
-                foundStage = stages[i];
-                break;
-            }
-        }
+        var stageDict = CSVManager.Instance.Stages;
 
-        // currentStageData에 저장
-        _curStageData = foundStage;
+        _curStageData = stageDict[_curStageID];
+        _weatherID = _curStageData.stage_seasonID;
+        _maxBrokenMachineCount = _curStageData.stage_allowSymptomFacilityCount;
 
         _stageTimeLimit = 360f;
-        _weatherID = _curStageData.stage_seasonID;
 
-        // 2) 스테이지 타이머 시작
         StartStageTimer();
-
-        Debug.Log($"[StageManager] 현재 스테이지={foundStage.stage_ID}, 날씨(seasonID)={foundStage.stage_seasonID}");
     }
 
     private void Update()
@@ -85,21 +72,20 @@ public class StageManager : MonoBehaviour
 
     public void StartStageTimer()
     {
+        // QuestManager.Instance.FirstStart(_curStageID);
+
         _curStageTime = 0f;
         _isTimerRunning = true;
     }
+
     public void EndStage()
     {
         _isTimerRunning = false;
 
         int star = EvaluateStar();
+        float playTime = _curStageTime;
 
         FirebaseManager.Instance.SaveStageResult(_curStageID, _curStageTime, star);
-    }
-
-    public int GetWeatherID()
-    {
-        return _weatherID;
     }
 
     private int EvaluateStar()
@@ -107,7 +93,6 @@ public class StageManager : MonoBehaviour
         int star = 0;
 
         int successCount = QuestManager.Instance.clearQuestCount;
-
         int totalDealer = QuestManager.Instance.totalQuestCount;
 
         if (totalDealer == 3)
@@ -130,12 +115,10 @@ public class StageManager : MonoBehaviour
             else star = 0;
         }
 
-        // TODO
-        // if (!isMachineBroken)
-        //     star += 1;
-        // int 변수 (기계 고장난 횟수 ( 스테이지별로 다름 ) ) 보다 작거나 같으면 +1로 변경
-
         if (damagedCropCount <= _maxDamagedCropCount)
+            star += 1;
+
+        if (brokenMachineCount <= _maxBrokenMachineCount)
             star += 1;
 
         // 최대 5개

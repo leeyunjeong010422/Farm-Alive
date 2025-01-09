@@ -15,12 +15,13 @@ public class QuestController : MonoBehaviour
             yield return null;
             quest.questTimer -= Time.deltaTime;
 
-            QuestManager.Instance.UpdateUI();
-
             if (quest.isSuccess)
             {
                 yield break;
             }
+
+            if(quest != null)
+            QuestManager.Instance.UpdateUI();
         }
 
         QuestFailed(quest);

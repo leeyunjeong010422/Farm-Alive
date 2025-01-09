@@ -65,26 +65,29 @@ public class QuestManager : MonoBehaviourPun
 
     public void FirstStart()
     {
-        int stageLevel = 10;
+        int stageID = 511;
         if (questsList.Count < 4)
         {
-            totalQuestCount = CSVManager.Instance.Stages_Correspondents[stageLevel].stage_corCount;
-            photonView.RPC(nameof(QuestStart), RpcTarget.AllBuffered, stageLevel - 1);
+            totalQuestCount = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
+            photonView.RPC(nameof(QuestStart), RpcTarget.AllBuffered, stageID);
         }
-            
     }
 
     [PunRPC]
-    public void QuestStart(int stageLevel)
+    public void QuestStart(int stageID)
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            for (int i = 0; i < CSVManager.Instance.Stages_Correspondents[stageLevel].stage_corCount; i++)
+            int stageIdx = CSVManager.Instance.Stages[stageID].idx;
+            foreach (int corID in CSVManager.Instance.Stages_Correspondents[stageID].stage_corList)
             {
-                maxRequiredCount = CSVManager.Instance.Correspondents_CropsCount[i].correspondent_stage[stageLevel];
+                if (corID == 0)
+                    return;
+
+                maxRequiredCount = CSVManager.Instance.Correspondents_CropsCount[corID].correspondent_stage[stageIdx];
                 Debug.Log($"max아이템갯수는 : {maxRequiredCount}");
 
-                int rand = CSVManager.Instance.Stages_Correspondents[stageLevel].stage_corCount;
+                int rand = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
 
                 List<int> randomPrefabIndexes = new List<int>();
                 int[] choseIndex = new int[rand];
@@ -97,7 +100,7 @@ public class QuestManager : MonoBehaviourPun
 
                 // 아이템 개수 설정
                 int checkItemLength = 0;
-                int[] curItemCounts = new int[CSVManager.Instance.Correspondents_CropsType[i].correspondent_stage[stageLevel]];
+                int[] curItemCounts = new int[CSVManager.Instance.Correspondents_CropsType[corID].correspondent_stage[stageIdx]];
                 int curCount = 0;
                 for (int j = 0; j < curItemCounts.Length; j++)
                 {
@@ -143,28 +146,17 @@ public class QuestManager : MonoBehaviourPun
                     randomPrefabIndexes.RemoveAt(randomIndex);
                 }
 
-                int corTemp = CSVManager.Instance.Stages_Correspondents[stageLevel].stage_corList[i] - 311;
-                int corList = 0;
-                float qTimer = 0;
-                if (corTemp < 20)
-                {
-                    corList = corTemp / 10;
-                    qTimer = CSVManager.Instance.Correspondents[corList].correspondent_timeLimit;
-                }
-                else
-                {
-                    corList = corTemp - 18;
-                    qTimer = CSVManager.Instance.Correspondents[corList].correspondent_timeLimit;
-                }
+                //int corID = CSVManager.Instance.Stages_Correspondents[stageID].stage_corList[i];
+                float qTimer = CSVManager.Instance.Correspondents[corID].correspondent_timeLimit;
 
-                photonView.RPC(nameof(SetQuest), RpcTarget.AllBuffered, "택배포장", itemCounts.Length, choseIndex, itemCounts, corList, qTimer);
+                photonView.RPC(nameof(SetQuest), RpcTarget.AllBuffered, "택배포장", itemCounts.Length, choseIndex, itemCounts, corID, qTimer);
             }
 
         }
     }
 
     [PunRPC]
-    public void SetQuest(string questName, int count, int[] itemIndexes, int[] itemCounts, int x, float qTimer)
+    public void SetQuest(string questName, int count, int[] itemIndexes, int[] itemCounts, int corID, float qTimer)
     {
         currentQuest = new Quest
         {
@@ -175,7 +167,7 @@ public class QuestManager : MonoBehaviourPun
 
         for (int i = 0; i < count; i++)
         {
-            int y = CSVManager.Instance.Correspondents_RequireCrops[x].correspondent_cropID[itemIndexes[i]];
+            int y = CSVManager.Instance.Correspondents_RequireCrops[corID].correspondent_cropID[itemIndexes[i]];
             y = 4 * ((y % 100 - y % 10) / 10 - 1) + y % 10;
 
 
@@ -190,7 +182,7 @@ public class QuestManager : MonoBehaviourPun
         
 
         if (PhotonNetwork.IsMasterClient)
-            truckController.CreateTruck(x);
+            truckController.CreateTruck(corID);
     }
 
     public void UpdateUI()
@@ -198,28 +190,31 @@ public class QuestManager : MonoBehaviourPun
         UIManager.Instance.UpdateQuestUI(questsList);
     }
 
-    public void CountUpdate(int[] questId, int[] number, int[] count, int boxView)
+    public void CountUpdate(int questId, int[] number, int[] count, int boxView, int itemCheck)
     {
         Debug.Log("카운트 업데이트");
-        photonView.RPC(nameof(CountCheck), RpcTarget.AllBuffered, questId, number, count, boxView);
+        photonView.RPC(nameof(CountCheck), RpcTarget.AllBuffered, questId, number, count, boxView, itemCheck);
     }
 
     [PunRPC]
-    private void CountCheck(int[] questId, int[] number, int[] count, int boxView)
+    private void CountCheck(int truckId, int[] number, int[] count, int boxView, int itemCheck)
     {
         Debug.Log("카운트 감소");
 
-        for (int i = 0; i < questId.Length; i++)
+        for (int i = 0; i < number.Length; i++)
         {
-            questsList[questId[i]].requiredItems[number[i]].requiredcount -= count[i];
+            Debug.Log($"퀘스트 ID : {questsList[truckId]}");
+            questsList[truckId].requiredItems[number[i]].requiredcount -= count[i];
 
-            if (questsList[questId[i]].requiredItems[number[i]].requiredcount <= 0)
+            if (questsList[truckId].requiredItems[number[i]].requiredcount <= 0)
             {
                 Debug.Log("납품완료");
                 Debug.Log("퀘스트 성공 여부 동기화!");
-                questsList[questId[i]].requiredItems[number[i]].isSuccess = true;
+                questsList[truckId].requiredItems[number[i]].isSuccess = true;
             }
         }
+        
+        truckList[truckId].npcPrefab.GetComponent<NpcTextView>().NpcText(itemCheck);        
 
         List<int> completedIndexes = new List<int>();
         for (int i = 0; i < questsList.Count; i++)
@@ -263,7 +258,7 @@ public class QuestManager : MonoBehaviourPun
         foreach (int index in completedIndexes.OrderByDescending(x => x))
         {
             //questsList.RemoveAt(index);
-            PhotonNetwork.Destroy(truckList[index].gameObject);
+            //PhotonNetwork.Destroy(truckList[index].gameObject);
         }
 
         if (questsList.Count == 0)

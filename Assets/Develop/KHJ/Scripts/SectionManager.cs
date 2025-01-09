@@ -9,14 +9,16 @@ public class SectionManager : MonoBehaviour
 
     public static SectionManager Instance { get; private set; }
 
-    [SerializeField] private List<Crop>[] _crops;
+    [SerializeField] private List<Crop>[] _cropLists;
     [SerializeField] private int _curSection;
 
     // 섹션별 파티클 배열
     //[SerializeField] private SectionParticles[] _sectionParticles;
     [SerializeField] private ParticleSystem[] _sectionParticles;
 
-    public List<Crop>[] Crops { get { return _crops; } }
+    private EventManager _eventManager;
+
+    public List<Crop>[] CropLists { get { return _cropLists; } }
     public int CurSection { get { return _curSection; } set { _curSection = value; } }
 
     private void Awake()
@@ -51,9 +53,21 @@ public class SectionManager : MonoBehaviour
     {
         _curSection = 0;
 
-        _crops = new List<Crop>[SECTION_NUM];
+        _cropLists = new List<Crop>[SECTION_NUM];
         for (int i = 0; i < SECTION_NUM; i++)
-            _crops[i] = new List<Crop>();
+            _cropLists[i] = new List<Crop>();
+
+        _eventManager = GameObject.FindGameObjectWithTag("EventManager").GetComponent<EventManager>();
+        _eventManager.OnEventStarted.AddListener(OnDownpourStarted);
+        _eventManager.OnEventStarted.AddListener(OnBlightStarted);
+        _eventManager.OnEventStarted.AddListener(OnDroughtStarted);
+        _eventManager.OnEventStarted.AddListener(OnHighTemperatureStarted);
+        _eventManager.OnEventStarted.AddListener(OnLowTemperatureStarted);
+        _eventManager.OnEventStarted.AddListener(OnDownpourEnded);
+        _eventManager.OnEventStarted.AddListener(OnBlightEnded);
+        _eventManager.OnEventStarted.AddListener(OnDroughtEnded);
+        _eventManager.OnEventStarted.AddListener(OnHighTemperatureEnded);
+        _eventManager.OnEventStarted.AddListener(OnLowTemperatureEnded);
     }
 
     /// <summary>
@@ -65,7 +79,7 @@ public class SectionManager : MonoBehaviour
         if (waterBarrel.FillAmount <= 0)
             return;
 
-        foreach (Crop crop in _crops[_curSection])
+        foreach (Crop crop in _cropLists[_curSection])
         {
             crop.IncreaseMoisture();
         }
@@ -85,7 +99,7 @@ public class SectionManager : MonoBehaviour
         if (nutrientBarrel.FillAmount <= 0)
             return;
 
-        foreach (Crop crop in _crops[_curSection])
+        foreach (Crop crop in _cropLists[_curSection])
         {
             crop.IncreaseNutrient();
         }
@@ -128,4 +142,146 @@ public class SectionManager : MonoBehaviour
 
         particle.Stop();
     }
+
+    #region 돌발이벤트 반응함수
+    private void OnDownpourStarted(GameData.EVENT eventData)
+    {
+        if (eventData.event_name != "폭우")
+            return;
+
+        foreach (List<Crop> cropList in _cropLists)
+        {
+            foreach (Crop crop in cropList)
+            {
+                crop.OnDownpourStarted();
+            }
+        }
+    }
+
+    private void OnDownpourEnded(GameData.EVENT eventData)
+    {
+        if (eventData.event_name != "폭우")
+            return;
+
+        foreach (List<Crop> cropList in _cropLists)
+        {
+            foreach (Crop crop in cropList)
+            {
+                crop.OnDownpourEnded();
+            }
+        }
+    }
+
+    private void OnBlightStarted(GameData.EVENT eventData)
+    {
+        if (eventData.event_name != "병충해")
+            return;
+
+        foreach (List<Crop> cropList in _cropLists)
+        {
+            foreach (Crop crop in cropList)
+            {
+                crop.OnBlightStarted();
+            }
+        }
+    }
+
+    private void OnBlightEnded(GameData.EVENT eventData)
+    {
+        if (eventData.event_name != "병충해")
+            return;
+
+        foreach (List<Crop> cropList in _cropLists)
+        {
+            foreach (Crop crop in cropList)
+            {
+                crop.OnBlightEnded();
+            }
+        }
+    }
+
+    private void OnDroughtStarted(GameData.EVENT eventData)
+    {
+        if (eventData.event_name != "가뭄")
+            return;
+
+        foreach (List<Crop> cropList in _cropLists)
+        {
+            foreach (Crop crop in cropList)
+            {
+                crop.OnDroughtStarted();
+            }
+        }
+    }
+
+    private void OnDroughtEnded(GameData.EVENT eventData)
+    {
+        if (eventData.event_name != "가뭄")
+            return;
+
+        foreach (List<Crop> cropList in _cropLists)
+        {
+            foreach (Crop crop in cropList)
+            {
+                crop.OnDroughtEnded();
+            }
+        }
+    }
+
+    private void OnHighTemperatureStarted(GameData.EVENT eventData)
+    {
+        if (eventData.event_name != "온도 상승")
+            return;
+
+        foreach (List<Crop> cropList in _cropLists)
+        {
+            foreach (Crop crop in cropList)
+            {
+                crop.OnHighTemperatureStarted();
+            }
+        }
+    }
+
+    private void OnHighTemperatureEnded(GameData.EVENT eventData)
+    {
+        if (eventData.event_name != "온도 상승")
+            return;
+
+        foreach (List<Crop> cropList in _cropLists)
+        {
+            foreach (Crop crop in cropList)
+            {
+                crop.OnHighTemperatureEnded();
+            }
+        }
+    }
+
+    private void OnLowTemperatureStarted(GameData.EVENT eventData)
+    {
+        if (eventData.event_name != "온도 하강")
+            return;
+
+        foreach (List<Crop> cropList in _cropLists)
+        {
+            foreach (Crop crop in cropList)
+            {
+                crop.OnLowTemperatureStarted();
+            }
+        }
+    }
+
+    private void OnLowTemperatureEnded(GameData.EVENT eventData)
+    {
+        if (eventData.event_name != "온도 하강")
+            return;
+
+        foreach (List<Crop> cropList in _cropLists)
+        {
+            foreach (Crop crop in cropList)
+            {
+                crop.OnLowTemperatureEnded();
+            }
+        }
+    }
+    #endregion
 }

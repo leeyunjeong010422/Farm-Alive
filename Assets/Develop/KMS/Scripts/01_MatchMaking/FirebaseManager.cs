@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Firebase.Extensions;
 using System;
 using System.Collections.Generic;
+using UnityEngine.SocialPlatforms;
 
 public class FirebaseManager : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class FirebaseManager : MonoBehaviour
     private string userId; // Firebase UID
 
     public event Action OnFirebaseInitialized; // Firebase 초기화 완료 이벤트
+
+    private string highStage;
 
     /// <summary>
     /// 플레이어의 저장된 UID를 호출.
@@ -197,6 +200,7 @@ public class FirebaseManager : MonoBehaviour
                     { "score", 0 }
                 }
             },
+            { "highStage", highStage },
             { "achievements", new List<string>() { "first_login" } }
         };
 
@@ -221,7 +225,47 @@ public class FirebaseManager : MonoBehaviour
     /// </summary>
     public void SaveStageResult(int stageID, float playedTime, int starCount)
     {
+        if (string.IsNullOrEmpty(userId))
+            return;
 
+        int stageIDX = CSVManager.Instance.Stages[stageID].idx;
+        string highstageID = "Stage" + stageIDX;
+        
+        DatabaseReference stageRef = dataBase.GetReference($"users/{userId}/stageResults/{stageID}");
+
+        Dictionary<string, object> resultData = new Dictionary<string, object>()
+        {
+            { "stageID", stageID },
+            { "playTime", playedTime },
+            {"starts" , starCount },
+            {"timeStamp" , DateTime.Now.ToString("o") },
+        };
+
+        stageRef.SetValueAsync(resultData).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCompleted && !task.IsFaulted)
+            {
+                Debug.Log("스테이지 데이터 저장 완료!");
+                return;
+            }
+            else
+            {
+                Debug.LogError("스테이지 데이터 저장 실패: " + task.Exception);
+            }
+        });
+
+        dataBase.GetReference($"users/{userId}/highStage").SetValueAsync(highstageID).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCompleted && !task.IsFaulted)
+            {
+                Debug.Log("최고레벨 저장 완료!");
+                return;
+            }
+            else
+            {
+                Debug.LogError("최고레벨 저장 실패: " + task.Exception);
+            }
+        });
     }
 
     /// <summary>
