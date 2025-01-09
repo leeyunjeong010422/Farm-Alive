@@ -96,6 +96,7 @@ public class StageSelectInteractable : XRGrabInteractable
         transform.rotation = initialRotation;
 
         // 선택된 StageNumber 반환.
+        Debug.Log($"스테이지 반환 : {stageMode}");
         PunManager.Instance.SetStageNumber(stageMode);
 
         ActivateGlobalKeyboard();

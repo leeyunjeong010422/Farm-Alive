@@ -21,7 +21,6 @@ public class PunManager : MonoBehaviourPunCallbacks
     
     private List<RoomInfo> cachedRoomList = new List<RoomInfo>();
     private E_GameMode _gameMode = E_GameMode.Normal;
-    private int _stageNumber;
 
     public static PunManager Instance { get; private set; }
 
@@ -119,8 +118,8 @@ public class PunManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("방생성 시작!");
 
-        //// 5초 카운트다운 및 방 생성 시작
-        //StartCoroutine(PunRoomCountdown(5f));
+        // 5초 카운트다운 및 방 생성 시작
+        StartCoroutine(PunRoomCountdown(5f));
     }
 
     public void SetGameMode(E_GameMode eGameMode)
@@ -134,6 +133,8 @@ public class PunManager : MonoBehaviourPunCallbacks
         _gameMode = eGameMode;
     }
 
+    public string GetGameMode() { return _gameMode.ToString(); }
+
     public void SetStageNumber(E_StageMode eStageMode)
     {
         // 현재는 게임 모드는 Normal만 존재하기에
@@ -143,7 +144,11 @@ public class PunManager : MonoBehaviourPunCallbacks
             eStageMode = E_StageMode.Stage1;
         }
         selectedStage = (int)eStageMode;
-        Debug.Log($"스테이지 번호{selectedStage}");
+    }
+
+    public string GetStageNumber() 
+    {
+        return ((E_StageMode)selectedStage).ToString(); 
     }
 
     public void SetRoomName(string sRoomName)
@@ -162,7 +167,7 @@ public class PunManager : MonoBehaviourPunCallbacks
         while (remainingTime > 0)
         {
             // 메시지 갱신
-            MessageDisplayManager.Instance.ShowMessage($"After {(int)remainingTime} seconds, you enter the room.", 1f, 3f);
+            MessageDisplayManager.Instance.ShowMessage($"{(int)remainingTime} 초 후 , 방에 입장 합니다..", 1f, 3f);
             Debug.Log($"After {(int)remainingTime} seconds, you enter the room.");
             yield return new WaitForSeconds(1f);
             remainingTime--;
@@ -176,7 +181,7 @@ public class PunManager : MonoBehaviourPunCallbacks
         };
 
         Debug.Log("방 생성 시도 중...");
-        PhotonNetwork.JoinOrCreateRoom($"PunRoom_{Random.RandomRange(100,1000)}", roomOptions, TypedLobby.Default);
+        PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
     }
 
     public override void OnCreatedRoom()
