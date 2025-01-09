@@ -20,7 +20,7 @@ public static class ProbabilityHelper
     /// <returns>¥Á√∑ ø©∫Œ</returns>
     public static bool Draw(float rate)
     {
-        return Random.Range(0f, 1f) < rate;
+        return Random.Range(0f, 1f) < (rate / 100);
     }
 
     /// <summary>
