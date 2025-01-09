@@ -157,6 +157,8 @@ public class EventManager : MonoBehaviour
     private void StartEvent(int eventID)
     {
         var eventDict = CSVManager.Instance.Events;
+
+        Debug.Log($"{eventDict[eventID].event_name} ¹ß»ý");
  
         EVENT evData = eventDict[eventID];
 

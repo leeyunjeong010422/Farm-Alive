@@ -84,6 +84,7 @@ MonoBehaviour:
   - SyncSymptom
   - SyncRepaired
   - RequestOwnership
+  - FieldItem
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

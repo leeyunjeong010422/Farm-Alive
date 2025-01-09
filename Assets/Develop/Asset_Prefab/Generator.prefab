@@ -262,7 +262,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _startAttemptsRequired: 3
-  _breakdownWarningDuration: 5
   _cordStartPosition: {fileID: 4294814372490028379}
   _cordEndPosition: {fileID: 4294814371873839961}
   _cordObject: {fileID: 4294814371821049727}
@@ -23674,6 +23673,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4caec3a7bda9d4f40a5a4d95013f1cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnSymptomRaised:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSymptomSolved:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBrokenRaised:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBrokenSolved:
+    m_PersistentCalls:
+      m_Calls: []
+  ID: 232
+  _symptomPeriod: 1
+  _curSymptomRate: 0
+  _idleSymptomRate: 0
+  _stormSymptomRate: 0
+  _limitTime: 0
   _maxRepairCount: 5
 --- !u!1 &6526986999312180633
 GameObject:

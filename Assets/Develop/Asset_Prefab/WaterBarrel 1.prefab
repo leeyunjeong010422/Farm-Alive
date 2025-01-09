@@ -12093,8 +12093,11 @@ MonoBehaviour:
   OnBrokenSolved:
     m_PersistentCalls:
       m_Calls: []
-  _invokePeriod: 10
-  _invokeRate: 1
+  ID: 211
+  _symptomPeriod: 1
+  _curSymptomRate: 0
+  _idleSymptomRate: 0
+  _stormSymptomRate: 0
   _limitTime: 3
   _maxRepairCount: 5
 --- !u!114 &2122277574370486176

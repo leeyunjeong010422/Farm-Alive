@@ -29,7 +29,7 @@ public class StageManager : MonoBehaviour
 
     private void Awake()
     {
-        _curStageID = PunManager.Instance.selectedStage;
+        //_curStageID = PunManager.Instance.selectedStage;
 
         if (Instance != null && Instance != this)
         {
