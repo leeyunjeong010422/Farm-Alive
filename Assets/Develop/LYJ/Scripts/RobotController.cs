@@ -11,6 +11,8 @@ public class RobotController : MonoBehaviour
     private int targetPhotonViewID = -1; // 따라갈 유저의 PhotonViewID
     private bool isFollowing = false; // 현재 추적 중인지 확인하는 플래그
 
+    private Vector3 initialPosition; // 로봇의 처음 위치 저장
+
     [SerializeField] private float _followDistance = 3.0f; // 따라갈 최소 거리
 
     private NavMeshAgent navMeshAgent; // NavMeshAgent 컴포넌트
@@ -19,6 +21,9 @@ public class RobotController : MonoBehaviour
     {
         photonView = GetComponent<PhotonView>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+
+        // 로봇의 초기 위치 저장
+        initialPosition = transform.position;
 
         // 버튼 컴포넌트 찾기 및 클릭 이벤트 등록
         Button moveButton = GetComponentInChildren<Button>();
@@ -50,13 +55,6 @@ public class RobotController : MonoBehaviour
 
     public void OnMoveButtonClicked()
     {
-        // 이미 추적 중이면 동작하지 않음
-        if (isFollowing)
-        {
-            Debug.Log("이미 추적 중입니다.");
-            return;
-        }
-
         // 로컬 플레이어의 PhotonViewID 가져오기
         PhotonView localPlayerPhotonView = GetLocalPlayerPhotonView();
         if (localPlayerPhotonView == null)
@@ -75,14 +73,18 @@ public class RobotController : MonoBehaviour
     [PunRPC]
     private void SyncTargetPlayer(int photonViewID, PhotonMessageInfo info)
     {
-        // 이미 설정된 추적 대상이라면 중복 처리하지 않음
-        if (targetPhotonViewID == photonViewID)
+        // 이미 추적 중인 플레이어가 한 번 더 버튼을 누른 경우 초기 위치로 돌아감
+        if (targetPhotonViewID == photonViewID && isFollowing)
         {
-            Debug.Log($"로봇이 이미 플레이어 {photonViewID} 를 추적 중입니다.");
+            _targetPlayer = null; // 추적 대상 해제
+            targetPhotonViewID = -1; // 대상 ID 초기화
+            isFollowing = false; // 추적 상태 비활성화
+            navMeshAgent.SetDestination(initialPosition); // 초기 위치로 이동
+            Debug.Log("로봇이 초기 위치로 돌아갑니다.");
             return;
         }
 
-        // PhotonViewID를 기반으로 해당 플레이어의 Transform 가져오기
+        // 새로운 PhotonViewID를 기반으로 해당 플레이어의 Transform 가져오기
         GameObject targetObject = GetPlayerGameObjectByPhotonViewID(photonViewID);
 
         if (targetObject != null)
