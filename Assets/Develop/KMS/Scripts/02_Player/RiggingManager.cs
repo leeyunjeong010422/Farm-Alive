@@ -86,14 +86,7 @@ public class RiggingManager : MonoBehaviourPun
         var offset = isLeft ? leftOffset : rightOffset;
 
         // 컨트롤러 위치 값. [0]
-        Vector3 scaleAdjustment = new Vector3(
-            1f / controller.lossyScale.x,
-            1f / controller.lossyScale.y,
-            1f / controller.lossyScale.z
-        );
-
-        Vector3 scaledOffset = Vector3.Scale(offset[0], scaleAdjustment);
-        ik.position = controller.TransformPoint(scaledOffset);
+        ik.position = controller.TransformPoint(offset[0]);
         // 컨트롤러 회전 값. [1]
         ik.rotation = controller.rotation * Quaternion.Euler(offset[1]);
     }
@@ -105,10 +98,7 @@ public class RiggingManager : MonoBehaviourPun
     /// <param name="hmd"></param>
     private void MappingBodyTransform(Transform hmd)
     {
-        // 스케일에 따른 높이 보정
-        float adjustedHeight = modelHeight / hmd.lossyScale.y;
-
-        this.transform.position = new Vector3(hmd.position.x, hmd.position.y - adjustedHeight, hmd.position.z);
+        this.transform.position = new Vector3(hmd.position.x, hmd.position.y - modelHeight, hmd.position.z);
         float yaw = hmd.eulerAngles.y;
         var targetRotation = new Vector3(this.transform.eulerAngles.x, yaw, this.transform.eulerAngles.z);
         this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.Euler(targetRotation), smoothValue);
