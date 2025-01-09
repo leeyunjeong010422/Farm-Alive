@@ -1,3 +1,4 @@
+using Fusion;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
@@ -12,10 +13,14 @@ public class PunManager : MonoBehaviourPunCallbacks
 {
     [Tooltip("테스트를 위한 방 넘버 설정.")]
     public int RoomNum = 0;
-    public int maxPlayer = 5;
+    public int maxPlayer;
+
     [Tooltip("스테이지 ID")]
-    public int selectedStage = 511;
+    public int selectedStage = (int)E_StageMode.Stage1;
+    public string roomName;
+    
     private List<RoomInfo> cachedRoomList = new List<RoomInfo>();
+    private E_GameMode _gameMode = E_GameMode.Normal;
 
     public static PunManager Instance { get; private set; }
 
@@ -113,11 +118,44 @@ public class PunManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("방생성 시작!");
 
-        //// 5초 카운트다운 및 방 생성 시작
-        //StartCoroutine(PunRoomCountdown(5f));
+        // 5초 카운트다운 및 방 생성 시작
+        StartCoroutine(PunRoomCountdown(5f));
     }
 
+    public void SetGameMode(E_GameMode eGameMode)
+    {
+        // 현재는 게임 모드는 Normal만 존재하기에
+        if (eGameMode != E_GameMode.Normal)
+        {
+            Debug.LogWarning($"선택된 {eGameMode} 모드는 아직 없는 모드입니다. \nNormal 모드로 변경 합니다.");
+            eGameMode = E_GameMode.Normal;
+        }
+        _gameMode = eGameMode;
+    }
 
+    public string GetGameMode() { return _gameMode.ToString(); }
+
+    public void SetStageNumber(E_StageMode eStageMode)
+    {
+        // 현재는 게임 모드는 Normal만 존재하기에
+        if (eStageMode == E_StageMode.None || eStageMode == E_StageMode.SIZE_MAX)
+        {
+            Debug.LogWarning($"선택된 {eStageMode}은 잘못 입력 되었습니다. \nStage 1 로 변경 합니다.");
+            eStageMode = E_StageMode.Stage1;
+        }
+        selectedStage = (int)eStageMode;
+    }
+
+    public string GetStageNumber() 
+    {
+        return ((E_StageMode)selectedStage).ToString(); 
+    }
+
+    public void SetRoomName(string sRoomName)
+    {
+        roomName = sRoomName;
+        Debug.Log($"방 이름은 {roomName} \n방 모드{_gameMode.ToString()} \n스테이지 번호{selectedStage}");
+    }
 
     /// <summary>
     /// Coroutine으로 5초 동안 카운트다운 메시지를 갱신하고 방 생성 및 이동
@@ -129,7 +167,7 @@ public class PunManager : MonoBehaviourPunCallbacks
         while (remainingTime > 0)
         {
             // 메시지 갱신
-            MessageDisplayManager.Instance.ShowMessage($"After {(int)remainingTime} seconds, you enter the room.", 1f, 3f);
+            MessageDisplayManager.Instance.ShowMessage($"{(int)remainingTime} 초 후 , 방에 입장 합니다..", 1f, 3f);
             Debug.Log($"After {(int)remainingTime} seconds, you enter the room.");
             yield return new WaitForSeconds(1f);
             remainingTime--;
@@ -143,7 +181,7 @@ public class PunManager : MonoBehaviourPunCallbacks
         };
 
         Debug.Log("방 생성 시도 중...");
-        PhotonNetwork.JoinOrCreateRoom($"PunRoom_{Random.RandomRange(100,1000)}", roomOptions, TypedLobby.Default);
+        PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
     }
 
     public override void OnCreatedRoom()

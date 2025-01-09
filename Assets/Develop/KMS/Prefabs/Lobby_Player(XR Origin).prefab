@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 7594104593235513931}
   - component: {fileID: 663345490963425092}
   - component: {fileID: -1272708414687315774}
-  - component: {fileID: -765375501826874901}
   m_Layer: 0
   m_Name: Lobby_Player(XR Origin)
   m_TagString: Untagged
@@ -70,7 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 7261734078042661224}
-  animator: {fileID: 3499155542520994851}
+  animator: {fileID: 0}
   moveSpeed: 4
   rotationSpeed: 100
   hmdRotationThreshold: 350
@@ -88,7 +87,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vrCamera: {fileID: 7210863017178047535}
-  headObject: {fileID: 5568894721508230800}
+  headObject: {fileID: 0}
 --- !u!114 &663345490963425092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,29 +127,11 @@ MonoBehaviour:
   - {fileID: 8450520263998807654}
   - {fileID: 7594104593235513931}
   - {fileID: 663345490963425092}
-  - {fileID: -765375501826874901}
   - {fileID: 8623049082110364434}
   - {fileID: 6330834745711844645}
   - {fileID: 8786325825434338083}
   - {fileID: 8584416799543730122}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &-765375501826874901
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1865248795837646416}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _stateAuthorityChangeErrorCorrectionDelta: 0.15
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
 --- !u!1 &2684883393748741231
 GameObject:
   m_ObjectHideFlags: 0
@@ -2193,6 +2174,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: mini simple skeleton demo
       objectReference: {fileID: 0}
+    - target: {fileID: 7264607921442958913, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7405356167255908195, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.7
@@ -2302,11 +2287,6 @@ Animator:
 --- !u!4 &4608710727954308140 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8311807183356747891, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
-  m_PrefabInstance: {fileID: 5524814367918095455}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &5568894721508230800 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 136415699704789711, guid: b012b150973537941b8fac817cb2a1ca, type: 3}
   m_PrefabInstance: {fileID: 5524814367918095455}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &8443358506025383845 stripped
