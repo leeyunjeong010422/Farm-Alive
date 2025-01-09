@@ -509,7 +509,7 @@ GameObject:
   - component: {fileID: 6876889121681304119}
   - component: {fileID: 6405569226075614379}
   - component: {fileID: 6405569226075614378}
-  - component: {fileID: -5340764316049821713}
+  - component: {fileID: -7669021254949540896}
   m_Layer: 0
   m_Name: kamaz_container_truck_yellow
   m_TagString: Untagged
@@ -579,7 +579,8 @@ MonoBehaviour:
   - {fileID: 4746300853791310819, guid: a9ce9e1ad0273bb4f8bd382bdeae24ea, type: 3}
   - {fileID: 6173286867380869244, guid: 8dbab36077354c1479ad7a14b99ab0d0, type: 3}
   npcPosition: {fileID: 4005091297302065311}
---- !u!114 &-5340764316049821713
+  npcPrefab: {fileID: 0}
+--- !u!114 &-7669021254949540896
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

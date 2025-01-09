@@ -65,7 +65,7 @@ public class QuestManager : MonoBehaviourPun
 
     public void FirstStart()
     {
-        int stageID = 542;
+        int stageID = 511;
         if (questsList.Count < 4)
         {
             totalQuestCount = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
@@ -190,28 +190,31 @@ public class QuestManager : MonoBehaviourPun
         UIManager.Instance.UpdateQuestUI(questsList);
     }
 
-    public void CountUpdate(int[] questId, int[] number, int[] count, int boxView)
+    public void CountUpdate(int questId, int[] number, int[] count, int boxView, int itemCheck)
     {
         Debug.Log("카운트 업데이트");
-        photonView.RPC(nameof(CountCheck), RpcTarget.AllBuffered, questId, number, count, boxView);
+        photonView.RPC(nameof(CountCheck), RpcTarget.AllBuffered, questId, number, count, boxView, itemCheck);
     }
 
     [PunRPC]
-    private void CountCheck(int[] questId, int[] number, int[] count, int boxView)
+    private void CountCheck(int truckId, int[] number, int[] count, int boxView, int itemCheck)
     {
         Debug.Log("카운트 감소");
 
-        for (int i = 0; i < questId.Length; i++)
+        for (int i = 0; i < number.Length; i++)
         {
-            questsList[questId[i]].requiredItems[number[i]].requiredcount -= count[i];
+            Debug.Log($"퀘스트 ID : {questsList[truckId]}");
+            questsList[truckId].requiredItems[number[i]].requiredcount -= count[i];
 
-            if (questsList[questId[i]].requiredItems[number[i]].requiredcount <= 0)
+            if (questsList[truckId].requiredItems[number[i]].requiredcount <= 0)
             {
                 Debug.Log("납품완료");
                 Debug.Log("퀘스트 성공 여부 동기화!");
-                questsList[questId[i]].requiredItems[number[i]].isSuccess = true;
+                questsList[truckId].requiredItems[number[i]].isSuccess = true;
             }
         }
+        
+        truckList[truckId].npcPrefab.GetComponent<NpcTextView>().NpcText(itemCheck);        
 
         List<int> completedIndexes = new List<int>();
         for (int i = 0; i < questsList.Count; i++)
@@ -255,7 +258,7 @@ public class QuestManager : MonoBehaviourPun
         foreach (int index in completedIndexes.OrderByDescending(x => x))
         {
             //questsList.RemoveAt(index);
-            PhotonNetwork.Destroy(truckList[index].gameObject);
+            //PhotonNetwork.Destroy(truckList[index].gameObject);
         }
 
         if (questsList.Count == 0)
