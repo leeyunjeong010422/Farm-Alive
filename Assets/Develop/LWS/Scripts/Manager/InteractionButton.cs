@@ -5,14 +5,6 @@ using UnityEngine;
 
 public class InteractionButton : MonoBehaviour
 {
-    /// <summary>
-    /// 물을 주는 버튼에 사용하기 위할 필드 및 메서드
-    /// </summary>
-    [Header("물 주기")]
-    private bool _isWatering = false;
-
-    [SerializeField] private WaterBarrelRepair _waterBarrelRepair;
-
     private void Start()
     {
         if (_waterBarrelRepair == null)
@@ -20,7 +12,7 @@ public class InteractionButton : MonoBehaviour
             _waterBarrelRepair = FindObjectOfType<WaterBarrelRepair>();
             if (_waterBarrelRepair == null)
             {
-                Debug.LogError("WaterBarrelRepair 컴포넌트를 찾을 수 없습니다!");
+                Debug.Log("WaterBarrelRepair 컴포넌트를 찾을 수 없습니다!");
             }
         }
 
@@ -29,10 +21,36 @@ public class InteractionButton : MonoBehaviour
             _nutrientBarrelRepair = FindObjectOfType<NutrientBarrelRepair>();
             if (_nutrientBarrelRepair == null)
             {
-                Debug.LogError("NutrientBarrelRepair 컴포넌트를 찾을 수 없습니다!");
+                Debug.Log("NutrientBarrelRepair 컴포넌트를 찾을 수 없습니다!");
+            }
+        }
+
+        if (_sprayingPesticideRepair == null)
+        {
+            _sprayingPesticideRepair = FindObjectOfType<PesticideRepair>();
+            if (_sprayingPesticideRepair == null)
+            {
+                Debug.Log("PesticideRepair 컴포넌트를 찾을 수 없습니다!");
+            }
+        }
+
+        if (_moistureRemoverRepair == null)
+        {
+            _moistureRemoverRepair = FindObjectOfType<MoistureRemoverRepair>();
+            if (_moistureRemoverRepair == null)
+            {
+                Debug.Log("MoistureRemoverRepair 컴포넌트를 찾을 수 없습니다");
             }
         }
     }
+
+    /// <summary>
+    /// 물을 주는 버튼에 사용하기 위할 필드 및 메서드
+    /// </summary>
+    [Header("물 주기")]
+    private bool _isWatering = false;
+
+    [SerializeField] private WaterBarrelRepair _waterBarrelRepair;
 
     public void Watering()
     {
@@ -62,8 +80,6 @@ public class InteractionButton : MonoBehaviour
 
     [SerializeField] private NutrientBarrelRepair _nutrientBarrelRepair;
 
-
-
     public void Nutrienting()
     {
         if (_isNutrienting) return;
@@ -91,9 +107,10 @@ public class InteractionButton : MonoBehaviour
     private bool _isSprayingPesticide = false;
 
     [SerializeField] private PesticideRepair _sprayingPesticideRepair;
+   
     public void SprayingPesticide()
     {
-        if (!_isSprayingPesticide) return;
+        if (_isSprayingPesticide) return;
 
         if (_sprayingPesticideRepair == null)
         {
@@ -116,7 +133,7 @@ public class InteractionButton : MonoBehaviour
 
     public void SprayingMoisture()
     {
-        if (!_isSprayingMoistureRemover) return;
+        if (_isSprayingMoistureRemover) return;
 
         if (_moistureRemoverRepair == null)
         {

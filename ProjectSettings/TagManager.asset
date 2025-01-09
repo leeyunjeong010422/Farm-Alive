@@ -15,7 +15,6 @@ TagManager:
   - Box
   - CropRefillZone
   - BoxRefillZone
-  - Tool
   - EventManager
   layers:
   - Default
