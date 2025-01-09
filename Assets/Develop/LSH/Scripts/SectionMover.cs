@@ -26,6 +26,8 @@ public class SectionMover : MonoBehaviourPun
     [SerializeField] bool[] wayPoint1;
     [SerializeField] bool[] wayPoint2;
 
+    [SerializeField] public bool isBroken = false;
+
 
     //private bool isUpperLowerShutterOpen = false;
     private bool isLeftRightShutterOpen = false;
@@ -86,6 +88,8 @@ public class SectionMover : MonoBehaviourPun
     }
     void Update()
     {
+        if (isBroken) return;
+
         if (selectedSection != null)
         {
             int selectedIndex = System.Array.IndexOf(targetSection, selectedSection);
@@ -239,5 +243,19 @@ public class SectionMover : MonoBehaviourPun
 
         //isUpperLowerShutterOpen = false;
         isLeftRightShutterOpen = false;
+    }
+
+    // 고장 상태에서 움직임 비활성화
+    public void DisableMovement()
+    {
+        isBroken = true;
+        Debug.Log("섹션 움직임이 비활성화되었습니다.");
+    }
+
+    // 고장 상태 해제 후 움직임 활성화
+    public void EnableMovement()
+    {
+        isBroken = false;
+        Debug.Log("섹션 움직임이 활성화되었습니다.");
     }
 }
