@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 6577118647375166867}
   - component: {fileID: 6577118647375166866}
   - component: {fileID: 4771990590021586332}
+  - component: {fileID: 6895170488368298529}
   m_Layer: 0
   m_Name: FarmPlayer(tutorial)
   m_TagString: Untagged
@@ -135,7 +136,7 @@ MonoBehaviour:
   m_OriginBaseGameObject: {fileID: 6577118647375166864}
   m_CameraFloorOffsetObject: {fileID: 6577118647699240106}
   m_RequestedTrackingOriginMode: 1
-  m_CameraYOffset: 1.1176
+  m_CameraYOffset: 1.176
 --- !u!114 &6577118647375166866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,13 +162,30 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6577118647375166864}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 512ea2b5b69b85543bfeff53d27c1eb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   vrCamera: {fileID: 6577118649245864138}
   headObject: {fileID: 3959446489110119425}
+--- !u!114 &6895170488368298529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6577118647375166864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 339e3e702298ae44cacac171de1330a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vrCamera: {fileID: 6577118649245864138}
+  headObject: {fileID: 5005425534994325687}
+  controllerObjects:
+  - {fileID: 6577118647541178944}
+  - {fileID: 6577118647837967505}
 --- !u!1 &6577118647416555984
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,7 +541,7 @@ MonoBehaviour:
   m_UpdateTrackingType: 0
   m_EnableInputTracking: 1
   m_EnableInputActions: 1
-  m_ModelPrefab: {fileID: 0}
+  m_ModelPrefab: {fileID: 8270855663187062767, guid: 1392f805216c47742996d4742c80721c, type: 3}
   m_ModelParent: {fileID: 0}
   m_Model: {fileID: 0}
   m_AnimateModel: 0
@@ -821,7 +839,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6577118647699240106}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.35, z: 0}
+  m_LocalPosition: {x: 0, y: 1.36, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -968,7 +986,7 @@ MonoBehaviour:
   m_UpdateTrackingType: 0
   m_EnableInputTracking: 1
   m_EnableInputActions: 1
-  m_ModelPrefab: {fileID: 0}
+  m_ModelPrefab: {fileID: 3475118261464492563, guid: 9f3369e30fbd31f4bb596b1a99babe83, type: 3}
   m_ModelParent: {fileID: 0}
   m_Model: {fileID: 0}
   m_AnimateModel: 0
@@ -1859,6 +1877,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6577118647375166868}
     m_Modifications:
+    - target: {fileID: 2175316210040468027, guid: 7c0fa9a0ad4b4a54d8530858c7012853, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4929263242136914571, guid: 7c0fa9a0ad4b4a54d8530858c7012853, type: 3}
       propertyPath: hmd
       value: 
@@ -1875,6 +1897,30 @@ PrefabInstance:
       propertyPath: rightHandController
       value: 
       objectReference: {fileID: 6577118647837967506}
+    - target: {fileID: 4929263242136914571, guid: 7c0fa9a0ad4b4a54d8530858c7012853, type: 3}
+      propertyPath: leftOffset.Array.data[1].x
+      value: -116
+      objectReference: {fileID: 0}
+    - target: {fileID: 4929263242136914571, guid: 7c0fa9a0ad4b4a54d8530858c7012853, type: 3}
+      propertyPath: leftOffset.Array.data[1].y
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 4929263242136914571, guid: 7c0fa9a0ad4b4a54d8530858c7012853, type: 3}
+      propertyPath: leftOffset.Array.data[1].z
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 4929263242136914571, guid: 7c0fa9a0ad4b4a54d8530858c7012853, type: 3}
+      propertyPath: rightOffset.Array.data[1].x
+      value: 244
+      objectReference: {fileID: 0}
+    - target: {fileID: 4929263242136914571, guid: 7c0fa9a0ad4b4a54d8530858c7012853, type: 3}
+      propertyPath: rightOffset.Array.data[1].y
+      value: -45
+      objectReference: {fileID: 0}
+    - target: {fileID: 4929263242136914571, guid: 7c0fa9a0ad4b4a54d8530858c7012853, type: 3}
+      propertyPath: rightOffset.Array.data[1].z
+      value: -80
+      objectReference: {fileID: 0}
     - target: {fileID: 5153540686303607055, guid: 7c0fa9a0ad4b4a54d8530858c7012853, type: 3}
       propertyPath: m_Name
       value: FarmPlayer
@@ -1950,6 +1996,11 @@ Transform:
 --- !u!1 &3959446489110119425 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7905041148984317581, guid: 7c0fa9a0ad4b4a54d8530858c7012853, type: 3}
+  m_PrefabInstance: {fileID: 6577118648318415500}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5005425534994325687 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2175316210040468027, guid: 7c0fa9a0ad4b4a54d8530858c7012853, type: 3}
   m_PrefabInstance: {fileID: 6577118648318415500}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6577118648655122454

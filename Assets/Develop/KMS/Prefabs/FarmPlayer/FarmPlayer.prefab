@@ -2252,10 +2252,10 @@ MonoBehaviour:
   hmd: {fileID: 0}
   leftOffset:
   - {x: 0, y: 0, z: 0}
-  - {x: -90, y: 90, z: 90}
+  - {x: -116, y: 45, z: 80}
   rightOffset:
   - {x: 0, y: 0, z: 0}
-  - {x: -90, y: 90, z: 90}
+  - {x: 244, y: -45, z: -80}
   headOffset:
   - {x: 0, y: -0.25, z: 0}
   - {x: 0, y: 0, z: 0}
