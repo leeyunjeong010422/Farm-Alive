@@ -15,7 +15,7 @@ public class CropInteractable : XRGrabInteractable
             Debug.Log("with socket");
             Crop crop = GetComponent<Crop>();
 
-            SectionManager.Instance.Crops[SectionManager.Instance.CurSection].Add(crop);
+            SectionManager.Instance.CropLists[SectionManager.Instance.CurSection].Add(crop);
             crop.ChangeState(Crop.E_CropState.GrowStopped);
         }
     }
@@ -26,7 +26,7 @@ public class CropInteractable : XRGrabInteractable
 
         if (args.interactorObject is XRSocketInteractor)
         {
-            SectionManager.Instance.Crops[SectionManager.Instance.CurSection].Remove(GetComponent<Crop>());
+            SectionManager.Instance.CropLists[SectionManager.Instance.CurSection].Remove(GetComponent<Crop>());
         }
     }
 

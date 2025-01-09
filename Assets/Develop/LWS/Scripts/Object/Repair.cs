@@ -1,3 +1,4 @@
+using GameData;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,11 +12,17 @@ public class Repair : MonoBehaviourPun
     public UnityEvent OnBrokenRaised;
     public UnityEvent OnBrokenSolved;
 
+    public int ID;
+
     [Header("전조 증상")]
     [Tooltip("발생 시도 주기(s)")]
-    [SerializeField] float _invokePeriod;
+    [SerializeField] float _symptomPeriod;
     [Tooltip("발생 확률(%)")]
-    [SerializeField] float _invokeRate;
+    [SerializeField] float _curSymptomRate;
+    [Tooltip("발생 확률(%)")]
+    [SerializeField] float _idleSymptomRate;
+    [Tooltip("폭풍 시 발생 확률(%)")]
+    [SerializeField] float _stormSymptomRate;
     [Tooltip("제한 시간(s): 초과 시 고장 발생")]
     [SerializeField] float _limitTime;
 
@@ -23,6 +30,7 @@ public class Repair : MonoBehaviourPun
     [Tooltip("고장 시 수리를 위해 필요한 망치질 횟수")]
     [SerializeField] int _maxRepairCount;
 
+    private EventManager _eventManager;
     private int _curRepairCount = 0;
     private bool _isSymptom;
     private bool _isRepaired;
@@ -39,8 +47,13 @@ public class Repair : MonoBehaviourPun
 
     private void Awake()
     {
-        _invokePeriodDelay = new WaitForSeconds(_invokePeriod);
-        _limitTimeDelay = new WaitForSeconds(_limitTime);
+        //_idleSymptomRate = CSVManager.Instance.Facilities[ID].facility_symptomPercent;
+        //_stormSymptomRate = CSVManager.Instance.Facilities[ID].facility_stormSymptomPercent;
+        //_limitTime = CSVManager.Instance.Facilities[ID].facility_timeLimit;
+        //_maxRepairCount = CSVManager.Instance.Facilities[ID].facility_maxHammeringCount;
+
+        //_invokePeriodDelay = new WaitForSeconds(_symptomPeriod);
+        //_limitTimeDelay = new WaitForSeconds(_limitTime);
 
         ResetRepairState();
 
@@ -49,46 +62,52 @@ public class Repair : MonoBehaviourPun
         OnBrokenSolved.AddListener(ResetRepairState);
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
-        if (PhotonNetwork.MasterClient != null && PhotonNetwork.IsMasterClient)
+        while (!CSVManager.Instance.downloadCheck)
         {
-            InvokeSymptom();
+            yield return null;
         }
-        else
-        {
-            StartCoroutine(CheckMasterClient());
-        }
+        _idleSymptomRate = CSVManager.Instance.Facilities[ID].facility_symptomPercent;
+        _stormSymptomRate = CSVManager.Instance.Facilities[ID].facility_stormSymptomPercent;
+        _curSymptomRate = _idleSymptomRate;
+        _limitTime = CSVManager.Instance.Facilities[ID].facility_timeLimit;
+        _maxRepairCount = CSVManager.Instance.Facilities[ID].facility_maxHammeringCount;
+
+        _invokePeriodDelay = new WaitForSeconds(_symptomPeriod);
+        _limitTimeDelay = new WaitForSeconds(_limitTime);
+
+        _eventManager = GameObject.FindGameObjectWithTag("EventManager").GetComponent<EventManager>();
+        _eventManager.OnEventStarted.AddListener(OnStromStarted);
+        _eventManager.OnEventEnded.AddListener(OnStromEnded);
+
+        InvokeSymptom();
     }
-
-    private IEnumerator CheckMasterClient()
-    {
-        while (true)
-        {
-            // 현재 클라이언트가 MasterClient인 경우에만 InvokeSymptom 실행
-            if (PhotonNetwork.IsMasterClient)
-            {
-                if (_invokeSymptomCoroutine == null)
-                {
-                    _invokeSymptomCoroutine = StartCoroutine(InvokeSymptomRoutine());
-                }
-                yield break; // MasterClient 확인 후 코루틴 종료
-            }
-            else if (PhotonNetwork.MasterClient != null) 
-            {
-                yield break; // 다른 클라이언트가 MasterClient라면 종료
-            }
-
-            Debug.Log("MasterClient 찾는 중");
-            yield return new WaitForSeconds(1f); // 1초마다 MasterClient 상태 확인
-        }
-    }
-
 
     private void OnDisable()
     {
         if (_invokeSymptomCoroutine != null)
             StopCoroutine(_invokeSymptomCoroutine);
+    }
+
+    private void OnStromStarted(GameData.EVENT eventData)
+    {
+        if (eventData.event_name != "폭풍")
+            return;
+
+        Debug.Log($"폭풍에 따른 {gameObject.name} 전조증상 확률 증가!");
+
+        _curSymptomRate = _stormSymptomRate;
+    }
+
+    private void OnStromEnded(GameData.EVENT eventData)
+    {
+        if (eventData.event_name != "폭풍")
+            return;
+
+        Debug.Log($"폭풍 eliminated, {gameObject.name} 전조증상 확률 reduced!");
+
+        _curSymptomRate = _idleSymptomRate;
     }
 
     private void InvokeSymptom()
@@ -107,7 +126,7 @@ public class Repair : MonoBehaviourPun
         while (IsSymptom == false)
         {
             Debug.Log($"{gameObject.name} 전조증상 발생 확인...");
-            IsSymptom = ProbabilityHelper.Draw(_invokeRate);
+            IsSymptom = ProbabilityHelper.Draw(_curSymptomRate);
             if (IsSymptom)
                 InvokeBroken();
 
@@ -138,6 +157,8 @@ public class Repair : MonoBehaviourPun
         yield return _limitTimeDelay;
 
         IsRepaired = false;
+        _invokeBrokenCoroutine = null;
+        StageManager.Instance.brokenMachineCount++;
     }
 
     [PunRPC]
@@ -180,11 +201,11 @@ public class Repair : MonoBehaviourPun
     /// </summary>
     public void ResetRepairState()
     {
+        _curRepairCount = 0;
         if (_isSymptom) _isSymptom = false;
         else return;
         if (!_isRepaired) _isRepaired = true;
         else return;
-        _curRepairCount = 0;
 
         StopAllCoroutines();
         _invokeSymptomCoroutine = null;

@@ -1,3 +1,4 @@
+using GameData;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ public class Crop : MonoBehaviourPun
 {
     public enum E_CropState
     {
-        Seeding, Growing, GrowStopped, GrowCompleted, Rotten, SIZE
+        Seeding, Growing, GrowStopped, GrowCompleted, Waste, SIZE
     }
 
     [SerializeField] private CropData _cropData;
@@ -23,6 +24,8 @@ public class Crop : MonoBehaviourPun
     [SerializeField] private E_CropState _curState;
 
     [Header("수치")]
+    [Tooltip("상품성")]
+    [SerializeField] private float _value;
     [Tooltip("밭에 심어지기 위해 밭이 경작돼야하는 횟수")]
     [SerializeField] private int _digCount;
     [Tooltip("수확가능 상태로 변경될 때까지 성장가능 상태에서 머물러야 하는 시간")]
@@ -30,13 +33,13 @@ public class Crop : MonoBehaviourPun
     [Tooltip("성장가능 상태에서 머무른 시간")]
     [SerializeField] private float _elapsedTime;
     [Tooltip("성장가능 상태가 되기 위해 필요한 수분")]
-    [SerializeField] private int _maxMoisture;
+    [SerializeField] private int _idleMaxMoisture;
     [Tooltip("가뭄일 때 성장가능 상태가 되기 위해 필요한 수분")]
     [SerializeField] private int _droughtMaxMoisture;
     [Tooltip("작물의 현재 수분")]
     [SerializeField] private int _curMoisture;
     [Tooltip("성장가능 상태가 되기 위해 필요한 영양분")]
-    [SerializeField] private int _maxNutrient;
+    [SerializeField] private int _idleMaxNutrient;
     [Tooltip("가뭄일 때 성장가능 상태가 되기 위해 필요한 영양분")]
     [SerializeField] private int _droughtMaxNutrient;
     [Tooltip("작물의 현재 영양분")]
@@ -50,12 +53,17 @@ public class Crop : MonoBehaviourPun
     [Tooltip("온도상승 해결 제한시간")]
     [SerializeField] private float _temperatureIncreaseLimitTime;
 
+    private EventManager _eventManager;
+
     private BaseState[] _states = new BaseState[(int)E_CropState.SIZE];
     private CropInteractable _cropInteractable;
     private int _maxGrowthStep;
     private int _curGrowthStep;
+    private int _curMaxMoisture;
+    private int _curMaxNutrient;
 
     public E_CropState CurState { get { return _curState; } }
+    public float Value {  get { return _value; } }
     public int DigCount {  get { return _digCount; } }
 
     private void Awake()
@@ -69,13 +77,22 @@ public class Crop : MonoBehaviourPun
         _maxGrowthStep = _GFXs.Length - 1;
         _curGrowthStep = 0;
 
+        _value = 1f;
+        _curMaxMoisture = _idleMaxMoisture;
+        _curMaxNutrient = _idleMaxNutrient;
+
         _states[(int)E_CropState.Seeding] = new SeedingState(this);
         _states[(int)E_CropState.Growing] = new GrowingState(this);
         _states[(int)E_CropState.GrowStopped] = new GrowStoppedState(this);
         _states[(int)E_CropState.GrowCompleted] = new GrowCompletedState(this);
-        _states[(int)E_CropState.Rotten] = new RottenState(this);
+        _states[(int)E_CropState.Waste] = new WasteState(this);
 
         _cropInteractable = GetComponent<CropInteractable>();
+    }
+
+    private void Start()
+    {
+        _eventManager = GameObject.FindGameObjectWithTag("EventManager").GetComponent<EventManager>();
     }
 
     private void OnEnable()
@@ -98,8 +115,8 @@ public class Crop : MonoBehaviourPun
         _ID = _cropData.ID;
         _name = _cropData.cropName;
         _digCount = _cropData.digCount;
-        _maxMoisture = _cropData.maxMoisture;
-        _maxNutrient = _cropData.maxNutrient;
+        _idleMaxMoisture = _cropData.maxMoisture;
+        _idleMaxNutrient = _cropData.maxNutrient;
         _growthTime = _cropData.growthTime;
         _droughtMaxMoisture = _cropData.droughtMaxMoisture;
         _droughtMaxNutrient = _cropData.droughtMaxNutrient;
@@ -135,6 +152,109 @@ public class Crop : MonoBehaviourPun
 
     public void IncreaseMoisture() => _curMoisture++;
     public void IncreaseNutrient() => _curNutrient++;
+
+    private bool CheckGrowthCondition()
+    {
+        return CheckMoisture() && CheckNutrient();
+    }
+
+    private bool CheckMoisture() => _curMoisture >= _curMaxMoisture;
+    private bool CheckNutrient() => _curNutrient >= _curMaxNutrient;
+
+
+    #region 돌발이벤트 반응함수
+    public void OnDownpourStarted()
+    {
+        photonView.RPC(nameof(ChangeState), RpcTarget.All, E_CropState.GrowStopped);
+    }
+
+    public void OnDownpourEnded()
+    {
+        photonView.RPC(nameof(ChangeState), RpcTarget.All, E_CropState.Growing);
+    }
+
+    public void OnBlightStarted()
+    {
+        if (_blightCoroutine == null)
+        {
+            _blightCoroutine = StartCoroutine(BlightRoutine());
+        }
+    }
+
+    public void OnBlightEnded()
+    {
+        if (_blightCoroutine != null)
+        {
+            StopCoroutine(_blightCoroutine);
+            _blightCoroutine = null;
+        }
+    }
+
+    Coroutine _blightCoroutine;
+    IEnumerator BlightRoutine()
+    {
+        yield return new WaitForSeconds(_damageLimitTime);
+
+        _value *= _damageRate;
+
+        yield return null;
+    }
+
+    public void OnDroughtStarted()
+    {
+        _curMaxMoisture = _droughtMaxMoisture;
+    }
+
+    public void OnDroughtEnded()
+    {
+        _curMaxNutrient = _droughtMaxNutrient;
+    }
+
+    public void OnHighTemperatureStarted()
+    {
+        if (_temperatureCoroutine == null)
+        {
+            _temperatureCoroutine = StartCoroutine(TemperatureRoutine(true));
+        }
+    }
+
+    public void OnHighTemperatureEnded()
+    {
+        if (_temperatureCoroutine != null)
+        {
+            StopCoroutine(_temperatureCoroutine);
+            _temperatureCoroutine = null;
+        }
+    }
+
+    public void OnLowTemperatureStarted()
+    {
+        if (_temperatureCoroutine == null)
+        {
+            _temperatureCoroutine = StartCoroutine(TemperatureRoutine(false));
+        }
+    }
+
+    public void OnLowTemperatureEnded()
+    {
+        if (_temperatureCoroutine != null)
+        {
+            StopCoroutine(_temperatureCoroutine);
+            _temperatureCoroutine = null;
+        }
+    }
+
+    Coroutine _temperatureCoroutine;
+    IEnumerator TemperatureRoutine(bool isHigh)
+    {
+        yield return new WaitForSeconds(isHigh ? _temperatureIncreaseLimitTime : _temperatureDecreaseLimitTime);
+
+        (_states[(int)E_CropState.Waste] as WasteState).isHigh = isHigh;
+        photonView.RPC(nameof(ChangeState), RpcTarget.All, E_CropState.Waste);
+
+        yield return null;
+    }
+    #endregion
 
     #region 작물 상태 행동 및 전이
     private class CropState : BaseState
@@ -185,6 +305,11 @@ public class Crop : MonoBehaviourPun
             {
                 crop.photonView.RPC(nameof(crop.ChangeState), RpcTarget.All, E_CropState.GrowCompleted);
             }
+
+            if (!crop.CheckGrowthCondition())
+            {
+                crop.photonView.RPC(nameof(crop.ChangeState), RpcTarget.All, E_CropState.GrowStopped);
+            }
         }
 
         private void Grow()
@@ -212,19 +337,11 @@ public class Crop : MonoBehaviourPun
         public override void StateUpdate()
         {
             // 상태 전이
-            if (CheckGrowthCondition())
+            if (crop.CheckGrowthCondition())
             {
                 crop.photonView.RPC(nameof(crop.ChangeState), RpcTarget.All, E_CropState.Growing);
             }
         }
-
-        private bool CheckGrowthCondition()
-        {
-            return CheckMoisture() && CheckNutrient();
-        }
-
-        private bool CheckMoisture() => crop._curMoisture >= crop._maxMoisture;
-        private bool CheckNutrient() => crop._curNutrient >= crop._maxNutrient;
     }
 
     private class GrowCompletedState : CropState
@@ -242,13 +359,22 @@ public class Crop : MonoBehaviourPun
         public override void StateUpdate() { }
     }
 
-    private class RottenState : CropState
+    private class WasteState : CropState
     {
-        public RottenState(Crop crop) : base(crop) { }
+        public bool isHigh;
+
+        public WasteState(Crop crop) : base(crop) { }
 
         public override void StateEnter()
         {
-            crop._GFXs[crop._curGrowthStep].GetComponent<Renderer>().material.color = Color.black;
+            if (isHigh)
+            {
+                crop._GFXs[crop._curGrowthStep].GetComponent<Renderer>().material.color = Color.black;
+            }
+            else
+            {
+                crop._GFXs[crop._curGrowthStep].GetComponent<Renderer>().material.color = Color.cyan;
+            }
         }
 
         public override void StateExit() { }
