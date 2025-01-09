@@ -20,7 +20,7 @@ public class InteractionButton : MonoBehaviour
             _waterBarrelRepair = FindObjectOfType<WaterBarrelRepair>();
             if (_waterBarrelRepair == null)
             {
-                Debug.LogError("WaterBarrelRepair 컴포넌트를 찾을 수 없습니다!");
+                Debug.Log("WaterBarrelRepair 컴포넌트를 찾을 수 없습니다!");
             }
         }
 
@@ -29,7 +29,7 @@ public class InteractionButton : MonoBehaviour
             _nutrientBarrelRepair = FindObjectOfType<NutrientBarrelRepair>();
             if (_nutrientBarrelRepair == null)
             {
-                Debug.LogError("NutrientBarrelRepair 컴포넌트를 찾을 수 없습니다!");
+                Debug.Log("NutrientBarrelRepair 컴포넌트를 찾을 수 없습니다!");
             }
         }
     }
