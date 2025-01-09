@@ -11,17 +11,24 @@ using System;
 /// </summary>
 public class EventManager : MonoBehaviour
 {
-    [Header("이벤트 계산 주기")]
-    [SerializeField] float _checkInterval = 1.0f;
+    [Header("이벤트 계산 주기(초)")]
+    [SerializeField] private float _checkInterval = 1.0f;
 
-    // 이벤트가 진행 중이면 새 이벤트 발생 불가
-    private bool _isEventPlaying = false;
+    public UnityEvent<EVENT> OnEventStarted;
+    public UnityEvent<EVENT> OnEventEnded;
 
-    public event Action<EVENT> onEventStarted;
-    public event Action<EVENT> onEventEnded;
+    // 이벤트 발생확률 테스트용 조정
+    [SerializeField] Dictionary<int, EVENT> events;
 
-    [SerializeField] EVENT _currentEvent; // 현재 진행 중인 이벤트
+    // 현재 진행 중인 이벤트 목록
+    private List<int> _activeEventsID = new List<int>();
 
+
+    private (int, int)[] _conflictPairs = new (int, int)[]
+    {
+        (421,441),
+        (431,442),
+    };
 
     private void Start()
     {
@@ -34,68 +41,134 @@ public class EventManager : MonoBehaviour
         while (!CSVManager.Instance.downloadCheck)
             yield return null;
 
-        // 2) 이벤트 리스트
-        List<EVENT> eventList = CSVManager.Instance.Events;
-        List<EVENT_SEASON> seasonList = CSVManager.Instance.Events_Seasons;
+        events = CSVManager.Instance.Events;
+
+
+        var eventDict = CSVManager.Instance.Events;
+        var seasonDict = CSVManager.Instance.Events_Seasons;
 
         while (true)
         {
             yield return new WaitForSeconds(_checkInterval);
 
-            // 이벤트 진행중이면 계산 패스
-            if (_isEventPlaying)
-                continue;
+            // 당첨된 이벤트 리스트
+            List<int> triggered = new List<int>();
 
-            // 모든 이벤트 각각 확률 체크 후,
-            // 두개 이상 발생 시 1개만 랜덤
-            List<EVENT> triggered = new List<EVENT>();
-            foreach (var ev in eventList)
+            int seasonID = StageManager.Instance.WeatherID;
+
+            foreach (var kv in eventDict)
             {
-                float finalRate = ev.event_occurPercent + ev.event_occurPlusPercent;
+                int eventID = kv.Key;
+                EVENT ev = kv.Value;
 
+                // 이미 진행 중인 같은 이벤트는 스킵
+                if (_activeEventsID.Contains(eventID))
+                    continue;
+
+                // 기본 확률
+                float finalRate = ev.event_occurPercent;
+
+                // 이벤트가 현재 계절이면,
+                if (CheckSeasonMatch(eventID, seasonID, seasonDict))
+                {
+                    finalRate += ev.event_occurPlusPercent;
+                }
+
+                // 확률 검사
                 if (ProbabilityHelper.Draw(finalRate))
                 {
-                    triggered.Add(ev);
+                    triggered.Add(eventID);
                 }
             }
-            if (triggered.Count > 0)
+
+            if (triggered.Count == 0)
+                continue;
+
+            ResolveConflicts(triggered);
+
+            // 나머지 이벤트 모두 동시 발생 가능
+            foreach (var evID in triggered)
             {
-                // 둘 이상 발생하면 1개만 랜덤
-                var chosenEvent = ProbabilityHelper.Draw(triggered);
-                StartEvent(chosenEvent);
+                StartEvent(evID);
             }
         }
     }
 
-    private void StartEvent(EVENT evData)
+    // 계절 확인, true반환
+    private bool CheckSeasonMatch(int eventID, int seasonID, Dictionary<int, EVENT_SEASON> seasonDict)
     {
-        _isEventPlaying = true;
-        _currentEvent = evData;
+        if (!seasonDict.ContainsKey(eventID))
+            return false;
 
-        onEventStarted?.Invoke(evData);
-
-        // 지속시간 있으면 자동 종료
-        if (evData.event_continueTime > 0)
+        EVENT_SEASON es = seasonDict[eventID];
+        for (int i = 0; i < es.event_seasonID.Length; i++)
         {
-            StartCoroutine(EndRoutine(evData.event_continueTime));
+            if (es.event_seasonID[i] == seasonID)
+                return true;
+        }
+
+        return false;
+    }
+
+    private void ResolveConflicts(List<int> triggered)
+    {
+        foreach (var pair in _conflictPairs)
+        {
+            // 동시에 일어나면 안되는 쌍이 동시에 존재하는지 확인
+            int AeventID = pair.Item1;
+            int BeventID = pair.Item2;
+            bool ifHasA = triggered.Contains(AeventID);
+            bool ifHasB = triggered.Contains(BeventID);
+
+            // 동시에 존재하면 하나 삭제
+            if (ifHasA && ifHasB)
+            {
+                int r = UnityEngine.Random.Range(0, 2);
+                if ( r == 0)
+                {
+                    triggered.Remove(BeventID);
+                }
+                else
+                {
+                    triggered.Remove(AeventID);
+                }
+            }
         }
     }
 
-    private IEnumerator EndRoutine(float dur)
+    private void StartEvent(int eventID)
+    {
+        var eventDict = CSVManager.Instance.Events;
+ 
+        EVENT evData = eventDict[eventID];
+
+        _activeEventsID.Add(eventID);
+
+        OnEventStarted?.Invoke(evData);
+
+        // 자동 종료
+        if (evData.event_continueTime > 0)
+        {
+            StartCoroutine(AutoEndRoutine(eventID, evData.event_continueTime));
+        }
+    }
+
+    private IEnumerator AutoEndRoutine(int eventID, float dur)
     {
         yield return new WaitForSeconds(dur);
-        EventResolve();
+        ResolveEvent(eventID);
     }
 
     /// <summary>
-    /// 이벤트 해결 시 호출 부탁드립니다
+    /// 이벤트 종료 조건 달성시 호출 부탁드립니다
     /// </summary>
-    public void EventResolve()
+    public void ResolveEvent(int eventID)
     {
-        if (!_isEventPlaying) return;
+        if (_activeEventsID.Remove(eventID))
+        {
+            EVENT evDATA = CSVManager.Instance.Events[eventID];
 
-        _isEventPlaying = false;
-
-        onEventEnded?.Invoke(_currentEvent);
+            OnEventEnded?.Invoke(evDATA);
+        }
     }
 }
