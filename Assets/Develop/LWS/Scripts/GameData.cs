@@ -17,7 +17,7 @@ namespace GameData
     [System.Serializable]
     public struct FACILITY
     {
-        public int idx, facility_ID, facility_maxHammeringCount, facility_maxBootCount;
+        public int facility_maxHammeringCount, facility_maxBootCount;
         public float facility_symptomPercent, facility_stormSymptomPercent, facility_timeLimit;
         public string facility_name;
     }
@@ -25,7 +25,6 @@ namespace GameData
     [System.Serializable]
     public struct CORRESPONDENT
     {
-        public int idx, correspondent_ID;
         public string correspondent_name;
         public float correspondent_timeLimit;
     }
@@ -33,28 +32,24 @@ namespace GameData
     [System.Serializable]
     public struct CORRESPONDENT_REQUIRECROPS
     {
-        public int idx, correspondent_corID;
         public int[] correspondent_cropID;
     }
 
     [System.Serializable]
     public struct CORRESPONDENT_CROPSTYPECOUNT
     {
-        public int idx, correspondent_corID;
         public int[] correspondent_stage;
     }
 
     [System.Serializable]
     public struct CORRESPONDENT_CROPSCOUNT
     {
-        public int idx, correspondent_corID;
         public int[] correspondent_stage;
     }
 
     [System.Serializable]
     public struct EVENT
     {
-        public int idx, event_ID;
         public string event_name;
         public float event_occurPercent, event_occurPlusPercent, event_continueTime;
     }
@@ -62,20 +57,19 @@ namespace GameData
     [System.Serializable]
     public struct EVENT_SEASON
     {
-        public int idx, event_ID;
         public int[] event_seasonID;
     }
 
     [System.Serializable]
     public struct STAGE
     {
-        public int idx, stage_ID, stage_seasonID, stage_allowSymptomFacilityCount;
+        public int idx, stage_seasonID, stage_allowSymptomFacilityCount;
     }
 
     [System.Serializable]
     public struct STAGE_CORRESPONDENT
     {
-        public int idx, stage_ID, stage_corCount;
+        public int stage_corCount;
         public int[] stage_corList;
     }
 }
