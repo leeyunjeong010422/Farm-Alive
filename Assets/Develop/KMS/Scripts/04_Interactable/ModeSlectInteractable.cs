@@ -5,8 +5,12 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class ModeSlectInteractable : XRGrabInteractable
 {
+    [Header("다음 오브젝트 상황")]
     public GameObject stageObject;
     public GameObject parentObject;
+
+    [Header("GameMode")]
+    public E_GameMode gameMode;
 
     private Vector3 initialPosition;
     private Quaternion initialRotation;
@@ -35,6 +39,9 @@ public class ModeSlectInteractable : XRGrabInteractable
         // 물체를 초기 위치와 회전으로 즉시 이동
         transform.position = initialPosition;
         transform.rotation = initialRotation;
+
+        // 선택된 게임 모드 넘겨주기
+        PunManager.Instance.SetGameMode(gameMode);
 
         stageObject.SetActive(true);
         parentObject.SetActive(false);

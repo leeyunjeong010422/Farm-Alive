@@ -21,6 +21,9 @@ public class StageSelectInteractable : XRGrabInteractable
     public GameObject globalInputFieldPrefab;
     private GameObject instantiatedInputField;
 
+    [Header("Stage Number")]
+    public E_StageMode stageMode;
+
     private Vector3 initialPosition;
     private Quaternion initialRotation;
 
@@ -50,6 +53,8 @@ public class StageSelectInteractable : XRGrabInteractable
             if (tmp)
             {
                 tmp.transform.localScale = Vector3.one * scale;
+                // TODO : 파이어베이스에서 HighstStage값을 가져와서 해당 값과 스테이지 이름을 비교해서
+                // 텍스트 출력하기
                 tmp.text = $"{gameObject.name} 선택 가능";
             }
         }
@@ -68,6 +73,9 @@ public class StageSelectInteractable : XRGrabInteractable
 #if UNITY_EDITOR
         Debug.Log($"{args.interactableObject.transform.name}가 Select가 되었습니다.");
 #endif
+        // TODO : 파이어베이스에서 HighstStage값을 가져와서 해당 값과 스테이지 이름을 비교해서
+        // 선택시에 해당 스테이지를 전달 할수 있는지 파악하기.
+
         TurnOnUi(false);
     }
 
@@ -86,6 +94,9 @@ public class StageSelectInteractable : XRGrabInteractable
 
         transform.position = initialPosition;
         transform.rotation = initialRotation;
+
+        // 선택된 StageNumber 반환.
+        PunManager.Instance.SetStageNumber(stageMode);
 
         ActivateGlobalKeyboard();
 

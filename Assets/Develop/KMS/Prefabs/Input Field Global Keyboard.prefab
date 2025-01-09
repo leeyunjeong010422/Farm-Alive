@@ -427,6 +427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _keyboardDisplay: {fileID: 8437028974135710650}
+  _inputField: {fileID: 8437028974135710651}
 --- !u!1 &8437028974540207060
 GameObject:
   m_ObjectHideFlags: 0

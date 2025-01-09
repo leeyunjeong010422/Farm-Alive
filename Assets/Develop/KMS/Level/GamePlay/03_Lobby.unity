@@ -861,6 +861,7 @@ MonoBehaviour:
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
   globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
+  stageMode: 521
 --- !u!54 &261644476
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1378,6 +1379,7 @@ MonoBehaviour:
   m_AddDefaultGrabTransformers: 1
   stageObject: {fileID: 870864253}
   parentObject: {fileID: 200152546}
+  gameMode: 0
 --- !u!1001 &304959434
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1954,6 +1956,7 @@ MonoBehaviour:
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
   globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
+  stageMode: 542
 --- !u!54 &358600214
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2577,6 +2580,7 @@ MonoBehaviour:
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
   globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
+  stageMode: 512
 --- !u!54 &446242182
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4157,6 +4161,7 @@ MonoBehaviour:
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
   globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
+  stageMode: 531
 --- !u!54 &755828454
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4796,6 +4801,7 @@ MonoBehaviour:
   m_AddDefaultGrabTransformers: 1
   stageObject: {fileID: 870864253}
   parentObject: {fileID: 200152546}
+  gameMode: 0
 --- !u!1 &859690731 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7233849618895463824, guid: fdb31328e8aef244d9da9679a3e69ad0, type: 3}
@@ -4830,7 +4836,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &870864254
 Transform:
   m_ObjectHideFlags: 0
@@ -5259,6 +5265,7 @@ MonoBehaviour:
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
   globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
+  stageMode: 541
 --- !u!54 &946428570
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5649,6 +5656,7 @@ MonoBehaviour:
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
   globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
+  stageMode: 511
 --- !u!54 &1061886003
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6303,6 +6311,7 @@ MonoBehaviour:
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
   globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
+  stageMode: 532
 --- !u!54 &1187606395
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8840,6 +8849,7 @@ MonoBehaviour:
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
   globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
+  stageMode: 522
 --- !u!54 &1606571075
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9502,6 +9512,7 @@ MonoBehaviour:
   RoomNum: 99999
   maxPlayer: 2
   selectedStage: 511
+  roomName: 
 --- !u!4 &1724954996
 Transform:
   m_ObjectHideFlags: 0
@@ -10030,6 +10041,7 @@ MonoBehaviour:
   m_AddDefaultGrabTransformers: 1
   stageObject: {fileID: 870864253}
   parentObject: {fileID: 200152546}
+  gameMode: 0
 --- !u!4 &1807437031 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1496882606653497460, guid: c236bdc7118696f49bac94273d2708fe, type: 3}
@@ -10953,6 +10965,7 @@ MonoBehaviour:
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
   globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
+  stageMode: 543
 --- !u!54 &2002305157
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -11257,6 +11270,7 @@ MonoBehaviour:
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   scale: 1
   globalInputFieldPrefab: {fileID: 5185231984917197337, guid: 1fd98d373ec84fc4f9aabf57e9f5f35c, type: 3}
+  stageMode: 533
 --- !u!54 &2007295438
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -11657,6 +11671,7 @@ MonoBehaviour:
   m_AddDefaultGrabTransformers: 1
   stageObject: {fileID: 870864253}
   parentObject: {fileID: 200152546}
+  gameMode: 1
 --- !u!1001 &2136455815
 PrefabInstance:
   m_ObjectHideFlags: 0
