@@ -34,6 +34,7 @@ public class GeneratorInteractable : XRBaseInteractable
     private bool _isKnobAtMax = false;     // 휠이 최대 위치인지 여부
     private bool _isLeverDown = false;     // 레버가 내려간 상태인지 여부
     private bool _isSymptomSolved = false; // 전조 증상 해결 여부
+    private bool _isBroken = false;        // 고장 상태 여부
 
     protected override void Awake()
     {
@@ -107,11 +108,6 @@ public class GeneratorInteractable : XRBaseInteractable
         {
             _isLeverDown = true;
             SolveSymptom(); // 전조 증상 해결
-
-            if (_repair != null)
-            {
-                _repair.ResetRepairState();
-            }
         }
     }
 
@@ -211,9 +207,9 @@ public class GeneratorInteractable : XRBaseInteractable
     // 전조 증상 발생 처리
     public void Symptom()
     {
+        _isBroken = false;
         _isSymptomSolved = false;
         MessageDisplayManager.Instance.ShowMessage("발전기 전조증상 발생!");
-        _isGeneratorRunning = false;
     }
 
     // 고장 발생 처리
@@ -225,15 +221,23 @@ public class GeneratorInteractable : XRBaseInteractable
             return;
         }
 
+        _isGeneratorRunning = false;
+        _isBroken = true;
         MessageDisplayManager.Instance.ShowMessage("발전기가 고장났습니다!");
         LightingManager.Instance.StartBlackout();
-        _isGeneratorRunning = false;
     }
 
     // 전조 증상 해결 처리
     public void SolveSymptom()
     {
-        _isGeneratorRunning = true;
+        // 이미 고장난 상태에서는 전조 증상을 해결할 수 없음
+        if (_isBroken)
+        {
+            MessageDisplayManager.Instance.ShowMessage("이미 고장난 상태에서는 전조 증상을 해결할 수 없습니다.");
+            Debug.Log("고장 상태이므로 전조 증상을 해결할 수 없음");
+            return;
+        }
+
         _repair.IsSymptom = false;
         _repair.ResetRepairState();
         _isSymptomSolved = true;
@@ -247,6 +251,7 @@ public class GeneratorInteractable : XRBaseInteractable
 
         if (!_repair.IsRepaired)
         {
+            _isBroken = false;
             _repair.IsRepaired = true; // 고장 상태 해제
             _repair.ResetRepairState(); // 상태 초기화
             ResetGeneratorState(); // 발전기 상태 초기화
