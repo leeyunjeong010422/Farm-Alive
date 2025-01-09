@@ -35,6 +35,24 @@ public class EventManager : MonoBehaviour
         StartCoroutine(EventRoutine());
     }
 
+    #region test
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+            StartEvent(411);
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            StartEvent(421);
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            StartEvent(431);
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+            StartEvent(432);
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+            StartEvent(441);
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+            StartEvent(442);
+    }
+    #endregion
+
     private IEnumerator EventRoutine()
     {
         // CSV 다운로드가 끝날 때까지 대기
