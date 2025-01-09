@@ -86,9 +86,19 @@ public class TruckQuest : MonoBehaviour
 
     public void SpawnNpc(int npcNumber)
     {
-        GameObject npcObj = PhotonNetwork.Instantiate(npcPrefabs[npcNumber].name, npcPosition.position, Quaternion.identity);
+        int corTemp = npcNumber - 311;
+        if (corTemp < 20)
+        {
+            corTemp = corTemp / 10;
+        }
+        else
+        {
+            corTemp = corTemp - 18;
+        }
+
+        GameObject npcObj = PhotonNetwork.Instantiate(npcPrefabs[corTemp].name, npcPosition.position, Quaternion.identity);
         npcObj.transform.SetParent(npcPosition.transform);
-        Debug.Log($"오브젝트 ID: {npcPrefabs[npcNumber].name}");
+        Debug.Log($"오브젝트 ID: {npcPrefabs[corTemp].name}");
     }
 
     private void OnDestroy()
