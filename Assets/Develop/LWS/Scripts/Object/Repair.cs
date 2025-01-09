@@ -200,11 +200,11 @@ public class Repair : MonoBehaviourPun
     /// </summary>
     public void ResetRepairState()
     {
+        _curRepairCount = 0;
         if (_isSymptom) _isSymptom = false;
         else return;
         if (!_isRepaired) _isRepaired = true;
         else return;
-        _curRepairCount = 0;
 
         StopAllCoroutines();
         _invokeSymptomCoroutine = null;
