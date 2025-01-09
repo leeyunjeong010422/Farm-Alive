@@ -163,17 +163,17 @@ public class Crop : MonoBehaviourPun
 
 
     #region 돌발이벤트 반응함수
-    private void OnDownpourStarted()
+    public void OnDownpourStarted()
     {
         photonView.RPC(nameof(ChangeState), RpcTarget.All, E_CropState.GrowStopped);
     }
 
-    private void OnDownpourEnded()
+    public void OnDownpourEnded()
     {
         photonView.RPC(nameof(ChangeState), RpcTarget.All, E_CropState.Growing);
     }
 
-    private void OnBlightStarted()
+    public void OnBlightStarted()
     {
         if (_blightCoroutine == null)
         {
@@ -181,7 +181,7 @@ public class Crop : MonoBehaviourPun
         }
     }
 
-    private void OnBlightEnded()
+    public void OnBlightEnded()
     {
         if (_blightCoroutine != null)
         {
@@ -200,17 +200,17 @@ public class Crop : MonoBehaviourPun
         yield return null;
     }
 
-    private void OnDroughtStarted()
+    public void OnDroughtStarted()
     {
         _curMaxMoisture = _droughtMaxMoisture;
     }
 
-    private void OnDroughtEnded()
+    public void OnDroughtEnded()
     {
         _curMaxNutrient = _droughtMaxNutrient;
     }
 
-    private void OnHighTemperatureStarted()
+    public void OnHighTemperatureStarted()
     {
         if (_temperatureCoroutine == null)
         {
@@ -218,7 +218,7 @@ public class Crop : MonoBehaviourPun
         }
     }
 
-    private void OnHighTemperatureEnded()
+    public void OnHighTemperatureEnded()
     {
         if (_temperatureCoroutine != null)
         {
@@ -227,7 +227,7 @@ public class Crop : MonoBehaviourPun
         }
     }
 
-    private void OnLowTemperatureStarted()
+    public void OnLowTemperatureStarted()
     {
         if (_temperatureCoroutine == null)
         {
@@ -235,7 +235,7 @@ public class Crop : MonoBehaviourPun
         }
     }
 
-    private void OnLowTemperatureEnded()
+    public void OnLowTemperatureEnded()
     {
         if (_temperatureCoroutine != null)
         {
