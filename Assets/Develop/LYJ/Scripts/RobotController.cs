@@ -9,23 +9,26 @@ public class RobotController : MonoBehaviour
 
     private Transform _targetPlayer; // 로봇이 따라갈 유저
     private int targetPhotonViewID = -1; // 따라갈 유저의 PhotonViewID
-    private bool isFollowing = false; // 현재 추적 중인지 확인하는 플래그
+    private bool isFollowing = false; // 현재 추적 중인지에 대한 여부
+    private bool isReturning = false; // 초기 위치로 돌아가는 중인지에 대한 여부
 
     private Vector3 initialPosition; // 로봇의 처음 위치 저장
+    private Quaternion initialRotation; // 로봇의 처음 회전값 저장
 
     [SerializeField] private float _followDistance = 3.0f; // 따라갈 최소 거리
+    [SerializeField] private float _returnDistance = 0.1f; // 초기 위치 근처로 돌아온 거리
 
-    private NavMeshAgent navMeshAgent; // NavMeshAgent 컴포넌트
+    private NavMeshAgent navMeshAgent;
 
     private void Awake()
     {
         photonView = GetComponent<PhotonView>();
         navMeshAgent = GetComponent<NavMeshAgent>();
 
-        // 로봇의 초기 위치 저장
+        // 로봇의 초기 위치와 회전값 저장
         initialPosition = transform.position;
+        initialRotation = transform.rotation;
 
-        // 버튼 컴포넌트 찾기 및 클릭 이벤트 등록
         Button moveButton = GetComponentInChildren<Button>();
         if (moveButton != null)
         {
@@ -35,21 +38,29 @@ public class RobotController : MonoBehaviour
 
     private void Update()
     {
-        // 추적 대상이 없으면 아무것도 하지 않음
-        if (_targetPlayer == null)
-            return;
-
-        // 로봇과 플레이어 사이의 거리 계산
-        float distance = Vector3.Distance(transform.position, _targetPlayer.position);
-
-        // 최소 거리보다 멀리 있을 때만 이동
-        if (distance > _followDistance)
+        if (isReturning)
         {
-            navMeshAgent.SetDestination(_targetPlayer.position);
+            // 초기 위치로 이동 중일 때
+            float distanceToInitial = Vector3.Distance(transform.position, initialPosition);
+            if (distanceToInitial <= _returnDistance)
+            {
+                CompleteReturnToInitial();
+            }
         }
-        else
+        else if (_targetPlayer != null)
         {
-            navMeshAgent.ResetPath();
+            // 추적 대상이 있으면 거리 계산
+            float distance = Vector3.Distance(transform.position, _targetPlayer.position);
+
+            // 최소 거리보다 멀리 있을 때만 이동
+            if (distance > _followDistance)
+            {
+                navMeshAgent.SetDestination(_targetPlayer.position);
+            }
+            else
+            {
+                navMeshAgent.ResetPath();
+            }
         }
     }
 
@@ -66,6 +77,14 @@ public class RobotController : MonoBehaviour
         int photonViewID = localPlayerPhotonView.ViewID;
         Debug.Log($"버튼을 누른 플레이어의 PhotonViewID: {photonViewID}");
 
+        photonView.RPC(nameof(RequestOwnership), RpcTarget.MasterClient, photonViewID);
+    }
+
+    [PunRPC]
+    private void RequestOwnership(int photonViewID, PhotonMessageInfo info)
+    {
+        photonView.TransferOwnership(info.Sender.ActorNumber);
+
         // 버튼을 누른 로컬 플레이어의 PhotonViewID를 서버로 전달
         photonView.RPC(nameof(SyncTargetPlayer), RpcTarget.All, photonViewID);
     }
@@ -73,14 +92,11 @@ public class RobotController : MonoBehaviour
     [PunRPC]
     private void SyncTargetPlayer(int photonViewID, PhotonMessageInfo info)
     {
-        // 이미 추적 중인 플레이어가 한 번 더 버튼을 누른 경우 초기 위치로 돌아감
+        // 이미 추적 중인 플레이어가 한 번 더 버튼을 누른 경우 초기 상태로 복원
         if (targetPhotonViewID == photonViewID && isFollowing)
         {
-            _targetPlayer = null; // 추적 대상 해제
-            targetPhotonViewID = -1; // 대상 ID 초기화
-            isFollowing = false; // 추적 상태 비활성화
-            navMeshAgent.SetDestination(initialPosition); // 초기 위치로 이동
-            Debug.Log("로봇이 초기 위치로 돌아갑니다.");
+            StartReturnToInitial();
+            Debug.Log("로봇이 초기 위치로 복원 중입니다.");
             return;
         }
 
@@ -98,6 +114,31 @@ public class RobotController : MonoBehaviour
         {
             Debug.LogError($"해당 PhotonViewID {photonViewID} 를 가진 플레이어를 찾을 수 없습니다!");
         }
+    }
+
+    private void StartReturnToInitial()
+    {
+        _targetPlayer = null; // 추적 대상 해제
+        targetPhotonViewID = -1; // 대상 ID 초기화
+        isFollowing = false; // 추적 상태 비활성화
+        isReturning = true; // 초기 위치로 돌아가는 상태 활성화
+
+        // 초기 위치로 이동
+        navMeshAgent.SetDestination(initialPosition);
+    }
+
+    private void CompleteReturnToInitial()
+    {
+        isReturning = false; // 초기 위치로 돌아오는 상태 비활성화
+
+        // NavMeshAgent 경로 초기화
+        navMeshAgent.ResetPath();
+
+        // 정확한 초기 위치와 회전값으로 설정
+        transform.position = initialPosition;
+        transform.rotation = initialRotation;
+
+        Debug.Log("로봇이 초기 상태로 복원되었습니다.");
     }
 
     private PhotonView GetLocalPlayerPhotonView()

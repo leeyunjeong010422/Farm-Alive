@@ -83,6 +83,7 @@ MonoBehaviour:
   - SyncTruck
   - SyncSymptom
   - SyncRepaired
+  - RequestOwnership
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
