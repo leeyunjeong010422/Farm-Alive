@@ -50,6 +50,8 @@ public class Crop : MonoBehaviourPun
     [Tooltip("온도상승 해결 제한시간")]
     [SerializeField] private float _temperatureIncreaseLimitTime;
 
+    private EventManager _eventManager;
+
     private BaseState[] _states = new BaseState[(int)E_CropState.SIZE];
     private CropInteractable _cropInteractable;
     private int _maxGrowthStep;
@@ -76,6 +78,11 @@ public class Crop : MonoBehaviourPun
         _states[(int)E_CropState.Rotten] = new RottenState(this);
 
         _cropInteractable = GetComponent<CropInteractable>();
+    }
+
+    private void Start()
+    {
+        _eventManager = GameObject.FindGameObjectWithTag("EventManager").GetComponent<EventManager>();
     }
 
     private void OnEnable()

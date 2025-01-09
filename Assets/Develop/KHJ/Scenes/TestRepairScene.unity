@@ -785,7 +785,6 @@ MonoBehaviour:
   OnBrokenSolved:
     m_PersistentCalls:
       m_Calls: []
-  eventManager: {fileID: 0}
   ID: 0
   _symptomPeriod: 0
   _curSymptomRate: 0
@@ -1200,7 +1199,6 @@ MonoBehaviour:
   OnBrokenSolved:
     m_PersistentCalls:
       m_Calls: []
-  eventManager: {fileID: 0}
   ID: 0
   _symptomPeriod: 0
   _curSymptomRate: 0
@@ -2806,7 +2804,6 @@ MonoBehaviour:
   OnBrokenSolved:
     m_PersistentCalls:
       m_Calls: []
-  eventManager: {fileID: 0}
   ID: 0
   _symptomPeriod: 0
   _curSymptomRate: 0
@@ -2926,7 +2923,7 @@ GameObject:
   - component: {fileID: 1559180886}
   m_Layer: 0
   m_Name: EventManager
-  m_TagString: Untagged
+  m_TagString: EventManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

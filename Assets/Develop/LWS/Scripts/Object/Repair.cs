@@ -12,7 +12,6 @@ public class Repair : MonoBehaviourPun
     public UnityEvent OnBrokenRaised;
     public UnityEvent OnBrokenSolved;
 
-    public EventManager eventManager;
     public int ID;
 
     [Header("전조 증상")]
@@ -31,6 +30,7 @@ public class Repair : MonoBehaviourPun
     [Tooltip("고장 시 수리를 위해 필요한 망치질 횟수")]
     [SerializeField] int _maxRepairCount;
 
+    private EventManager _eventManager;
     private int _curRepairCount = 0;
     private bool _isSymptom;
     private bool _isRepaired;
@@ -77,8 +77,9 @@ public class Repair : MonoBehaviourPun
         _invokePeriodDelay = new WaitForSeconds(_symptomPeriod);
         _limitTimeDelay = new WaitForSeconds(_limitTime);
 
-        eventManager.OnEventStarted.AddListener(OnStromStarted);
-        eventManager.OnEventEnded.AddListener(OnStromEnded);
+        _eventManager = GameObject.FindGameObjectWithTag("EventManager").GetComponent<EventManager>();
+        _eventManager.OnEventStarted.AddListener(OnStromStarted);
+        _eventManager.OnEventEnded.AddListener(OnStromEnded);
 
         InvokeSymptom();
     }

@@ -16,6 +16,7 @@ TagManager:
   - CropRefillZone
   - BoxRefillZone
   - Tool
+  - EventManager
   layers:
   - Default
   - TransparentFX
