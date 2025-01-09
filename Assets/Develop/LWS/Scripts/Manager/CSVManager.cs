@@ -58,8 +58,17 @@ public class CSVManager : MonoBehaviour
 
     IEnumerator DownloadRoutine()
     {
-        // 작물 다운로드
+        Facilities = new Dictionary<int, FACILITY>();
+        Correspondents = new Dictionary<int, CORRESPONDENT>();
+        Correspondents_CropsCount = new();
+        Correspondents_CropsType = new();
+        Correspondents_RequireCrops = new();
+        Events = new();
+        Events_Seasons = new();
+        Stages = new();
+        Stages_Correspondents = new();
 
+        // 작물 다운로드
         UnityWebRequest request = UnityWebRequest.Get(cropCSVPath); // 링크를 통해서 웹사이트에 다운로드 요청
         yield return request.SendWebRequest();                  // 링크를 진행하고 완료될 때까지 대기
 

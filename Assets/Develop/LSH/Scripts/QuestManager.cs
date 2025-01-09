@@ -65,7 +65,7 @@ public class QuestManager : MonoBehaviourPun
 
     public void FirstStart()
     {
-        int stageID = 511;
+        int stageID = 542;
         if (questsList.Count < 4)
         {
             totalQuestCount = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
@@ -78,9 +78,13 @@ public class QuestManager : MonoBehaviourPun
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            for (int i = 0; i < CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount; i++)
+            int stageIdx = CSVManager.Instance.Stages[stageID].idx;
+            foreach (int corID in CSVManager.Instance.Stages_Correspondents[stageID].stage_corList)
             {
-                maxRequiredCount = CSVManager.Instance.Correspondents_CropsCount[i].correspondent_stage[stageID];
+                if (corID == 0)
+                    return;
+
+                maxRequiredCount = CSVManager.Instance.Correspondents_CropsCount[corID].correspondent_stage[stageIdx];
                 Debug.Log($"max아이템갯수는 : {maxRequiredCount}");
 
                 int rand = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
@@ -96,7 +100,7 @@ public class QuestManager : MonoBehaviourPun
 
                 // 아이템 개수 설정
                 int checkItemLength = 0;
-                int[] curItemCounts = new int[CSVManager.Instance.Correspondents_CropsType[i].correspondent_stage[stageID]];
+                int[] curItemCounts = new int[CSVManager.Instance.Correspondents_CropsType[corID].correspondent_stage[stageIdx]];
                 int curCount = 0;
                 for (int j = 0; j < curItemCounts.Length; j++)
                 {
@@ -142,7 +146,7 @@ public class QuestManager : MonoBehaviourPun
                     randomPrefabIndexes.RemoveAt(randomIndex);
                 }
 
-                int corID = CSVManager.Instance.Stages_Correspondents[stageID].stage_corList[i];
+                //int corID = CSVManager.Instance.Stages_Correspondents[stageID].stage_corList[i];
                 float qTimer = CSVManager.Instance.Correspondents[corID].correspondent_timeLimit;
 
                 photonView.RPC(nameof(SetQuest), RpcTarget.AllBuffered, "택배포장", itemCounts.Length, choseIndex, itemCounts, corID, qTimer);
