@@ -69,7 +69,7 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
         _isBroken = false;
         _repair.ResetRepairState();
         MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 수리되었습니다!");
-        Debug.LogError($"{gameObject.name}: 수리되었습니다!");
+        Debug.Log("수리완료");
     }
 
     public virtual bool IsBroken()

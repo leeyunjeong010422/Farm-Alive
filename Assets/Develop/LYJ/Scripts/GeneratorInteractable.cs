@@ -33,7 +33,6 @@ public class GeneratorInteractable : XRBaseInteractable
     private bool _isGeneratorRunning = true; // 발전기가 작동 중인지 여부
     private bool _isKnobAtMax = false;     // 휠이 최대 위치인지 여부
     private bool _isLeverDown = false;     // 레버가 내려간 상태인지 여부
-    private bool _isSymptomSolved = false; // 전조 증상 해결 여부
     private bool _isBroken = false;        // 고장 상태 여부
 
     protected override void Awake()
@@ -76,29 +75,29 @@ public class GeneratorInteractable : XRBaseInteractable
         // Repair 이벤트 연결
         _repair.OnSymptomRaised.AddListener(Symptom);      // 전조 증상 발생
         _repair.OnBrokenRaised.AddListener(Broken);        // 고장 발생
+        _repair.OnBrokenSolved.AddListener(SolveBroken);
     }
 
     private void OnKnobValueChanged(float value)
     {
         _currentKnobValue = value;
 
-        // 휠이 최대 범위에 도달한 경우
         if (_currentKnobValue >= 1f && !_isGeneratorRunning)
         {
             _isKnobAtMax = true;
-            photonView.RPC(nameof(SyncKnobState), RpcTarget.AllBuffered, true);
+            photonView.RPC(nameof(SyncKnobState), RpcTarget.AllBuffered, _currentKnobValue, true);
         }
-        // 휠이 최대 범위를 벗어난 경우
         else if (_currentKnobValue < 1f && _isKnobAtMax)
         {
             _isKnobAtMax = false;
-            photonView.RPC(nameof(SyncKnobState), RpcTarget.AllBuffered, false);
+            photonView.RPC(nameof(SyncKnobState), RpcTarget.AllBuffered, _currentKnobValue, false);
         }
     }
 
     [PunRPC]
-    private void SyncKnobState(bool isAtMax)
+    private void SyncKnobState(float knobValue, bool isAtMax)
     {
+        _currentKnobValue = knobValue;
         _isKnobAtMax = isAtMax;
     }
 
@@ -146,24 +145,28 @@ public class GeneratorInteractable : XRBaseInteractable
             if (_isGeneratorRunning)
             {
                 MessageDisplayManager.Instance.ShowMessage("발전기는 이미 가동 중입니다!");
+                Debug.LogError("발전기는 이미 가동 중입니다!");
                 return;
             }
 
             if (!_repair.IsRepaired)
             {
                 MessageDisplayManager.Instance.ShowMessage("먼저 망치로 수리를 완료하세요.");
+                Debug.LogError("먼저 망치로 수리를 완료하세요.");
                 return;
             }
 
             if (!_isKnobAtMax || _currentKnobValue < 1f)
             {
                 MessageDisplayManager.Instance.ShowMessage("다른 플레이어가 휠을 최대치로 돌려야 시동줄을 당길 수 있습니다.");
+                Debug.LogError("다른 플레이어가 휠을 최대치로 돌려야 시동줄을 당길 수 있습니다.");
                 return;
             }
 
             _hasTriggered = true;
             _currentAttempts++;
 
+            Debug.LogError($"발전기 시동 횟수: {_currentAttempts}/{_startAttemptsRequired}");
             MessageDisplayManager.Instance.ShowMessage($"발전기 시동 횟수: {_currentAttempts}/{_startAttemptsRequired}");
 
             if (_currentAttempts >= _startAttemptsRequired)
@@ -177,6 +180,7 @@ public class GeneratorInteractable : XRBaseInteractable
     private void SyncSuccessGeneratorStart()
     {
         MessageDisplayManager.Instance.ShowMessage("발전기 시동 성공!");
+        Debug.LogError("발전기 시동 성공!");
         _isGeneratorRunning = true;
         _currentAttempts = 0;
 
@@ -208,22 +212,17 @@ public class GeneratorInteractable : XRBaseInteractable
     public void Symptom()
     {
         _isBroken = false;
-        _isSymptomSolved = false;
         MessageDisplayManager.Instance.ShowMessage("발전기 전조증상 발생!");
+        Debug.LogError("발전기 전조증상 발생!");
     }
 
     // 고장 발생 처리
     public void Broken()
     {
-        if (_isSymptomSolved)
-        {
-            Debug.Log("전조 증상이 해결되었으므로 고장이 발생하지 않습니다.");
-            return;
-        }
-
         _isGeneratorRunning = false;
         _isBroken = true;
         MessageDisplayManager.Instance.ShowMessage("발전기가 고장났습니다!");
+        Debug.LogError("발전기가 고장났습니다!");
         LightingManager.Instance.StartBlackout();
     }
 
@@ -234,14 +233,14 @@ public class GeneratorInteractable : XRBaseInteractable
         if (_isBroken)
         {
             MessageDisplayManager.Instance.ShowMessage("이미 고장난 상태에서는 전조 증상을 해결할 수 없습니다.");
-            Debug.Log("고장 상태이므로 전조 증상을 해결할 수 없음");
+            Debug.LogError("이미 고장난 상태에서는 전조 증상을 해결할 수 없습니다.");
             return;
         }
 
         _repair.IsSymptom = false;
         _repair.ResetRepairState();
-        _isSymptomSolved = true;
         MessageDisplayManager.Instance.ShowMessage("전조 증상이 해결되었습니다!");
+        Debug.LogError("전조 증상이 해결되었습니다!");
     }
 
     // 고장 수리 처리
@@ -256,6 +255,7 @@ public class GeneratorInteractable : XRBaseInteractable
             _repair.ResetRepairState(); // 상태 초기화
             ResetGeneratorState(); // 발전기 상태 초기화
             MessageDisplayManager.Instance.ShowMessage("1차 수리가 완료! 휠과 시동줄을 사용하여 2차 수리를 해주세요.", 2f);
+            Debug.LogError("1차 수리가 완료! 휠과 시동줄을 사용하여 2차 수리를 해주세요.");
         }
     }
 }
