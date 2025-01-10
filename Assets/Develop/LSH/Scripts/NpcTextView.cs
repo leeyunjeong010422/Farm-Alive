@@ -41,7 +41,7 @@ public class NpcTextView : MonoBehaviour
         if (count > 0)
             text.text = "흠 주문하지 않은 작물이 섞여있는데\n이건 선물인가?\n 고맙게 잘 받겠네";
 
-        if (count == 0)
+        if (count <= 0)
             text.text = "완벽하군!!\n다음에도 잘 부탁하겠네!";
     }
 }

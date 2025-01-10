@@ -34,6 +34,7 @@ public class QuestController : MonoBehaviour
             int index = QuestManager.Instance.questsList.IndexOf(quest);
             if (index >= 0 && QuestManager.Instance.truckList.Count > index)
             {
+                if(PhotonNetwork.IsMasterClient)
                 PhotonNetwork.Destroy(QuestManager.Instance.truckList[index].gameObject);
             }
 

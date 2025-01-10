@@ -65,7 +65,7 @@ public class QuestManager : MonoBehaviourPun
 
     public void FirstStart()
     {
-        int stageID = 511;
+        int stageID = 542;
         if (questsList.Count < 4)
         {
             totalQuestCount = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
@@ -259,6 +259,7 @@ public class QuestManager : MonoBehaviourPun
         {
             //questsList.RemoveAt(index);
             //PhotonNetwork.Destroy(truckList[index].gameObject);
+
         }
 
         if (questsList.Count == 0)
