@@ -32,6 +32,9 @@ public class SectionRepair : BaseRepairable
     // 레버를 움직여 전조 증상을 해결
     private void OnLeverActivated()
     {
+        if (_repair == null || !_repair.IsSymptom) // 전조 증상이 없으면 처리하지 않음
+            return;
+
         SolveSymptom();
     }
 

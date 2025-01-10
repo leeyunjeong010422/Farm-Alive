@@ -1,7 +1,5 @@
-using GameData;
 using Photon.Pun;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -35,20 +33,33 @@ public class Repair : MonoBehaviourPun
     private bool _isSymptom;
     private bool _isRepaired;
 
-    public bool IsSymptom { 
-        get { return _isSymptom; } 
-        set { photonView.RPC(nameof(SyncSymptom), RpcTarget.All, value); }
+    public bool IsSymptom
+    {
+        get { return _isSymptom; }
+        set
+        {
+            // 이미 동기화된 상태라면 중복 호출 방지
+            if (_isSymptom == value) return;
+            _isSymptom = value;
+            photonView.RPC(nameof(SyncSymptom), RpcTarget.All, value);
+        }
     }
     public bool IsRepaired
     {
         get { return _isRepaired; }
-        set { photonView.RPC(nameof(SyncRepaired), RpcTarget.All, value); }
+        set
+        {
+            //if (_isRepaired == value) return;
+            _isRepaired = value;
+            photonView.RPC(nameof(SyncRepaired), RpcTarget.All, value);
+        }
     }
 
     private void Awake()
     {
         //_idleSymptomRate = CSVManager.Instance.Facilities[ID].facility_symptomPercent;
         //_stormSymptomRate = CSVManager.Instance.Facilities[ID].facility_stormSymptomPercent;
+        //_curSymptomRate = _idleSymptomRate;
         //_limitTime = CSVManager.Instance.Facilities[ID].facility_timeLimit;
         //_maxRepairCount = CSVManager.Instance.Facilities[ID].facility_maxHammeringCount;
 
@@ -167,16 +178,15 @@ public class Repair : MonoBehaviourPun
         if (IsRepaired)
             return;
 
-        if (!PhotonNetwork.IsMasterClient)
-            return;
-
         _curRepairCount++;
         MessageDisplayManager.Instance.ShowMessage($"수리중: {_curRepairCount}/{_maxRepairCount}");
+        //Debug.LogError($"수리중: {_curRepairCount}/{_maxRepairCount}");
 
         if (_curRepairCount >= _maxRepairCount)
         {
             // 수리 완료
             MessageDisplayManager.Instance.ShowMessage("수리완료!");
+            //Debug.LogError("수리완료!");
             IsRepaired = true;  //발전기에서 망치로 1차 수리가 되었다는 걸 알아야 2차 수리 (휠 + 시동줄)을 할 수 있음
             // TODO: 수리 완료 로직 (ex: 오브젝트 파괴, 애니메이션, 상태 변환 등)
         }
