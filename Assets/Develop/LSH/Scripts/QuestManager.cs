@@ -63,9 +63,8 @@ public class QuestManager : MonoBehaviourPun
         }
     }
 
-    public void FirstStart()
+    public void FirstStart(int stageID)
     {
-        int stageID = 542;
         totalQuestCount = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
         if (questsList.Count < 4)
         {
