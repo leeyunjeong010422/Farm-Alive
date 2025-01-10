@@ -1,3 +1,4 @@
+using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 using Fusion;
 using Photon.Pun;
 using Photon.Realtime;
@@ -51,6 +52,14 @@ public class PunManager : MonoBehaviourPunCallbacks
         Debug.Log("Firebase 이벤트 등록");
         FirebaseManager.Instance.OnFirebaseInitialized += ConnectToPhoton;
         //FirebaseManager.Instance.NotifyInitializationComplete();
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Debug.Log($"selectedStage {selectedStage}");
+        }
     }
 
     /// <summary>
@@ -177,7 +186,13 @@ public class PunManager : MonoBehaviourPunCallbacks
         {
             MaxPlayers = maxPlayer,
             IsVisible = true,
-            IsOpen = true
+            IsOpen = true,
+            CustomRoomProperties = new PhotonHashtable
+            {
+                { "gameMode", _gameMode},
+                { "selectedStage", selectedStage }
+            },
+            CustomRoomPropertiesForLobby = new string[] { "gameMode", "selectedStage" }
         };
 
         Debug.Log("방 생성 시도 중...");
@@ -196,11 +211,24 @@ public class PunManager : MonoBehaviourPunCallbacks
     {
         // Pun 이동
         Debug.Log($"방 입장 성공: {PhotonNetwork.CurrentRoom.Name}");
+
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("gameMode", out object gameModeValue))
+        {
+            _gameMode = (E_GameMode)gameModeValue;
+            Debug.Log($"방의 gameMode 값 동기화: {_gameMode}");
+        }
+
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("selectedStage", out object stageValue))
+        {
+            selectedStage = (int)stageValue;
+            Debug.Log($"방의 selectedStage 값 동기화: {selectedStage}");
+        }
+
         if (PhotonNetwork.InLobby)
         {
             PhotonNetwork.LeaveLobby();
         }
-        PhotonNetwork.LoadLevel("04_PunWaitingRoom"); // 대기실 씬으로 이동
+        PhotonNetwork.LoadLevel("04_Waiting Room"); // 대기실 씬으로 이동
     }
 
     /// <summary>
@@ -208,12 +236,15 @@ public class PunManager : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        // 방 목록 업데이트
-        cachedRoomList = roomList;
+        // 기존 목록 초기화 및 갱신
+        cachedRoomList.Clear();
         foreach (RoomInfo room in roomList)
         {
-            Debug.Log($"방 이름: {room.Name}, 플레이어: {room.PlayerCount}/{room.MaxPlayers}");
-            Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}");
+            // 방이 유효하고 아직 종료되지 않은 경우만 추가
+            if (room.RemovedFromList == false)
+            {
+                cachedRoomList.Add(room);
+            }
         }
     }
 

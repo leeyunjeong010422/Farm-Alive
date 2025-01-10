@@ -3,13 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using GameData;
-using System;
+using Photon.Pun;
 
-/// <summary>
-/// 시스템 기획서 상 같은 색 동시에 일어나지 않는 로직 추가 필요
-/// 스테이지 매니저의 현재 날씨 받아와서 occurPlusPercent 설정 필요
-/// </summary>
-public class EventManager : MonoBehaviour
+public class EventManager : MonoBehaviourPunCallbacks
 {
     [Header("이벤트 계산 주기(초)")]
     [SerializeField] private float _checkInterval = 1.0f;
@@ -17,12 +13,8 @@ public class EventManager : MonoBehaviour
     public UnityEvent<EVENT> OnEventStarted;
     public UnityEvent<EVENT> OnEventEnded;
 
-    // 이벤트 발생확률 테스트용 조정
-    [SerializeField] Dictionary<int, EVENT> events;
-
     // 현재 진행 중인 이벤트 목록
     private List<int> _activeEventsID = new List<int>();
-
 
     private (int, int)[] _conflictPairs = new (int, int)[]
     {
@@ -32,7 +24,10 @@ public class EventManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(EventRoutine());
+        if (PhotonNetwork.IsMasterClient)
+        {
+            StartCoroutine(EventRoutine());
+        }
     }
 
     #region test
@@ -58,9 +53,6 @@ public class EventManager : MonoBehaviour
         // CSV 다운로드가 끝날 때까지 대기
         while (!CSVManager.Instance.downloadCheck)
             yield return null;
-
-        events = CSVManager.Instance.Events;
-
 
         var eventDict = CSVManager.Instance.Events;
         var seasonDict = CSVManager.Instance.Events_Seasons;
@@ -104,10 +96,36 @@ public class EventManager : MonoBehaviour
 
             ResolveConflicts(triggered);
 
-            // 나머지 이벤트 모두 동시 발생 가능
-            foreach (var evID in triggered)
+            photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, triggered.ToArray());
+        }
+    }
+
+    [PunRPC]
+    private void RPC_StartEvents(int[] eventIDs)
+    {
+        foreach (int eID in eventIDs)
+        {
+            StartEvent(eID);
+        }
+    }
+
+    private void StartEvent(int eventID)
+    {
+        var eventDict = CSVManager.Instance.Events;
+
+        Debug.Log($"{eventDict[eventID].event_name} 발생");
+        if (!_activeEventsID.Contains(eventID))
+        {
+            _activeEventsID.Add(eventID);
+
+            EVENT evData = eventDict[eventID];
+
+            OnEventStarted?.Invoke(evData);
+
+            // 자동 종료
+            if (evData.event_continueTime > 0)
             {
-                StartEvent(evID);
+                StartCoroutine(AutoEndRoutine(eventID, evData.event_continueTime));
             }
         }
     }
@@ -141,8 +159,8 @@ public class EventManager : MonoBehaviour
             // 동시에 존재하면 하나 삭제
             if (ifHasA && ifHasB)
             {
-                int r = UnityEngine.Random.Range(0, 2);
-                if ( r == 0)
+                int r = Random.Range(0, 2);
+                if (r == 0)
                 {
                     triggered.Remove(BeventID);
                 }
@@ -154,41 +172,43 @@ public class EventManager : MonoBehaviour
         }
     }
 
-    private void StartEvent(int eventID)
-    {
-        var eventDict = CSVManager.Instance.Events;
-
-        Debug.Log($"{eventDict[eventID].event_name} 발생");
- 
-        EVENT evData = eventDict[eventID];
-
-        _activeEventsID.Add(eventID);
-
-        OnEventStarted?.Invoke(evData);
-
-        // 자동 종료
-        if (evData.event_continueTime > 0)
-        {
-            StartCoroutine(AutoEndRoutine(eventID, evData.event_continueTime));
-        }
-    }
 
     private IEnumerator AutoEndRoutine(int eventID, float dur)
     {
         yield return new WaitForSeconds(dur);
-        ResolveEvent(eventID);
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(RPC_ResolveEvent), RpcTarget.All, eventID);
+        }
     }
 
     /// <summary>
-    /// 이벤트 종료 조건 달성시 호출 부탁드립니다
+    /// 이벤트 외부에서 종료
     /// </summary>
+    /// <param name="eventID"></param>
+    public void EndEvent(int eventID)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(RPC_ResolveEvent), RpcTarget.All, eventID);
+        }
+    }
+
+
+    [PunRPC]
+    private void RPC_ResolveEvent(int eventID)
+    {
+        ResolveEvent(eventID);
+    }
+
     public void ResolveEvent(int eventID)
     {
-        if (_activeEventsID.Remove(eventID))
+        if(_activeEventsID.Remove(eventID))
         {
-            EVENT evDATA = CSVManager.Instance.Events[eventID];
+            var evData = CSVManager.Instance.Events[eventID];
 
-            OnEventEnded?.Invoke(evDATA);
+            OnEventEnded?.Invoke(evData);
         }
     }
 }
