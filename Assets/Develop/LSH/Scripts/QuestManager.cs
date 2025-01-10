@@ -63,9 +63,9 @@ public class QuestManager : MonoBehaviourPun
         }
     }
 
-    public void FirstStart()
+    public void FirstStart(int stageID)
     {
-        int stageID = 511;
+        totalQuestCount = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
         if (questsList.Count < 4)
         {
             totalQuestCount = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
@@ -257,13 +257,16 @@ public class QuestManager : MonoBehaviourPun
     {
         foreach (int index in completedIndexes.OrderByDescending(x => x))
         {
+            clearQuestCount++;
             //questsList.RemoveAt(index);
             //PhotonNetwork.Destroy(truckList[index].gameObject);
+
         }
 
-        if (questsList.Count == 0)
+        if (clearQuestCount == totalQuestCount)
         {
             // TODO 로비 복귀ㅣ 함수
+            StageManager.Instance.EndStage();
         }
         else
         {

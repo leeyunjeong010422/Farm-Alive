@@ -85,6 +85,8 @@ MonoBehaviour:
   - SyncRepaired
   - RequestOwnership
   - FieldItem
+  - SetCollisionEnabled
+  - ColliderEnabled
   - RPC_StartEvents
   - RPC_ResolveEvent
   DisableAutoOpenWizard: 1
