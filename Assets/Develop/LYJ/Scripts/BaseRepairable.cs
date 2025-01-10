@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 public abstract class BaseRepairable : MonoBehaviour, IRepairable
@@ -18,6 +19,7 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
         _repair.OnSymptomRaised.AddListener(Symptom);
         _repair.OnBrokenRaised.AddListener(HandleBroken);
         _repair.OnBrokenSolved.AddListener(SolveBroken);
+        _repair.OnSymptomSolved.AddListener(SolveSymptom);
     }
 
     public virtual void Symptom()
@@ -37,6 +39,7 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
 
         _isBroken = true;
         MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 고장 발생!");
+        Debug.LogError($"{gameObject.name}: 고장 발생!");
         return true; // 고장이 발생함
     }
 
@@ -58,14 +61,15 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
         _isSymptomSolved = true;
         _repair.ResetRepairState();
         MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 전조 증상이 해결되었습니다!");
+        Debug.LogError($"{gameObject.name}: 전조 증상이 해결되었습니다!");
     }
 
     public virtual void SolveBroken()
     {
         _isBroken = false;
         _repair.ResetRepairState();
-        //MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 수리되었습니다!");
-        Debug.Log("수리완료");
+        MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 수리되었습니다!");
+        Debug.LogError($"{gameObject.name}: 수리되었습니다!");
     }
 
     public virtual bool IsBroken()
