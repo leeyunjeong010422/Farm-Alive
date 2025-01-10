@@ -30,7 +30,7 @@ public class HammerInteractable : MonoBehaviourPunCallbacks
             PhotonView repairView = repair.GetComponent<PhotonView>();
             if (repairView != null)
             {
-                repairView.RPC("RPC_PlusRepairCount", RpcTarget.MasterClient);
+                repairView.RPC("RPC_PlusRepairCount", RpcTarget.AllBuffered);
             }
         }
     }
