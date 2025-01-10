@@ -1,9 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using GameData;
 
-public class StageManager : MonoBehaviour
+public class StageManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] int _curStageID;
 
@@ -14,7 +14,7 @@ public class StageManager : MonoBehaviour
 
     private STAGE _curStageData;
     private int _weatherID;
-    public int WeatherID { get { return _weatherID; } set { value = _weatherID; } }
+    public int WeatherID { get { return _weatherID; } }
 
     private int _maxBrokenMachineCount;
     private int _maxDamagedCropCount = 0; // 0으로 설정 (현재 데이터 테이블에서는 성공여부만 따짐)
@@ -24,20 +24,25 @@ public class StageManager : MonoBehaviour
     // 작물이 손상된 횟수 (다른곳에서 손상되면 ++필요)
     public int damagedCropCount = 0;
 
+    [Tooltip("소환할 플레이어 프리팹")]
+    public GameObject newcharacterPrefab;
+    public Vector3 PlayerSpawn;
+
+    // 계절별 파티클 / 오브젝트 등.
+    // 
+    //
+    //
 
     public static StageManager Instance { get; private set; }
 
     private void Awake()
     {
-        //_curStageID = PunManager.Instance.selectedStage;
+        _curStageID = PunManager.Instance.selectedStage;
 
-        if (Instance != null && Instance != this)
-        {
+        if (Instance == null)
+            Instance = this;
+        else
             Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
     }
 
     private IEnumerator Start()
@@ -53,6 +58,8 @@ public class StageManager : MonoBehaviour
         _maxBrokenMachineCount = _curStageData.stage_allowSymptomFacilityCount;
 
         _stageTimeLimit = 360f;
+
+        SpawnPlayer();
 
         StartStageTimer();
     }
@@ -70,14 +77,39 @@ public class StageManager : MonoBehaviour
         }
     }
 
+    private void SetSeason()
+    {
+        // 맵별 파티클 setactive false
+
+        switch (_weatherID)
+        {
+            case 0: // 봄
+                break;
+            case 1: // 여름
+                break;
+            case 2: // 가을
+                break;
+            case 3: // 겨울
+                break;
+        }
+    }
+
+    private void SpawnPlayer()
+    {
+        GameObject Player = PhotonNetwork.Instantiate(newcharacterPrefab.name, PlayerSpawn, Quaternion.identity);
+    }
+
     public void StartStageTimer()
     {
-        // QuestManager.Instance.FirstStart(_curStageID);
+        QuestManager.Instance.FirstStart(_curStageID);
 
         _curStageTime = 0f;
         _isTimerRunning = true;
     }
 
+    /// <summary>
+    /// 퀘스트가 모두 종료되었을 때, 호출할 함수.
+    /// </summary>
     public void EndStage()
     {
         _isTimerRunning = false;

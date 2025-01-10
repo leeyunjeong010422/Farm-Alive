@@ -237,7 +237,7 @@ public class FirebaseManager : MonoBehaviour
         {
             { "stageID", stageID },
             { "playTime", playedTime },
-            {"starts" , starCount },
+            { "stars" , starCount },
             {"timeStamp" , DateTime.Now.ToString("o") },
         };
 

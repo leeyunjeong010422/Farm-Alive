@@ -87,6 +87,8 @@ MonoBehaviour:
   - FieldItem
   - SetCollisionEnabled
   - ColliderEnabled
+  - RPC_StartEvents
+  - RPC_ResolveEvent
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
