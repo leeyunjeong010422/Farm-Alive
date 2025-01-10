@@ -68,6 +68,8 @@ public class Crop : MonoBehaviourPun
 
     private void Awake()
     {
+        UpdateData();
+
         Transform GFX = transform.GetChild(0);
         _GFXs = new GameObject[GFX.childCount];
         for (int i = 0; i < GFX.childCount; i++)
@@ -128,6 +130,8 @@ public class Crop : MonoBehaviourPun
 
     private void Init()
     {
+        UpdateData();
+
         _GFXs[0].SetActive(true);
         for (int i = 1; i < _GFXs.Length; i++)
             _GFXs[i].SetActive(false);
@@ -138,8 +142,6 @@ public class Crop : MonoBehaviourPun
         _elapsedTime = 0.0f;
         _curMoisture = 0;
         _curNutrient = 0;
-
-        UpdateData();
     }
 
     [PunRPC]
@@ -196,6 +198,7 @@ public class Crop : MonoBehaviourPun
         yield return new WaitForSeconds(_damageLimitTime);
 
         _value *= _damageRate;
+        StageManager.Instance.damagedCropCount++;
 
         yield return null;
     }
@@ -367,6 +370,8 @@ public class Crop : MonoBehaviourPun
 
         public override void StateEnter()
         {
+            StageManager.Instance.damagedCropCount++;
+
             if (isHigh)
             {
                 crop._GFXs[crop._curGrowthStep].GetComponent<Renderer>().material.color = Color.black;
