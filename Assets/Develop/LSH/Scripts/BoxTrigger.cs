@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.XR.Content.Interaction;
 using UnityEngine.XR.Interaction.Toolkit;
 using static QuestManager;
 
@@ -128,6 +129,21 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
             }
         }
     }
+
+    public void CompleteTaping()
+    {
+        boxCover.tape.SetActive(true);
+        boxCover.IsPackaged = true;
+        foreach (var id in idList)
+        {
+            GameObject crop = PhotonView.Find(id).gameObject;
+            crop.SetActive(false);
+        }
+
+        Debug.Log($"테이핑 완료: {this.name}");
+    }
+
+
 
     private void NotifyRequiredItemsChanged()
     {
