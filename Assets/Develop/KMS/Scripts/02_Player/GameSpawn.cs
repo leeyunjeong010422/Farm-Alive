@@ -13,10 +13,6 @@ public class GameSpawn : MonoBehaviour
 
     private GameObject _player;
 
-    public void OnEnable()
-    {
-        SpawnPlayer();
-    }
 
     private void Update()
     {
@@ -30,7 +26,7 @@ public class GameSpawn : MonoBehaviour
     {
         // 네트워크 상에서 플레이어 생성
         _player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.rotation);
-
+        
         if (_player)
         {
             Debug.Log($"게임 씬 플레이어 소환 완료: {FirebaseManager.Instance.GetUserId()}");
