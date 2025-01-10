@@ -57,28 +57,6 @@ public class Repair : MonoBehaviourPun
 
     private void Awake()
     {
-        _idleSymptomRate = CSVManager.Instance.Facilities[ID].facility_symptomPercent;
-        _stormSymptomRate = CSVManager.Instance.Facilities[ID].facility_stormSymptomPercent;
-        _curSymptomRate = _idleSymptomRate;
-        _limitTime = CSVManager.Instance.Facilities[ID].facility_timeLimit;
-        _maxRepairCount = CSVManager.Instance.Facilities[ID].facility_maxHammeringCount;
-
-        _invokePeriodDelay = new WaitForSeconds(_symptomPeriod);
-        _limitTimeDelay = new WaitForSeconds(_limitTime);
-
-        ResetRepairState();
-
-        OnSymptomRaised.AddListener(InvokeSymptom);
-        OnSymptomSolved.AddListener(ResetRepairState);
-        OnBrokenSolved.AddListener(ResetRepairState);
-    }
-
-    private void Start()
-    {
-        //while (!CSVManager.Instance.downloadCheck)
-        //{
-        //    yield return null;
-        //}
         //_idleSymptomRate = CSVManager.Instance.Facilities[ID].facility_symptomPercent;
         //_stormSymptomRate = CSVManager.Instance.Facilities[ID].facility_stormSymptomPercent;
         //_curSymptomRate = _idleSymptomRate;
@@ -87,6 +65,28 @@ public class Repair : MonoBehaviourPun
 
         //_invokePeriodDelay = new WaitForSeconds(_symptomPeriod);
         //_limitTimeDelay = new WaitForSeconds(_limitTime);
+
+        ResetRepairState();
+
+        OnSymptomRaised.AddListener(InvokeSymptom);
+        OnSymptomSolved.AddListener(ResetRepairState);
+        OnBrokenSolved.AddListener(ResetRepairState);
+    }
+
+    private IEnumerator Start()
+    {
+        while (!CSVManager.Instance.downloadCheck)
+        {
+            yield return null;
+        }
+        _idleSymptomRate = CSVManager.Instance.Facilities[ID].facility_symptomPercent;
+        _stormSymptomRate = CSVManager.Instance.Facilities[ID].facility_stormSymptomPercent;
+        _curSymptomRate = _idleSymptomRate;
+        _limitTime = CSVManager.Instance.Facilities[ID].facility_timeLimit;
+        _maxRepairCount = CSVManager.Instance.Facilities[ID].facility_maxHammeringCount;
+
+        _invokePeriodDelay = new WaitForSeconds(_symptomPeriod);
+        _limitTimeDelay = new WaitForSeconds(_limitTime);
 
         _eventManager = GameObject.FindGameObjectWithTag("EventManager").GetComponent<EventManager>();
         _eventManager.OnEventStarted.AddListener(OnStromStarted);
