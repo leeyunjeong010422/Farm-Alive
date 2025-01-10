@@ -24,6 +24,10 @@ public class StageManager : MonoBehaviourPunCallbacks
     // 작물이 손상된 횟수 (다른곳에서 손상되면 ++필요)
     public int damagedCropCount = 0;
 
+    [Tooltip("소환할 플레이어 프리팹")]
+    public GameObject newcharacterPrefab;
+    public Vector3 PlayerSpawn;
+
     // 계절별 파티클 / 오브젝트 등.
     // 
     //
@@ -33,7 +37,7 @@ public class StageManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        //_curStageID = PunManager.Instance.selectedStage;
+        _curStageID = PunManager.Instance.selectedStage;
 
         if (Instance == null)
             Instance = this;
@@ -54,6 +58,8 @@ public class StageManager : MonoBehaviourPunCallbacks
         _maxBrokenMachineCount = _curStageData.stage_allowSymptomFacilityCount;
 
         _stageTimeLimit = 360f;
+
+        SpawnPlayer();
 
         StartStageTimer();
     }
@@ -90,12 +96,12 @@ public class StageManager : MonoBehaviourPunCallbacks
 
     private void SpawnPlayer()
     {
-        // GameObject Player = PhotonNetwork.Instantiate(newcharacterPrefab.name, PlayerSpawn, Quaternion.identity);
+        GameObject Player = PhotonNetwork.Instantiate(newcharacterPrefab.name, PlayerSpawn, Quaternion.identity);
     }
 
     public void StartStageTimer()
     {
-        // QuestManager.Instance.FirstStart(_curStageID);
+        QuestManager.Instance.FirstStart(_curStageID);
 
         _curStageTime = 0f;
         _isTimerRunning = true;
