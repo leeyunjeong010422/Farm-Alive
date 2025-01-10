@@ -1612,7 +1612,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 0}
   m_Colliders:
-  - {fileID: 0}
+  - {fileID: 7574228421959623339}
   m_InteractionLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -2644,8 +2644,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 6582558, guid: 3831309e491dd814d9313ff728ddb0f4, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5413958, guid: 3831309e491dd814d9313ff728ddb0f4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3831309e491dd814d9313ff728ddb0f4, type: 3}
+--- !u!65 &7574228421959623339 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 6582558, guid: 3831309e491dd814d9313ff728ddb0f4, type: 3}
+  m_PrefabInstance: {fileID: 7574228421966189493}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7574228421965853741 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 485272, guid: 3831309e491dd814d9313ff728ddb0f4, type: 3}
