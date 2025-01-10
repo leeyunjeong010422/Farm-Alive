@@ -53,7 +53,6 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
         // 고장 상태에서는 전조 증상 해결 불가
         if (_isBroken)
         {
-            MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 이미 고장난 상태에서는 전조 증상을 해결할 수 없습니다.");
             return;
         }
 
@@ -69,7 +68,7 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
         _isBroken = false;
         _repair.ResetRepairState();
         MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 수리되었습니다!");
-        Debug.Log("수리완료");
+        Debug.LogError($"{gameObject.name}: 수리되었습니다!");
     }
 
     public virtual bool IsBroken()
