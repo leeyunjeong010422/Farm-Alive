@@ -15548,7 +15548,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RoomNum: 99999
-  maxPlayer: 2
+  maxPlayer: 5
   selectedStage: 511
   roomName: 
 --- !u!4 &1724954996

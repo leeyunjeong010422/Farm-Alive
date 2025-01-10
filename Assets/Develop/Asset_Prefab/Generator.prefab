@@ -23686,7 +23686,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   ID: 232
-  _symptomPeriod: 1
+  _symptomPeriod: 360
   _curSymptomRate: 0
   _idleSymptomRate: 0
   _stormSymptomRate: 0

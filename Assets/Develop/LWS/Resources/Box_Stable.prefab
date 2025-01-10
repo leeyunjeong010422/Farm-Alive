@@ -119,6 +119,7 @@ GameObject:
   - component: {fileID: 6913304730082924377}
   - component: {fileID: 7136619034683349651}
   - component: {fileID: 8131985760921617745}
+  - component: {fileID: 5875649365553599054}
   m_Layer: 0
   m_Name: Soket8
   m_TagString: Untagged
@@ -214,6 +215,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5875649365553599054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 342033381924141475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa29130af5f54ec418773add9622f4a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cropObj: {fileID: 0}
+  colliders: []
+  sockets: []
 --- !u!1 &572780829264433973
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,6 +241,7 @@ GameObject:
   - component: {fileID: 1660721665322643843}
   - component: {fileID: 9081892338291941622}
   - component: {fileID: 9085779565195499280}
+  - component: {fileID: 2089738683407508913}
   m_Layer: 0
   m_Name: Soket2
   m_TagString: Untagged
@@ -320,6 +337,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2089738683407508913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 572780829264433973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa29130af5f54ec418773add9622f4a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cropObj: {fileID: 0}
+  colliders: []
+  sockets: []
 --- !u!1 &834504272052904003
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,6 +363,7 @@ GameObject:
   - component: {fileID: 7766948772678941211}
   - component: {fileID: 111822876008755665}
   - component: {fileID: 8562247037746867213}
+  - component: {fileID: 5322789850238334349}
   m_Layer: 0
   m_Name: Soket4
   m_TagString: Untagged
@@ -426,6 +459,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5322789850238334349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834504272052904003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa29130af5f54ec418773add9622f4a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cropObj: {fileID: 0}
+  colliders: []
+  sockets: []
 --- !u!1 &1681703920980649739
 GameObject:
   m_ObjectHideFlags: 0
@@ -998,6 +1046,7 @@ GameObject:
   - component: {fileID: 3931200922657719891}
   - component: {fileID: 1284738257239836219}
   - component: {fileID: 1779450040006355516}
+  - component: {fileID: 6094799899412094538}
   m_Layer: 0
   m_Name: Soket5
   m_TagString: Untagged
@@ -1093,6 +1142,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6094799899412094538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2389654568648779892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa29130af5f54ec418773add9622f4a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cropObj: {fileID: 0}
+  colliders: []
+  sockets: []
 --- !u!1 &2707798199928964690
 GameObject:
   m_ObjectHideFlags: 0
@@ -1135,6 +1199,7 @@ GameObject:
   - component: {fileID: 5865174517480693596}
   - component: {fileID: 3136461132992985821}
   - component: {fileID: 7590891937953015586}
+  - component: {fileID: 759175461437654042}
   m_Layer: 0
   m_Name: Soket7
   m_TagString: Untagged
@@ -1230,6 +1295,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &759175461437654042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2989600742682575205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa29130af5f54ec418773add9622f4a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cropObj: {fileID: 0}
+  colliders: []
+  sockets: []
 --- !u!1 &3129139455641262082
 GameObject:
   m_ObjectHideFlags: 0
@@ -2718,6 +2798,7 @@ GameObject:
   - component: {fileID: 1068295593536492434}
   - component: {fileID: 8690669610782030147}
   - component: {fileID: 2502557391290132512}
+  - component: {fileID: 6321880349319143408}
   m_Layer: 0
   m_Name: Soket3
   m_TagString: Untagged
@@ -2813,6 +2894,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6321880349319143408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4995196824794153119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa29130af5f54ec418773add9622f4a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cropObj: {fileID: 0}
+  colliders: []
+  sockets: []
 --- !u!1 &5045167843936090397
 GameObject:
   m_ObjectHideFlags: 0
@@ -3021,6 +3117,7 @@ GameObject:
   - component: {fileID: 3293966619888321637}
   - component: {fileID: 4032678973691659839}
   - component: {fileID: 5020661044221906594}
+  - component: {fileID: 4478637247226291276}
   m_Layer: 0
   m_Name: Soket6
   m_TagString: Untagged
@@ -3116,6 +3213,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4478637247226291276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6579704913707999807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa29130af5f54ec418773add9622f4a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cropObj: {fileID: 0}
+  colliders: []
+  sockets: []
 --- !u!1 &6755896722992323949
 GameObject:
   m_ObjectHideFlags: 0
@@ -3189,6 +3301,7 @@ GameObject:
   - component: {fileID: 8350986222268256378}
   - component: {fileID: 5657227748009270290}
   - component: {fileID: 3543625885430134987}
+  - component: {fileID: 8197675527164580081}
   m_Layer: 0
   m_Name: Soket1
   m_TagString: Untagged
@@ -3284,6 +3397,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8197675527164580081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7300402801947289739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa29130af5f54ec418773add9622f4a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cropObj: {fileID: 0}
+  colliders: []
+  sockets: []
 --- !u!1 &7656770305792335373
 GameObject:
   m_ObjectHideFlags: 0
