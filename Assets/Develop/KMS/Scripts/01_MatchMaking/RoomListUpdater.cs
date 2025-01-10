@@ -1,8 +1,10 @@
+using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RoomListUpdater : MonoBehaviour
 {
@@ -57,29 +59,48 @@ public class RoomListUpdater : MonoBehaviour
 
     private void UpdateRoomListUI()
     {
-        // 방 리스트 초기화
         ClearRoomList();
+        Debug.Log("방 목록 갱신!");
 
-        // Photon에서 최신 방 리스트 가져오기
         cachedRoomList = PunManager.Instance.GetRoomList();
 
-        // 최대 roomObjects.Length 개수만큼 방 리스트 표시
-        int count = Mathf.Min(roomObjects.Length, cachedRoomList.Count);
+        if (cachedRoomList == null || cachedRoomList.Count == 0)
+        {
+            Debug.LogWarning("방 목록이 없음");
+            return;
+        }
 
+        int count = Mathf.Min(roomObjects.Length, cachedRoomList.Count);
 
         for (int i = 0; i < count; i++)
         {
+            if (i >= cachedRoomList.Count)
+            {
+                Debug.LogWarning($"Index {i} out of range for cachedRoomList.");
+                break;
+            }
+
             roomObjects[i].SetActive(true);
 
-            // 방 정보 설정
-            ObjectUI roomText = roomObjects[i].GetComponent<ObjectUI>();
+            TMP_Text roomText = roomObjects[i].GetComponentInChildren<TMP_Text>();
             if (roomText)
             {
-                roomText.nameTextPrefab.text = $"{cachedRoomList[i].Name} ({cachedRoomList[i].PlayerCount}/{cachedRoomList[i].MaxPlayers})";
+                // CustomProperties에서 게임 모드와 스테이지 가져오기
+                string gameMode = cachedRoomList[i].CustomProperties.TryGetValue("gameMode", out object gameModeValue) ? gameModeValue.ToString() : "Unknown";
+                string stage = cachedRoomList[i].CustomProperties.TryGetValue("selectedStage", out object stageValue) ? stageValue.ToString() : "Unknown";
+
+                E_GameMode e_GameMode = ((E_GameMode)(int.Parse(gameMode)));
+                E_StageMode e_StageMode = ((E_StageMode)(int.Parse(stage)));
+
+                roomText.text = $"{cachedRoomList[i].Name} ({cachedRoomList[i].PlayerCount}/{cachedRoomList[i].MaxPlayers})\nGame Mode : {e_GameMode.ToString()}\nStage : {e_StageMode.ToString()}";
             }
-            else
+
+            Button roomButton = roomObjects[i].GetComponentInChildren<Button>();
+            if (roomButton != null)
             {
-                Debug.Log("없음");
+                string roomName = cachedRoomList[i].Name;
+                roomButton.onClick.RemoveAllListeners();
+                roomButton.onClick.AddListener(() => JoinRoom(roomName));
             }
         }
     }
@@ -90,5 +111,11 @@ public class RoomListUpdater : MonoBehaviour
         {
             roomObject.SetActive(false);
         }
+    }
+
+    private void JoinRoom(string roomName)
+    {
+        Debug.Log($"Trying to join room: {roomName}");
+        PunManager.Instance.JoinRoom(roomName);
     }
 }

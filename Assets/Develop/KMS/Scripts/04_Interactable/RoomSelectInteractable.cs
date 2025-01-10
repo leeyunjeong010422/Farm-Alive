@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -9,6 +10,8 @@ public class RoomSelectInteractable : XRGrabInteractable
     public GameObject parentObject;
     private Vector3 _initialPosition;
     private Quaternion _initialRotation;
+    private TMP_Text _text;
+
 
     protected override void Awake()
     {
@@ -16,6 +19,8 @@ public class RoomSelectInteractable : XRGrabInteractable
 
         _initialPosition = transform.position;
         _initialRotation = transform.rotation;
+
+        _text = GetComponent<TMP_Text>();
     }
 
     protected override void OnSelectExited(SelectExitEventArgs args)
@@ -38,7 +43,9 @@ public class RoomSelectInteractable : XRGrabInteractable
             transform.rotation = _initialRotation;
         }
 
-        PunManager.Instance.JoinRoom(transform.name);
+        Debug.Log(_text.text);
+
+        PunManager.Instance.JoinRoom(_text.text);
 
         parentObject.SetActive(false);
     }
