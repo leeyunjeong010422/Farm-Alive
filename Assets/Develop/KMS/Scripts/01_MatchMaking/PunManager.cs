@@ -228,7 +228,7 @@ public class PunManager : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.LeaveLobby();
         }
-        PhotonNetwork.LoadLevel("04_Waiting Room"); // 대기실 씬으로 이동
+        PhotonNetwork.LoadLevel("04_PunWaitingRoom"); // 대기실 씬으로 이동
     }
 
     /// <summary>
