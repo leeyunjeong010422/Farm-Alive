@@ -59,9 +59,11 @@ public class StageManager : MonoBehaviourPunCallbacks
 
         _stageTimeLimit = 360f;
 
-        SpawnPlayer();
 
-        StartStageTimer();
+            SpawnPlayer();
+
+
+            StartStageTimer();
     }
 
     private void Update()
@@ -101,7 +103,8 @@ public class StageManager : MonoBehaviourPunCallbacks
 
     public void StartStageTimer()
     {
-        QuestManager.Instance.FirstStart(_curStageID);
+        if (PhotonNetwork.IsMasterClient)
+            QuestManager.Instance.FirstStart(_curStageID);
 
         _curStageTime = 0f;
         _isTimerRunning = true;
