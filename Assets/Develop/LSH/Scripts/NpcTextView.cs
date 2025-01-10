@@ -33,7 +33,7 @@ public class NpcTextView : MonoBehaviour
 
     public void NpcText()
     {
-        text.text = "내가 원하던 작물이 아니잖아!! 일을 어떻게 하는거야!";
+        text.text = "내가 원하던 작물이 아니잖아!!\n일을 어떻게 하는거야!";
     }
 
     public void NpcText(int count)

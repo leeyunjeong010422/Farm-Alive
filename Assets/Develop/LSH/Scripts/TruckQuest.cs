@@ -44,6 +44,8 @@ public class TruckQuest : MonoBehaviourPun
                 int otherItem = 0;
                 for (int i = 0; i < boxTrigger.requiredItems.Count; i++)
                 {
+                    bool isCorrect = false;
+
                     QuestManager.RequiredItem item = boxTrigger.requiredItems[i];
                     for (int j = 0; j < QuestManager.Instance.questsList[truckId].requiredItems.Count; j++)
                     {
@@ -56,23 +58,24 @@ public class TruckQuest : MonoBehaviourPun
                                 break;
                             Debug.Log("갯수 통과");
 
-                            //truckIds.Add(truckId);
+                            isCorrect = true;
+
                             itemIndexes.Add(j);
                             requiredCounts.Add(item.requiredcount);
                             break;
                         }
-                        if (item.itemPrefab.name != QuestManager.Instance.questsList[truckId].requiredItems[j].itemPrefab.name ||
-                            item.itemPrefab.name != QuestManager.Instance.questsList[truckId].requiredItems[j].itemPrefab.name + "(Clone)")
-                        {
-                            Debug.Log($"다른 작물 : {item.itemPrefab.name}, 아이템 카운트는 : {boxTrigger.requiredItems.Count} <= {otherItem}");
-                            otherItem++;
+                    }
 
-                            if (boxTrigger.requiredItems.Count <= otherItem)
-                            {
-                                Debug.Log("Null텍스트");
-                                photonView.RPC(nameof(FieldItem), RpcTarget.AllBuffered);
-                                PhotonNetwork.Destroy(other.gameObject);
-                            }
+                    if (!isCorrect)
+                    {
+                        Debug.Log($"다른 작물 : {item.itemPrefab.name}, 아이템 카운트는 : {boxTrigger.requiredItems.Count} <= {otherItem}");
+                        otherItem++;
+
+                        if (boxTrigger.requiredItems.Count <= otherItem)
+                        {
+                            Debug.Log("Null텍스트");
+                            photonView.RPC(nameof(FieldItem), RpcTarget.AllBuffered);
+                            PhotonNetwork.Destroy(other.gameObject);
                         }
                     }
                 }
@@ -83,7 +86,7 @@ public class TruckQuest : MonoBehaviourPun
                     int[] requiredCountArray = requiredCounts.ToArray();
                     QuestManager.Instance.CountUpdate(/*truckIdArray*/truckId, itemIndexArray, requiredCountArray, boxView.ViewID, otherItem);
                 }
-                
+
             }
         }
     }
