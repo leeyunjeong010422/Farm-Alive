@@ -71,7 +71,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vrCamera: {fileID: 7210863017178047535}
   headObject: {fileID: 7620110892584689644}
-  controllerObjects: []
+  controllerObjects:
+  - {fileID: 3440546465287058789}
+  - {fileID: 6641326672428971619}
 --- !u!114 &663345490963425092
 MonoBehaviour:
   m_ObjectHideFlags: 0
