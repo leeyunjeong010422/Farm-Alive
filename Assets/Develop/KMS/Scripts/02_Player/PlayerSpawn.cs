@@ -40,9 +40,9 @@ public class PlayerSpawn : MonoBehaviourPun
 
             leftControllerManager.enabled = true;
             rightControllerManager.enabled = true;
-
-            leftControllerObject.SetActive(true);
-            rightControllerObject.SetActive(true);
         }
+
+        leftControllerObject.SetActive(true);
+        rightControllerObject.SetActive(true);
     }
 }
