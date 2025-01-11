@@ -45,7 +45,14 @@ public class PlayerSpawn : MonoBehaviourPun
 
     private void Update()
     {
-        leftControllerObject.SetActive(true);
-        rightControllerObject.SetActive(true);
+        if (!leftControllerObject.activeSelf)
+        {
+            leftControllerObject.SetActive(true);
+        }
+
+        if (!rightControllerObject.activeSelf)
+        {
+            rightControllerObject.SetActive(true);
+        }
     }
 }
