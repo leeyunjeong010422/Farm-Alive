@@ -21,7 +21,7 @@ public class PlayerSpawn : MonoBehaviourPun
     [SerializeField] private ActionBasedController leftController;
     [SerializeField] private ActionBasedController rightController;
 
-    private void Awake()
+    private void OnEnable()
     {
         Debug.Log($"PhotonView Owner: {photonView.Owner}, IsMine: {photonView.IsMine}");
 
@@ -41,7 +41,10 @@ public class PlayerSpawn : MonoBehaviourPun
             leftControllerManager.enabled = true;
             rightControllerManager.enabled = true;
         }
+    }
 
+    private void Update()
+    {
         leftControllerObject.SetActive(true);
         rightControllerObject.SetActive(true);
     }
