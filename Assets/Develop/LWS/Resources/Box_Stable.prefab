@@ -120,6 +120,7 @@ GameObject:
   - component: {fileID: 7136619034683349651}
   - component: {fileID: 8131985760921617745}
   - component: {fileID: 5875649365553599054}
+  - component: {fileID: 5584668573987686322}
   m_Layer: 0
   m_Name: Soket8
   m_TagString: Untagged
@@ -230,6 +231,28 @@ MonoBehaviour:
   cropObj: {fileID: 0}
   colliders: []
   sockets: []
+--- !u!114 &5584668573987686322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 342033381924141475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &572780829264433973
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,6 +265,7 @@ GameObject:
   - component: {fileID: 9081892338291941622}
   - component: {fileID: 9085779565195499280}
   - component: {fileID: 2089738683407508913}
+  - component: {fileID: 5045674523615740562}
   m_Layer: 0
   m_Name: Soket2
   m_TagString: Untagged
@@ -352,6 +376,28 @@ MonoBehaviour:
   cropObj: {fileID: 0}
   colliders: []
   sockets: []
+--- !u!114 &5045674523615740562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 572780829264433973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &834504272052904003
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,6 +410,7 @@ GameObject:
   - component: {fileID: 111822876008755665}
   - component: {fileID: 8562247037746867213}
   - component: {fileID: 5322789850238334349}
+  - component: {fileID: 6167617895893291454}
   m_Layer: 0
   m_Name: Soket4
   m_TagString: Untagged
@@ -474,6 +521,28 @@ MonoBehaviour:
   cropObj: {fileID: 0}
   colliders: []
   sockets: []
+--- !u!114 &6167617895893291454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834504272052904003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1681703920980649739
 GameObject:
   m_ObjectHideFlags: 0
@@ -1047,6 +1116,7 @@ GameObject:
   - component: {fileID: 1284738257239836219}
   - component: {fileID: 1779450040006355516}
   - component: {fileID: 6094799899412094538}
+  - component: {fileID: 4722293641831751603}
   m_Layer: 0
   m_Name: Soket5
   m_TagString: Untagged
@@ -1157,6 +1227,28 @@ MonoBehaviour:
   cropObj: {fileID: 0}
   colliders: []
   sockets: []
+--- !u!114 &4722293641831751603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2389654568648779892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2707798199928964690
 GameObject:
   m_ObjectHideFlags: 0
@@ -1200,6 +1292,7 @@ GameObject:
   - component: {fileID: 3136461132992985821}
   - component: {fileID: 7590891937953015586}
   - component: {fileID: 759175461437654042}
+  - component: {fileID: 3921681722579359686}
   m_Layer: 0
   m_Name: Soket7
   m_TagString: Untagged
@@ -1310,6 +1403,28 @@ MonoBehaviour:
   cropObj: {fileID: 0}
   colliders: []
   sockets: []
+--- !u!114 &3921681722579359686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2989600742682575205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &3129139455641262082
 GameObject:
   m_ObjectHideFlags: 0
@@ -2799,6 +2914,7 @@ GameObject:
   - component: {fileID: 8690669610782030147}
   - component: {fileID: 2502557391290132512}
   - component: {fileID: 6321880349319143408}
+  - component: {fileID: 92431141802039924}
   m_Layer: 0
   m_Name: Soket3
   m_TagString: Untagged
@@ -2909,6 +3025,28 @@ MonoBehaviour:
   cropObj: {fileID: 0}
   colliders: []
   sockets: []
+--- !u!114 &92431141802039924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4995196824794153119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &5045167843936090397
 GameObject:
   m_ObjectHideFlags: 0
@@ -3118,6 +3256,7 @@ GameObject:
   - component: {fileID: 4032678973691659839}
   - component: {fileID: 5020661044221906594}
   - component: {fileID: 4478637247226291276}
+  - component: {fileID: 5563516837218103087}
   m_Layer: 0
   m_Name: Soket6
   m_TagString: Untagged
@@ -3228,6 +3367,28 @@ MonoBehaviour:
   cropObj: {fileID: 0}
   colliders: []
   sockets: []
+--- !u!114 &5563516837218103087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6579704913707999807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &6755896722992323949
 GameObject:
   m_ObjectHideFlags: 0
@@ -3302,6 +3463,7 @@ GameObject:
   - component: {fileID: 5657227748009270290}
   - component: {fileID: 3543625885430134987}
   - component: {fileID: 8197675527164580081}
+  - component: {fileID: 1933003063050423403}
   m_Layer: 0
   m_Name: Soket1
   m_TagString: Untagged
@@ -3412,6 +3574,28 @@ MonoBehaviour:
   cropObj: {fileID: 0}
   colliders: []
   sockets: []
+--- !u!114 &1933003063050423403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7300402801947289739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &7656770305792335373
 GameObject:
   m_ObjectHideFlags: 0
