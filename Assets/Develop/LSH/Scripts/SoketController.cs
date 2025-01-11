@@ -15,7 +15,7 @@ public class SoketController : MonoBehaviourPun
     {
         colliders = transform.parent.parent.GetComponents<Collider>();
 
-        sockets = FindObjectsOfType<SoketController>();
+        sockets = transform.parent.GetComponentsInChildren<SoketController>();
     }
 
     public void OnSelectEntered(SelectEnterEventArgs args)
