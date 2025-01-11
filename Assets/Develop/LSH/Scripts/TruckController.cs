@@ -40,11 +40,14 @@ public class TruckController : MonoBehaviourPun
                 {
                     if (truckObjects[j] == null)
                     {
-                        GameObject truck = PhotonNetwork.Instantiate(truckPrefab.name, transformCounts[i].position, Quaternion.identity);
-                        PhotonView truckView = truck.GetComponent<PhotonView>();
-
                         transformNumbers[i] = true;
-                        photonView.RPC(nameof(SyncTruck), RpcTarget.AllBuffered, j, truckView.ViewID, npcNumber);
+
+                        if (PhotonNetwork.IsMasterClient)
+                        {
+                            GameObject truck = PhotonNetwork.Instantiate(truckPrefab.name, transformCounts[i].position, Quaternion.identity);
+                            PhotonView truckView = truck.GetComponent<PhotonView>();
+                            photonView.RPC(nameof(SyncTruck), RpcTarget.AllBuffered, j, truckView.ViewID, npcNumber);
+                        }
                         return;
                     }
                 }

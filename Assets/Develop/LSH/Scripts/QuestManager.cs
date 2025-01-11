@@ -181,7 +181,6 @@ public class QuestManager : MonoBehaviourPun
         if (PhotonNetwork.IsMasterClient)
             StartCoroutine(questController.QuestCountdown(currentQuest));
 
-        if (PhotonNetwork.IsMasterClient)
             truckController.CreateTruck(corID);
     }
 
