@@ -35,6 +35,8 @@ public class TabletUIController : UIBinder
 
         // Guide Panel
         GetUI<Button>("Guide_CloseButton").onClick.AddListener(ReturnToMainPanel);
+        GetUI<Button>("CropTab_FacilityTabButton").onClick.AddListener(OnFacilityTabButtonClicked);
+        GetUI<Button>("FacilityTab_CropTabButton").onClick.AddListener(OnCropTabButtonClicked);
 
         // Section Panel
         GetUI<Button>("Section_CloseButton").onClick.AddListener(ReturnToMainPanel);
@@ -61,6 +63,17 @@ public class TabletUIController : UIBinder
     #endregion
 
     #region Guide Panel
+    private void OnCropTabButtonClicked()
+    {
+        GetUI("CropTab").SetActive(true);
+        GetUI("FacilityTab").SetActive(false);
+    }
+
+    private void OnFacilityTabButtonClicked()
+    {
+        GetUI("FacilityTab").SetActive(true);
+        GetUI("CropTab").SetActive(false);
+    }
     #endregion
 
     #region Schedule Panel
