@@ -10,6 +10,7 @@ public class StageManager : MonoBehaviourPunCallbacks
     [Header("스테이지 시간 속성")]
     [SerializeField] float _stageTimeLimit = 0;
     [SerializeField] float _curStageTime = 0;
+    public float CurStageTime { get { if (PhotonNetwork.IsMasterClient) return _curStageTime; else return 0f; } }
     [SerializeField] bool _isTimerRunning = false;
 
     private STAGE _curStageData;
@@ -59,10 +60,11 @@ public class StageManager : MonoBehaviourPunCallbacks
 
         _stageTimeLimit = 360f;
 
+        yield return 3f;
 
-            SpawnPlayer();
+        SpawnPlayer();
 
-
+        if (PhotonNetwork.IsMasterClient)
             StartStageTimer();
     }
 
@@ -75,7 +77,7 @@ public class StageManager : MonoBehaviourPunCallbacks
 
         if (_stageTimeLimit > 0 && _curStageTime >= _stageTimeLimit)
         {
-            EndStage();
+            photonView.RPC(nameof(EndStage), RpcTarget.All);
         }
     }
 
@@ -103,13 +105,13 @@ public class StageManager : MonoBehaviourPunCallbacks
 
     public void StartStageTimer()
     {
-        if (PhotonNetwork.IsMasterClient)
-            QuestManager.Instance.FirstStart(_curStageID);
+        QuestManager.Instance.FirstStart(_curStageID);
 
         _curStageTime = 0f;
         _isTimerRunning = true;
     }
 
+    [PunRPC]
     /// <summary>
     /// 퀘스트가 모두 종료되었을 때, 호출할 함수.
     /// </summary>
