@@ -15,7 +15,7 @@ public class QuestController : MonoBehaviourPun
         while (quest.questTimer > 0)
         {
             yield return new WaitForSeconds(_SyncInterval);
-            quest.questTimer -= StageManager.Instance.CurStageTime;
+            quest.questTimer -= Time.time - startTime;
             startTime = Time.time;
 
             int index = QuestManager.Instance.questsList.IndexOf(quest);
