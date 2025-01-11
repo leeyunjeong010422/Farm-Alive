@@ -45,6 +45,7 @@ MonoBehaviour:
   - CountCheck
   - DestroyRpc
   - DestroySpaceship
+  - EndStage
   - FieldItem
   - Fire
   - HeresWhy
@@ -73,6 +74,7 @@ MonoBehaviour:
   - SyncIKRPC
   - SyncKnobState
   - SyncPullState
+  - SyncQuestTimer
   - SyncRecoverFromBlackout
   - SyncRepaired
   - SyncSelect
@@ -82,8 +84,6 @@ MonoBehaviour:
   - SyncTransform
   - SyncTriggerBlackout
   - SyncTruck
-  - EndStage
-  - SyncQuestTimer
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
