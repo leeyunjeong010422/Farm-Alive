@@ -954,7 +954,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ManipulationInteractionGroup: {fileID: 8643493765415063428}
   m_DirectInteractor: {fileID: 3915977995224929322}
-  m_RayInteractor: {fileID: 5873588154761472460}
+  m_RayInteractor: {fileID: 0}
   m_TeleportInteractor: {fileID: 0}
   m_TeleportModeActivate: {fileID: 1263111715868034790, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   m_TeleportModeCancel: {fileID: 737890489006591557, guid: c348712bda248c246b8c49b3db54643f, type: 3}
@@ -968,10 +968,10 @@ MonoBehaviour:
   m_RayInteractorChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4826508088643458526}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEngine.XR.Interaction.Toolkit.Inputs.XRTransformStabilizer,
           Unity.XR.Interaction.Toolkit
-        m_MethodName: set_aimTarget
+        m_MethodName: 
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -998,7 +998,6 @@ MonoBehaviour:
   m_StartingGroupMembers:
   - {fileID: 8011763247794510613}
   - {fileID: 3915977995224929322}
-  - {fileID: 5873588154761472460}
   m_StartingInteractionOverridesMap:
   - groupMember: {fileID: 8011763247794510613}
     overrideGroupMembers:
@@ -1362,7 +1361,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6322451241007580233
 Transform:
   m_ObjectHideFlags: 0
@@ -1804,7 +1803,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ManipulationInteractionGroup: {fileID: 6218905537226850075}
   m_DirectInteractor: {fileID: 8135551747400908000}
-  m_RayInteractor: {fileID: 1485935874586190478}
+  m_RayInteractor: {fileID: 0}
   m_TeleportInteractor: {fileID: 0}
   m_TeleportModeActivate: {fileID: -8061240218431744966, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   m_TeleportModeCancel: {fileID: 2307464322626738743, guid: c348712bda248c246b8c49b3db54643f, type: 3}
@@ -1818,10 +1817,10 @@ MonoBehaviour:
   m_RayInteractorChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7293226323466660969}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEngine.XR.Interaction.Toolkit.Inputs.XRTransformStabilizer,
           Unity.XR.Interaction.Toolkit
-        m_MethodName: set_aimTarget
+        m_MethodName: 
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1848,7 +1847,6 @@ MonoBehaviour:
   m_StartingGroupMembers:
   - {fileID: 8515143821666998839}
   - {fileID: 8135551747400908000}
-  - {fileID: 1485935874586190478}
   m_StartingInteractionOverridesMap:
   - groupMember: {fileID: 8515143821666998839}
     overrideGroupMembers:
@@ -1975,7 +1973,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &695887569437640955
 Transform:
   m_ObjectHideFlags: 0
@@ -2189,7 +2187,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2888738194938785264, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_Value
-      value: 0.9738885
+      value: 0.96914095
       objectReference: {fileID: 0}
     - target: {fileID: 3030392643037463983, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_RootOrder
@@ -2213,7 +2211,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5118833109452608501, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 28.722649
+      value: 33.94494
       objectReference: {fileID: 0}
     - target: {fileID: 5730456263542408266, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: _holder
@@ -2324,6 +2322,10 @@ PrefabInstance:
     - target: {fileID: 1787346994484839025, guid: ad818c36731146e994540a1896ad8f24, type: 3}
       propertyPath: m_Name
       value: Ray Interactor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1787346994484839025, guid: ad818c36731146e994540a1896ad8f24, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4924506573850889901, guid: ad818c36731146e994540a1896ad8f24, type: 3}
       propertyPath: m_LineOriginTransform
@@ -2731,6 +2733,10 @@ PrefabInstance:
     - target: {fileID: 1787346994484839025, guid: ad818c36731146e994540a1896ad8f24, type: 3}
       propertyPath: m_Name
       value: Ray Interactor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1787346994484839025, guid: ad818c36731146e994540a1896ad8f24, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4924506573850889901, guid: ad818c36731146e994540a1896ad8f24, type: 3}
       propertyPath: m_LineOriginTransform
