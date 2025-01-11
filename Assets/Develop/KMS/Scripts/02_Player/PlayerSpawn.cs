@@ -21,21 +21,21 @@ public class PlayerSpawn : MonoBehaviourPun
     {
         Debug.Log($"PhotonView Owner: {photonView.Owner}, IsMine: {photonView.IsMine}");
 
-        if (!photonView.IsMine)
+        if (photonView.IsMine)
         {
             // TODO : 내 캐릭터가 아닌 VR플레이어는
             // 1. 카메라를 비활성화 시킨다.
-            cam.enabled = false;
+            cam.enabled = true;
             // 2. 오디오 리스너를 비활성화 시킨다.
-            audioListener.enabled = false;
+            audioListener.enabled = true;
             // 3. TRacked Pose Driver를 비활성화 하여, 입력에 따라 카메라가 움직이지 않도록 한다.
-            trackedPoseDriver.enabled = false;
+            trackedPoseDriver.enabled = true;
             // 4. 컨트롤러의 입력을 비활성화 시킨다.
-            //leftController.enabled = false;
-            //rightController.enabled = false;
+            leftController.enabled = true;
+            rightController.enabled = true;
 
-            //leftControllerManager.enabled = false;
-            //rightControllerManager.enabled = false;
+            leftControllerManager.enabled = true;
+            rightControllerManager.enabled = true;
         }
     }
 }
