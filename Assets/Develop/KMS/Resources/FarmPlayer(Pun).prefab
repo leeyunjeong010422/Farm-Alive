@@ -2187,6 +2187,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4929263242136914571, guid: 7c0fa9a0ad4b4a54d8530858c7012853, type: 3}
+      propertyPath: headOffset.Array.data[0].y
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 5153540686303607055, guid: 7c0fa9a0ad4b4a54d8530858c7012853, type: 3}
       propertyPath: m_Name
       value: FarmPlayer
@@ -2297,7 +2301,7 @@ MonoBehaviour:
   - {x: 0, y: 0, z: -0.25}
   - {x: 244, y: -45, z: -80}
   headOffset:
-  - {x: 0, y: -0.25, z: 0}
+  - {x: 0, y: 0.05, z: 0}
   - {x: 0, y: 0, z: 0}
   smoothValue: 0.1
   modelHeight: 4.4
@@ -2438,7 +2442,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2888738194938785264, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_Value
-      value: 0.9738885
+      value: 0.96914095
       objectReference: {fileID: 0}
     - target: {fileID: 3030392643037463983, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_RootOrder
@@ -2462,7 +2466,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5118833109452608501, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 28.722649
+      value: 33.94494
       objectReference: {fileID: 0}
     - target: {fileID: 5730456263542408266, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: _holder
@@ -2539,6 +2543,10 @@ PrefabInstance:
     - target: {fileID: 7028858567614641665, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7574228421965853741, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8617378723592824477, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_AnchorMax.x

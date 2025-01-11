@@ -2154,6 +2154,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2047899354014995917}
     - target: {fileID: 4929263242136914571, guid: 7c0fa9a0ad4b4a54d8530858c7012853, type: 3}
+      propertyPath: headOffset.Array.data[0].y
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 4929263242136914571, guid: 7c0fa9a0ad4b4a54d8530858c7012853, type: 3}
       propertyPath: leftOffset.Array.data[0].z
       value: -0.25
       objectReference: {fileID: 0}

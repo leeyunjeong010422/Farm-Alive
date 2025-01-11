@@ -713,7 +713,7 @@ MonoBehaviour:
   m_UpdateTrackingType: 0
   m_EnableInputTracking: 1
   m_EnableInputActions: 1
-  m_ModelPrefab: {fileID: 8270855663187062767, guid: 1392f805216c47742996d4742c80721c, type: 3}
+  m_ModelPrefab: {fileID: 0}
   m_ModelParent: {fileID: 0}
   m_Model: {fileID: 0}
   m_AnimateModel: 0
@@ -967,20 +967,7 @@ MonoBehaviour:
   m_UIScrollingEnabled: 1
   m_RayInteractorChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.XR.Interaction.Toolkit.Inputs.XRTransformStabilizer,
-          Unity.XR.Interaction.Toolkit
-        m_MethodName: 
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &8643493765415063428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1562,7 +1549,7 @@ MonoBehaviour:
   m_UpdateTrackingType: 0
   m_EnableInputTracking: 1
   m_EnableInputActions: 1
-  m_ModelPrefab: {fileID: 3475118261464492563, guid: 9f3369e30fbd31f4bb596b1a99babe83, type: 3}
+  m_ModelPrefab: {fileID: 0}
   m_ModelParent: {fileID: 0}
   m_Model: {fileID: 0}
   m_AnimateModel: 0
@@ -1816,20 +1803,7 @@ MonoBehaviour:
   m_UIScrollingEnabled: 1
   m_RayInteractorChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.XR.Interaction.Toolkit.Inputs.XRTransformStabilizer,
-          Unity.XR.Interaction.Toolkit
-        m_MethodName: 
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &6218905537226850075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2187,7 +2161,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2888738194938785264, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_Value
-      value: 0.96914095
+      value: 0.9568993
       objectReference: {fileID: 0}
     - target: {fileID: 3030392643037463983, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_RootOrder
@@ -2211,7 +2185,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5118833109452608501, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 33.94494
+      value: 47.41076
       objectReference: {fileID: 0}
     - target: {fileID: 5730456263542408266, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: _holder
