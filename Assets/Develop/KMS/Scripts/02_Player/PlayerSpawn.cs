@@ -34,8 +34,8 @@ public class PlayerSpawn : MonoBehaviourPun
             //leftController.enabled = false;
             //rightController.enabled = false;
 
-            leftControllerManager.enabled = false;
-            rightControllerManager.enabled = false;
+            //leftControllerManager.enabled = false;
+            //rightControllerManager.enabled = false;
         }
     }
 }
