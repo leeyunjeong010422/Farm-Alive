@@ -14,6 +14,10 @@ public class PlayerSpawn : MonoBehaviourPun
 
     [SerializeField] private ActionBasedControllerManager leftControllerManager;
     [SerializeField] private ActionBasedControllerManager rightControllerManager;
+
+    [SerializeField] private GameObject leftControllerObject;
+    [SerializeField] private GameObject rightControllerObject;
+
     [SerializeField] private ActionBasedController leftController;
     [SerializeField] private ActionBasedController rightController;
 
@@ -36,6 +40,9 @@ public class PlayerSpawn : MonoBehaviourPun
 
             leftControllerManager.enabled = true;
             rightControllerManager.enabled = true;
+
+            leftControllerObject.SetActive(true);
+            rightControllerObject.SetActive(true);
         }
     }
 }
