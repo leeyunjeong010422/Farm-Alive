@@ -33,7 +33,7 @@ public class EventManager : MonoBehaviourPunCallbacks
     #region test
     private void Update()
     {
-        int[] testEvCode = new int[0];
+        int[] testEvCode = new int[1];
 
         if (PhotonNetwork.IsMasterClient)
         {
