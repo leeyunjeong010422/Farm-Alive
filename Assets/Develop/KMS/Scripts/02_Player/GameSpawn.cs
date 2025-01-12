@@ -13,6 +13,20 @@ public class GameSpawn : MonoBehaviour
 
     private GameObject _player;
 
+    private void Awake()
+    {
+        var voiceConnection = FindObjectOfType<Photon.Voice.Unity.VoiceConnection>();
+        if (voiceConnection != null)
+        {
+            Debug.Log("VoiceConnection 상태 초기화 중...");
+            if (voiceConnection.Client.InRoom)
+            {
+                Debug.Log("VoiceConnection 방에서 나가기...");
+                voiceConnection.Client.OpLeaveRoom(false);
+            }
+            voiceConnection.Client.Disconnect(); // 완전히 연결 해제
+        }
+    }
 
     private void Update()
     {
