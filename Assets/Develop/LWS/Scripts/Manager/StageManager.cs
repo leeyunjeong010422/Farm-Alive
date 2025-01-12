@@ -58,7 +58,7 @@ public class StageManager : MonoBehaviourPunCallbacks
         _weatherID = _curStageData.stage_seasonID;
         _maxBrokenMachineCount = _curStageData.stage_allowSymptomFacilityCount;
 
-        _stageTimeLimit = 360f;
+        _stageTimeLimit = 1000f;
 
         yield return 3f;
 
