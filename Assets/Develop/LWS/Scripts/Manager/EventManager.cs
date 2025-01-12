@@ -33,18 +33,21 @@ public class EventManager : MonoBehaviourPunCallbacks
     #region test
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-            StartEvent(411);
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            StartEvent(421);
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-            StartEvent(431);
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-            StartEvent(432);
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-            StartEvent(441);
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-            StartEvent(442);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha0))
+                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, 411);
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, 421);
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, 431);
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, 432);
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, 441);
+            if (Input.GetKeyDown(KeyCode.Alpha5))
+                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, 442);
+        }
     }
     #endregion
 
@@ -204,7 +207,7 @@ public class EventManager : MonoBehaviourPunCallbacks
 
     public void ResolveEvent(int eventID)
     {
-        if(_activeEventsID.Remove(eventID))
+        if (_activeEventsID.Remove(eventID))
         {
             var evData = CSVManager.Instance.Events[eventID];
 
