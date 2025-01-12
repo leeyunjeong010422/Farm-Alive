@@ -127,7 +127,10 @@ public class GameExitManager : MonoBehaviour
     {
         Debug.Log("게임 종료!");
         Application.Quit();
+
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 
     private void CancelExit()

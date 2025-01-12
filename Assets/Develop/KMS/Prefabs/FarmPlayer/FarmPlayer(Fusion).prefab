@@ -2045,6 +2045,18 @@ PrefabInstance:
       propertyPath: m_CameraTransform
       value: 
       objectReference: {fileID: 7261734078042661224}
+    - target: {fileID: 2314523925997562667, guid: 9dfcc69af916e294bb98e2734e037147, type: 3}
+      propertyPath: m_KeyboardOffset.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2314523925997562667, guid: 9dfcc69af916e294bb98e2734e037147, type: 3}
+      propertyPath: m_KeyboardOffset.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2314523925997562667, guid: 9dfcc69af916e294bb98e2734e037147, type: 3}
+      propertyPath: m_FacingKeyboardThreshold
+      value: 0.15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9dfcc69af916e294bb98e2734e037147, type: 3}
 --- !u!4 &1712504726078284608 stripped

@@ -167,12 +167,11 @@ public class ExitGameInteractable : XRGrabInteractable
 
     private void ConfirmExit()
     {
-        Debug.Log("게임 종료!");
-        Application.Quit();
-
 #if UNITY_EDITOR
+        Debug.Log("게임 종료!");
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
+        Application.Quit();
     }
 
     private void CancelExit()
