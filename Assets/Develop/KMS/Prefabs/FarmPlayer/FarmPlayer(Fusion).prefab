@@ -93,6 +93,8 @@ MonoBehaviour:
   rightControllerManager: {fileID: 6165566283734767950}
   leftController: {fileID: 4262812292424078863}
   rightController: {fileID: 622896870845121181}
+  _leftControllerObject: {fileID: 3440546465287058789}
+  _rightControllerObject: {fileID: 6641326672428971619}
 --- !u!114 &-1272708414687315774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,6 +156,11 @@ MonoBehaviour:
   rotationSpeed: 100
   hmdRotationThreshold: 350
   hmdLerpSpeed: 0.07
+  raycastDistance: 1
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  sphereCastRadius: 0.2
 --- !u!1 &2684883393748741231
 GameObject:
   m_ObjectHideFlags: 0
