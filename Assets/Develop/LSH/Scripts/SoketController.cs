@@ -9,13 +9,17 @@ public class SoketController : MonoBehaviourPun
     [SerializeField] GameObject cropObj;
     [SerializeField] Collider[] colliders;
     [SerializeField] SoketController[] sockets;
-    //[SerializeField] private PhotonView photonView;
+
+    [SerializeField] XRSocketInteractor socket;
 
     private void Start()
     {
         colliders = transform.parent.parent.GetComponents<Collider>();
+        socket = GetComponent<XRSocketInteractor>();
+        sockets = transform.parent.GetComponentsInChildren<SoketController>();
 
-        sockets = FindObjectsOfType<SoketController>();
+        socket.selectEntered.AddListener(OnSelectEntered);
+        socket.selectExited.AddListener(OnSelectExited);
     }
 
     public void OnSelectEntered(SelectEnterEventArgs args)
@@ -67,4 +71,11 @@ public class SoketController : MonoBehaviourPun
             cropObj = null;
         }
     }
+
+    private void OnDestroy()
+    {
+        socket.selectEntered.RemoveListener(OnSelectEntered);
+        socket.selectExited.RemoveListener(OnSelectExited);
+    }
+
 }

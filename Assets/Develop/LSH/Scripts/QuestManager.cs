@@ -68,7 +68,6 @@ public class QuestManager : MonoBehaviourPun
         totalQuestCount = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
         if (questsList.Count < 4)
         {
-            totalQuestCount = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
             photonView.RPC(nameof(QuestStart), RpcTarget.AllBuffered, stageID);
         }
     }
@@ -76,6 +75,9 @@ public class QuestManager : MonoBehaviourPun
     [PunRPC]
     public void QuestStart(int stageID)
     {
+
+            totalQuestCount = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
+
         if (PhotonNetwork.IsMasterClient)
         {
             int stageIdx = CSVManager.Instance.Stages[stageID].idx;
@@ -181,7 +183,6 @@ public class QuestManager : MonoBehaviourPun
         if (PhotonNetwork.IsMasterClient)
             StartCoroutine(questController.QuestCountdown(currentQuest));
 
-        if (PhotonNetwork.IsMasterClient)
             truckController.CreateTruck(corID);
     }
 

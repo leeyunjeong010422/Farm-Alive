@@ -18,7 +18,8 @@ public class QuestController : MonoBehaviourPun
             quest.questTimer -= Time.time - startTime;
             startTime = Time.time;
 
-            photonView.RPC(nameof(SyncQuestTimer), RpcTarget.Others, quest, quest.questTimer);
+            int index = QuestManager.Instance.questsList.IndexOf(quest);
+            photonView.RPC(nameof(SyncQuestTimer), RpcTarget.Others, index, quest.questTimer);
 
             if (quest.isSuccess)
             {
@@ -46,11 +47,11 @@ public class QuestController : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void SyncQuestTimer(Quest quest, float questTimer)
+    public void SyncQuestTimer(int index, float questTimer)
     {
         if (!PhotonNetwork.IsMasterClient)
         {
-            quest.questTimer = questTimer;
+            QuestManager.Instance.questsList[index].questTimer = questTimer;
             QuestManager.Instance.UpdateUI();
         }
     }

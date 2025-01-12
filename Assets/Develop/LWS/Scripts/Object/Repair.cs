@@ -136,7 +136,7 @@ public class Repair : MonoBehaviourPun
     {
         while (IsSymptom == false)
         {
-            Debug.Log($"{gameObject.name} 전조증상 발생 확인...");
+            //Debug.Log($"{gameObject.name} 전조증상 발생 확인...");
             IsSymptom = ProbabilityHelper.Draw(_curSymptomRate);
             if (IsSymptom)
                 InvokeBroken();
@@ -175,8 +175,8 @@ public class Repair : MonoBehaviourPun
     [PunRPC]
     public void RPC_PlusRepairCount()
     {
-        if (IsRepaired)
-            return;
+        if (IsRepaired || !IsSymptom) // 고장이 해결되었거나, 전조증상/고장이 발생하지 않았다면 return
+        return;
 
         _curRepairCount++;
         MessageDisplayManager.Instance.ShowMessage($"수리중: {_curRepairCount}/{_maxRepairCount}");

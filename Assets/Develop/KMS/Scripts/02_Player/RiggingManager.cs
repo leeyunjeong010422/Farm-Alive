@@ -20,18 +20,6 @@ public class RiggingManager : MonoBehaviourPun
     public float smoothValue = 0.1f;        // 부드럽게 움직일 값
     public float modelHeight = 1.1176f;     // 캐릭터 높이 값
 
-
-    #region XR Origin과 캐릭터 분리시
-    //private void Start()
-    //{
-    //// PhotonView.IsMine인 경우에만 실행
-    //if (photonView.IsMine)
-    //{
-    //    FindControllers();
-    //}
-    //}
-    #endregion
-
     /// <summary>
     /// 컨트롤러가 움직인 후 IK의 Transform을 맞추려고.
     /// </summary>
@@ -52,27 +40,6 @@ public class RiggingManager : MonoBehaviourPun
                 headIK.localPosition, headIK.localRotation);
         }
     }
-
-    #region XR Origin과 캐릭터 분리시
-    //private void FindControllers()
-    //{
-    //    // XR Origin을 찾아서 컨트롤러와 HMD 연결
-    //    GameObject xrOrigin = GameObject.Find("Player(XR Origin)(Clone)");
-
-    //    if (xrOrigin != null)
-    //    {
-    //        leftHandController = xrOrigin.transform.Find("Camera Offset/Left Controller");
-    //        rightHandController = xrOrigin.transform.Find("Camera Offset/Right Controller");
-    //        hmd = xrOrigin.transform.Find("Camera Offset/Main Camera");
-
-    //        Debug.Log("RiggingManager에 컨트롤러 연결완료");
-    //    }
-    //    else
-    //    {
-    //        Debug.LogError("Player(XR Origin) 찾지못함! XR Origin이름 틀림.");
-    //    }
-    //}
-    #endregion
 
     /// <summary>
     /// 컨트롤러의 싱크를 맞추기 위한 Offset.

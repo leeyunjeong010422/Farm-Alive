@@ -33,18 +33,41 @@ public class EventManager : MonoBehaviourPunCallbacks
     #region test
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-            StartEvent(411);
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            StartEvent(421);
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-            StartEvent(431);
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-            StartEvent(432);
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-            StartEvent(441);
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-            StartEvent(442);
+        int[] testEvCode = new int[1];
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                testEvCode[0] = 411;
+                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, testEvCode);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                testEvCode[0] = 421;
+                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, testEvCode);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                testEvCode[0] = 431;
+                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, testEvCode);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                testEvCode[0] = 432;
+                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, testEvCode);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha5))
+            {
+                testEvCode[0] = 441;
+                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, testEvCode);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha6))
+            {
+                testEvCode[0] = 442;
+                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, testEvCode);
+            }
+        }
     }
     #endregion
 
@@ -204,7 +227,7 @@ public class EventManager : MonoBehaviourPunCallbacks
 
     public void ResolveEvent(int eventID)
     {
-        if(_activeEventsID.Remove(eventID))
+        if (_activeEventsID.Remove(eventID))
         {
             var evData = CSVManager.Instance.Events[eventID];
 

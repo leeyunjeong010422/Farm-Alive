@@ -224,6 +224,8 @@ MonoBehaviour:
   trackedPoseDriver: {fileID: 5862057371182445669}
   leftControllerManager: {fileID: 1916838843314841748}
   rightControllerManager: {fileID: 6165566283734767950}
+  leftControllerObject: {fileID: 3440546465287058789}
+  rightControllerObject: {fileID: 6641326672428971619}
   leftController: {fileID: 4262812292424078863}
   rightController: {fileID: 622896870845121181}
 --- !u!114 &3582830591059302490
@@ -491,7 +493,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2684883393748741231}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
@@ -534,7 +536,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2684883393748741231}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!114 &5862057371182445669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -542,7 +544,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2684883393748741231}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2fadf230d1919748a9aa21d40f74619, type: 3}
   m_Name: 
@@ -705,7 +707,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3440546465287058789}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: caff514de9b15ad48ab85dcff5508221, type: 3}
   m_Name: 
@@ -713,7 +715,7 @@ MonoBehaviour:
   m_UpdateTrackingType: 0
   m_EnableInputTracking: 1
   m_EnableInputActions: 1
-  m_ModelPrefab: {fileID: 8270855663187062767, guid: 1392f805216c47742996d4742c80721c, type: 3}
+  m_ModelPrefab: {fileID: 0}
   m_ModelParent: {fileID: 0}
   m_Model: {fileID: 0}
   m_AnimateModel: 0
@@ -947,14 +949,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3440546465287058789}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9ac216f0eb04754b1d938aac6380b31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_ManipulationInteractionGroup: {fileID: 8643493765415063428}
   m_DirectInteractor: {fileID: 3915977995224929322}
-  m_RayInteractor: {fileID: 5873588154761472460}
+  m_RayInteractor: {fileID: 0}
   m_TeleportInteractor: {fileID: 0}
   m_TeleportModeActivate: {fileID: 1263111715868034790, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   m_TeleportModeCancel: {fileID: 737890489006591557, guid: c348712bda248c246b8c49b3db54643f, type: 3}
@@ -967,20 +969,7 @@ MonoBehaviour:
   m_UIScrollingEnabled: 1
   m_RayInteractorChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4826508088643458526}
-        m_TargetAssemblyTypeName: UnityEngine.XR.Interaction.Toolkit.Inputs.XRTransformStabilizer,
-          Unity.XR.Interaction.Toolkit
-        m_MethodName: set_aimTarget
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &8643493765415063428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -998,7 +987,6 @@ MonoBehaviour:
   m_StartingGroupMembers:
   - {fileID: 8011763247794510613}
   - {fileID: 3915977995224929322}
-  - {fileID: 5873588154761472460}
   m_StartingInteractionOverridesMap:
   - groupMember: {fileID: 8011763247794510613}
     overrideGroupMembers:
@@ -1362,7 +1350,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6322451241007580233
 Transform:
   m_ObjectHideFlags: 0
@@ -1555,7 +1543,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6641326672428971619}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: caff514de9b15ad48ab85dcff5508221, type: 3}
   m_Name: 
@@ -1563,7 +1551,7 @@ MonoBehaviour:
   m_UpdateTrackingType: 0
   m_EnableInputTracking: 1
   m_EnableInputActions: 1
-  m_ModelPrefab: {fileID: 3475118261464492563, guid: 9f3369e30fbd31f4bb596b1a99babe83, type: 3}
+  m_ModelPrefab: {fileID: 0}
   m_ModelParent: {fileID: 0}
   m_Model: {fileID: 0}
   m_AnimateModel: 0
@@ -1797,14 +1785,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6641326672428971619}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9ac216f0eb04754b1d938aac6380b31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_ManipulationInteractionGroup: {fileID: 6218905537226850075}
   m_DirectInteractor: {fileID: 8135551747400908000}
-  m_RayInteractor: {fileID: 1485935874586190478}
+  m_RayInteractor: {fileID: 0}
   m_TeleportInteractor: {fileID: 0}
   m_TeleportModeActivate: {fileID: -8061240218431744966, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   m_TeleportModeCancel: {fileID: 2307464322626738743, guid: c348712bda248c246b8c49b3db54643f, type: 3}
@@ -1817,20 +1805,7 @@ MonoBehaviour:
   m_UIScrollingEnabled: 1
   m_RayInteractorChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7293226323466660969}
-        m_TargetAssemblyTypeName: UnityEngine.XR.Interaction.Toolkit.Inputs.XRTransformStabilizer,
-          Unity.XR.Interaction.Toolkit
-        m_MethodName: set_aimTarget
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &6218905537226850075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1848,7 +1823,6 @@ MonoBehaviour:
   m_StartingGroupMembers:
   - {fileID: 8515143821666998839}
   - {fileID: 8135551747400908000}
-  - {fileID: 1485935874586190478}
   m_StartingInteractionOverridesMap:
   - groupMember: {fileID: 8515143821666998839}
     overrideGroupMembers:
@@ -1975,7 +1949,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &695887569437640955
 Transform:
   m_ObjectHideFlags: 0
@@ -2191,14 +2165,6 @@ PrefabInstance:
       propertyPath: m_Value
       value: 0.9738885
       objectReference: {fileID: 0}
-    - target: {fileID: 3030392643037463983, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3133819498798222961, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4616786730342115280, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2219,29 +2185,9 @@ PrefabInstance:
       propertyPath: _holder
       value: 
       objectReference: {fileID: 576993768803080863}
-    - target: {fileID: 5730456263542408266, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
-      propertyPath: m_Colliders.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6650865320301914941, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7028858566085525326, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7028858566865378848, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7028858567104104985, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_Name
       value: Tablet
-      objectReference: {fileID: 0}
-    - target: {fileID: 7028858567104104987, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
-      propertyPath: ObservedComponents.Array.size
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7028858567104105445, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_RootOrder
@@ -2287,13 +2233,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7028858567614641665, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7574228421965853741, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
+    - target: {fileID: 7574228421959623339, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8617378723592824477, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2324,6 +2266,10 @@ PrefabInstance:
     - target: {fileID: 1787346994484839025, guid: ad818c36731146e994540a1896ad8f24, type: 3}
       propertyPath: m_Name
       value: Ray Interactor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1787346994484839025, guid: ad818c36731146e994540a1896ad8f24, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4924506573850889901, guid: ad818c36731146e994540a1896ad8f24, type: 3}
       propertyPath: m_LineOriginTransform
@@ -2731,6 +2677,10 @@ PrefabInstance:
     - target: {fileID: 1787346994484839025, guid: ad818c36731146e994540a1896ad8f24, type: 3}
       propertyPath: m_Name
       value: Ray Interactor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1787346994484839025, guid: ad818c36731146e994540a1896ad8f24, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4924506573850889901, guid: ad818c36731146e994540a1896ad8f24, type: 3}
       propertyPath: m_LineOriginTransform

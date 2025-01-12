@@ -196,8 +196,7 @@ public class FirebaseManager : MonoBehaviour
             { "lastLogin", DateTime.Now.ToString("o") },
             { "settings", new Dictionary<string, object>()
                 {
-                    { "level", 1 },
-                    { "score", 0 }
+                    { "sound", 0 }
                 }
             },
             { "highStage", highStage },
@@ -228,7 +227,7 @@ public class FirebaseManager : MonoBehaviour
         if (string.IsNullOrEmpty(userId))
             return;
 
-        int stageIDX = CSVManager.Instance.Stages[stageID].idx;
+        int stageIDX = CSVManager.Instance.Stages[stageID].idx + 1;
         string highstageID = "Stage" + stageIDX;
         
         DatabaseReference stageRef = dataBase.GetReference($"users/{userId}/stageResults/{stageID}");

@@ -45,9 +45,11 @@ MonoBehaviour:
   - CountCheck
   - DestroyRpc
   - DestroySpaceship
+  - EndStage
   - FieldItem
   - Fire
   - HeresWhy
+  - NpcSync
   - OpenAllShutters
   - QuestStart
   - RequestOwnership
@@ -73,6 +75,7 @@ MonoBehaviour:
   - SyncIKRPC
   - SyncKnobState
   - SyncPullState
+  - SyncQuestTimer
   - SyncRecoverFromBlackout
   - SyncRepaired
   - SyncSelect
