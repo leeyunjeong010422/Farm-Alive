@@ -17,7 +17,7 @@ public class PunPlayerSpawn : MonoBehaviour
     {
         RemoveNetworkRunner();
     }
-
+#if UNITY_EDITOR
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Z))
@@ -25,6 +25,7 @@ public class PunPlayerSpawn : MonoBehaviour
             ReturnToFusion();
         }
     }
+#endif
 
     private void RemoveNetworkRunner()
     {
@@ -66,6 +67,8 @@ public class PunPlayerSpawn : MonoBehaviour
         }
     }
 
+
+#if UNITY_EDITOR
     public void ReturnToFusion()
     {
         ClearPunObject();
@@ -115,5 +118,5 @@ public class PunPlayerSpawn : MonoBehaviour
             }
         }
     }
-
+#endif
 }
