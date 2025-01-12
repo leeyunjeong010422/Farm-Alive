@@ -9,25 +9,22 @@ using UnityEngine.UI;
 public class RoomListUpdater : MonoBehaviour
 {
     [Header("Room List Settings")]
-    [Tooltip("Room 오브젝트")]
+    [Tooltip("Room 오브젝트 (UI)")]
     public GameObject[] roomObjects;
     [Tooltip("방 리스트 갱신 간격")]
     public float updateInterval = 3f;
 
-    private List<RoomInfo> cachedRoomList = new List<RoomInfo>();
+    private Dictionary<string, RoomInfo> cachedRoomList = new Dictionary<string, RoomInfo>();
     private Coroutine updateCoroutine;
 
     private void OnEnable()
     {
-        // 방 리스트 갱신 시작
         StartUpdatingRoomList();
     }
+
     private void OnDisable()
     {
-        // 갱신 종료
         StopUpdatingRoomList();
-
-        // 방 리스트 초기화
         ClearRoomList();
     }
 
@@ -59,55 +56,95 @@ public class RoomListUpdater : MonoBehaviour
 
     private void UpdateRoomListUI()
     {
-        ClearRoomList();
-        Debug.Log("방 목록 갱신!");
+        Debug.Log("방 목록 갱신 시작!");
 
-        cachedRoomList = PunManager.Instance.GetRoomList();
-
-        if (cachedRoomList == null || cachedRoomList.Count == 0)
+        var updatedRoomList = PunManager.Instance.GetRoomList();
+        if (updatedRoomList == null)
         {
             Debug.LogWarning("방 목록이 없음");
+            ClearRoomList();
             return;
         }
 
-        int count = Mathf.Min(roomObjects.Length, cachedRoomList.Count);
-
-        for (int i = 0; i < count; i++)
+        // 삭제된 방 처리
+        var roomNamesToRemove = new List<string>();
+        foreach (var cachedRoom in cachedRoomList)
         {
-            if (i >= cachedRoomList.Count)
+            if (!updatedRoomList.Exists(room => room.Name == cachedRoom.Key))
             {
-                Debug.LogWarning($"Index {i} out of range for cachedRoomList.");
-                break;
+                roomNamesToRemove.Add(cachedRoom.Key);
             }
+        }
 
-            roomObjects[i].SetActive(true);
+        foreach (var roomName in roomNamesToRemove)
+        {
+            cachedRoomList.Remove(roomName);
+            Debug.Log($"방 제거: {roomName}");
+        }
 
-            TMP_Text roomText = roomObjects[i].GetComponentInChildren<TMP_Text>();
-            if (roomText)
+        // 새로 추가되거나 업데이트된 방 처리
+        foreach (var roomInfo in updatedRoomList)
+        {
+            if (roomInfo.RemovedFromList)
             {
-                // CustomProperties에서 게임 모드와 스테이지 가져오기
-                string gameMode = cachedRoomList[i].CustomProperties.TryGetValue("gameMode", out object gameModeValue) ? gameModeValue.ToString() : "Unknown";
-                string stage = cachedRoomList[i].CustomProperties.TryGetValue("selectedStage", out object stageValue) ? stageValue.ToString() : "Unknown";
+                if (cachedRoomList.ContainsKey(roomInfo.Name))
+                {
+                    cachedRoomList.Remove(roomInfo.Name);
+                    Debug.Log($"방 제거: {roomInfo.Name}");
+                }
+            }
+            else
+            {
+                cachedRoomList[roomInfo.Name] = roomInfo;
+                Debug.Log($"방 추가/갱신: {roomInfo.Name}");
+            }
+        }
+
+        // UI 업데이트
+        DisplayRoomList();
+    }
+
+    private void DisplayRoomList()
+    {
+        ClearRoomList();
+
+        int count = Mathf.Min(roomObjects.Length, cachedRoomList.Count);
+        int index = 0;
+
+        foreach (var room in cachedRoomList.Values)
+        {
+            if (index >= count) break;
+
+            var roomObject = roomObjects[index];
+            roomObject.SetActive(true);
+
+            TMP_Text roomText = roomObject.GetComponentInChildren<TMP_Text>();
+            if (roomText != null)
+            {
+                string gameMode = room.CustomProperties.TryGetValue("gameMode", out object gameModeValue) ? gameModeValue.ToString() : "Unknown";
+                string stage = room.CustomProperties.TryGetValue("selectedStage", out object stageValue) ? stageValue.ToString() : "Unknown";
 
                 E_GameMode e_GameMode = ((E_GameMode)(int.Parse(gameMode)));
                 E_StageMode e_StageMode = ((E_StageMode)(int.Parse(stage)));
 
-                roomText.text = $"{cachedRoomList[i].Name} ({cachedRoomList[i].PlayerCount}/{cachedRoomList[i].MaxPlayers})\nGame Mode : {e_GameMode.ToString()}\nStage : {e_StageMode.ToString()}";
+                roomText.text = $"{room.Name} ({room.PlayerCount}/{room.MaxPlayers})\nGame Mode : {e_GameMode}\nStage : {e_StageMode}";
             }
 
-            Button roomButton = roomObjects[i].GetComponentInChildren<Button>();
+            Button roomButton = roomObject.GetComponentInChildren<Button>();
             if (roomButton != null)
             {
-                string roomName = cachedRoomList[i].Name;
+                string roomName = room.Name;
                 roomButton.onClick.RemoveAllListeners();
                 roomButton.onClick.AddListener(() => JoinRoom(roomName));
             }
+
+            index++;
         }
     }
 
     private void ClearRoomList()
     {
-        foreach(var roomObject in roomObjects)
+        foreach (var roomObject in roomObjects)
         {
             roomObject.SetActive(false);
         }
@@ -115,7 +152,7 @@ public class RoomListUpdater : MonoBehaviour
 
     private void JoinRoom(string roomName)
     {
-        Debug.Log($"Trying to join room: {roomName}");
+        Debug.Log($"방 입장 시도: {roomName}");
         PunManager.Instance.JoinRoom(roomName);
     }
 }

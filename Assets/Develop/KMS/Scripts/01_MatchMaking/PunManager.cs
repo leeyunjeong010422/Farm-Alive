@@ -19,8 +19,12 @@ public class PunManager : MonoBehaviourPunCallbacks
     [Tooltip("스테이지 ID")]
     public int selectedStage = (int)E_StageMode.Stage1;
     public string roomName;
-    
-    private List<RoomInfo> cachedRoomList = new List<RoomInfo>();
+
+    [Tooltip("대기방 씬 이름")]
+    public string waittingRoomName = "04_Waiting Room";
+
+    private Dictionary<string, RoomInfo> cachedRoomList = new Dictionary<string, RoomInfo>();
+
     private E_GameMode _gameMode = E_GameMode.Normal;
 
     public static PunManager Instance { get; private set; }
@@ -116,7 +120,7 @@ public class PunManager : MonoBehaviourPunCallbacks
         if (SceneManager.GetActiveScene().name != "03_Lobby" && PhotonNetwork.InLobby)
         {
             Debug.Log("로딩 씬으로 이동...");
-            SceneLoader.LoadSceneWithLoading("03_FusionLobby");
+            SceneLoader.LoadSceneWithLoading("03_Lobby");
         }
     }
 
@@ -211,6 +215,7 @@ public class PunManager : MonoBehaviourPunCallbacks
     {
         // Pun 이동
         Debug.Log($"방 입장 성공: {PhotonNetwork.CurrentRoom.Name}");
+        PhotonNetwork.AutomaticallySyncScene = true;
 
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("gameMode", out object gameModeValue))
         {
@@ -228,7 +233,7 @@ public class PunManager : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.LeaveLobby();
         }
-        PhotonNetwork.LoadLevel("04_PunWaitingRoom"); // 대기실 씬으로 이동
+        PhotonNetwork.LoadLevel(waittingRoomName); // 대기실 씬으로 이동
     }
 
     /// <summary>
@@ -236,14 +241,17 @@ public class PunManager : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        // 기존 목록 초기화 및 갱신
-        cachedRoomList.Clear();
         foreach (RoomInfo room in roomList)
         {
-            // 방이 유효하고 아직 종료되지 않은 경우만 추가
-            if (room.RemovedFromList == false)
+            if (room.RemovedFromList)
             {
-                cachedRoomList.Add(room);
+                // 삭제된 방 제거
+                cachedRoomList.Remove(room.Name);
+            }
+            else
+            {
+                // 추가 또는 갱신된 방 업데이트
+                cachedRoomList[room.Name] = room;
             }
         }
     }
@@ -269,7 +277,7 @@ public class PunManager : MonoBehaviourPunCallbacks
     /// <returns></returns>
     public List<RoomInfo> GetRoomList()
     {
-        return cachedRoomList;
+        return new List<RoomInfo>(cachedRoomList.Values);
     }
 
     /// <summary>
