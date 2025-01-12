@@ -122,10 +122,10 @@ public class TruckQuest : MonoBehaviourPun
         if (PhotonNetwork.IsMasterClient)
         {
             npcPrefab = PhotonNetwork.Instantiate(npcPrefabs[corTemp].name, npcPosition.position, Quaternion.identity);
-
+            
             PhotonView viewId = npcPrefab.GetComponent<PhotonView>();
             
-            photonView.RPC(nameof(NpcSync), RpcTarget.AllBuffered, viewId);
+            photonView.RPC(nameof(NpcSync), RpcTarget.AllBuffered, viewId.ViewID );
         }
     }
 
