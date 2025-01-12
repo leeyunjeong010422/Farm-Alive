@@ -2,10 +2,13 @@ using System.Collections;
 using Photon.Pun;
 using UnityEngine;
 using GameData;
+using UnityEngine.Events;
 
 public class StageManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] int _curStageID;
+
+    public UnityEvent OnGameStarted;
 
     [Header("스테이지 시간 속성")]
     [SerializeField] float _stageTimeLimit = 0;
@@ -60,10 +63,12 @@ public class StageManager : MonoBehaviourPunCallbacks
 
         _stageTimeLimit = 1000f;
 
-        yield return 3f;
+
 
         SpawnPlayer();
-
+        yield return new WaitForSeconds(5f);
+        OnGameStarted?.Invoke();
+        yield return new WaitForSeconds(5f);
         if (PhotonNetwork.IsMasterClient)
             StartStageTimer();
     }
