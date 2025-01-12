@@ -119,8 +119,16 @@ public class TruckQuest : MonoBehaviourPun
             corTemp = corTemp - 18;
         }
 
-        npcPrefab = PhotonNetwork.Instantiate(npcPrefabs[corTemp].name, npcPosition.position, Quaternion.identity);
-        npcPrefab.transform.SetParent(npcPosition.transform);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            npcPrefab = PhotonNetwork.Instantiate(npcPrefabs[corTemp].name, npcPosition.position, Quaternion.identity);
+
+            PhotonView viewId = GetComponent<PhotonView>();
+            
+
+            photonView.RPC(nameof(NpcSync), RpcTarget.AllBuffered, viewId);
+        }
+        
         Debug.Log($"오브젝트 ID: {npcPrefab.name}");
     }
 
@@ -139,5 +147,18 @@ public class TruckQuest : MonoBehaviourPun
     public void FieldItem()
     {
         npcPrefab.GetComponent<NpcTextView>().NpcText();
+    }
+
+    [PunRPC]
+    public void NpcSync(int viewId)
+    {
+        PhotonView npcView = PhotonView.Find(viewId);
+
+        if (npcPrefab == null)
+        {
+            npcPrefab = npcView.gameObject;
+        }
+
+        npcPrefab.transform.SetParent(npcPosition.transform);
     }
 }
