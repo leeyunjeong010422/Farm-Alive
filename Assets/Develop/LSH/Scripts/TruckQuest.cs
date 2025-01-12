@@ -123,13 +123,10 @@ public class TruckQuest : MonoBehaviourPun
         {
             npcPrefab = PhotonNetwork.Instantiate(npcPrefabs[corTemp].name, npcPosition.position, Quaternion.identity);
 
-            PhotonView viewId = GetComponent<PhotonView>();
+            PhotonView viewId = npcPrefab.GetComponent<PhotonView>();
             
-
             photonView.RPC(nameof(NpcSync), RpcTarget.AllBuffered, viewId);
         }
-        
-        Debug.Log($"오브젝트 ID: {npcPrefab.name}");
     }
 
     private void OnDestroy()
