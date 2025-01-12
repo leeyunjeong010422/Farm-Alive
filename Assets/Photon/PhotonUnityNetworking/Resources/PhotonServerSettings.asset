@@ -49,6 +49,7 @@ MonoBehaviour:
   - FieldItem
   - Fire
   - HeresWhy
+  - NpcSync
   - OpenAllShutters
   - QuestStart
   - RequestOwnership
