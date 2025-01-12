@@ -33,20 +33,40 @@ public class EventManager : MonoBehaviourPunCallbacks
     #region test
     private void Update()
     {
+        int[] testEvCode = new int[0];
+
         if (PhotonNetwork.IsMasterClient)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha0))
-                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, 411);
             if (Input.GetKeyDown(KeyCode.Alpha1))
-                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, 421);
+            {
+                testEvCode[0] = 411;
+                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, testEvCode);
+            }
             if (Input.GetKeyDown(KeyCode.Alpha2))
-                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, 431);
+            {
+                testEvCode[0] = 421;
+                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, testEvCode);
+            }
             if (Input.GetKeyDown(KeyCode.Alpha3))
-                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, 432);
+            {
+                testEvCode[0] = 431;
+                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, testEvCode);
+            }
             if (Input.GetKeyDown(KeyCode.Alpha4))
-                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, 441);
+            {
+                testEvCode[0] = 432;
+                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, testEvCode);
+            }
             if (Input.GetKeyDown(KeyCode.Alpha5))
-                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, 442);
+            {
+                testEvCode[0] = 441;
+                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, testEvCode);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha6))
+            {
+                testEvCode[0] = 442;
+                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, testEvCode);
+            }
         }
     }
     #endregion
