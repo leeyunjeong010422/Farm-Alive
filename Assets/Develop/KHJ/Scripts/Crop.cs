@@ -150,6 +150,9 @@ public class Crop : MonoBehaviourPun
         _states[(int)_curState].StateExit();
         _curState = state;
         _states[(int)_curState].StateEnter();
+
+        if (_cropInteractable.Ground != null)
+            _cropInteractable.Ground.OnMyPlantUpdated?.Invoke(state);
     }
 
     public void IncreaseMoisture() => _curMoisture++;

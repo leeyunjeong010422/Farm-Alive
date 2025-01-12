@@ -1,9 +1,14 @@
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.Events;
 
 public class PlantGround : MonoBehaviourPun
 {
+    public UnityEvent<Crop.E_CropState> OnMyPlantUpdated;
+
+    public int section;
+    public int ground;
+
     [SerializeField] private int _digCount; // 필요 삽질 횟수
     private int _currentDigCount = 0; // 현재 삽질 횟수
     private bool _isInteractable = true; // 상호작용 가능 여부

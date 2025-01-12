@@ -1,3 +1,4 @@
+using GameData;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,17 +6,27 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class CropInteractable : XRGrabInteractable
 {
+    public PlantGround Ground { 
+        get {
+            if (interactorsSelecting == null)
+                return null;
+            PlantGround plantGround = interactorsSelecting[0].transform.GetComponent<PlantGround>();
+            return plantGround != null ? plantGround : null;
+        } 
+    }
+
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
         Debug.Log("CropInteractable OnSelectEntered");
         base.OnSelectEntered(args);
 
-        if (args.interactorObject is XRSocketInteractor)
+        PlantGround plantGround = args.interactorObject.transform.GetComponent<PlantGround>();
+        if (plantGround != null)
         {
-            Debug.Log("with socket");
+            Debug.Log("planted into ground");
             Crop crop = GetComponent<Crop>();
 
-            SectionManager.Instance.CropLists[SectionManager.Instance.CurSection].Add(crop);
+            SectionManager.Instance.Sections[SectionManager.Instance.CurSection, plantGround.ground] = crop;
             crop.ChangeState(Crop.E_CropState.GrowStopped);
         }
     }
@@ -24,9 +35,11 @@ public class CropInteractable : XRGrabInteractable
     {
         base.OnSelectExited(args);
 
-        if (args.interactorObject is XRSocketInteractor)
+        PlantGround plantGround = args.interactorObject.transform.GetComponent<PlantGround>();
+        if (plantGround != null)
         {
-            SectionManager.Instance.CropLists[SectionManager.Instance.CurSection].Remove(GetComponent<Crop>());
+            SectionManager.Instance.Sections[SectionManager.Instance.CurSection, plantGround.ground] = null;
+            plantGround.OnMyPlantUpdated?.Invoke(Crop.E_CropState.SIZE);
         }
     }
 
@@ -37,14 +50,8 @@ public class CropInteractable : XRGrabInteractable
 
         Crop crop = GetComponent<Crop>();
         if (crop.CurState == Crop.E_CropState.Seeding || crop.CurState == Crop.E_CropState.GrowCompleted)
-        {
-            Debug.Log("return base");
             return base.IsSelectableBy(interactor);
-        }
         else
-        {
-            Debug.Log("return false");
             return false;
-        }
     }
 }
