@@ -161,6 +161,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6264427626831859324}
+  - component: {fileID: 1561768651125846942}
   m_Layer: 0
   m_Name: CropState
   m_TagString: Untagged
@@ -193,6 +194,26 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 6, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1561768651125846942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3000868526991604255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28a78a119c729ac4f8d28c9ac29f2b21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  section: 0
+  ground: 0
+  _images:
+  - {fileID: 8350243858552187071}
+  - {fileID: 2975585331309814380}
+  - {fileID: 1286553952340948996}
+  - {fileID: 5576208757814124358}
+  - {fileID: 7424772390983489727}
 --- !u!1 &5576208757814124358
 GameObject:
   m_ObjectHideFlags: 0
