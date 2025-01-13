@@ -10,11 +10,11 @@ using UnityEngine.XR.Content.Interaction;
 using UnityEngine.XR.Interaction.Toolkit;
 using static QuestManager;
 
-public class BoxTrigger : MonoBehaviourPun//, IPunObservable
+public class BoxTrigger : MonoBehaviourPun
 {
     [SerializeField] public GameObject boxTape;
     [SerializeField] public List<RequiredItem> requiredItems;
-    [SerializeField] BoxCover boxCover;
+    [SerializeField] public BoxCover boxCover;
     [SerializeField] public List<int> idList = new List<int>();
     [SerializeField] Collider openCollider;
     [SerializeField] Collider closedCollider;
@@ -148,5 +148,15 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
     private void NotifyRequiredItemsChanged()
     {
         RequiredItemsChanged?.Invoke(requiredItems);
+    }
+
+    private void OnDestroy()
+    {
+        foreach (int crop in idList)
+        {
+            PhotonView cropView = PhotonView.Find(crop);
+
+            Destroy(cropView.gameObject);
+        }
     }
 }

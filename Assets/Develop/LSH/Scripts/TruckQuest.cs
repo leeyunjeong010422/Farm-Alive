@@ -35,9 +35,11 @@ public class TruckQuest : MonoBehaviourPun
                 if (boxTrigger == null)
                     return;
 
+                if (!boxTrigger.boxCover.IsPackaged)
+                    return;
+
                 PhotonView boxView = other.GetComponent<PhotonView>();
 
-                //List<int> truckIds = new List<int>();
                 List<int> itemIndexes = new List<int>();
                 List<int> requiredCounts = new List<int>();
 
@@ -73,7 +75,6 @@ public class TruckQuest : MonoBehaviourPun
 
                         if (boxTrigger.requiredItems.Count <= otherItem)
                         {
-                            Debug.Log("Null텍스트");
                             photonView.RPC(nameof(FieldItem), RpcTarget.AllBuffered);
                             PhotonNetwork.Destroy(other.gameObject);
                         }
@@ -93,7 +94,6 @@ public class TruckQuest : MonoBehaviourPun
 
     public void SetID(int truckId, TruckController truckController, int npcNumber)
     {
-        Debug.Log("실행");
         this.truckId = truckId;
         this.truckSpawner = truckController;
         Debug.Log($"오브젝트 ID: {truckId}");

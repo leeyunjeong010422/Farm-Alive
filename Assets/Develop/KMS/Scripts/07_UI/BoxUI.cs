@@ -58,8 +58,6 @@ public class BoxUI : MonoBehaviour
             {
                 itemCounts[cropName] = item.requiredcount;
             }
-
-            displayText += $"{cropName}: {item.requiredcount}\n";
         }
         
         foreach (var kvp in itemCounts)

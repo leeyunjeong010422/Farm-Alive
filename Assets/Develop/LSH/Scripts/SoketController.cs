@@ -52,22 +52,13 @@ public class SoketController : MonoBehaviourPun
         {
             PhotonView objView = PhotonView.Find(viewId);
             cropObj = objView.gameObject;
-        }
 
-        foreach (Collider col in colliders)
-        {
-            Physics.IgnoreCollision(col, cropObj.transform.GetChild(0).GetChild(3).GetComponent<Collider>(), isBool);
-            Debug.Log("충돌무시");
-        }
-
-        foreach (SoketController socket in sockets)
-        {
-            if(socket.cropObj != null)
-            Physics.IgnoreCollision(cropObj.transform.GetChild(0).GetChild(3).GetComponent<Collider>(), socket.cropObj.transform.GetChild(0).GetChild(3).GetComponent<Collider>(), isBool);
+            cropObj.transform.GetChild(0).GetChild(3).GetComponent<Collider>().isTrigger = true;
         }
 
         if (isBool)
         {
+            cropObj.transform.GetChild(0).GetChild(3).GetComponent<Collider>().isTrigger = false;
             cropObj = null;
         }
     }
