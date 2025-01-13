@@ -21,6 +21,8 @@ public class TabletUIController : UIBinder
 
     private void Start()
     {
+        StageManager.Instance.OnGameStarted.AddListener(ReturnToMainPanel);
+
         _panels[(int)E_PanelName.Main] = GetUI(E_PanelName.Main.ToString());
         _panels[(int)E_PanelName.Guide] = GetUI(E_PanelName.Guide.ToString());
         _panels[(int)E_PanelName.Section] = GetUI(E_PanelName.Section.ToString());
@@ -41,7 +43,6 @@ public class TabletUIController : UIBinder
 
         // Schedule Panel
         GetUI<Button>("Schedule_CloseButton").onClick.AddListener(ReturnToMainPanel);
-
     }
 
     public void ReturnToMainPanel() => ChangePanel(E_PanelName.Main);

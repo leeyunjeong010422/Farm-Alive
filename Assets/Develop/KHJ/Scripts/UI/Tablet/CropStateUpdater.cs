@@ -18,7 +18,7 @@ public class CropStateUpdater : MonoBehaviour
 
     private void Start()
     {
-        StageManager.Instance.OnGameStarted.AddListener(SubscribeGround);
+        SubscribeGround();
 
         _cropStateImages = new GameObject[(int)E_CropStateUI.SIZE];
         for (int i = 0; i < _cropStateImages.Length; i++)
@@ -43,13 +43,8 @@ public class CropStateUpdater : MonoBehaviour
             // 표시할 대응되는 경작지의 작물 상태 갱신 이벤트 구독
             if (plantGround.section == section && plantGround.ground == ground)
             {
-                Debug.Log($"{section + 1}, {ground + 1} 구독");
+                Debug.Log($"Section {section + 1}의 {ground + 1}번째 Ground와 태블릿 UI 연결");
                 plantGround.OnMyPlantUpdated.AddListener(UpdateCropState);
-
-                if (section == SectionManager.Instance.SectionNum - 1 && ground == SectionManager.Instance.GroundPerSection - 1)
-                {
-                    tabletUIController.ReturnToMainPanel();
-                }
             }
         }
     }

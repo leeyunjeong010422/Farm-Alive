@@ -28,9 +28,6 @@ public class SectionManager : MonoBehaviour
     public bool IsHighTemperature { get; private set; } = false;
     public bool IsLowTemperature { get; private set; } = false;
 
-    public int SectionNum { get { return SECTION_NUM; } }
-    public int GroundPerSection { get { return GROUND_PER_SECTION; } }
-
     private void Awake()
     {
         if (Instance == null)
