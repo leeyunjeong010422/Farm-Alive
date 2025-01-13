@@ -386,7 +386,7 @@ GameObject:
   - component: {fileID: 1916838843314841748}
   - component: {fileID: 8643493765415063428}
   - component: {fileID: 6330834745711844645}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Left Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -727,7 +727,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4711816109530113775}
   - component: {fileID: 8011763247794510613}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: XR PokeInteractor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -878,7 +878,7 @@ GameObject:
   - component: {fileID: 3593947240994782213}
   - component: {fileID: 8903267340892662279}
   - component: {fileID: 3022492808862109981}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Poke Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -961,7 +961,7 @@ GameObject:
   - component: {fileID: 3687217058501828476}
   - component: {fileID: 3579716335042507820}
   - component: {fileID: 4247623781970302862}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Local XR DirectInteractor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1128,7 +1128,7 @@ GameObject:
   - component: {fileID: 861269727732047259}
   - component: {fileID: 1458144622536236297}
   - component: {fileID: 1463666258872800098}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Poke Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1294,7 +1294,7 @@ GameObject:
   - component: {fileID: 6165566283734767950}
   - component: {fileID: 6218905537226850075}
   - component: {fileID: 8786325825434338083}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Right Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1636,7 +1636,7 @@ GameObject:
   - component: {fileID: 7541761964739510407}
   - component: {fileID: 4111242153499100110}
   - component: {fileID: 8715001751453132133}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Local XR DirectInteractor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1771,7 +1771,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3492923263668648923}
   - component: {fileID: 8515143821666998839}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: XR PokeInteractor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1907,6 +1907,10 @@ PrefabInstance:
     - target: {fileID: 1787346994484839025, guid: ad818c36731146e994540a1896ad8f24, type: 3}
       propertyPath: m_Name
       value: Ray Interactor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1787346994484839025, guid: ad818c36731146e994540a1896ad8f24, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4924506573850889901, guid: ad818c36731146e994540a1896ad8f24, type: 3}
       propertyPath: m_LineOriginTransform
@@ -2074,6 +2078,10 @@ PrefabInstance:
     - target: {fileID: 1787346994484839025, guid: ad818c36731146e994540a1896ad8f24, type: 3}
       propertyPath: m_Name
       value: Ray Interactor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1787346994484839025, guid: ad818c36731146e994540a1896ad8f24, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4924506573850889901, guid: ad818c36731146e994540a1896ad8f24, type: 3}
       propertyPath: m_LineOriginTransform
