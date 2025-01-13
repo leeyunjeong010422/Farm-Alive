@@ -231,6 +231,7 @@ MonoBehaviour:
   cropObj: {fileID: 0}
   colliders: []
   sockets: []
+  socket: {fileID: 0}
 --- !u!114 &5584668573987686322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,6 +377,7 @@ MonoBehaviour:
   cropObj: {fileID: 0}
   colliders: []
   sockets: []
+  socket: {fileID: 0}
 --- !u!114 &5045674523615740562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -521,6 +523,7 @@ MonoBehaviour:
   cropObj: {fileID: 0}
   colliders: []
   sockets: []
+  socket: {fileID: 0}
 --- !u!114 &6167617895893291454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1227,6 +1230,7 @@ MonoBehaviour:
   cropObj: {fileID: 0}
   colliders: []
   sockets: []
+  socket: {fileID: 0}
 --- !u!114 &4722293641831751603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1403,6 +1407,7 @@ MonoBehaviour:
   cropObj: {fileID: 0}
   colliders: []
   sockets: []
+  socket: {fileID: 0}
 --- !u!114 &3921681722579359686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3025,6 +3030,7 @@ MonoBehaviour:
   cropObj: {fileID: 0}
   colliders: []
   sockets: []
+  socket: {fileID: 0}
 --- !u!114 &92431141802039924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3367,6 +3373,7 @@ MonoBehaviour:
   cropObj: {fileID: 0}
   colliders: []
   sockets: []
+  socket: {fileID: 0}
 --- !u!114 &5563516837218103087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3574,6 +3581,7 @@ MonoBehaviour:
   cropObj: {fileID: 0}
   colliders: []
   sockets: []
+  socket: {fileID: 0}
 --- !u!114 &1933003063050423403
 MonoBehaviour:
   m_ObjectHideFlags: 0

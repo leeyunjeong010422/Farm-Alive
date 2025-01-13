@@ -18,6 +18,16 @@ public class TruckQuest : MonoBehaviourPun
     [SerializeField] GameObject[] npcPrefabs;
     [SerializeField] Transform npcPosition;
     [SerializeField] public GameObject npcPrefab;
+    [SerializeField] float rotationSpeed = 2.0f;
+    [SerializeField] public int correspondentId;
+    private Quaternion endRotation;
+
+    [SerializeField] GameObject truckCover1, truckCover2;
+
+    private void Start()
+    {
+        endRotation = Quaternion.Euler(0, 0, 0);
+    }
 
     private void OnTriggerStay(Collider other)
     {
@@ -35,11 +45,13 @@ public class TruckQuest : MonoBehaviourPun
                 if (boxTrigger == null)
                     return;
 
+                /*if (!boxTrigger.boxCover.IsPackaged)
+                    return;*/
+
                 PhotonView boxView = other.GetComponent<PhotonView>();
 
-                //List<int> truckIds = new List<int>();
                 List<int> itemIndexes = new List<int>();
-                List<int> requiredCounts = new List<int>();
+                List<float> requiredCounts = new List<float>();
 
                 int otherItem = 0;
                 for (int i = 0; i < boxTrigger.requiredItems.Count; i++)
@@ -73,7 +85,6 @@ public class TruckQuest : MonoBehaviourPun
 
                         if (boxTrigger.requiredItems.Count <= otherItem)
                         {
-                            Debug.Log("Null텍스트");
                             photonView.RPC(nameof(FieldItem), RpcTarget.AllBuffered);
                             PhotonNetwork.Destroy(other.gameObject);
                         }
@@ -83,7 +94,7 @@ public class TruckQuest : MonoBehaviourPun
                 if (itemIndexes.Count != 0 || requiredCounts.Count != 0)
                 {
                     int[] itemIndexArray = itemIndexes.ToArray();
-                    int[] requiredCountArray = requiredCounts.ToArray();
+                    float[] requiredCountArray = requiredCounts.ToArray();
                     QuestManager.Instance.CountUpdate(/*truckIdArray*/truckId, itemIndexArray, requiredCountArray, boxView.ViewID, otherItem);
                 }
 
@@ -93,7 +104,6 @@ public class TruckQuest : MonoBehaviourPun
 
     public void SetID(int truckId, TruckController truckController, int npcNumber)
     {
-        Debug.Log("실행");
         this.truckId = truckId;
         this.truckSpawner = truckController;
         Debug.Log($"오브젝트 ID: {truckId}");
@@ -119,6 +129,8 @@ public class TruckQuest : MonoBehaviourPun
             corTemp = corTemp - 18;
         }
 
+        correspondentId = npcNumber;
+
         if (PhotonNetwork.IsMasterClient)
         {
             npcPrefab = PhotonNetwork.Instantiate(npcPrefabs[corTemp].name, npcPosition.position, Quaternion.identity);
@@ -143,7 +155,7 @@ public class TruckQuest : MonoBehaviourPun
     [PunRPC]
     public void FieldItem()
     {
-        npcPrefab.GetComponent<NpcTextView>().NpcText();
+        npcPrefab.GetComponent<NpcTextView>().NpcText(false);
     }
 
     [PunRPC]
@@ -157,5 +169,30 @@ public class TruckQuest : MonoBehaviourPun
         }
 
         npcPrefab.transform.SetParent(npcPosition.transform);
+    }
+
+    public void CloseCover()
+    {
+        StartCoroutine(SmoothRotate(truckCover1, truckCover2));
+    }
+
+    private IEnumerator SmoothRotate(GameObject truckCover1, GameObject truckCover2)
+    {
+        Quaternion startRotation1 = truckCover1.transform.rotation;
+        Quaternion startRotation2 = truckCover2.transform.rotation;
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < rotationSpeed)
+        {
+            truckCover1.transform.rotation = Quaternion.Lerp(startRotation1, endRotation, elapsedTime / rotationSpeed);
+            truckCover2.transform.rotation = Quaternion.Lerp(startRotation2, endRotation, elapsedTime / rotationSpeed);
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        truckCover1.transform.rotation = endRotation;
+        truckCover2.transform.rotation = endRotation;
     }
 }

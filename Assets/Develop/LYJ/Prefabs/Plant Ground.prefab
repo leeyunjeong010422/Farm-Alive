@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1807215849684807209}
   m_Layer: 0
   m_Name: Plant Ground
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -85,6 +85,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd0d192e9ca3bce45bf3ec779fd39e0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnMyPlantUpdated:
+    m_PersistentCalls:
+      m_Calls: []
+  section: 0
+  ground: 0
   _digCount: 2
 --- !u!114 &1807215849684807209
 MonoBehaviour:

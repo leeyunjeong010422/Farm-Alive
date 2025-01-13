@@ -6,22 +6,25 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using static QuestManager;
 
 public class QuestManager : MonoBehaviourPun
 {
+    public UnityEvent<List<Quest>, List<TruckQuest>> OnTruckUpdated;
+
     public static QuestManager Instance;
 
     [System.Serializable]
     public class RequiredItem
     {
         public GameObject itemPrefab;
-        public int requiredcount;
+        public float requiredcount;
         public bool isSuccess;
 
-        public RequiredItem(GameObject prefab, int itemCount)
+        public RequiredItem(GameObject prefab, float itemCount)
         {
             itemPrefab = prefab;
             requiredcount = itemCount;
@@ -188,17 +191,18 @@ public class QuestManager : MonoBehaviourPun
 
     public void UpdateUI()
     {
-        UIManager.Instance.UpdateQuestUI(questsList);
+        //UIManager.Instance.UpdateQuestUI(questsList);
+        OnTruckUpdated?.Invoke(questsList, truckList);
     }
 
-    public void CountUpdate(int questId, int[] number, int[] count, int boxView, int itemCheck)
+    public void CountUpdate(int questId, int[] number, float[] count, int boxView, int itemCheck)
     {
         Debug.Log("카운트 업데이트");
         photonView.RPC(nameof(CountCheck), RpcTarget.AllBuffered, questId, number, count, boxView, itemCheck);
     }
 
     [PunRPC]
-    private void CountCheck(int truckId, int[] number, int[] count, int boxView, int itemCheck)
+    private void CountCheck(int truckId, int[] number, float[] count, int boxView, int itemCheck)
     {
         Debug.Log("카운트 감소");
 
@@ -214,8 +218,6 @@ public class QuestManager : MonoBehaviourPun
                 questsList[truckId].requiredItems[number[i]].isSuccess = true;
             }
         }
-        
-        truckList[truckId].npcPrefab.GetComponent<NpcTextView>().NpcText(itemCheck);        
 
         List<int> completedIndexes = new List<int>();
         for (int i = 0; i < questsList.Count; i++)
@@ -235,6 +237,12 @@ public class QuestManager : MonoBehaviourPun
             {
                 questsList[i].isSuccess = true;
                 completedIndexes.Add(i);
+                truckList[truckId].npcPrefab.GetComponent<NpcTextView>().NpcText(true);
+                truckList[truckId].CloseCover();
+            }
+            else
+            {
+                truckList[truckId].npcPrefab.GetComponent<NpcTextView>().NpcText(itemCheck);
             }
         }
 

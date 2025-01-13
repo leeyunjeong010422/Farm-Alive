@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class PlantGround : MonoBehaviourPun
 {
-    public UnityEvent<Crop.E_CropState> OnMyPlantUpdated;
+    public UnityEvent<int, Crop.E_CropState> OnMyPlantUpdated;
 
     public int section;
     public int ground;

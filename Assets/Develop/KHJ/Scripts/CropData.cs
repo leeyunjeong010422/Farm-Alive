@@ -15,4 +15,6 @@ public class CropData : ScriptableObject
     public float damageLimitTime;
     public float temperatureDecreaseLimitTime;
     public float temperatureIncreaseLimitTime;
+
+    public Sprite image;
 }

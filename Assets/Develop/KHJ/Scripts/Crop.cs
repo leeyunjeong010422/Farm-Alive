@@ -65,6 +65,7 @@ public class Crop : MonoBehaviourPun
     public E_CropState CurState { get { return _curState; } }
     public float Value {  get { return _value; } }
     public int DigCount {  get { return _digCount; } }
+    public CropData CropData { get { return _cropData; } }
 
     private void Awake()
     {
@@ -152,7 +153,35 @@ public class Crop : MonoBehaviourPun
         _states[(int)_curState].StateEnter();
 
         if (_cropInteractable.Ground != null)
-            _cropInteractable.Ground.OnMyPlantUpdated?.Invoke(state);
+            _cropInteractable.Ground.OnMyPlantUpdated?.Invoke(_ID, state);
+    }
+
+    public void ReactToEvents()
+    {
+        if (SectionManager.Instance.IsDownpour)
+            OnDownpourStarted();
+        else
+            OnDownpourEnded();
+
+        if (SectionManager.Instance.IsBlight)
+            OnBlightStarted();
+        else
+            OnBlightEnded();
+
+        if (SectionManager.Instance.IsDrought)
+            OnDroughtStarted();
+        else
+            OnDroughtEnded();
+
+        if (SectionManager.Instance.IsHighTemperature)
+            OnHighTemperatureStarted();
+        else
+            OnHighTemperatureEnded();
+
+        if (SectionManager.Instance.IsLowTemperature)
+            OnLowTemperatureStarted();
+        else
+            OnLowTemperatureEnded();
     }
 
     public void IncreaseMoisture() => _curMoisture++;
