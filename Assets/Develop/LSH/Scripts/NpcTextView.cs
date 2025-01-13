@@ -31,9 +31,16 @@ public class NpcTextView : MonoBehaviour
         }
     }
 
-    public void NpcText()
+    public void NpcText(bool check)
     {
-        text.text = "내가 원하던 작물이 아니잖아!!\n일을 어떻게 하는거야!";
+        if (check)
+        {
+            text.text = "완벽하군!!\n 다음에도 잘 부탁하겠네!";
+        }
+        else
+        {
+            text.text = "내가 원하던 작물이 아니잖아!!\n일을 어떻게 하는거야!";
+        }
     }
 
     public void NpcText(int count)
@@ -42,6 +49,6 @@ public class NpcTextView : MonoBehaviour
             text.text = "흠 주문하지 않은 작물이 섞여있는데\n이건 선물인가?\n 고맙게 잘 받겠네";
 
         if (count <= 0)
-            text.text = "완벽하군!!\n다음에도 잘 부탁하겠네!";
+            text.text = "고맙네\n남은 작물들도 빠르게 부탁하겠네!";
     }
 }
