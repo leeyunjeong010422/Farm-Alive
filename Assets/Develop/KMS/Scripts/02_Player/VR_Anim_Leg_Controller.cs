@@ -1,8 +1,5 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 using UnityEngine.XR;
 
 public class VR_Anim_Leg_Controller : MonoBehaviourPun
@@ -14,6 +11,11 @@ public class VR_Anim_Leg_Controller : MonoBehaviourPun
     public float rotationSpeed = 100.0f;
     public float hmdRotationThreshold = 30f;
     public float hmdLerpSpeed = 0.07f;
+
+    [Header("Raycast Settings")]
+    public float raycastDistance = 1f;
+    public LayerMask obstacleLayer;
+    public float sphereCastRadius = 0.2f;
 
     private Vector2 _leftInputAxis;
     private Vector2 _rightInputAxis;
@@ -40,7 +42,7 @@ public class VR_Anim_Leg_Controller : MonoBehaviourPun
             InputDevice leftController = InputDevices.GetDeviceAtXRNode(_leftControllerNode);
             if (leftController.TryGetFeatureValue(CommonUsages.primary2DAxis, out _leftInputAxis))
             {
-                if (_leftInputAxis != Vector2.zero)
+                if (_leftInputAxis != Vector2.zero && CanMoveInDirection(_leftInputAxis))
                 {
                     MoveCharacter();
                     animator.SetFloat("Speed", _leftInputAxis.magnitude); // Speed 파라미터 전달
@@ -115,8 +117,19 @@ public class VR_Anim_Leg_Controller : MonoBehaviourPun
 
     private void RotateCharacter(float rotationInput)
     {
-        float rotationAngle = rotationInput * rotationSpeed * Time.deltaTime;
-        transform.Rotate(0, rotationAngle, 0);
+        if (cameraTransform != null)
+        {
+            Vector3 cameraPosition = cameraTransform.position;
+
+            // 카메라 중심으로 회전
+            transform.RotateAround(cameraPosition, Vector3.up, rotationInput * rotationSpeed * Time.deltaTime);
+        }
+        else
+        {
+            // 기존 회전 방식 (카메라가 없을 경우)
+            float rotationAngle = rotationInput * rotationSpeed * Time.deltaTime;
+            transform.Rotate(0, rotationAngle, 0);
+        }
     }
 
     private void RotateCharacterWithHMD()
@@ -146,6 +159,29 @@ public class VR_Anim_Leg_Controller : MonoBehaviourPun
             // 캐릭터 이동
             transform.position += moveDirection * moveSpeed * Time.deltaTime;
         }
+    }
+
+    private bool CanMoveInDirection(Vector2 inputAxis)
+    {
+        Vector3 forward = new Vector3(cameraTransform.forward.x, 0, cameraTransform.forward.z).normalized;
+        Vector3 right = new Vector3(cameraTransform.right.x, 0, cameraTransform.right.z).normalized;
+
+        Vector3 moveDirection = (forward * inputAxis.y + right * inputAxis.x).normalized;
+
+        // Raycast origin 설정 (카메라 위치를 기준)
+        Vector3 origin = cameraTransform.position;
+
+        RaycastHit[] hits = Physics.SphereCastAll(origin, sphereCastRadius, moveDirection, raycastDistance, obstacleLayer);
+        foreach (var hit in hits)
+        {
+            if (hit.collider != null)
+            {
+                //Debug.Log($"이동 방해하는 오브젝트: {hit.collider.gameObject.name}");
+                return false;
+            }
+        }
+
+        return true;
     }
 
     [PunRPC]

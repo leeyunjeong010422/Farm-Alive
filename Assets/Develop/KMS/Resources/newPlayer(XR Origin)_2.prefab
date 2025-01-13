@@ -246,6 +246,11 @@ MonoBehaviour:
   rotationSpeed: 100
   hmdRotationThreshold: 350
   hmdLerpSpeed: 0.07
+  raycastDistance: 1
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  sphereCastRadius: 0.2
   _leftControllerNode: 4
   _rightControllerNode: 5
 --- !u!114 &5922741845108198140
