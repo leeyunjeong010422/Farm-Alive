@@ -237,7 +237,12 @@ public class GeneratorInteractable : XRBaseInteractable
             return;
         }
 
-        _repair.IsSymptom = false;
+        if(_repair.IsSymptom)
+        {
+            _repair.IsSymptom = false;
+        }
+
+        _isBroken = false; // 고장 상태 초기화
         _repair.ResetRepairState();
         MessageDisplayManager.Instance.ShowMessage("전조 증상이 해결되었습니다!");
         Debug.LogError("전조 증상이 해결되었습니다!");
@@ -246,16 +251,17 @@ public class GeneratorInteractable : XRBaseInteractable
     // 고장 수리 처리
     public void SolveBroken()
     {
-        if (_repair == null) return;
-
-        if (!_repair.IsRepaired)
+        // 전조 증상이 이미 해결된 경우 고장 발생 방지
+        if (!_repair.IsSymptom)
         {
-            _isBroken = false;
-            _repair.IsRepaired = true; // 고장 상태 해제
-            _repair.ResetRepairState(); // 상태 초기화
-            ResetGeneratorState(); // 발전기 상태 초기화
-            MessageDisplayManager.Instance.ShowMessage("1차 수리가 완료! 휠과 시동줄을 사용하여 2차 수리를 해주세요.", 2f);
-            Debug.LogError("1차 수리가 완료! 휠과 시동줄을 사용하여 2차 수리를 해주세요.");
+            return;
         }
+
+        _isGeneratorRunning = false;
+        _isBroken = true;
+        _repair.ResetRepairState();
+        MessageDisplayManager.Instance.ShowMessage("발전기가 고장났습니다!");
+        Debug.LogError("발전기가 고장났습니다!");
+        LightingManager.Instance.StartBlackout();
     }
 }

@@ -202,6 +202,11 @@ public class Repair : MonoBehaviourPun
     [PunRPC]
     private void SyncRepaired(bool value)
     {
+        if (!IsSymptom && !value)
+        {
+            return;
+        }
+
         _isRepaired = value;
         (_isRepaired ? OnBrokenSolved : OnBrokenRaised)?.Invoke();
     }
