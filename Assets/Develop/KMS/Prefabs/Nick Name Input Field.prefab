@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4212355518111301327}
   - component: {fileID: 3151025383057008381}
   m_Layer: 5
-  m_Name: Room Info
+  m_Name: NickName Info
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -257,9 +257,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: InputFieldReceiver, Assembly-CSharp
-        m_MethodName: CreateRoom
+      - m_Target: {fileID: 7399214125238361346}
+        m_TargetAssemblyTypeName: NickNameInputFiledReceiver, Assembly-CSharp
+        m_MethodName: CreateNickName
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -623,6 +623,7 @@ GameObject:
   - component: {fileID: 8437028974135710648}
   - component: {fileID: 8437028974135710651}
   - component: {fileID: 8437028974135710650}
+  - component: {fileID: 7399214125238361346}
   m_Layer: 5
   m_Name: InputField (TMP)
   m_TagString: Untagged
@@ -819,6 +820,21 @@ MonoBehaviour:
   m_OnKeyboardFocusChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7399214125238361346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8437028974135710644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c73d3031d47fe4bb27a3bd94211920, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _keyboardDisplay: {fileID: 8437028974135710650}
+  _inputField: {fileID: 8437028974135710651}
+  _text: {fileID: 3151025383057008381}
 --- !u!1 &8437028974540207060
 GameObject:
   m_ObjectHideFlags: 0

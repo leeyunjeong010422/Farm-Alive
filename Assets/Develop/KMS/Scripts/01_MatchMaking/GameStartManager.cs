@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using UnityEngine.XR;
+using WebSocketSharp;
 
 public class GameStartManager : MonoBehaviour
 {
@@ -40,8 +41,8 @@ public class GameStartManager : MonoBehaviour
 
     [SerializeField] private string[] _gameInstructions = new string[]
     {
+        "한번이라도 접속 하셨다면 \n B key를 1초동안 눌러주세요.",
         "Press B key",
-        "한번이라도 접속 하셨다면 \n B key를 1초동안 눌러주세요. \nIf you have logged in even once, \npress the B key for 1 seconds. ",
         "10",
         "9",
         "8",
@@ -87,7 +88,12 @@ public class GameStartManager : MonoBehaviour
         {
             if (isAPressed && !_isVideoPlaying)
             {
-                PlayVideo();
+                if (string.IsNullOrEmpty(FirebaseManager.Instance.GetNickName()))
+                    PlayVideo();
+                else
+                {
+                    SceneLoader.LoadSceneWithLoading("03_Lobby");
+                }
             }
         }
 
@@ -123,7 +129,12 @@ public class GameStartManager : MonoBehaviour
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.A) && !_isVideoPlaying)
         {
-            PlayVideo();
+            if (string.IsNullOrEmpty(FirebaseManager.Instance.GetNickName()))
+                PlayVideo();
+            else
+            {
+                SceneLoader.LoadSceneWithLoading("03_Lobby");
+            }
         }
 
         if (Input.GetKey(KeyCode.B))
@@ -178,9 +189,6 @@ public class GameStartManager : MonoBehaviour
             videoPlayer.Play();
             _isVideoPlaying = true;
         }
-
-        // 안내 텍스트 숨기기
-        introPanel.SetActive(false);
     }
 
     private void OnVideoEnd(VideoPlayer vp)
@@ -197,6 +205,7 @@ public class GameStartManager : MonoBehaviour
         if (nickNameInputField)
         {
             nickNameInputField.SetActive(true);
+            nickNameInputField.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, 3f);
         }
 
         _isVideoPlaying = false;
