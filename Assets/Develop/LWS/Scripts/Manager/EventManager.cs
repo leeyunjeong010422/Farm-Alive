@@ -14,13 +14,23 @@ public class EventManager : MonoBehaviourPunCallbacks
     public UnityEvent<EVENT> OnEventEnded;
 
     // 현재 진행 중인 이벤트 목록
-    private List<int> _activeEventsID = new List<int>();
+    public List<int> _activeEventsID = new List<int>(); 
 
     private (int, int)[] _conflictPairs = new (int, int)[]
     {
         (421,441),
         (431,442),
     };
+
+    public static EventManager Instance;
+
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
 
     private void Start()
     {
@@ -144,9 +154,13 @@ public class EventManager : MonoBehaviourPunCallbacks
             EVENT evData = eventDict[eventID];
 
             OnEventStarted?.Invoke(evData);
+            
+            ParticleManager.Instance.PlayParticle(eventID.ToString(), evData.event_continueTime);
+
+            MessageDisplayManager.Instance.ShowMessage(eventDict[eventID].event_name);
 
             // 자동 종료
-            if (evData.event_continueTime > 0)
+            if (evData.event_continueTime > 0) 
             {
                 StartCoroutine(AutoEndRoutine(eventID, evData.event_continueTime));
             }
