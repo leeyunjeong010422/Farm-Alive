@@ -12,13 +12,39 @@ public class TemperatureDial : BaseRepairable
         base.Start();
 
         _temperatureDial = GetComponent<XRKnobDial>();
-        if (_temperatureDial = null)
+        if (_temperatureDial == null)
+        {
+            Debug.LogError("TemperatureDial이 존재하지 않습니다.");
             return;
+        }
 
         _temperatureDial.onValueChange.AddListener(OnKnobValueChanged);
     }
 
     private void OnKnobValueChanged(float value)
+    {
+        // 1. 고장 상태 확인
+        if (_repair != null && IsBroken())
+        {
+            MessageDisplayManager.Instance.ShowMessage($"온도 조절 장치를 수리해야 사용 할 수 있습니다.");
+            return;
+        }
+
+        // 2. 전조 증상 해결 로직
+        if (_repair != null && _repair.IsSymptom) // 전조 증상이 있을 경우
+        {
+            if (Mathf.Approximately(value, 1.0f) || Mathf.Approximately(value, 0.0f))
+            {
+                SolveSymptom();
+                return; // 전조 증상이 해결되면 이후 로직 실행하지 않음
+            }
+        }
+
+        // 3. 이벤트 처리 로직
+        TemperatureEvents(value);
+    }
+
+    private void TemperatureEvents(float value)
     {
         if (Mathf.Approximately(value, 1f)) // 다이얼을 오른쪽으로 돌려서 온도를 올릴 때,
         {
