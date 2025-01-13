@@ -117,6 +117,8 @@ public class XRKnobDial : XRBaseInteractable
     [Tooltip("Events to trigger when the knob is rotated")]
     ValueChangeEvent m_OnValueChange = new ValueChangeEvent();
 
+    private float _firstValue;
+
     IXRSelectInteractor m_Interactor;
 
     bool m_PositionDriven = false;
@@ -193,6 +195,7 @@ public class XRKnobDial : XRBaseInteractable
 
     void Start()
     {
+        _firstValue = this.value;
         SetValue(m_Value);
         SetKnobRotation(ValueToRotation());
     }
@@ -228,7 +231,7 @@ public class XRKnobDial : XRBaseInteractable
         m_Interactor = null;
 
         // 손을 뗐을 때 Knob 값을 초기화
-        value = 0.0f; // Knob 값 초기화
+        value = _firstValue; // Knob 값 초기화
         SetKnobRotation(ValueToRotation()); // Handle 위치 초기화
     }
 

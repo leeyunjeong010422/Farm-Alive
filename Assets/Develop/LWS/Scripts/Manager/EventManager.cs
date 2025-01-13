@@ -14,7 +14,7 @@ public class EventManager : MonoBehaviourPunCallbacks
     public UnityEvent<EVENT> OnEventEnded;
 
     // 현재 진행 중인 이벤트 목록
-    private List<int> _activeEventsID = new List<int>();
+    public List<int> _activeEventsID = new List<int>(); 
 
     private (int, int)[] _conflictPairs = new (int, int)[]
     {
