@@ -59,12 +59,22 @@ public class QuestItemSlot : MonoBehaviour
     // 작물 이름 갱신
     private void UpdateCropName(CropData cropData)
     {
+        if (cropData == null)
+        {
+            cropName.text = "";
+            return;
+        }
         cropName.text = cropData.name;
     }
 
     // 작물 이미지 갱신
     private void UpdateCropImage(CropData cropData)
     {
+        if (cropData == null)
+        {
+            cropImage.sprite = null;
+            return;
+        }
         cropImage.sprite = cropData.image;
     }
 
