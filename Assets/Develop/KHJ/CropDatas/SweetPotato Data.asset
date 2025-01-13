@@ -14,13 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   cropName: 
-  digCount: 
+  digCount: 0
   maxMoisture: 0
   maxNutrient: 0
   growthTime: 0
   droughtMaxMoisture: 0
   droughtMaxNutrient: 0
-  damagePercent: 0
+  damageRate: 0
   damageLimitTime: 0
-  temperatureIncreaseLimitTime: 0
   temperatureDecreaseLimitTime: 0
+  temperatureIncreaseLimitTime: 0
+  image: {fileID: 21300000, guid: 8db09142268c6ca4dafc7227d7393507, type: 3}

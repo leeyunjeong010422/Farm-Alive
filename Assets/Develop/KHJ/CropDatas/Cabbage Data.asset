@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Cabbage Data
   m_EditorClassIdentifier: 
   ID: 131
-  cropName: "\uC591\uC0C1\uCD94\uC77C\uAE4C?"
+  cropName: "\uC591\uC0C1\uCD94"
   digCount: 3
   maxMoisture: 2
   maxNutrient: 2
@@ -24,3 +24,4 @@ MonoBehaviour:
   damageLimitTime: 15
   temperatureDecreaseLimitTime: 15
   temperatureIncreaseLimitTime: 15
+  image: {fileID: 21300000, guid: 83c959044f47568498318331804a959b, type: 3}
