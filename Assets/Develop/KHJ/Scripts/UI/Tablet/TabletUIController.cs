@@ -26,8 +26,6 @@ public class TabletUIController : UIBinder
         _panels[(int)E_PanelName.Section] = GetUI(E_PanelName.Section.ToString());
         _panels[(int)E_PanelName.Schedule] = GetUI(E_PanelName.Schedule.ToString());
 
-        ReturnToMainPanel();
-
         // Main Panel
         GetUI<Button>("Main_GuideButton").onClick.AddListener(OnGuideButtonClicked);
         GetUI<Button>("Main_SectionButton").onClick.AddListener(OnSectionButtonClicked);
@@ -46,6 +44,8 @@ public class TabletUIController : UIBinder
 
     }
 
+    public void ReturnToMainPanel() => ChangePanel(E_PanelName.Main);
+
     private void ChangePanel(E_PanelName panelName)
     {
         foreach (GameObject panel in _panels)
@@ -53,8 +53,6 @@ public class TabletUIController : UIBinder
             panel.SetActive(panel.name == panelName.ToString());
         }
     }
-
-    private void ReturnToMainPanel() => ChangePanel(E_PanelName.Main);
 
     #region Main Panel
     private void OnGuideButtonClicked() => ChangePanel(E_PanelName.Guide);

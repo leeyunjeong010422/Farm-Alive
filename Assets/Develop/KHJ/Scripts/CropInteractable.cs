@@ -40,7 +40,7 @@ public class CropInteractable : XRGrabInteractable
         if (plantGround != null)
         {
             SectionManager.Instance.Sections[SectionManager.Instance.CurSection, plantGround.ground] = null;
-            plantGround.OnMyPlantUpdated?.Invoke(Crop.E_CropState.SIZE);
+            plantGround.OnMyPlantUpdated?.Invoke(0, Crop.E_CropState.SIZE);
         }
     }
 

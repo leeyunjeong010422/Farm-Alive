@@ -28,6 +28,9 @@ public class SectionManager : MonoBehaviour
     public bool IsHighTemperature { get; private set; } = false;
     public bool IsLowTemperature { get; private set; } = false;
 
+    public int SectionNum { get { return SECTION_NUM; } }
+    public int GroundPerSection { get { return GROUND_PER_SECTION; } }
+
     private void Awake()
     {
         if (Instance == null)
@@ -129,6 +132,20 @@ public class SectionManager : MonoBehaviour
 
         nutrientBarrel.FillAmount -= 0.1f;
     }
+
+    //public void DecreaseMoisture()
+    //{
+    //    PlayParticle(/ 습기제거제파티클배열 /);
+
+    //    EventManager.Instance.EndEvent(431);
+    //}
+
+    //public void SprayPesticide()
+    //{
+    //    PlayParticle(/ 살충제파티클배열 /);
+
+    //    EventManager.Instance.EndEvent(432);
+    //}
 
     private void PlayParticle(int sectionIndex, bool isNutrient)
     {

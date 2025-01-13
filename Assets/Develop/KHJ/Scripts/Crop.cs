@@ -152,7 +152,7 @@ public class Crop : MonoBehaviourPun
         _states[(int)_curState].StateEnter();
 
         if (_cropInteractable.Ground != null)
-            _cropInteractable.Ground.OnMyPlantUpdated?.Invoke(state);
+            _cropInteractable.Ground.OnMyPlantUpdated?.Invoke(_ID, state);
     }
 
     public void ReactToEvents()
