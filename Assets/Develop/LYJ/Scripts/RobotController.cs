@@ -38,6 +38,11 @@ public class RobotController : MonoBehaviour
 
     private void Update()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         if (isReturning)
         {
             // 초기 위치로 이동 중일 때
@@ -66,7 +71,6 @@ public class RobotController : MonoBehaviour
 
     public void OnMoveButtonClicked()
     {
-        // 로컬 플레이어의 PhotonViewID 가져오기
         PhotonView localPlayerPhotonView = GetLocalPlayerPhotonView();
         if (localPlayerPhotonView == null)
         {
@@ -77,22 +81,30 @@ public class RobotController : MonoBehaviour
         int photonViewID = localPlayerPhotonView.ViewID;
         Debug.Log($"버튼을 누른 플레이어의 PhotonViewID: {photonViewID}");
 
+        // 소유권 요청
         photonView.RPC(nameof(RequestOwnership), RpcTarget.MasterClient, photonViewID);
     }
 
     [PunRPC]
     private void RequestOwnership(int photonViewID, PhotonMessageInfo info)
     {
+        // 마스터 클라이언트에서 소유권 이전
         photonView.TransferOwnership(info.Sender.ActorNumber);
 
-        // 버튼을 누른 로컬 플레이어의 PhotonViewID를 서버로 전달
-        photonView.RPC(nameof(SyncTargetPlayer), RpcTarget.All, photonViewID);
+        // 소유권 이전 후 대상 동기화
+        photonView.RPC(nameof(SyncTargetPlayer), RpcTarget.AllBuffered, photonViewID);
     }
 
     [PunRPC]
-    private void SyncTargetPlayer(int photonViewID, PhotonMessageInfo info)
+    private void SyncTargetPlayer(int photonViewID)
     {
-        // 이미 추적 중인 플레이어가 한 번 더 버튼을 누른 경우 초기 상태로 복원
+        // 로봇의 소유자만 실행
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
+        // 이미 추적 중인 플레이어가 버튼을 다시 누른 경우 초기 상태로 복원
         if (targetPhotonViewID == photonViewID && isFollowing)
         {
             StartReturnToInitial();
@@ -100,7 +112,6 @@ public class RobotController : MonoBehaviour
             return;
         }
 
-        // 새로운 PhotonViewID를 기반으로 해당 플레이어의 Transform 가져오기
         GameObject targetObject = GetPlayerGameObjectByPhotonViewID(photonViewID);
 
         if (targetObject != null)
@@ -148,7 +159,7 @@ public class RobotController : MonoBehaviour
         foreach (GameObject player in players)
         {
             PhotonView view = player.GetComponent<PhotonView>();
-            if (view != null && view.IsMine) // 로컬 플레이어 확인
+            if (view != null && view.IsMine)
             {
                 return view;
             }
