@@ -67,8 +67,6 @@ public class PunPlayerSpawn : MonoBehaviour
         }
     }
 
-
-#if UNITY_EDITOR
     public void ReturnToFusion()
     {
         ClearPunObject();
@@ -118,5 +116,4 @@ public class PunPlayerSpawn : MonoBehaviour
             }
         }
     }
-#endif
 }
