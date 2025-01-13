@@ -24,7 +24,6 @@ public class PunManager : MonoBehaviourPunCallbacks
     public string waittingRoomName = "04_Waiting Room";
 
     private Dictionary<string, RoomInfo> cachedRoomList = new Dictionary<string, RoomInfo>();
-
     private E_GameMode _gameMode = E_GameMode.Normal;
 
     public static PunManager Instance { get; private set; }
@@ -90,6 +89,8 @@ public class PunManager : MonoBehaviourPunCallbacks
         PhotonNetwork.AuthValues = new AuthenticationValues { UserId = /*userId*/ Random.Range(1000, 10000).ToString() };
 
         Debug.Log($"ConnectToPhoton {userId}");
+        Debug.Log($"PhotonNetwork NickName은 {PhotonNetwork.LocalPlayer.NickName}입니다.");
+
         PhotonNetwork.ConnectUsingSettings();
         Debug.Log("포톤에 연결 중...");
     }
@@ -102,6 +103,7 @@ public class PunManager : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.InLobby)
         {
             Debug.Log("0. Photon Master Server와 연결!");
+            PhotonNetwork.LocalPlayer.NickName = FirebaseManager.Instance.GetNickName();
             PhotonNetwork.JoinLobby();
         }
         else

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -37,54 +38,89 @@ public class StageSelectInteractable : XRGrabInteractable
 
     protected override void OnHoverEntered(HoverEnterEventArgs args)
     {
-#if UNITY_EDITOR
-        Debug.Log($"{args.interactableObject.transform.name}가 Hover가 선택되었습니다.");
-#endif
-        if (instantiatedUI)
-        {
-            instantiatedUI.SetActive(true);
-        }
-        else if (uiPrefab)
-        {
-            instantiatedUI = Instantiate(uiPrefab, transform.position + transform.right + uiOffset, rotation);
-            instantiatedUI.transform.SetParent(transform);
+        string highStage = FirebaseManager.Instance.GetHighStage();
 
-            TextMeshPro tmp = instantiatedUI.GetComponentInChildren<TextMeshPro>();
-            if (tmp)
+        // 현재 스테이지와 HighStage 비교 (비연속 Enum 대응)
+        Array stageModes = Enum.GetValues(typeof(E_StageMode));
+        int currentIndex = Array.IndexOf(stageModes, stageMode);
+        int highStageIndex = Array.IndexOf(stageModes, Enum.Parse(typeof(E_StageMode), highStage));
+
+        if (currentIndex <= highStageIndex + 1) // 선택 가능 조건
+        {
+            base.OnHoverEntered(args);
+
+            if (instantiatedUI)
             {
-                tmp.transform.localScale = Vector3.one * scale;
-                // TODO : 파이어베이스에서 HighstStage값을 가져와서 해당 값과 스테이지 이름을 비교해서
-                // 텍스트 출력하기
-                tmp.text = $"{gameObject.name} 선택 가능";
+                instantiatedUI.SetActive(true);
             }
+            else if (uiPrefab)
+            {
+                instantiatedUI = Instantiate(uiPrefab, transform.position + transform.right + uiOffset, rotation);
+                instantiatedUI.transform.SetParent(transform);
+
+                TextMeshPro tmp = instantiatedUI.GetComponentInChildren<TextMeshPro>();
+                if (tmp)
+                {
+                    tmp.transform.localScale = Vector3.one * scale;
+
+                    // 캐싱된 데이터 사용
+                    var stageData = FirebaseManager.Instance.GetCachedStageData((int)stageMode);
+
+                    if (stageData != null)
+                    {
+                        int stars = stageData.stars;
+                        float playTime = stageData.playTime;
+
+                        tmp.text = $"스테이지: {stageMode}\n" +
+                                   $"스타: {stars}\n" +
+                                   $"플레이 타임: {playTime}초";
+                    }
+                    else
+                    {
+                        tmp.text = $"스테이지: {stageMode}\n" +
+                               "스타: 데이터 없음\n" +
+                               "플레이 타임: 데이터 없음";
+                    }
+                }
+            }
+        }
+        else // 선택 불가능
+        {
+            Debug.LogWarning($"현재 스테이지({stageMode})는 선택할 수 없습니다. HighStage는 {highStage}입니다.");
+            ShowUnavailableUI();
         }
     }
 
     protected override void OnHoverExited(HoverExitEventArgs args)
     {
-#if UNITY_EDITOR
-        Debug.Log($"{args.interactableObject.transform.name}가 Hover가 종료 되었습니다.");
-#endif
         TurnOnUi(false);
     }
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
-#if UNITY_EDITOR
-        Debug.Log($"{args.interactableObject.transform.name}가 Select가 되었습니다.");
-#endif
-        // TODO : 파이어베이스에서 HighstStage값을 가져와서 해당 값과 스테이지 이름을 비교해서
-        // 선택시에 해당 스테이지를 전달 할수 있는지 파악하기.
-
         TurnOnUi(false);
     }
 
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
+        string highStage = FirebaseManager.Instance.GetHighStage();
+
+        Array stageModes = Enum.GetValues(typeof(E_StageMode));
+        int currentIndex = Array.IndexOf(stageModes, stageMode);
+        int highStageIndex = Array.IndexOf(stageModes, Enum.Parse(typeof(E_StageMode), highStage));
+
+        if (currentIndex <= highStageIndex + 1) // 선택 가능 조건
+        {
+            base.OnSelectExited(args);
+            StartCoroutine(SelectObjectDestroy(args.interactableObject.transform.gameObject));
+        }
+        else
+        {
 #if UNITY_EDITOR
-        Debug.Log($"{args.interactableObject.transform.name}가 Select가 종료 되었습니다.");
+            Debug.LogWarning($"스테이지({stageMode})는 선택 불가능합니다. OnSelectExited 동작을 무시합니다.");
 #endif
-        StartCoroutine(SelectObjectDestroy(args.interactableObject.transform.gameObject));
+            StartCoroutine(ResetPosition());
+        }
     }
 
     IEnumerator SelectObjectDestroy(GameObject targetObject)
@@ -121,7 +157,7 @@ public class StageSelectInteractable : XRGrabInteractable
                 Transform mainCameraTransform = Camera.main.transform;
 
                 Vector3 directionToCamera = (mainCameraTransform.position - transform.position).normalized;
-                Vector3 spawnPosition = transform.position + directionToCamera * 2.0f + Vector3.up * 1.0f; // 앞쪽 2m, 위쪽 1m
+                Vector3 spawnPosition = transform.position + directionToCamera * 2.0f + Vector3.up * 1.0f;
 
                 instantiatedInputField = Instantiate(globalInputFieldPrefab, spawnPosition, Quaternion.LookRotation(-directionToCamera));
                 instantiatedInputField.transform.localScale = Vector3.one * 0.02f;
@@ -131,5 +167,26 @@ public class StageSelectInteractable : XRGrabInteractable
                 instantiatedInputField.SetActive(true);
             }
         }
+    }
+
+    // 선택 불가능 시 알림 UI 표시
+    private void ShowUnavailableUI()
+    {
+        if (instantiatedUI)
+        {
+            TextMeshPro tmp = instantiatedUI.GetComponentInChildren<TextMeshPro>();
+            if (tmp)
+            {
+                tmp.text = $"{gameObject.name} 선택 불가";
+            }
+        }
+    }
+
+    private IEnumerator ResetPosition()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        transform.position = initialPosition;
+        transform.rotation = initialRotation;
     }
 }
