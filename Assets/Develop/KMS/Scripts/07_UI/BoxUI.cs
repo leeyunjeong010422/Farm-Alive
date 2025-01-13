@@ -44,7 +44,7 @@ public class BoxUI : MonoBehaviour
         string displayText = "Box 안 내용물:\n";
 
         // 동일 이름의 작물 카운트를 합산하기 위한 Dictionary
-        Dictionary<string, int> itemCounts = new Dictionary<string, int>();
+        Dictionary<string, float> itemCounts = new Dictionary<string, float>();
 
         foreach (var item in requiredItems)
         {

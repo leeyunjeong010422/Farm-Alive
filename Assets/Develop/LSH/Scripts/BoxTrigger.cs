@@ -74,7 +74,7 @@ public class BoxTrigger : MonoBehaviourPun
             Rigidbody itemRigid = itemView.GetComponent<Rigidbody>();
             itemRigid.drag = 10;
             itemRigid.angularDrag = 1;
-
+            Crop cropView = itemView.GetComponent<Crop>();
             if (requiredItems.Count > 0)
             {
                 foreach (QuestManager.RequiredItem item in requiredItems)
@@ -82,17 +82,17 @@ public class BoxTrigger : MonoBehaviourPun
                     Debug.Log(requiredItems);
                     if (item.itemPrefab.name == itemView.gameObject.name)
                     {
-                        item.requiredcount++;
+                        item.requiredcount += cropView.Value;
                         Debug.Log("카운트업");
                         NotifyRequiredItemsChanged();
                         return;
                     }
                 }
-                requiredItems.Add(new RequiredItem(itemView.gameObject, 1));
+                requiredItems.Add(new RequiredItem(itemView.gameObject, cropView.Value));
             }
             else
             {
-                requiredItems.Add(new RequiredItem(itemView.gameObject, 1));
+                requiredItems.Add(new RequiredItem(itemView.gameObject, cropView.Value));
             }
 
             NotifyRequiredItemsChanged();
@@ -100,19 +100,21 @@ public class BoxTrigger : MonoBehaviourPun
         else
         {
             PhotonView itemView = PhotonView.Find(viewId);
+
+            Crop cropView = itemView.GetComponent<Crop>();
             if (requiredItems.Count > 0)
             {
                 for (int i = requiredItems.Count - 1; i >= 0; i--)
                 {
                     if (requiredItems[i].itemPrefab.name == itemView.gameObject.name)
                     {
-                        requiredItems[i].requiredcount--;
+                        requiredItems[i].requiredcount -= cropView.Value;
 
                         Rigidbody itemRigid = itemView.GetComponent<Rigidbody>();
                         itemRigid.drag = 0;
                         itemRigid.angularDrag = 0.05f;
 
-                        if (requiredItems[i].requiredcount == 0)
+                        if (requiredItems[i].requiredcount <= 0)
                         {
                             if (idList.Contains(itemView.ViewID))
                             {
@@ -142,8 +144,6 @@ public class BoxTrigger : MonoBehaviourPun
 
         Debug.Log($"테이핑 완료: {this.name}");
     }
-
-
 
     private void NotifyRequiredItemsChanged()
     {

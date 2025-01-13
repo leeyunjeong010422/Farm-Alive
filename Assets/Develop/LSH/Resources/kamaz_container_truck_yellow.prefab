@@ -580,6 +580,8 @@ MonoBehaviour:
   - {fileID: 6173286867380869244, guid: 8dbab36077354c1479ad7a14b99ab0d0, type: 3}
   npcPosition: {fileID: 4005091297302065311}
   npcPrefab: {fileID: 0}
+  truckCover1: {fileID: 4525949814057061975}
+  truckCover2: {fileID: 6368540260026484196}
 --- !u!114 &-7669021254949540896
 MonoBehaviour:
   m_ObjectHideFlags: 0
