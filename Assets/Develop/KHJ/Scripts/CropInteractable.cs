@@ -28,6 +28,7 @@ public class CropInteractable : XRGrabInteractable
 
             SectionManager.Instance.Sections[SectionManager.Instance.CurSection, plantGround.ground] = crop;
             crop.ChangeState(Crop.E_CropState.GrowStopped);
+            crop.ReactToEvents();
         }
     }
 

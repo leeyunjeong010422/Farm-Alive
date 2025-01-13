@@ -155,6 +155,34 @@ public class Crop : MonoBehaviourPun
             _cropInteractable.Ground.OnMyPlantUpdated?.Invoke(state);
     }
 
+    public void ReactToEvents()
+    {
+        if (SectionManager.Instance.IsDownpour)
+            OnDownpourStarted();
+        else
+            OnDownpourEnded();
+
+        if (SectionManager.Instance.IsBlight)
+            OnBlightStarted();
+        else
+            OnBlightEnded();
+
+        if (SectionManager.Instance.IsDrought)
+            OnDroughtStarted();
+        else
+            OnDroughtEnded();
+
+        if (SectionManager.Instance.IsHighTemperature)
+            OnHighTemperatureStarted();
+        else
+            OnHighTemperatureEnded();
+
+        if (SectionManager.Instance.IsLowTemperature)
+            OnLowTemperatureStarted();
+        else
+            OnLowTemperatureEnded();
+    }
+
     public void IncreaseMoisture() => _curMoisture++;
     public void IncreaseNutrient() => _curNutrient++;
 
