@@ -90,12 +90,11 @@ public class QuestManager : MonoBehaviourPun
                     return;
 
                 maxRequiredCount = CSVManager.Instance.Correspondents_CropsCount[corID].correspondent_stage[stageIdx];
-                Debug.Log($"max아이템갯수는 : {maxRequiredCount}");
 
                 int rand = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
 
                 List<int> randomPrefabIndexes = new List<int>();
-                int[] choseIndex = new int[rand];
+                int[] choseIndex = new int[CSVManager.Instance.Correspondents_CropsType[corID].correspondent_stage[stageIdx]];
 
                 // 아이템 목록화
                 for (int j = 0; j < 3; j++)
@@ -151,12 +150,10 @@ public class QuestManager : MonoBehaviourPun
                     randomPrefabIndexes.RemoveAt(randomIndex);
                 }
 
-                //int corID = CSVManager.Instance.Stages_Correspondents[stageID].stage_corList[i];
                 float qTimer = CSVManager.Instance.Correspondents[corID].correspondent_timeLimit;
 
                 photonView.RPC(nameof(SetQuest), RpcTarget.AllBuffered, "택배포장", itemCounts.Length, choseIndex, itemCounts, corID, qTimer);
             }
-
         }
     }
 
