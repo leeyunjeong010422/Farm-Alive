@@ -7,6 +7,8 @@ public class ParticleManager : MonoBehaviour
 {
     public static ParticleManager Instance { get; private set; }
 
+    public bool isAllParticleStoped = false;
+
     [System.Serializable]
     public class ParticleInfo
     {
@@ -33,11 +35,19 @@ public class ParticleManager : MonoBehaviour
         foreach (var info in _particleInfo)
         {
             _particleDict.Add(info.key, info.particle);
+            info.particle.Stop();
         }
+
+        Debug.Log("모든 파티클 딕셔너리화, 재생중지 완료");
+
+        isAllParticleStoped = true;
     }
 
     /// <summary>
     /// 파티클 플레이, duration초 후 stop
+    /// 만약, 특정하게 지속시간이 정해져 있지 않은 파티클이라면,
+    /// float인자 = 0 으로 전달
+    /// 이후, 멈출 타이밍에 stopParticle(key(name))호출
     /// </summary>
     /// <param name="key"></param>
     /// <param name="duration"></param>
@@ -59,7 +69,7 @@ public class ParticleManager : MonoBehaviour
     /// <summary>
     /// 특정 파티클 Stop
     /// </summary>
-    public void StopAllParticle(string key)
+    public void StopParticle(string key)
     {
         ParticleSystem particle = _particleDict[key];
         if (particle.isPlaying)

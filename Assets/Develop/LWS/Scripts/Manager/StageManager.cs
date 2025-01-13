@@ -8,6 +8,7 @@ public class StageManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] int _curStageID;
 
+    private bool _isMapSetted = false;
     public UnityEvent OnGameStarted;
 
     [Header("스테이지 시간 속성")]
@@ -64,11 +65,22 @@ public class StageManager : MonoBehaviourPunCallbacks
         _stageTimeLimit = 1000f;
 
 
+        while (!ParticleManager.Instance.isAllParticleStoped)
+            yield return null; // 모든 파티클 정보 저장, 재생 중단 후 진행
+
+        SetSeason();
+
+        while (!_isMapSetted)
+            yield return null; // 맵 세팅 후 진행
 
         SpawnPlayer();
+
         yield return new WaitForSeconds(5f);
+
         OnGameStarted?.Invoke();
+        
         yield return new WaitForSeconds(5f);
+        
         if (PhotonNetwork.IsMasterClient)
             StartStageTimer();
     }
@@ -101,6 +113,8 @@ public class StageManager : MonoBehaviourPunCallbacks
             case 3: // 겨울
                 break;
         }
+
+        _isMapSetted = true;
     }
 
     private void SpawnPlayer()

@@ -27,6 +27,7 @@ public class TemperatureDial : BaseRepairable
                 return;
 
             EventManager.Instance.EndEvent(421);
+            ParticleManager.Instance.StopParticle("421");
         }
 
         if (Mathf.Approximately(value, 0f)) // 다이얼을 왼쪽으로 돌려서 온도를 내릴 때,
@@ -36,6 +37,7 @@ public class TemperatureDial : BaseRepairable
                 return;
 
             EventManager.Instance.EndEvent(441);
+            ParticleManager.Instance.StopParticle("441");
         }
     }
 }

@@ -154,9 +154,11 @@ public class EventManager : MonoBehaviourPunCallbacks
             EVENT evData = eventDict[eventID];
 
             OnEventStarted?.Invoke(evData);
+            
+            ParticleManager.Instance.PlayParticle(eventID.ToString(), evData.event_continueTime);
 
             // 자동 종료
-            if (evData.event_continueTime > 0)
+            if (evData.event_continueTime > 0) 
             {
                 StartCoroutine(AutoEndRoutine(eventID, evData.event_continueTime));
             }
