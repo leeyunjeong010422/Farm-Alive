@@ -9,7 +9,7 @@ public class GeneratorInteractable : XRBaseInteractable
 
     [Header("Generator Settings")]
     [Tooltip("시동이 걸리기까지 필요한 시동줄 당기는 시도 횟수")]
-    [SerializeField] private int _startAttemptsRequired = CSVManager.Instance.Facilities[232].facility_maxBootCount;
+    [SerializeField] private int _startAttemptsRequired;
 
     [Tooltip("시동줄의 고정 시작 위치")]
     [SerializeField] private Transform _cordStartPosition;
@@ -44,6 +44,8 @@ public class GeneratorInteractable : XRBaseInteractable
         {
             Debug.LogError("PhotonView가 없습니다.");
         }
+
+        _startAttemptsRequired = CSVManager.Instance.Facilities[232].facility_maxBootCount;
     }
 
     private void Start()
