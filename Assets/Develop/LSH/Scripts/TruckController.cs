@@ -66,7 +66,5 @@ public class TruckController : MonoBehaviourPun
             QuestManager.Instance.truckList.Add(truckQuest);
 
             truckObjects[j] = truckView.gameObject;
-
-            QuestManager.Instance.UpdateUI();
         }
     }

@@ -255,8 +255,10 @@ public class QuestManager : MonoBehaviourPun
 
             IsQuestComplete(listArray);
         }
-
-        UpdateUI();
+        else
+        {
+            UpdateUI();
+        }
     }
 
     public void IsQuestComplete(int[] completedIndexes)
