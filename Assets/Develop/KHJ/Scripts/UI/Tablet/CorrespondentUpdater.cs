@@ -35,9 +35,9 @@ public class CorrespondentUpdater : UIBinder
             GetUI<TextMeshProUGUI>(limitTime).text = GetLimitTime(questList[i].questTimer);
             // 이미지 갱신
             GetUI<TextMeshProUGUI>(NPCName).text = CSVManager.Instance.Correspondents[truckList[i].correspondentId].correspondent_name;
-            GetUI<QuestItemSlot>(slot1).OnUpdate(questList, truckList, i, 0);
-            GetUI<QuestItemSlot>(slot2).OnUpdate(questList, truckList, i, 1);
-            GetUI<QuestItemSlot>(slot3).OnUpdate(questList, truckList, i, 2);
+            GetUI<QuestItemSlot>(slot1).OnUpdate(questList, i, 0);
+            GetUI<QuestItemSlot>(slot2).OnUpdate(questList, i, 1);
+            GetUI<QuestItemSlot>(slot3).OnUpdate(questList, i, 2);
         }
 
 

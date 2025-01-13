@@ -24,7 +24,7 @@ public class QuestItemSlot : MonoBehaviour
         }
     }
 
-    public void OnUpdate(List<QuestManager.Quest> questList, List<TruckQuest> truckList, int idx, int cropIdx)
+    public void OnUpdate(List<QuestManager.Quest> questList, int idx, int cropIdx)
     {
         CropData cropData = questList[idx].requiredItems[cropIdx].itemPrefab.GetComponent<Crop>().CropData;
         float count = questList[idx].requiredItems[cropIdx].requiredcount;

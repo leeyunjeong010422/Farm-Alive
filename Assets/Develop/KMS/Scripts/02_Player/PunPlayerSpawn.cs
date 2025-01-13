@@ -49,7 +49,8 @@ public class PunPlayerSpawn : MonoBehaviour
     private void SpawnPlayer()
     {
         // 네트워크 상에서 플레이어 생성
-        _player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.rotation);
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            _player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.rotation);
 
         if (_player)
         {
