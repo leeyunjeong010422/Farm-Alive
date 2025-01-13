@@ -161,8 +161,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3671871947433682463}
+  - component: {fileID: 8002686365982534790}
   m_Layer: 0
-  m_Name: QusetItemSlot
+  m_Name: QuestItemSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -181,9 +182,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 629771550572508284}
-  - {fileID: 4768747698076054963}
   - {fileID: 2805905117227083480}
   - {fileID: 2224481947365768823}
+  - {fileID: 4768747698076054963}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -192,6 +193,22 @@ RectTransform:
   m_AnchoredPosition: {x: -9.8, y: 139.00003}
   m_SizeDelta: {x: 37.052353, y: 167.46826}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8002686365982534790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2845806514460986096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1609a576c51f9c4d95252a34fa55499, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _layouts: []
+  cropName: {fileID: 8517950942880242936}
+  cropImage: {fileID: 3438941430475301444}
+  cropNamrequiredCount: {fileID: 6524869051068022363}
 --- !u!1 &4783872049255266458
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,7 +221,7 @@ GameObject:
   - component: {fileID: 2893176730929516062}
   - component: {fileID: 6524869051068022363}
   m_Layer: 0
-  m_Name: SubmitRate
+  m_Name: RequiredCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,7 +240,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3671871947433682463}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -358,7 +375,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3671871947433682463}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -434,7 +451,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3671871947433682463}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

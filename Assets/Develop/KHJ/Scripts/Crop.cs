@@ -65,6 +65,7 @@ public class Crop : MonoBehaviourPun
     public E_CropState CurState { get { return _curState; } }
     public float Value {  get { return _value; } }
     public int DigCount {  get { return _digCount; } }
+    public CropData CropData { get { return _cropData; } }
 
     private void Awake()
     {

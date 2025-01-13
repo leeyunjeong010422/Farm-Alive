@@ -19,7 +19,7 @@ public class TruckQuest : MonoBehaviourPun
     [SerializeField] Transform npcPosition;
     [SerializeField] public GameObject npcPrefab;
     [SerializeField] float rotationSpeed = 2.0f;
-    [SerializeField] int correspondentId;
+    [SerializeField] public int correspondentId;
     private Quaternion endRotation;
 
     [SerializeField] GameObject truckCover1, truckCover2;
@@ -128,6 +128,8 @@ public class TruckQuest : MonoBehaviourPun
         {
             corTemp = corTemp - 18;
         }
+
+        correspondentId = npcNumber;
 
         if (PhotonNetwork.IsMasterClient)
         {

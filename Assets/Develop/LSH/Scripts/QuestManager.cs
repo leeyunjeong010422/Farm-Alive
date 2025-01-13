@@ -6,12 +6,15 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using static QuestManager;
 
 public class QuestManager : MonoBehaviourPun
 {
+    public UnityEvent<List<Quest>, List<TruckQuest>> OnTruckUpdated;
+
     public static QuestManager Instance;
 
     [System.Serializable]
@@ -188,7 +191,8 @@ public class QuestManager : MonoBehaviourPun
 
     public void UpdateUI()
     {
-        UIManager.Instance.UpdateQuestUI(questsList);
+        //UIManager.Instance.UpdateQuestUI(questsList);
+        OnTruckUpdated?.Invoke(questsList, truckList);
     }
 
     public void CountUpdate(int questId, int[] number, float[] count, int boxView, int itemCheck)
