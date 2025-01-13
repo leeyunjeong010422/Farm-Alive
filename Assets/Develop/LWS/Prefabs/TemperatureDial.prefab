@@ -243,6 +243,8 @@ GameObject:
   - component: {fileID: 7070556983400731633}
   - component: {fileID: 7070556983400731634}
   - component: {fileID: 7070556983400731647}
+  - component: {fileID: 8579207292478524429}
+  - component: {fileID: -718239055658098651}
   m_Layer: 0
   m_Name: TemperatureDial
   m_TagString: Untagged
@@ -432,3 +434,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _temperatureDial: {fileID: 0}
+--- !u!114 &8579207292478524429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7070556983400731636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4caec3a7bda9d4f40a5a4d95013f1cd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnSymptomRaised:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSymptomSolved:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBrokenRaised:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBrokenSolved:
+    m_PersistentCalls:
+      m_Calls: []
+  ID: 221
+  _symptomPeriod: 360
+  _curSymptomRate: 0
+  _idleSymptomRate: 0
+  _stormSymptomRate: 0
+  _limitTime: 0
+  _maxRepairCount: 5
+--- !u!65 &-718239055658098651
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7070556983400731636}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.14740059, y: 0.16005866, z: 0.16504852}
+  m_Center: {x: 0.007953546, y: 0.04186658, z: 0.0011623548}
