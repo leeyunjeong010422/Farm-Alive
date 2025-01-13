@@ -629,7 +629,7 @@ GameObject:
   - component: {fileID: 183429294847000614}
   - component: {fileID: 6457575060557865911}
   m_Layer: 0
-  m_Name: UI_CropInfo
+  m_Name: CropInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
