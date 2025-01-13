@@ -9,7 +9,7 @@ public class GeneratorInteractable : XRBaseInteractable
 
     [Header("Generator Settings")]
     [Tooltip("시동이 걸리기까지 필요한 시동줄 당기는 시도 횟수")]
-    [SerializeField] private int _startAttemptsRequired = 3;
+    [SerializeField] private int _startAttemptsRequired = CSVManager.Instance.Facilities[232].facility_maxBootCount;
 
     [Tooltip("시동줄의 고정 시작 위치")]
     [SerializeField] private Transform _cordStartPosition;
@@ -145,28 +145,28 @@ public class GeneratorInteractable : XRBaseInteractable
             if (_isGeneratorRunning)
             {
                 MessageDisplayManager.Instance.ShowMessage("발전기는 이미 가동 중입니다!");
-                Debug.LogError("발전기는 이미 가동 중입니다!");
+                //Debug.LogError("발전기는 이미 가동 중입니다!");
                 return;
             }
 
             if (!_repair.IsRepaired)
             {
                 MessageDisplayManager.Instance.ShowMessage("먼저 망치로 수리를 완료하세요.");
-                Debug.LogError("먼저 망치로 수리를 완료하세요.");
+                //Debug.LogError("먼저 망치로 수리를 완료하세요.");
                 return;
             }
 
             if (!_isKnobAtMax || _currentKnobValue < 1f)
             {
                 MessageDisplayManager.Instance.ShowMessage("다른 플레이어가 휠을 최대치로 돌려야 시동줄을 당길 수 있습니다.");
-                Debug.LogError("다른 플레이어가 휠을 최대치로 돌려야 시동줄을 당길 수 있습니다.");
+                //Debug.LogError("다른 플레이어가 휠을 최대치로 돌려야 시동줄을 당길 수 있습니다.");
                 return;
             }
 
             _hasTriggered = true;
             _currentAttempts++;
 
-            Debug.LogError($"발전기 시동 횟수: {_currentAttempts}/{_startAttemptsRequired}");
+            //Debug.LogError($"발전기 시동 횟수: {_currentAttempts}/{_startAttemptsRequired}");
             MessageDisplayManager.Instance.ShowMessage($"발전기 시동 횟수: {_currentAttempts}/{_startAttemptsRequired}");
 
             if (_currentAttempts >= _startAttemptsRequired)
@@ -180,7 +180,7 @@ public class GeneratorInteractable : XRBaseInteractable
     private void SyncSuccessGeneratorStart()
     {
         MessageDisplayManager.Instance.ShowMessage("발전기 시동 성공!");
-        Debug.LogError("발전기 시동 성공!");
+        //Debug.LogError("발전기 시동 성공!");
         _isGeneratorRunning = true;
         _currentAttempts = 0;
 
@@ -213,7 +213,7 @@ public class GeneratorInteractable : XRBaseInteractable
     {
         _isBroken = false;
         MessageDisplayManager.Instance.ShowMessage("발전기 전조증상 발생!");
-        Debug.LogError("발전기 전조증상 발생!");
+        //Debug.LogError("발전기 전조증상 발생!");
     }
 
     // 고장 발생 처리
@@ -222,7 +222,7 @@ public class GeneratorInteractable : XRBaseInteractable
         _isGeneratorRunning = false;
         _isBroken = true;
         MessageDisplayManager.Instance.ShowMessage("발전기가 고장났습니다!");
-        Debug.LogError("발전기가 고장났습니다!");
+        //Debug.LogError("발전기가 고장났습니다!");
         LightingManager.Instance.StartBlackout();
     }
 
@@ -233,29 +233,35 @@ public class GeneratorInteractable : XRBaseInteractable
         if (_isBroken)
         {
             MessageDisplayManager.Instance.ShowMessage("이미 고장난 상태에서는 전조 증상을 해결할 수 없습니다.");
-            Debug.LogError("이미 고장난 상태에서는 전조 증상을 해결할 수 없습니다.");
+            //Debug.LogError("이미 고장난 상태에서는 전조 증상을 해결할 수 없습니다.");
             return;
         }
 
-        _repair.IsSymptom = false;
+        if(_repair.IsSymptom)
+        {
+            _repair.IsSymptom = false;
+        }
+
+        _isBroken = false; // 고장 상태 초기화
         _repair.ResetRepairState();
         MessageDisplayManager.Instance.ShowMessage("전조 증상이 해결되었습니다!");
-        Debug.LogError("전조 증상이 해결되었습니다!");
+        //Debug.LogError("전조 증상이 해결되었습니다!");
     }
 
     // 고장 수리 처리
     public void SolveBroken()
     {
-        if (_repair == null) return;
-
-        if (!_repair.IsRepaired)
+        // 전조 증상이 이미 해결된 경우 고장 발생 방지
+        if (!_repair.IsSymptom)
         {
-            _isBroken = false;
-            _repair.IsRepaired = true; // 고장 상태 해제
-            _repair.ResetRepairState(); // 상태 초기화
-            ResetGeneratorState(); // 발전기 상태 초기화
-            MessageDisplayManager.Instance.ShowMessage("1차 수리가 완료! 휠과 시동줄을 사용하여 2차 수리를 해주세요.", 2f);
-            Debug.LogError("1차 수리가 완료! 휠과 시동줄을 사용하여 2차 수리를 해주세요.");
+            return;
         }
+
+        _isGeneratorRunning = false;
+        _isBroken = true;
+        _repair.ResetRepairState();
+        MessageDisplayManager.Instance.ShowMessage("발전기가 고장났습니다!");
+        //Debug.LogError("발전기가 고장났습니다!");
+        LightingManager.Instance.StartBlackout();
     }
 }
