@@ -38,13 +38,6 @@ public class RobotController : MonoBehaviour
 
     private void Update()
     {
-        // 이 로봇이 내가 조종하는 로봇이 아니라면 리턴
-        if (!photonView.IsMine)
-        {
-            return;
-        }
-
-        // 로봇이 원래 위치로 돌아가고 있다면
         if (isReturning)
         {
             // 초기 위치로 이동 중일 때
@@ -54,8 +47,6 @@ public class RobotController : MonoBehaviour
                 CompleteReturnToInitial();
             }
         }
-
-        // 로봇이 따라갈 대상이 있다면
         else if (_targetPlayer != null)
         {
             // 추적 대상이 있으면 거리 계산
@@ -73,50 +64,43 @@ public class RobotController : MonoBehaviour
         }
     }
 
-    // 로봇에 있는 버튼을 클릭했을 때 실행
     public void OnMoveButtonClicked()
     {
-        PhotonView localPlayerPhotonView = GetLocalPlayerPhotonView(); // 플레이어의 PhotonView를 가져옴
+        // 로컬 플레이어의 PhotonViewID 가져오기
+        PhotonView localPlayerPhotonView = GetLocalPlayerPhotonView();
         if (localPlayerPhotonView == null)
         {
             Debug.LogError("로컬 플레이어의 PhotonView를 찾을 수 없습니다!");
             return;
         }
 
-        int photonViewID = localPlayerPhotonView.ViewID; // 플레이어의 ViewID를 가져옴
+        int photonViewID = localPlayerPhotonView.ViewID;
         Debug.Log($"버튼을 누른 플레이어의 PhotonViewID: {photonViewID}");
 
-        // 마스터 클라이언트에게 소유권 요청
         photonView.RPC(nameof(RequestOwnership), RpcTarget.MasterClient, photonViewID);
     }
 
     [PunRPC]
     private void RequestOwnership(int photonViewID, PhotonMessageInfo info)
     {
-        // 마스터 클라이언트에서 소유권 이전 (요청한 플레이어한테 소유권 이전)
         photonView.TransferOwnership(info.Sender.ActorNumber);
 
-        // 소유권 이전 후 대상 동기화 (모든 플레이어에게 추적 대상 동기화)
-        photonView.RPC(nameof(SyncTargetPlayer), RpcTarget.AllBuffered, photonViewID);
+        // 버튼을 누른 로컬 플레이어의 PhotonViewID를 서버로 전달
+        photonView.RPC(nameof(SyncTargetPlayer), RpcTarget.All, photonViewID);
     }
 
     [PunRPC]
-    private void SyncTargetPlayer(int photonViewID)
+    private void SyncTargetPlayer(int photonViewID, PhotonMessageInfo info)
     {
-        // 이 로봇이 내가 조종하는 로봇이 아니라면
-        if (!photonView.IsMine)
-        {
-            return;
-        }
-
-        // 이미 추적 중인 플레이어가 버튼을 다시 누른 경우 초기 상태로 복원
+        // 이미 추적 중인 플레이어가 한 번 더 버튼을 누른 경우 초기 상태로 복원
         if (targetPhotonViewID == photonViewID && isFollowing)
         {
-            StartReturnToInitial(); // 원래 위치로 돌아감
+            StartReturnToInitial();
             Debug.Log("로봇이 초기 위치로 복원 중입니다.");
             return;
         }
 
+        // 새로운 PhotonViewID를 기반으로 해당 플레이어의 Transform 가져오기
         GameObject targetObject = GetPlayerGameObjectByPhotonViewID(photonViewID);
 
         if (targetObject != null)
@@ -150,7 +134,7 @@ public class RobotController : MonoBehaviour
         // NavMeshAgent 경로 초기화
         navMeshAgent.ResetPath();
 
-        // 초기 위치와 회전값으로 설정
+        // 정확한 초기 위치와 회전값으로 설정
         transform.position = initialPosition;
         transform.rotation = initialRotation;
 
@@ -164,7 +148,7 @@ public class RobotController : MonoBehaviour
         foreach (GameObject player in players)
         {
             PhotonView view = player.GetComponent<PhotonView>();
-            if (view != null && view.IsMine) // 내 플레이어라면 PhotonView 반환
+            if (view != null && view.IsMine) // 로컬 플레이어 확인
             {
                 return view;
             }
@@ -180,7 +164,7 @@ public class RobotController : MonoBehaviour
         foreach (GameObject player in players)
         {
             PhotonView view = player.GetComponent<PhotonView>();
-            if (view != null && view.ViewID == photonViewID)  // photonViewID 가 같다면
+            if (view != null && view.ViewID == photonViewID)
             {
                 return player;
             }
