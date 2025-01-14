@@ -244,42 +244,122 @@ public class FirebaseManager : MonoBehaviour
         if (string.IsNullOrEmpty(userId))
             return;
 
+        // 현재 진행한 스테이지 인덱스 및 이름
         int stageIDX = CSVManager.Instance.Stages[stageID].idx + 1;
-        string highstageID = "Stage" + stageIDX;
-        
-        DatabaseReference stageRef = dataBase.GetReference($"users/{userId}/stageResults/{stageID}");
+        string newStageName = "Stage" + stageIDX;
 
-        Dictionary<string, object> resultData = new Dictionary<string, object>()
+        // 현재 결과
+        int newStars = starCount;
+        float newTime = playedTime;
+
+        DatabaseReference stageRef = dataBase.GetReference($"users/{userId}/stageResults/{stageID}");
+        DatabaseReference highStageRef = dataBase.GetReference($"users/{userId}/highStage");
+
+        stageRef.GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.Log("스테이지 저장 실패" + task.Exception);
+                return;
+            }
+
+            bool updateNewStageResult = false;
+            float oldTime = 999f;
+            int oldStars = 0;
+
+            if (task.IsCompleted && task.Result.Exists)
+            {
+                var snapshot = task.Result;
+
+                if (snapshot.HasChild("stars"))
+                    oldStars = int.Parse(snapshot.Child("stars").Value.ToString());
+
+                if (snapshot.HasChild("playTime"))
+                    oldTime = float.Parse(snapshot.Child("playTime").Value.ToString());
+
+
+                if (newStars > oldStars)
+                {
+                    updateNewStageResult = true;
+                }
+                else if (newStars == oldStars && newTime < oldTime)
+                {
+                    updateNewStageResult = true;
+                }
+
+            }
+            else
+            {
+                updateNewStageResult = true;
+            }
+
+            if (updateNewStageResult)
+            {
+                Dictionary<string, object> resultData = new Dictionary<string, object>()
         {
             { "stageID", stageID },
             { "playTime", playedTime },
             { "stars" , starCount },
             {"timeStamp" , DateTime.Now.ToString("o") },
         };
-
-        stageRef.SetValueAsync(resultData).ContinueWithOnMainThread(task =>
-        {
-            if (task.IsCompleted && !task.IsFaulted)
-            {
-                Debug.Log("스테이지 데이터 저장 완료!");
-                return;
-            }
-            else
-            {
-                Debug.LogError("스테이지 데이터 저장 실패: " + task.Exception);
+                stageRef.SetValueAsync(resultData).ContinueWithOnMainThread(task =>
+                {
+                    if (task.IsCompleted && !task.IsFaulted)
+                    {
+                        Debug.Log("스테이지 데이터 저장 완료!");
+                        return;
+                    }
+                    else
+                    {
+                        Debug.LogError("스테이지 데이터 저장 실패: " + task.Exception);
+                    }
+                });
             }
         });
 
-        dataBase.GetReference($"users/{userId}/highStage").SetValueAsync(highstageID).ContinueWithOnMainThread(task =>
+        highStageRef.GetValueAsync().ContinueWithOnMainThread(task2 =>
         {
-            if (task.IsCompleted && !task.IsFaulted)
+            if (task2.IsFaulted)
             {
-                Debug.Log("최고레벨 저장 완료!");
+                Debug.LogError("highStage read failed: " + task2.Exception);
                 return;
+            }
+
+            bool updateNewHighStage = false;
+
+            if (task2.IsCompleted && task2.Result.Exists)
+            {
+                // 정수 부분만 parse
+                string oldStageStr = task2.Result.Value.ToString();
+                int oldStageNum = 0;
+                if (oldStageStr.StartsWith("Stage"))
+                {
+                    int.TryParse(oldStageStr.Substring(5), out oldStageNum);
+                }
+
+                if (stageIDX > oldStageNum)
+                {
+                    updateNewHighStage = true;
+                }
             }
             else
             {
-                Debug.LogError("최고레벨 저장 실패: " + task.Exception);
+                updateNewHighStage = true;
+            }
+
+            if (updateNewHighStage)
+            {
+                highStageRef.SetValueAsync(newStageName).ContinueWithOnMainThread(setTask =>
+                {
+                    if (setTask.IsCompleted && !setTask.IsFaulted)
+                    {
+                        Debug.Log("최고레벨 저장 완료!");
+                    }
+                    else
+                    {
+                        Debug.LogError("최고레벨 저장 실패: " + setTask.Exception);
+                    }
+                });
             }
         });
     }
