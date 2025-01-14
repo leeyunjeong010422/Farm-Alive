@@ -136,11 +136,6 @@ public class BoxTrigger : MonoBehaviourPun
     {
         boxCover.tape.SetActive(true);
         boxCover.IsPackaged = true;
-        foreach (var id in idList)
-        {
-            GameObject crop = PhotonView.Find(id).gameObject;
-            crop.SetActive(false);
-        }
 
         Debug.Log($"테이핑 완료: {this.name}");
     }
@@ -148,15 +143,5 @@ public class BoxTrigger : MonoBehaviourPun
     private void NotifyRequiredItemsChanged()
     {
         RequiredItemsChanged?.Invoke(requiredItems);
-    }
-
-    private void OnDestroy()
-    {
-        foreach (int crop in idList)
-        {
-            PhotonView cropView = PhotonView.Find(crop);
-
-            Destroy(cropView.gameObject);
-        }
     }
 }

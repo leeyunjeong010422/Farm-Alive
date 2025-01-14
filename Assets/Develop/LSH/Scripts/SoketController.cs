@@ -52,13 +52,14 @@ public class SoketController : MonoBehaviourPun
         {
             PhotonView objView = PhotonView.Find(viewId);
             cropObj = objView.gameObject;
-
             cropObj.transform.GetChild(0).GetChild(3).GetComponent<Collider>().isTrigger = true;
+            cropObj.transform.SetParent(transform);
         }
 
         if (isBool)
         {
             cropObj.transform.GetChild(0).GetChild(3).GetComponent<Collider>().isTrigger = false;
+            cropObj.transform.SetParent(null);
             cropObj = null;
         }
     }
