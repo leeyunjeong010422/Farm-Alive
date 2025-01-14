@@ -188,7 +188,7 @@ public class QuestManager : MonoBehaviourPun
 
     public void UpdateUI()
     {
-        //UIManager.Instance.UpdateQuestUI(questsList);
+        Debug.Log("Invoke OnTruckUpdated!");
         OnTruckUpdated?.Invoke(questsList, truckList);
     }
 

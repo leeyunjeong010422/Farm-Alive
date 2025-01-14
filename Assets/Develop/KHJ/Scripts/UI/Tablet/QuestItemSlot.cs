@@ -18,9 +18,9 @@ public class QuestItemSlot : MonoBehaviour
 
     private void Awake()
     {
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < transform.GetChild(0).childCount; i++)
         {
-            _layouts.Add(transform.GetChild(i).gameObject);
+            _layouts.Add(transform.GetChild(0).GetChild(i).gameObject);
         }
     }
 
@@ -28,7 +28,7 @@ public class QuestItemSlot : MonoBehaviour
     {
         CropData cropData = questList[idx].requiredItems[cropIdx].itemPrefab.GetComponent<Crop>().CropData;
         float count = questList[idx].requiredItems[cropIdx].requiredcount;
-        bool isEmpty = questList[idx].requiredItems == null;
+        bool isEmpty = questList[idx].requiredItems.Count == 0;
         bool isSuccess = questList[idx].isSuccess;
 
         UpdateLayout(isEmpty, isSuccess);
@@ -64,7 +64,7 @@ public class QuestItemSlot : MonoBehaviour
             cropName.text = "";
             return;
         }
-        cropName.text = cropData.name;
+        cropName.text = cropData.cropName;
     }
 
     // 작물 이미지 갱신
