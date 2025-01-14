@@ -16,6 +16,7 @@ public class PunPlayerSpawn : MonoBehaviour
     private void Start()
     {
         RemoveNetworkRunner();
+        SpawnPlayer();
     }
 #if UNITY_EDITOR
     private void Update()
@@ -40,11 +41,6 @@ public class PunPlayerSpawn : MonoBehaviour
             runner.Shutdown();
             Destroy(runner.gameObject);
         }
-    }
-
-    public void OnEnable()
-    {
-        SpawnPlayer();
     }
 
     private void SpawnPlayer()
