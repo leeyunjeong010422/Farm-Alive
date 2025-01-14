@@ -20,9 +20,6 @@ public class CorrespondentUpdater : UIBinder
 
     private void UpdateUI(List<QuestManager.Quest> questList, List<TruckQuest> truckList)
     {
-        if (QuestManager.Instance.questsList.Count < 0)
-            return;
-
         for (int i = 0; i < questList.Count; i++)
         {
             Debug.Log($"{i + 1}번째 거래처와 UI 연동");
@@ -30,19 +27,12 @@ public class CorrespondentUpdater : UIBinder
             string limitTime = $"Info{i + 1}_LimitTime";
             string NPCImage = $"Info{i + 1}_NPCImage";
             string NPCName = $"Info{i + 1}_NPCName";
-            //string slot1 = $"Info{i + 1}_Slot1";
-            //string slot2 = $"Info{i + 1}_Slot2";
-            //string slot3 = $"Info{i + 1}_Slot3";
 
             GetUI<TextMeshProUGUI>(limitTime).text = GetLimitTime(questList[i].questTimer);
             // 이미지 갱신
             GetUI<TextMeshProUGUI>(NPCName).text = CSVManager.Instance.Correspondents[truckList[i].correspondentId].correspondent_name;
             for (int cropIdx = 0; cropIdx < questList[i].requiredItems.Count; cropIdx++)
                 GetUI<QuestItemSlot>($"Info{i + 1}_Slot{cropIdx + 1}").OnUpdate(questList, i, cropIdx);
-
-            //GetUI<QuestItemSlot>(slot1).OnUpdate(questList, i, 0);
-            //GetUI<QuestItemSlot>(slot2).OnUpdate(questList, i, 1);
-            //GetUI<QuestItemSlot>(slot3).OnUpdate(questList, i, 2);
         }
     }
 
