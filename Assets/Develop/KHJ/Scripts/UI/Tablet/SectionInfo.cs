@@ -5,17 +5,17 @@ using UnityEngine;
 
 public class SectionInfo : UIBinder
 {
-    private string _wheatherString = "Text_Wheater";
+    private string _weatherString = "Text_Weather";
     private string _blightString = "Text_Blight";
     private string _temperatureString = "Text_Temperature";
 
-    private TextMeshProUGUI _wheatherText;
+    private TextMeshProUGUI _weatherText;
     private TextMeshProUGUI _blightText;
     private TextMeshProUGUI _temperatureText;
 
     private void Start()
     {
-        _wheatherText = GetUI<TextMeshProUGUI>(_wheatherString);
+        _weatherText = GetUI<TextMeshProUGUI>(_weatherString);
         _blightText = GetUI<TextMeshProUGUI>(_blightString);
         _temperatureText = GetUI<TextMeshProUGUI>(_temperatureString);
 
@@ -58,12 +58,27 @@ public class SectionInfo : UIBinder
 
     private void UpdateWeatherText()
     {
-        _wheatherText.text = "陳噢: ";
+        _weatherText.text = "陳噢: ";
+        int activeWeather = 0;
+
         foreach (int activeID in EventManager.Instance._activeEventsID)
         {
-            _wheatherText.text += $"{CSVManager.Instance.Events[activeID].event_name} ";
+            string eventName = CSVManager.Instance.Events[activeID].event_name;
+            switch (eventName)
+            {
+                case "ァЁ":
+                case "ァ辦":
+                case "陛像":
+                    _weatherText.text += $"{CSVManager.Instance.Events[activeID].event_name} ";
+                    activeWeather++;
+                    break;
+                default:
+                    break;
+            }
         }
 
+        if (activeWeather == 0)
+            _weatherText.text = "陳噢: 薑鼻";
     }
 
     private void OnBlightRaised(GameData.EVENT eventData)
