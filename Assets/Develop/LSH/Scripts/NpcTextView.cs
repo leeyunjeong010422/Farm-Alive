@@ -11,7 +11,7 @@ public class NpcTextView : MonoBehaviour
 
     public void NpcText()
     {
-            text.text = "달팽이 할아버지가 와도\n이거보다는 빠르겠어!!";
+            text.text = "거북이 조상님이 와도\n이거보다는 빠르겠어!!";
     }
 
     public void NpcText(bool check)

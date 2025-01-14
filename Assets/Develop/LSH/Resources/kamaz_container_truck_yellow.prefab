@@ -581,6 +581,7 @@ MonoBehaviour:
   npcPrefab: {fileID: 0}
   rotationSpeed: 2
   correspondentId: 0
+  canDelivery: 0
   truckCover1: {fileID: 4525949814057061975}
   truckCover2: {fileID: 6368540260026484196}
 --- !u!114 &-7669021254949540896
