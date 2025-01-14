@@ -1,7 +1,7 @@
 using Fusion;
-using Mono.Cecil;
 using Photon.Pun;
 using Photon.Pun.Demo.SlotRacer.Utils;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -21,11 +21,13 @@ public class TruckQuest : MonoBehaviourPun
     [SerializeField] float rotationSpeed = 2.0f;
     [SerializeField] public int correspondentId;
     private Quaternion endRotation;
+    [SerializeField] bool canDelivery;
 
     [SerializeField] GameObject truckCover1, truckCover2;
 
     private void Start()
     {
+        canDelivery = true;
         endRotation = Quaternion.Euler(0, 0, 0);
     }
 
@@ -34,6 +36,9 @@ public class TruckQuest : MonoBehaviourPun
         Debug.Log("Ãæµ¹");
         if (PhotonNetwork.IsMasterClient)
         {
+            if (!canDelivery)
+                return;
+
             if (other.CompareTag("Box"))
             {
                 XRGrabInteractable interactable = other.GetComponent<XRGrabInteractable>();
@@ -133,7 +138,7 @@ public class TruckQuest : MonoBehaviourPun
 
         if (PhotonNetwork.IsMasterClient)
         {
-            npcPrefab = PhotonNetwork.Instantiate(npcPrefabs[corTemp].name, npcPosition.position, Quaternion.identity);
+            npcPrefab = PhotonNetwork.Instantiate(npcPrefabs[corTemp].name, npcPosition.position, npcPosition.rotation);
             
             PhotonView viewId = npcPrefab.GetComponent<PhotonView>();
             
@@ -173,6 +178,7 @@ public class TruckQuest : MonoBehaviourPun
 
     public void CloseCover()
     {
+        canDelivery = false;
         StartCoroutine(SmoothRotate(truckCover1, truckCover2));
     }
 
@@ -194,5 +200,21 @@ public class TruckQuest : MonoBehaviourPun
 
         truckCover1.transform.rotation = endRotation;
         truckCover2.transform.rotation = endRotation;
+
+        yield return new WaitForSeconds(2f);
+        PhotonNetwork.Destroy(npcPrefab);
+
+        elapsedTime = 0f;
+
+        while (elapsedTime < 5)
+        {
+            transform.position += transform.forward * 5 * Time.deltaTime;
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        if(PhotonNetwork.IsMasterClient)
+            PhotonNetwork.Destroy(gameObject);
     }
 }

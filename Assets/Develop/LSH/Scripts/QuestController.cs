@@ -37,8 +37,11 @@ public class QuestController : MonoBehaviourPun
             int index = QuestManager.Instance.questsList.IndexOf(quest);
             if (index >= 0 && QuestManager.Instance.truckList.Count > index)
             {
-                if(PhotonNetwork.IsMasterClient)
-                PhotonNetwork.Destroy(QuestManager.Instance.truckList[index].gameObject);
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    QuestManager.Instance.truckList[index].npcPrefab.GetComponent<NpcTextView>().NpcText();
+                    QuestManager.Instance.truckList[index].CloseCover();
+                }
             }
 
             QuestManager.Instance.questsList.Remove(quest);
