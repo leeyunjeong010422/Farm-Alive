@@ -99,7 +99,7 @@ public class SectionManager : MonoBehaviour
         {
             crop = _sections[_curSection, i];
             if (crop != null)
-                crop.IncreaseMoisture(); 
+                crop.IncreaseMoisture();
         }
 
         PlayParticle(_curSection, false);
@@ -130,19 +130,19 @@ public class SectionManager : MonoBehaviour
         nutrientBarrel.FillAmount -= 0.1f;
     }
 
-    //public void DecreaseMoisture()
-    //{
-    //    PlayParticle(/ 습기제거제파티클배열 /);
+    public void DecreaseMoisture()
+    {
+        // PlayParticle();
 
-    //    EventManager.Instance.EndEvent(431);
-    //}
+        EventManager.Instance.EndEvent(431);
+    }
 
-    //public void SprayPesticide()
-    //{
-    //    PlayParticle(/ 살충제파티클배열 /);
+    public void SprayPesticide()
+    {
+        // PlayParticle();
 
-    //    EventManager.Instance.EndEvent(432);
-    //}
+        EventManager.Instance.EndEvent(432);
+    }
 
     private void PlayParticle(int sectionIndex, bool isNutrient)
     {
@@ -150,8 +150,8 @@ public class SectionManager : MonoBehaviour
         //    return;
 
         //var particles = _sectionParticles[sectionIndex];//.moistureParticles;
-        
-        foreach ( ParticleSystem particle in _sectionParticles )
+
+        foreach (ParticleSystem particle in _sectionParticles)
         {
             StartCoroutine(PlayParticleRoutine(particle, isNutrient));
         }
@@ -189,7 +189,8 @@ public class SectionManager : MonoBehaviour
         {
             for (int ground = 0; ground < _sections.GetLength(1); ground++)
             {
-                _sections[section, ground].OnDownpourStarted();
+                if (_sections[section, ground] != null)
+                    _sections[section, ground].OnDownpourStarted();
             }
         }
     }
@@ -204,7 +205,8 @@ public class SectionManager : MonoBehaviour
         {
             for (int ground = 0; ground < _sections.GetLength(1); ground++)
             {
-                _sections[section, ground].OnDownpourEnded();
+                if (_sections[section, ground] != null)
+                    _sections[section, ground].OnDownpourEnded();
             }
         }
     }
@@ -219,7 +221,8 @@ public class SectionManager : MonoBehaviour
         {
             for (int ground = 0; ground < _sections.GetLength(1); ground++)
             {
-                _sections[section, ground].OnBlightStarted();
+                if (_sections[section, ground] != null)
+                    _sections[section, ground].OnBlightStarted();
             }
         }
     }
@@ -234,7 +237,8 @@ public class SectionManager : MonoBehaviour
         {
             for (int ground = 0; ground < _sections.GetLength(1); ground++)
             {
-                _sections[section, ground].OnBlightEnded();
+                if (_sections[section, ground] != null)
+                    _sections[section, ground].OnBlightEnded();
             }
         }
     }
@@ -249,7 +253,8 @@ public class SectionManager : MonoBehaviour
         {
             for (int ground = 0; ground < _sections.GetLength(1); ground++)
             {
-                _sections[section, ground].OnDroughtStarted();
+                if (_sections[section, ground] != null)
+                    _sections[section, ground].OnDroughtStarted();
             }
         }
     }
@@ -264,7 +269,8 @@ public class SectionManager : MonoBehaviour
         {
             for (int ground = 0; ground < _sections.GetLength(1); ground++)
             {
-                _sections[section, ground].OnDroughtEnded();
+                if (_sections[section, ground] != null)
+                    _sections[section, ground].OnDroughtEnded();
             }
         }
     }
@@ -279,7 +285,8 @@ public class SectionManager : MonoBehaviour
         {
             for (int ground = 0; ground < _sections.GetLength(1); ground++)
             {
-                _sections[section, ground].OnHighTemperatureStarted();
+                if (_sections[section, ground] != null)
+                    _sections[section, ground].OnHighTemperatureStarted();
             }
         }
     }
@@ -294,7 +301,8 @@ public class SectionManager : MonoBehaviour
         {
             for (int ground = 0; ground < _sections.GetLength(1); ground++)
             {
-                _sections[section, ground].OnHighTemperatureEnded();
+                if (_sections[section, ground] != null)
+                    _sections[section, ground].OnHighTemperatureEnded();
             }
         }
     }
@@ -309,7 +317,8 @@ public class SectionManager : MonoBehaviour
         {
             for (int ground = 0; ground < _sections.GetLength(1); ground++)
             {
-                _sections[section, ground].OnLowTemperatureStarted();
+                if (_sections[section, ground] != null)
+                    _sections[section, ground].OnLowTemperatureStarted();
             }
         }
     }
@@ -324,7 +333,8 @@ public class SectionManager : MonoBehaviour
         {
             for (int ground = 0; ground < _sections.GetLength(1); ground++)
             {
-                _sections[section, ground].OnLowTemperatureEnded();
+                if (_sections[section, ground] != null)
+                    _sections[section, ground].OnLowTemperatureEnded();
             }
         }
     }
