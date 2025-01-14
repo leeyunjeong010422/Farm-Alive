@@ -19,7 +19,7 @@ public class QuestController : MonoBehaviourPun
             startTime = Time.time;
 
             int index = QuestManager.Instance.questsList.IndexOf(quest);
-            photonView.RPC(nameof(SyncQuestTimer), RpcTarget.Others, index, quest.questTimer);
+            photonView.RPC(nameof(SyncQuestTimer), RpcTarget.All, index, quest.questTimer);
 
             if (quest.isSuccess)
             {
@@ -52,7 +52,7 @@ public class QuestController : MonoBehaviourPun
         if (!PhotonNetwork.IsMasterClient)
         {
             QuestManager.Instance.questsList[index].questTimer = questTimer;
-            QuestManager.Instance.UpdateUI();
         }
+        QuestManager.Instance.UpdateUI();
     }
 }

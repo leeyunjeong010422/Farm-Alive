@@ -64,7 +64,7 @@ public class QuestItemSlot : MonoBehaviour
             cropName.text = "";
             return;
         }
-        cropName.text = cropData.name;
+        cropName.text = cropData.cropName;
     }
 
     // 작물 이미지 갱신
