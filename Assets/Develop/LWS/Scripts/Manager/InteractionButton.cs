@@ -98,8 +98,6 @@ public class InteractionButton : MonoBehaviour
 
         SectionManager.Instance.IncreaseNutrient();
     }
-
-    //TODO : 이벤트 추가 후 해충제거 버튼 및 습기 제거 버튼 구현
     
     /// <summary>
     /// 살충제 뿌리는 버튼에 사용하기 위한 필드 및 메서드
@@ -124,7 +122,7 @@ public class InteractionButton : MonoBehaviour
             return;
         }
 
-        //TODO: 살충제 뿌리기 (원석님)
+        SectionManager.Instance.SprayPesticide();
     }
 
     private bool _isSprayingMoistureRemover = false;
@@ -147,7 +145,7 @@ public class InteractionButton : MonoBehaviour
             return;
         }
 
-        //TODO: 습기제거제 뿌리기 (원석님)
+        SectionManager.Instance.DecreaseMoisture();
     }
 
 

@@ -130,19 +130,19 @@ public class SectionManager : MonoBehaviour
         nutrientBarrel.FillAmount -= 0.1f;
     }
 
-    //public void DecreaseMoisture()
-    //{
-    //    PlayParticle(/ 습기제거제파티클배열 /);
+    public void DecreaseMoisture()
+    {
+        // PlayParticle();
 
-    //    EventManager.Instance.EndEvent(431);
-    //}
+        EventManager.Instance.EndEvent(431);
+    }
 
-    //public void SprayPesticide()
-    //{
-    //    PlayParticle(/ 살충제파티클배열 /);
+    public void SprayPesticide()
+    {
+        // PlayParticle();
 
-    //    EventManager.Instance.EndEvent(432);
-    //}
+        EventManager.Instance.EndEvent(432);
+    }
 
     private void PlayParticle(int sectionIndex, bool isNutrient)
     {

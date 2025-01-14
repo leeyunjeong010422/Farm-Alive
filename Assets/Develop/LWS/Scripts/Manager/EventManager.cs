@@ -237,6 +237,8 @@ public class EventManager : MonoBehaviourPunCallbacks
     private void RPC_ResolveEvent(int eventID)
     {
         ResolveEvent(eventID);
+
+        MessageDisplayManager.Instance.SendMessage($"{CSVManager.Instance.Events[eventID].event_name} 해결 완료");
     }
 
     public void ResolveEvent(int eventID)
