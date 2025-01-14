@@ -157,7 +157,7 @@ public class EventManager : MonoBehaviourPunCallbacks
             
             ParticleManager.Instance.PlayParticle(eventID.ToString(), evData.event_continueTime);
 
-            MessageDisplayManager.Instance.ShowMessage(eventDict[eventID].event_name);
+            // MessageDisplayManager.Instance.ShowMessage(eventDict[eventID].event_name);
 
             // 자동 종료
             if (evData.event_continueTime > 0) 
@@ -238,7 +238,7 @@ public class EventManager : MonoBehaviourPunCallbacks
     {
         ResolveEvent(eventID);
 
-        MessageDisplayManager.Instance.SendMessage($"{CSVManager.Instance.Events[eventID].event_name} 해결 완료");
+        // MessageDisplayManager.Instance.SendMessage($"{CSVManager.Instance.Events[eventID].event_name} 해결 완료");
     }
 
     public void ResolveEvent(int eventID)
