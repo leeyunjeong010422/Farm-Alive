@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 5922741845108198140}
   - component: {fileID: 5698470133758010466}
   - component: {fileID: 5661556362840519747}
+  - component: {fileID: -3289503626735023632}
   m_Layer: 0
   m_Name: newPlayer(XR Origin)_2
   m_TagString: Player
@@ -296,6 +297,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speakingIcon: {fileID: 3066138027369745298}
   listeningIcon: {fileID: 3675539008490862420}
+--- !u!114 &-3289503626735023632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865248795837646416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b62b9eaece4ff488cd45405a926a58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2628180127515033405
 GameObject:
   m_ObjectHideFlags: 0
