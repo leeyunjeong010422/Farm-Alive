@@ -248,7 +248,8 @@ public class QuestManager : MonoBehaviourPun
         PhotonView box = PhotonView.Find(boxView);
         if (box != null)
         {
-            box.GetComponent<BoxTrigger>().ClearBox();
+            box.transform.position = new Vector3(0, -100, 0);
+            box.GetComponent<Rigidbody>().isKinematic = true;
         }
 
         if (completedIndexes.Count > 0)
