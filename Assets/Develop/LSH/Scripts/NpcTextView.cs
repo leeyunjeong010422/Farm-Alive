@@ -7,28 +7,11 @@ using UnityEngine.UI;
 
 public class NpcTextView : MonoBehaviour
 {
-    [SerializeField] Transform myCamera;
     [SerializeField] public Text text;
 
-    private void OnEnable()
+    public void NpcText()
     {
-        foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            PhotonView photonView = player.GetComponent<PhotonView>();
-
-            if (photonView != null && photonView.IsMine)
-            {
-                myCamera = player.transform.Find("Main Camera");
-                break;
-            }
-        }
-    }
-    private void Update()
-    {
-        if (myCamera != null)
-        {
-            this.transform.LookAt(myCamera);
-        }
+            text.text = "달팽이 할아버지가 와도\n이거보다는 빠르겠어!!";
     }
 
     public void NpcText(bool check)
