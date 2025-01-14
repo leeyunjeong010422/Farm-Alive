@@ -4812,7 +4812,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _includeComponents: 1
   _includeInactive: 1
-  correspondentID: 0
+  _npcSprites:
+  - {fileID: 21300000, guid: 86b03732d31854e45843b9a7f3f35c1b, type: 3}
+  - {fileID: 21300000, guid: e43ef75ca8c1c5a438adb7cc76dbabfa, type: 3}
+  - {fileID: 21300000, guid: 8bc80a84a9703f346a5039e0a1ed1e81, type: 3}
+  - {fileID: 21300000, guid: 1c24036ef93fc0f4ab9e583f924de196, type: 3}
+  - {fileID: 21300000, guid: 8f1ff6e0f80395342874cb5663596943, type: 3}
 --- !u!1001 &386763968629513501
 PrefabInstance:
   m_ObjectHideFlags: 0

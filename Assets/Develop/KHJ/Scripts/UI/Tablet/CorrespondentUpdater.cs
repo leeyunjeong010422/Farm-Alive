@@ -3,13 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CorrespondentUpdater : UIBinder
 {
-    public int correspondentID;
+    [SerializeField] Sprite[] _npcSprites;
+    private Dictionary<int, Sprite> _npcSpriteDict = new();
 
     private void Start()
     {
+        int i = 0;
+        foreach (var corrID in CSVManager.Instance.Correspondents.Keys)
+        {
+            _npcSpriteDict.Add(corrID, _npcSprites[i++]);
+        }
+
         SubscribeTruck();
     }
 
@@ -29,7 +37,7 @@ public class CorrespondentUpdater : UIBinder
             string NPCName = $"Info{i + 1}_NPCName";
 
             GetUI<TextMeshProUGUI>(limitTime).text = GetLimitTime(questList[i].questTimer);
-            // 이미지 갱신
+            GetUI<Image>(NPCImage).sprite = _npcSpriteDict[truckList[i].correspondentId];
             GetUI<TextMeshProUGUI>(NPCName).text = CSVManager.Instance.Correspondents[truckList[i].correspondentId].correspondent_name;
             for (int cropIdx = 0; cropIdx < questList[i].requiredItems.Count; cropIdx++)
                 GetUI<QuestItemSlot>($"Info{i + 1}_Slot{cropIdx + 1}").OnUpdate(questList, i, cropIdx);
