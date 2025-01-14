@@ -148,7 +148,8 @@ public class BoxTrigger : MonoBehaviourPun
 
     public void ClearBox()
     {
-        StartCoroutine(ClearBoxList());
+        if (PhotonNetwork.IsMasterClient)
+            StartCoroutine(ClearBoxList());
     }
 
     private IEnumerator ClearBoxList()
@@ -161,7 +162,7 @@ public class BoxTrigger : MonoBehaviourPun
             for (int i = idList.Count - 1; i >= 0; i--)
             {
                 PhotonView cropView = PhotonView.Find(idList[i]);
-                Destroy(cropView.gameObject);
+                PhotonNetwork.Destroy(cropView.gameObject);
             }
 
             isClear = false;
