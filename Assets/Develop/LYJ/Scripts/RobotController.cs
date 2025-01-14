@@ -9,6 +9,7 @@ public class RobotController : MonoBehaviour
 
     private Transform _targetPlayer; // 로봇이 따라갈 유저
     private int targetPhotonViewID = -1; // 따라갈 유저의 PhotonViewID
+    private int lastPhotonViewID = -1; // 마지막으로 추적했던 PhotonViewID
     private bool isFollowing = false; // 현재 추적 중인지에 대한 여부
     private bool isReturning = false; // 초기 위치로 돌아가는 중인지에 대한 여부
 
@@ -97,7 +98,23 @@ public class RobotController : MonoBehaviour
         int photonViewID = localPlayerPhotonView.ViewID;
         Debug.Log($"버튼을 누른 플레이어의 PhotonViewID: {photonViewID}");
 
-        photonView.RPC(nameof(RequestOwnership), RpcTarget.MasterClient, photonViewID);
+        photonView.RPC(nameof(RPC_ButtonClick), RpcTarget.MasterClient, photonViewID);
+    }
+
+    [PunRPC]
+    private void RPC_ButtonClick(int photonViewID, PhotonMessageInfo info)
+    {
+        if (photonViewID == targetPhotonViewID && photonViewID == lastPhotonViewID)
+        {
+            photonView.RPC(nameof(StartReturnToInitial), RpcTarget.AllBuffered);
+        }
+        else
+        {
+            photonView.TransferOwnership(info.Sender.ActorNumber);
+            photonView.RPC(nameof(SyncTargetPlayer), RpcTarget.AllBuffered, photonViewID);
+        }
+
+        lastPhotonViewID = photonViewID;
     }
 
     // 마스터 클라이언트에게 소유권 요청
@@ -120,13 +137,13 @@ public class RobotController : MonoBehaviour
             return;
         }
 
-        // 이미 추적 중인 플레이어가 한 번 더 버튼을 누른 경우 초기 상태로 복원
-        if (targetPhotonViewID == photonViewID && isFollowing)
-        {
-            StartReturnToInitial();
-            Debug.Log("로봇이 초기 위치로 복원 중입니다.");
-            return;
-        }
+        //// 이미 추적 중인 플레이어가 한 번 더 버튼을 누른 경우 초기 상태로 복원
+        //if (targetPhotonViewID == photonViewID && isFollowing)
+        //{
+        //    StartReturnToInitial();
+        //    Debug.Log("로봇이 초기 위치로 복원 중입니다.");
+        //    return;
+        //}
 
         // 새로운 PhotonViewID를 기반으로 해당 플레이어의 Transform 가져오기
         GameObject targetObject = GetPlayerGameObjectByPhotonViewID(photonViewID);
