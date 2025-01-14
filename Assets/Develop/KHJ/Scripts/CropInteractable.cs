@@ -8,7 +8,7 @@ public class CropInteractable : XRGrabInteractable
 {
     public PlantGround Ground { 
         get {
-            if (interactorsSelecting == null)
+            if (interactorsSelecting.Count > 0)
                 return null;
             PlantGround plantGround = interactorsSelecting[0].transform.GetComponent<PlantGround>();
             return plantGround != null ? plantGround : null;
