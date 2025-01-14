@@ -50,8 +50,6 @@ public class ButtonInteractable : XRBaseInteractable
     {
         base.OnActivated(args);
 
-        if (!_view.IsMine) return;
-
         if (!_isPressed)
         {
             _isPressed = true;
@@ -63,8 +61,6 @@ public class ButtonInteractable : XRBaseInteractable
     protected override void OnDeactivated(DeactivateEventArgs args)
     {
         base.OnDeactivated(args);
-
-        if (!_view.IsMine) return;
 
         if (_isPressed)
         {
