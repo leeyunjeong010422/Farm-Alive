@@ -1,5 +1,6 @@
 using Photon.Pun;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -7,6 +8,9 @@ public class EnterTheGameInteractable : XRGrabInteractable
 {
     [Header("이동할 씬 이름")]
     public string targetSceneName = "AssetScene";
+
+    [Header("안내문 텍스트 오브젝트")]
+    public TMP_Text text;
 
     private PhotonView _photonView;
     private Vector3 initialPosition;
@@ -20,13 +24,16 @@ public class EnterTheGameInteractable : XRGrabInteractable
         initialRotation = transform.rotation;
 
         _photonView = GetComponent<PhotonView>();
+
+        text.text = "입장 시 문을 방장만 Select 하세요.";
     }
 
-    protected override void OnSelectExited(SelectExitEventArgs args)
+    protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
+        base.OnSelectEntered(args);
         Debug.Log("게임시작 문이 선택 되었습니다.");
 
-        if(PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
             Debug.Log("마스터 클라언트 씬로드가 선택되었습니다.");
             StartCoroutine(GameStartCountDown(5));

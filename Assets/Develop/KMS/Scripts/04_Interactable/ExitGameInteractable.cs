@@ -15,12 +15,16 @@ public class ExitGameInteractable : XRGrabInteractable
     public float panelDistance = 1.5f;
     public Vector3 panelOffset = Vector3.zero;
 
+    public TMP_Text text;
+
     private bool _isExitRequest = false;
     private float _buttonPressDuration = 0f;
     private const float _requiredHoldTime = 1.0f;
 
     private Vector3 initialPosition;
     private Quaternion initialRotation;
+
+
 
     protected override void Awake()
     {
@@ -32,6 +36,8 @@ public class ExitGameInteractable : XRGrabInteractable
         if (exitConfirmationPanel)
             exitConfirmationPanel.SetActive(false);
         exitConfirmationText.text = "게임을 종료하시겠습니까?\n(게임 종료하기 - A / 게임 속으로 - B)";
+
+        text.text = "게임 나가기";
     }
 
     private void Update()
@@ -43,8 +49,7 @@ public class ExitGameInteractable : XRGrabInteractable
 
         UpdatePanelPos();
     }
-
-    protected override void OnSelectExited(SelectExitEventArgs args)
+    protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
 #if UNITY_EDITOR
         Debug.Log($"{args.interactableObject.transform.name}가 선택 되었습니다.");
@@ -54,8 +59,7 @@ public class ExitGameInteractable : XRGrabInteractable
 
     IEnumerator ExitGameMode(GameObject targetObject)
     {
-        // 3초 대기
-        yield return new WaitForSeconds(3f);
+        yield return null;
 
         if (targetObject)
         {
