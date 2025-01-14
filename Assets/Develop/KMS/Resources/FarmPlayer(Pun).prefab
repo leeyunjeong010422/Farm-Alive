@@ -123,7 +123,8 @@ GameObject:
   - component: {fileID: 5922741845108198140}
   - component: {fileID: 5698470133758010466}
   - component: {fileID: 5661556362840519747}
-  - component: {fileID: 4953445475335421724}
+  - component: {fileID: 4265383735903365441}
+  - component: {fileID: 8766394356142780782}
   m_Layer: 0
   m_Name: FarmPlayer(Pun)
   m_TagString: Player
@@ -296,7 +297,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speakingIcon: {fileID: 0}
   listeningIcon: {fileID: 0}
---- !u!114 &4953445475335421724
+--- !u!114 &4265383735903365441
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -305,11 +306,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1865248795837646416}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1289b3509a80bca46bf0e99c2de4062b, type: 3}
+  m_Script: {fileID: 11500000, guid: c2b62b9eaece4ff488cd45405a926a58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voiceChatMixer: {fileID: 24100000, guid: fdca16bb6c294da42bfbcfc36ca3a40e, type: 2}
-  volumeParameter: RemotePlayerVoice
+--- !u!114 &8766394356142780782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865248795837646416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b62b9eaece4ff488cd45405a926a58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2628180127515033405
 GameObject:
   m_ObjectHideFlags: 0
