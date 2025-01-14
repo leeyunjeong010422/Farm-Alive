@@ -98,7 +98,7 @@ public class TruckQuest : MonoBehaviourPun
                     float[] requiredCountArray = requiredCounts.ToArray();
 
                     boxTrigger.transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
-                    QuestManager.Instance.CountUpdate(/*truckIdArray*/truckId, itemIndexArray, requiredCountArray, boxView.ViewID, otherItem);
+                    QuestManager.Instance.CountUpdate(truckId, itemIndexArray, requiredCountArray, boxView.ViewID, otherItem);
                 }
 
             }

@@ -138,6 +138,12 @@ public class BoxTrigger : MonoBehaviourPun
         boxCover.tape.SetActive(true);
         boxCover.IsPackaged = true;
 
+        foreach (int item in idList)
+        {
+            PhotonView cropView = PhotonView.Find(item);
+
+            cropView.gameObject.SetActive(false);
+        }
         Debug.Log($"테이핑 완료: {this.name}");
     }
 
