@@ -147,7 +147,31 @@ public class StageManager : MonoBehaviourPunCallbacks
         float playTime = _curStageTime;
 
         FirebaseManager.Instance.SaveStageResult(_curStageID, _curStageTime, star);
+
+        StartCoroutine(ReturnToFusion());
     }
+
+    public IEnumerator ReturnToFusion()
+    {
+        yield return new WaitForSeconds(3f);
+
+        if (PhotonNetwork.InRoom)
+        {
+            Debug.Log("Pun 방 나가기...");
+            PhotonNetwork.LeaveRoom();
+        }
+        else
+        {
+            Debug.LogWarning($"현재 상태에서는 LeaveRoom을 호출할 수 없습니다: {PhotonNetwork.NetworkClientState}");
+        }
+
+
+        Debug.Log("서버 교체 중...");
+        Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}");
+        Debug.Log($"PhotonNetwork.InRoom = {PhotonNetwork.InRoom}");
+        Debug.Log($"PhotonNetwork.NetworkClientState = {PhotonNetwork.NetworkClientState}");
+    }
+
 
     private int EvaluateStar()
     {
