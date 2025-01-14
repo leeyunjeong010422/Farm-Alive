@@ -18,7 +18,7 @@ public class QuestItemSlot : MonoBehaviour
 
     private void Awake()
     {
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < transform.GetChild(0).childCount; i++)
         {
             _layouts.Add(transform.GetChild(0).GetChild(i).gameObject);
         }
