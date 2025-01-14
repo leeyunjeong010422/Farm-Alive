@@ -21321,7 +21321,7 @@ MonoBehaviour:
   m_AddDefaultGrabTransformers: 1
   exitConfirmationPanel: {fileID: 587089187}
   exitConfirmationText: {fileID: 1529952694}
-  panelDistance: 1.5
+  panelDistance: 1
   panelOffset: {x: 0, y: 0, z: 0}
   text: {fileID: 278379074}
 --- !u!54 &1990116644
