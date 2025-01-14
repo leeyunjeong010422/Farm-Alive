@@ -1,155 +1,110 @@
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.XR;
 
 public class SoundManager : MonoBehaviour
 {
-    public static SoundManager Instance { get; private set; }
+    public AudioMixer test; // 오디오 믹서
+    public GameObject sliderUI; // 슬라이더 UI 패널
+    public XRNode rightControllerNode = XRNode.RightHand; // 오른손 컨트롤러
 
-    // BGM types
-    public enum E_BGM
-    {
-        LOGIN,
-        LOBBY,
-        ROOM,
-        GAME,
-        SIZE_MAX
-    }
+    private float maxVolumeDb = 20f;
+    private float minVolumeDb = -80f;
+    private float buttonHoldTime = 1f; // 버튼을 눌러야 하는 시간
+    private float buttonHoldCounter = 0f; // 버튼 누름 시간 추적
+    private bool isSliderUIActive = false; // 슬라이더 UI 활성화 상태
 
-
-    [Header("Audio Clips")]
-    public AudioClip[] clipBgm;
-
-    [System.Serializable]
-    public class SFXInfo
-    {
-        public string key;
-        public AudioClip clip;
-    }
-
-    [Header("Audio Source")]
-    public AudioSource audioBgm;
-
-    [Header("효과음 목록")]
-    public SFXInfo[] sfxArr;
-
-    private Dictionary<string, AudioClip> sfxDict = new Dictionary<string, AudioClip>();
-    private Dictionary<int, AudioSource> playerVoices = new Dictionary<int, AudioSource>();
-    private int localPlayerActorNumber;
-
-    private void Awake()
-    {
-        if (!Instance)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+    private Transform _mainCamera; // 메인 카메라의 Transform
+    public float distanceFromCamera = 3f; // 카메라에서 슬라이더 UI가 떨어질 거리
 
     private void Start()
     {
-        // 로컬 플레이어의 ActorNumber 저장
-        localPlayerActorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
+        _mainCamera = Camera.main.transform;
 
-        foreach (var info in sfxArr)
+        if (!_mainCamera)
         {
-            if (!sfxDict.ContainsKey(info.key))
-                sfxDict.Add(info.key, info.clip);
-            else
-                Debug.LogWarning($"중복된 SFX 키 값 : {info.key}");
+            Debug.LogError("Main Camera를 찾을 수 없습니다!");
         }
-#if UNITY_EDITOR
-        Debug.LogWarning($"효과음 초기화 완료!");
-#endif
-    }
 
-    // BGM 재생 및 볼륨 설정
-    public void PlayBGM(E_BGM bgmIdx)
-    {
-        audioBgm.clip = clipBgm[(int)bgmIdx];
-        audioBgm.Play();
-    }
-
-    public void StopBGM()
-    {
-        if (audioBgm.isPlaying)
+        if (sliderUI)
         {
-            audioBgm.Stop();
+            sliderUI.SetActive(false);
         }
     }
 
     public void SetBGMVolume(float volume)
     {
-        if (audioBgm.isPlaying)
-        {
-            audioBgm.volume = volume;
-        }
+        float dBValue = Mathf.Lerp(minVolumeDb, maxVolumeDb, volume);
+        test.SetFloat("PlayerVoiceVolum", dBValue);
     }
 
-    // SFX 재생 및 볼륨 설정
-    public void PlaySFX(string key)
+    private void Update()
     {
-        if (sfxDict.ContainsKey(key))
-            AudioSource.PlayClipAtPoint(sfxDict[key], Vector3.zero);
+        if (IsControllerButtonPressed(rightControllerNode, CommonUsages.primaryButton))
+        {
+            buttonHoldCounter += Time.deltaTime;
+
+            if (buttonHoldCounter >= buttonHoldTime)
+            {
+                ToggleSliderUI();
+                buttonHoldCounter = 0f;
+            }
+        }
+#if UNITY_EDITOR
+        else if (Input.GetKey(KeyCode.Slash))
+        {
+            buttonHoldCounter += Time.deltaTime;
+
+            if (buttonHoldCounter >= buttonHoldTime)
+            {
+                ToggleSliderUI();
+                buttonHoldCounter = 0f;
+            }
+        }
+#endif
         else
-            Debug.LogWarning($"효과음 키값{key}을 찾을 수 없습니다.");
-    }
-
-    public void SetSFXVolume(float volume)
-    {
-        foreach (var audioSource in playerVoices.Values)
         {
-            audioSource.volume = volume;
+            buttonHoldCounter = 0f;
+        }
+
+        if (isSliderUIActive && sliderUI != null && _mainCamera != null)
+        {
+            UpdateSliderUIPosition();
         }
     }
 
-    // 플레이어 음성 등록
-    public void RegisterPlayerVoice(PhotonView photonView, AudioSource voiceSource)
+    private void ToggleSliderUI()
     {
-        if (photonView != null)
-        {
-            int actorNumber = photonView.Owner.ActorNumber;
+        isSliderUIActive = !isSliderUIActive;
 
-            if (!playerVoices.ContainsKey(actorNumber))
+        if (sliderUI != null)
+        {
+            sliderUI.SetActive(isSliderUIActive);
+
+            if (isSliderUIActive)
             {
-                playerVoices[actorNumber] = voiceSource;
-                Debug.Log($"SoundManager: Actor {actorNumber} 음성 등록");
+                UpdateSliderUIPosition();
             }
         }
     }
 
-    // 플레이어 음성 제거
-    public void UnregisterPlayerVoice(PhotonView photonView)
+    private void UpdateSliderUIPosition()
     {
-        if (photonView != null)
-        {
-            int actorNumber = photonView.Owner.ActorNumber;
-
-            if (playerVoices.ContainsKey(actorNumber))
-            {
-                playerVoices.Remove(actorNumber);
-                Debug.Log($"SoundManager: Actor {actorNumber} 음성 제거");
-            }
-        }
+        Vector3 newPosition = _mainCamera.position + _mainCamera.forward * distanceFromCamera;
+        sliderUI.transform.position = newPosition;
+        sliderUI.transform.rotation = Quaternion.LookRotation(sliderUI.transform.position - _mainCamera.position);
     }
 
-    // 특정 캐릭터의 음량 설정
-    public void SetPlayerVolume(int actorNumber, float volume)
+    private bool IsControllerButtonPressed(XRNode controllerNode, InputFeatureUsage<bool> button)
     {
-        if (playerVoices.ContainsKey(actorNumber))
+        // 컨트롤러 노드에서 버튼 입력 상태 확인
+        InputDevice device = InputDevices.GetDeviceAtXRNode(controllerNode);
+        if (device.isValid && device.TryGetFeatureValue(button, out bool isPressed))
         {
-            playerVoices[actorNumber].volume = volume;
-            Debug.Log($"Actor {actorNumber} 음량 조정: {volume}");
+            return isPressed;
         }
-    }
-
-    // 모든 캐릭터의 정보를 반환 (UI 업데이트에 사용)
-    public Dictionary<int, AudioSource> GetAllPlayerVoices()
-    {
-        return new Dictionary<int, AudioSource>(playerVoices);
+        return false;
     }
 }
