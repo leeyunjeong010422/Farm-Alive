@@ -1,4 +1,5 @@
 using Fusion;
+using GameData;
 using Photon.Pun;
 using System;
 using System.Collections;
@@ -143,5 +144,29 @@ public class BoxTrigger : MonoBehaviourPun
     private void NotifyRequiredItemsChanged()
     {
         RequiredItemsChanged?.Invoke(requiredItems);
+    }
+
+    public void ClearBox()
+    {
+        StartCoroutine(ClearBoxList());
+    }
+
+    private IEnumerator ClearBoxList()
+    {
+        bool isClear = true;
+        while (isClear)
+        {
+            yield return null;
+
+            for (int i = idList.Count - 1; i >= 0; i--)
+            {
+                PhotonView cropView = PhotonView.Find(idList[i]);
+                Destroy(cropView.gameObject);
+            }
+
+            isClear = false;
+        }
+
+        PhotonNetwork.Destroy(gameObject);
     }
 }

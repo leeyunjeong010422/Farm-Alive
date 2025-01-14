@@ -244,9 +244,9 @@ public class QuestManager : MonoBehaviourPun
         }
 
         PhotonView box = PhotonView.Find(boxView);
-        if (box != null && box.IsMine)
+        if (box != null)
         {
-            PhotonNetwork.Destroy(box.gameObject);
+            box.GetComponent<BoxTrigger>().ClearBox();
         }
 
         if (completedIndexes.Count > 0)
