@@ -34,7 +34,8 @@ public class StageManager : MonoBehaviourPunCallbacks
     public Vector3 PlayerSpawn;
 
     // 계절별 파티클 / 오브젝트 등.
-    // 
+    [Tooltip("계절별 스카이박스 메테리얼 (순서대로 계절)")]
+    [SerializeField] Material[] _materials;
     //
     //
 
@@ -105,12 +106,16 @@ public class StageManager : MonoBehaviourPunCallbacks
         switch (_weatherID)
         {
             case 0: // 봄
+                 RenderSettings.skybox = _materials[0];
                 break;
             case 1: // 여름
+                 RenderSettings.skybox = _materials[1];
                 break;
             case 2: // 가을
+                 RenderSettings.skybox = _materials[2];
                 break;
             case 3: // 겨울
+                 RenderSettings.skybox = _materials[3];
                 break;
         }
 

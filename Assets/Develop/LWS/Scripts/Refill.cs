@@ -1,6 +1,7 @@
 using UnityEngine;
 using Photon.Pun;
 using System.Collections.Generic;
+using System.Collections;
 
 public class Refill : MonoBehaviourPun
 {
@@ -32,20 +33,22 @@ public class Refill : MonoBehaviourPun
             if (idList.Contains(objectID.ViewID))
                 return;
 
-            TrySpawnRefill();
+            StartCoroutine(TrySpawnRefill());
             idList.Add(objectID.ViewID);
         }
     }
 
-    private void TrySpawnRefill()
+    private IEnumerator TrySpawnRefill()
     {
         // 10회 이상이면 재생성 x
         if (_curCount >= _maxCount)
         {
             Debug.Log("추가 소환 x");
-            return;
+            yield break;
         }
         _curCount++;
+
+        yield return new WaitForSeconds(2f);
 
         GameObject NewObject = PhotonNetwork.Instantiate(_refillPrefab.name, _originalPos, Quaternion.identity);
         Refill refill = NewObject.GetComponent<Refill>();
