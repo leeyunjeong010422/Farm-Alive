@@ -160,28 +160,18 @@ public class Crop : MonoBehaviourPun
     {
         if (SectionManager.Instance.IsDownpour)
             OnDownpourStarted();
-        else
-            OnDownpourEnded();
 
         if (SectionManager.Instance.IsBlight)
             OnBlightStarted();
-        else
-            OnBlightEnded();
 
         if (SectionManager.Instance.IsDrought)
             OnDroughtStarted();
-        else
-            OnDroughtEnded();
 
         if (SectionManager.Instance.IsHighTemperature)
             OnHighTemperatureStarted();
-        else
-            OnHighTemperatureEnded();
 
         if (SectionManager.Instance.IsLowTemperature)
             OnLowTemperatureStarted();
-        else
-            OnLowTemperatureEnded();
     }
 
     public void IncreaseMoisture() => _curMoisture++;
@@ -238,11 +228,13 @@ public class Crop : MonoBehaviourPun
     public void OnDroughtStarted()
     {
         _curMaxMoisture = _droughtMaxMoisture;
+        _curMaxNutrient = _droughtMaxNutrient;
     }
 
     public void OnDroughtEnded()
     {
-        _curMaxNutrient = _droughtMaxNutrient;
+        _curMaxMoisture = _idleMaxMoisture;
+        _curMaxNutrient = _idleMaxNutrient;
     }
 
     public void OnHighTemperatureStarted()
