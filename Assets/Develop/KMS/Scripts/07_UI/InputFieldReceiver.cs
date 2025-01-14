@@ -1,3 +1,4 @@
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Samples.SpatialKeyboard;
@@ -25,8 +26,7 @@ public class InputFieldReceiver : MonoBehaviour
 
         if(_inputField)
         {
-            // TODO : 파이어베이스에서 받아온 캐릭터의 닉네임 + Room으로 기본 이름 생성하기.
-            _roomName = "Player" + "'s Room";
+            _roomName = PhotonNetwork.LocalPlayer.NickName + "'s Room";
             _inputField.text = _roomName;
         }
 

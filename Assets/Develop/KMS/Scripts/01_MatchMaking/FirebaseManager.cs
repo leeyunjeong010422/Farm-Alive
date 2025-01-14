@@ -25,7 +25,22 @@ public class FirebaseManager : MonoBehaviour
 
     public event Action OnFirebaseInitialized; // Firebase 초기화 완료 이벤트
 
-    private string highStage;
+    private string _highStage = "";
+
+    private string _nickName;
+    public class StageData
+    {
+        public int stars;
+        public float playTime;
+
+        public StageData(int stars, float playTime)
+        {
+            this.stars = stars;
+            this.playTime = playTime;
+        }
+    }
+    private Dictionary<int, StageData> cachedStageData = new Dictionary<int, StageData>();
+
 
     /// <summary>
     /// 플레이어의 저장된 UID를 호출.
@@ -171,6 +186,8 @@ public class FirebaseManager : MonoBehaviour
                 Debug.Log($"Firebase에서 UID {uid} 발견!");
                 userId = uid;
                 UpdateLastLogin();
+                LoadNickName();
+                LoadHighStage();
                 NotifyInitializationComplete();
             }
             else
@@ -199,7 +216,7 @@ public class FirebaseManager : MonoBehaviour
                     { "sound", 0 }
                 }
             },
-            { "highStage", highStage },
+            { "highStage", _highStage },
             { "achievements", new List<string>() { "first_login" } }
         };
 
@@ -268,6 +285,175 @@ public class FirebaseManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Firebase에서 HighStage를 가져와 캐싱합니다.
+    /// </summary>
+    public void LoadHighStage()
+    {
+        if (string.IsNullOrEmpty(userId))
+        {
+            Debug.LogError("유저 ID가 없습니다. HighStage를 가져올 수 없습니다.");
+            return;
+        }
+
+        DatabaseReference highStageRef = dataBase.GetReference($"users/{userId}/highStage");
+
+        highStageRef.GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCompleted && task.Result != null && task.Result.Value != null)
+            {
+                _highStage = task.Result.Value.ToString();
+                Debug.Log($"HighStage 불러오기 성공: {_highStage}");
+
+                // 캐싱 시작
+                CacheStageData();
+            }
+            else
+            {
+                Debug.LogError("HighStage 불러오기 실패: " + task.Exception);
+                _highStage = "Stage1";
+            }
+        });
+    }
+
+    /// <summary>
+    /// 현재 저장된 HighStage를 반환합니다.
+    /// </summary>
+    public string GetHighStage()
+    {
+        if (string.IsNullOrEmpty(_highStage))
+        {
+            Debug.LogWarning("HighStage가 아직 로드되지 않았습니다.");
+        }
+
+        return _highStage;
+    }
+
+    /// <summary>
+    /// stageID를 이용한 stars, playTime을 캐싱하기.
+    /// </summary>
+    private void CacheStageData()
+    {
+        if (!Enum.TryParse(_highStage, out E_StageMode highStageEnum))
+        {
+            Debug.LogError("HighStage를 파싱할 수 없습니다.");
+            return;
+        }
+
+        // 비연속적이기에 Enum.GetValues를 사용하여 순회
+        foreach (E_StageMode stage in Enum.GetValues(typeof(E_StageMode)))
+        {
+            // 유효한 스테이지만 처리
+            if (stage == E_StageMode.None || stage == E_StageMode.SIZE_MAX || stage > highStageEnum)
+            {
+                continue;
+            }
+
+            int stageID = (int)stage;
+            DatabaseReference stageRef = dataBase.GetReference($"users/{userId}/stageResults/{stageID}");
+
+            stageRef.GetValueAsync().ContinueWithOnMainThread(task =>
+            {
+                if (task.IsCompleted && task.Result != null && task.Result.HasChildren)
+                {
+                    int stars = 0;
+                    float playTime = 0f;
+
+                    if (task.Result.Child("stars").Value != null)
+                    {
+                        stars = int.Parse(task.Result.Child("stars").Value.ToString());
+                    }
+
+                    if (task.Result.Child("playTime").Value != null)
+                    {
+                        playTime = float.Parse(task.Result.Child("playTime").Value.ToString());
+                    }
+
+                    cachedStageData[stageID] = new StageData(stars, playTime);
+                    Debug.Log($"Stage {stage} 데이터 캐싱 완료: Stars {stars}, PlayTime {playTime}");
+                }
+                else
+                {
+                    Debug.LogWarning($"Stage {stage} 데이터가 없습니다.");
+                    cachedStageData[stageID] = new StageData(0, 0f);
+                }
+            });
+        }
+    }
+
+    public StageData GetCachedStageData(int stageID)
+    {
+        if (cachedStageData.ContainsKey(stageID))
+        {
+            return cachedStageData[stageID];
+        }
+        Debug.LogWarning($"Stage {stageID} 데이터가 캐싱되지 않았습니다.");
+        return null;
+    }
+
+    public void SaveNickName(string playerName)
+    {
+        if (string.IsNullOrEmpty(userId)) return;
+
+        DatabaseReference nickNameRef = dataBase.GetReference($"users/{userId}/nickname");
+
+        nickNameRef.SetValueAsync(playerName).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCompleted && !task.IsFaulted)
+            {
+                Debug.Log($"닉네임 '{playerName}' 저장 완료!");
+                // 닉네임 캐싱.
+                _nickName = playerName;
+            }
+            else
+            {
+                Debug.LogError($"닉네임 저장 실패: {task.Exception}");
+            }
+        });
+
+    }
+
+    /// <summary>
+    /// Firebase에서 닉네임을 가져와 캐싱합니다.
+    /// </summary>
+    public void LoadNickName()
+    {
+        if (string.IsNullOrEmpty(userId))
+        {
+            Debug.LogError("유저 ID가 없습니다. 닉네임을 불러올 수 없습니다.");
+            return;
+        }
+
+        DatabaseReference nickNameRef = dataBase.GetReference($"users/{userId}/nickname");
+
+        nickNameRef.GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCompleted && task.Result != null && task.Result.Value != null)
+            {
+                _nickName = task.Result.Value.ToString();
+                Debug.Log($"닉네임 불러오기 성공: {_nickName}");
+            }
+            else
+            {
+                Debug.LogError("닉네임 불러오기 실패: " + task.Exception);
+                _nickName = null;
+            }
+        });
+    }
+
+    /// <summary>
+    /// 현재 저장된 닉네임을 반환합니다.
+    /// </summary>
+    public string GetNickName()
+    {
+        if (string.IsNullOrEmpty(_nickName))
+        {
+            Debug.LogWarning("닉네임이 아직 로드되지 않았습니다.");
+        }
+
+        return _nickName;
+    }
+
+    /// <summary>
     /// 최근 로그인한 기록을 저장하는 메서드.
     /// </summary>
     public void UpdateLastLogin()
@@ -275,19 +461,19 @@ public class FirebaseManager : MonoBehaviour
         Debug.Log("캐릭터 마지막 로그인 갱신!");
         Debug.Log("지금은 데이터를 잠시 갱신안함 - (코드 막아둠!)");
 
-        //DatabaseReference userRef = dataBase.GetReference($"users/{userId}/lastLogin");
+        DatabaseReference userRef = dataBase.GetReference($"users/{userId}/lastLogin");
 
-        //userRef.SetValueAsync(DateTime.Now.ToString("o")).ContinueWithOnMainThread(task =>
-        //{
-        //    if (task.IsCompleted && !task.IsFaulted)
-        //    {
-        //        Debug.Log("마지막 로그인 시간 업데이트 성공!");
-        //    }
-        //    else
-        //    {
-        //        Debug.LogError("마지막 로그인 시간 업데이트 실패: " + task.Exception);
-        //    }
-        //});
+        userRef.SetValueAsync(DateTime.Now.ToString("o")).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCompleted && !task.IsFaulted)
+            {
+                Debug.Log("마지막 로그인 시간 업데이트 성공!");
+            }
+            else
+            {
+                Debug.LogError("마지막 로그인 시간 업데이트 실패: " + task.Exception);
+            }
+        });
     }
 
     /// <summary>
