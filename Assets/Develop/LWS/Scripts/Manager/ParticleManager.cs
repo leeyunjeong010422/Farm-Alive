@@ -71,6 +71,9 @@ public class ParticleManager : MonoBehaviour
     /// </summary>
     public void StopParticle(string key)
     {
+        if (!_particleDict.ContainsKey(key))
+            return;
+
         ParticleSystem particle = _particleDict[key];
         if (particle.isPlaying)
             particle.Stop();
