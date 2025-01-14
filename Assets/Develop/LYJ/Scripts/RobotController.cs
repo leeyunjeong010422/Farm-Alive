@@ -17,8 +17,10 @@ public class RobotController : MonoBehaviour
 
     [SerializeField] private float _followDistance = 3.0f; // 따라갈 최소 거리
     [SerializeField] private float _returnDistance = 0.1f; // 초기 위치 근처로 돌아온 거리
+    [SerializeField] private float cooldownTime = 3.0f; // 쿨다운 시간
 
     private NavMeshAgent navMeshAgent;
+    private float lastButtonClickTime = -Mathf.Infinity; // 마지막으로 버튼이 눌린 시간
 
     private void Awake()
     {
@@ -76,6 +78,14 @@ public class RobotController : MonoBehaviour
     // 로봇 버튼을 클릭했을 때
     public void OnMoveButtonClicked()
     {
+        if (Time.time - lastButtonClickTime < cooldownTime)
+        {
+            Debug.Log("버튼이 너무 빨리 눌렸습니다. 쿨다운 중입니다.");
+            return;
+        }
+
+        lastButtonClickTime = Time.time;
+
         // 로컬 플레이어의 PhotonViewID 가져오기
         PhotonView localPlayerPhotonView = GetLocalPlayerPhotonView();
         if (localPlayerPhotonView == null)
@@ -98,7 +108,7 @@ public class RobotController : MonoBehaviour
         photonView.TransferOwnership(info.Sender.ActorNumber);
 
         // 소유권 이전 후 모든 플레이어에게 로봇 타겟 플레이어 대상 동기화
-        photonView.RPC(nameof(SyncTargetPlayer), RpcTarget.All, photonViewID);
+        photonView.RPC(nameof(SyncTargetPlayer), RpcTarget.AllBuffered, photonViewID);
     }
 
     [PunRPC]
