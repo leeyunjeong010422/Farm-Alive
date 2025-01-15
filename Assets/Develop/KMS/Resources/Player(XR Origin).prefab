@@ -485,6 +485,8 @@ MonoBehaviour:
   trackedPoseDriver: {fileID: 1079225272714446807}
   leftControllerManager: {fileID: 0}
   rightControllerManager: {fileID: 0}
+  leftControllerObject: {fileID: 0}
+  rightControllerObject: {fileID: 0}
   leftController: {fileID: 7244205502502397373}
   rightController: {fileID: 6270385978765209903}
 --- !u!114 &7796118003363028200
@@ -499,10 +501,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a152815c43985648b63ddc5340b1772, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controllerNode: 4
-  moveSpeed: 1
   cameraTransform: {fileID: 4280327433256309466}
   animator: {fileID: 0}
+  moveSpeed: 1
+  rotationSpeed: 100
+  hmdRotationThreshold: 30
+  hmdLerpSpeed: 0.07
+  raycastDistance: 1
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  sphereCastRadius: 0.2
+  _leftControllerNode: 4
+  _rightControllerNode: 5
 --- !u!1 &7058316424154682602
 GameObject:
   m_ObjectHideFlags: 0
@@ -626,7 +637,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   m_PhysicsTriggerInteraction: 1
-  photonView: {fileID: 0}
+  _photonView: {fileID: 0}
 --- !u!135 &4599222015429002053
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1297,7 +1308,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   m_PhysicsTriggerInteraction: 1
-  photonView: {fileID: 0}
+  _photonView: {fileID: 0}
 --- !u!135 &7369394189824763644
 SphereCollider:
   m_ObjectHideFlags: 0

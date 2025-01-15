@@ -356,7 +356,7 @@ MonoBehaviour:
   raycastDistance: 1
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   sphereCastRadius: 0.2
   _leftControllerNode: 4
   _rightControllerNode: 5
