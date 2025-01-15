@@ -89,8 +89,6 @@ public class PunManager : MonoBehaviourPunCallbacks
         PhotonNetwork.AuthValues = new AuthenticationValues { UserId = userId /*Random.Range(1000, 10000).ToString() */ };
 
         Debug.Log($"ConnectToPhoton {userId}");
-        Debug.Log($"PhotonNetwork NickName은 {PhotonNetwork.LocalPlayer.NickName}입니다.");
-
         PhotonNetwork.ConnectUsingSettings();
         Debug.Log("포톤에 연결 중...");
     }
