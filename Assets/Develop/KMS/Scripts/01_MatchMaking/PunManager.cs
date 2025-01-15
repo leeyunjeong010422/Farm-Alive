@@ -86,7 +86,7 @@ public class PunManager : MonoBehaviourPunCallbacks
 
         // PhotonNetwork에서 고유의 UserID를 가져와서 인증을 받음.
         // 테스트시에는 userId를 불러올시 ParrelSync가 동작이 안되기에 Random.Range로 진행.
-        PhotonNetwork.AuthValues = new AuthenticationValues { UserId = /*userId*/ Random.Range(1000, 10000).ToString() };
+        PhotonNetwork.AuthValues = new AuthenticationValues { UserId = userId /*Random.Range(1000, 10000).ToString() */ };
 
         Debug.Log($"ConnectToPhoton {userId}");
         Debug.Log($"PhotonNetwork NickName은 {PhotonNetwork.LocalPlayer.NickName}입니다.");
