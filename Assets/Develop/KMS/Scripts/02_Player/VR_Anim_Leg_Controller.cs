@@ -55,6 +55,7 @@ public class VR_Anim_Leg_Controller : MonoBehaviourPun
                 photonView.RPC("SyncAnimationRPC", RpcTarget.Others, _leftInputAxis.magnitude);
             }
 
+#if UNITY_EDITOR
             // 캐릭터 속도 조절 버튼
             {
                 InputDevice rightController = InputDevices.GetDeviceAtXRNode(_rightControllerNode);
@@ -83,10 +84,12 @@ public class VR_Anim_Leg_Controller : MonoBehaviourPun
                         _isSecondaryPressed = false;
                     }
                 }
-
-                // 오른손 컨트롤러 입력 처리 (회전)
-                rightController = InputDevices.GetDeviceAtXRNode(_rightControllerNode);
-                if (rightController.TryGetFeatureValue(CommonUsages.primary2DAxis, out _rightInputAxis))
+            }
+#endif
+            {
+            // 오른손 컨트롤러 입력 처리 (회전)
+            InputDevice rightController2 = InputDevices.GetDeviceAtXRNode(_rightControllerNode);
+                if (rightController2.TryGetFeatureValue(CommonUsages.primary2DAxis, out _rightInputAxis))
                 {
                     if (Mathf.Abs(_rightInputAxis.x) > 0.1f)
                     {

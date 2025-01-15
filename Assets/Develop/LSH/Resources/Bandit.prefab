@@ -690,6 +690,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 980f0c5c9a45efe44aae35dd56fb66a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textPanel: {fileID: 5993812260657980440}
   text: {fileID: 5659696026454407130}
 --- !u!114 &7150971114204910911
 MonoBehaviour:
@@ -1053,3 +1054,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &5993812260657980440 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 900289455104941707, guid: c96cd39cc6bccb049b96b8f2a6eafb64, type: 3}
+  m_PrefabInstance: {fileID: 6868046622860327571}
+  m_PrefabAsset: {fileID: 0}
