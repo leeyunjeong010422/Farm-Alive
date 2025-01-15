@@ -7,8 +7,6 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    public List<Text> questText;
-
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -34,7 +32,7 @@ public class UIManager : MonoBehaviour
 
             displayText += $"퀘스트 완료 여부: {(quest.isSuccess ? "완료" : "미완료")}\n\n";
 
-            questText[i].text = displayText;
+            QuestManager.Instance.truckList[i].questText.text = displayText;
         }
     }
 }

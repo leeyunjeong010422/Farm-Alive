@@ -21,8 +21,8 @@ public class OwnershipFilter : MonoBehaviour, IXRHoverFilter, IXRSelectFilter
 
     private bool CheckOwnership(IXRInteractor interactor, IXRInteractable interactable)
     {
-        PhotonView interactorPV = interactor.transform.GetComponent<PhotonView>();
-        PhotonView interactablePV = interactable.transform.GetComponent<PhotonView>();
+        PhotonView interactorPV = FindPhotonView(interactor.transform);
+        PhotonView interactablePV = FindPhotonView(interactable.transform);
         if (interactorPV == null)
         {
             Debug.LogWarning("Interactor에서 PhotonView를 찾을 수 없습니다.");
@@ -36,5 +36,21 @@ public class OwnershipFilter : MonoBehaviour, IXRHoverFilter, IXRSelectFilter
 
         // 소유권 검사
         return (interactorPV.Owner == interactablePV.Owner);
+    }
+
+    private PhotonView FindPhotonView(Transform transform)
+    {
+        PhotonView photonView = null;
+        Transform curTransform = transform;
+
+        while (curTransform != null)
+        {
+            photonView = curTransform.GetComponent<PhotonView>();
+            if (photonView != null)
+                return photonView;
+
+            curTransform = curTransform.parent;
+        }
+        return null;
     }
 }

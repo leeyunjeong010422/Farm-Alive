@@ -26,6 +26,8 @@ public class SectionMover : MonoBehaviourPun
     [SerializeField] bool[] wayPoint1;
     [SerializeField] bool[] wayPoint2;
 
+    [SerializeField] public bool isBroken = false;
+
 
     //private bool isUpperLowerShutterOpen = false;
     private bool isLeftRightShutterOpen = false;
@@ -45,7 +47,7 @@ public class SectionMover : MonoBehaviourPun
         {
             middlePosition[i] = new Vector3(
                 targetSection[i].transform.position.x,
-                targetSection[i].transform.position.y - 18,
+                targetSection[i].transform.position.y + 14,
                 targetSection[i].transform.position.z
                 );
 
@@ -57,7 +59,7 @@ public class SectionMover : MonoBehaviourPun
         {
             endPosition[i] = new Vector3(
                 targetPosition.x,
-                targetPosition.y - 18,
+                targetPosition.y + 14,
                 targetPosition.z
                 );
 
@@ -69,7 +71,7 @@ public class SectionMover : MonoBehaviourPun
         {
             middleBackPosition[i] = new Vector3(
                 targetSection[i].transform.position.x,
-                targetSection[i].transform.position.y + 18,
+                targetSection[i].transform.position.y + 28,
                 targetSection[i].transform.position.z
                 );
         }
@@ -79,13 +81,15 @@ public class SectionMover : MonoBehaviourPun
         {
             endBackPosition[i] = new Vector3(
                 targetPosition.x,
-                targetPosition.y + 18,
+                targetPosition.y + 28,
                 targetPosition.z
                 );
         }
     }
     void Update()
     {
+        if (isBroken) return;
+
         if (selectedSection != null)
         {
             int selectedIndex = System.Array.IndexOf(targetSection, selectedSection);
@@ -153,27 +157,6 @@ public class SectionMover : MonoBehaviourPun
                 }
             }
         }
-
-        /*if (selectedSection != null)
-        {
-            selectedSection.transform.position = Vector3.MoveTowards(selectedSection.transform.position, targetPosition, moveSpeed * Time.deltaTime);
-
-            if (Vector3.Distance(selectedSection.transform.position, targetPosition) < 0.01f)
-            {
-                if (*//*!isUpperLowerShutterOpen ||*//* !isLeftRightShutterOpen)
-                {
-                    SectorDistance();
-                }
-            }
-        }
-
-        for (int i = 0; i < targetSection.Length; i++)
-        {
-            if (targetSection[i] != selectedSection)
-            {
-                targetSection[i].transform.position = Vector3.MoveTowards(targetSection[i].transform.position, firstPosition[i], moveSpeed * Time.deltaTime);
-            }
-        }*/
     }
 
     public void sel1()
@@ -260,5 +243,19 @@ public class SectionMover : MonoBehaviourPun
 
         //isUpperLowerShutterOpen = false;
         isLeftRightShutterOpen = false;
+    }
+
+    // 고장 상태에서 움직임 비활성화
+    public void DisableMovement()
+    {
+        isBroken = true;
+        Debug.Log("섹션 움직임이 비활성화되었습니다.");
+    }
+
+    // 고장 상태 해제 후 움직임 활성화
+    public void EnableMovement()
+    {
+        isBroken = false;
+        Debug.Log("섹션 움직임이 활성화되었습니다.");
     }
 }

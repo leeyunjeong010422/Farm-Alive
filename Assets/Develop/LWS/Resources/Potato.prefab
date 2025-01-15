@@ -259,6 +259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee49e885baee7e04ab49091d36bc635c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cropData: {fileID: 11400000, guid: f5912e01b9242384badb9b932817f6f0, type: 2}
   _GFXs: []
   _curState: 0
   _digCount: 2
@@ -312,6 +313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hoverColor: {r: 0, g: 0, b: 0, a: 0}
+  _selectColor: {r: 0, g: 0, b: 0, a: 0}
   _audioSource: {fileID: 0}
   _hoverSound: {fileID: 0}
   _selectSound: {fileID: 0}

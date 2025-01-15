@@ -1,103 +1,75 @@
+using Fusion.LagCompensation;
 using Photon.Pun;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.XR.Interaction.Toolkit;
 
-public class ButtonInteractable : MonoBehaviourPunCallbacks
+[RequireComponent(typeof(PhotonView))]
+public class ButtonInteractable : XRBaseInteractable
 {
     [System.Serializable]
     public class ButtonPressedEvent : UnityEvent { }
     [System.Serializable]
     public class ButtonReleasedEvent : UnityEvent { }
 
-    // 버튼이 움직일 축 지정 (기본적으로 y 아래 방향)
-    public Vector3 _axis = new Vector3(0, -1, 0);
-    
-    // 버튼이 눌렀을 때 들어갈 거리 (위의 _axis 방향으로 움직임)
-    public float _maxDistance;
-
-    // 버튼이 원래 위치로 돌아가는 속도
-    public float _returnSpeed = 10.0f;
-
     // 버튼 눌렀을 때 작용할 AudioClip
     // public AudioClip ButtonPressAudioClip;
     // public AudioClip ButtonReleaseAudioClip;
 
+    [Header("버튼 이벤트")]
     // 버튼이 완전히 눌렸을 때와 떼어졌을 때 실행하는 이벤트
     public ButtonPressedEvent _onButtonPressed;
     public ButtonReleasedEvent _onButtonReleased;
 
-    // 버튼의 시작위치 저장
-    Vector3 _startPosition;
-    Rigidbody _rigidbody;
-    bool _pressed = false;
+    private bool _isPressed = false;
+    private PhotonView _view;
 
-    void Start()
+    protected override void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody>();
-        _startPosition = transform.position;
+        base.Awake();
 
-        // ownership transfer가 fixed여야 함
+        _view = GetComponent<PhotonView>();
     }
 
-    void FixedUpdate()
+    protected override void OnHoverEntered(HoverEnterEventArgs args)
     {
-        // 물리 연산 -> 소유자만 실행
-        if (!photonView.IsMine)
-            return;
+        base.OnHoverEntered(args);
+
         
-        // 축을 월드방향으로
-        Vector3 worldAxis = transform.TransformDirection(_axis);
+    }
 
-        // 현재 버튼의 이동 위치
-        float currentDistance = (transform.position - _startPosition).magnitude;
-        float move = 0.0f;
+    protected override void OnHoverExited(HoverExitEventArgs args)
+    {
+        base.OnHoverExited(args);
 
-        // SweepTest로 감지
-        if (_rigidbody.SweepTest(-worldAxis, out RaycastHit hit, _returnSpeed * Time.deltaTime + 0.005f))
+
+    }
+
+    protected override void OnActivated(ActivateEventArgs args)
+    {
+        base.OnActivated(args);
+
+        if (!_isPressed)
         {
-            // 충돌이 있는 경우 : move를 양수로 하여 버튼을 더 눌러줌
-            move = (_returnSpeed * Time.deltaTime) - hit.distance;
-        }
-        else
-        {
-            // 충돌이 없으면 move를 음수로 하여 버튼 복귀
-            move -= _returnSpeed * Time.deltaTime;
-        }
+            _isPressed = true;
 
-        // 새로운 이동거리 계산 및 적용
-        float newDistance = Mathf.Clamp(currentDistance + move, 0, _maxDistance);
-
-        _rigidbody.position = _startPosition + worldAxis * newDistance;
-
-        // 눌렸을 때 이벤트 호출
-        if (!_pressed && Mathf.Approximately(newDistance, _maxDistance))
-        {
-            _pressed = true;
-            /*
-            SFXPlayer.Instance.PlaySFX(ButtonPressAudioClip, transform.position, new SFXPlayer.PlayParameters()
-            {
-                Pitch = Random.Range(0.9f, 1.1f),
-                SourceID = -1,
-                Volume = 1.0f
-            }, 0.0f);
-            */
-            photonView.RPC(nameof(RPC_OnButtonPressed), RpcTarget.All);
-        }
-        else if (_pressed && !Mathf.Approximately(newDistance, _maxDistance))
-        {
-            _pressed = false;
-            /*
-            SFXPlayer.Instance.PlaySFX(ButtonReleaseAudioClip, transform.position, new SFXPlayer.PlayParameters()
-            {
-                Pitch = Random.Range(0.9f, 1.1f),
-                SourceID = -1,
-                Volume = 1.0f
-            }, 0.0f);
-            */
-            photonView.RPC(nameof(RPC_OnButtonReleased), RpcTarget.All);
+            _view.RPC(nameof(RPC_OnButtonPressed), RpcTarget.All); 
         }
     }
+
+    protected override void OnDeactivated(DeactivateEventArgs args)
+    {
+        base.OnDeactivated(args);
+
+        if (_isPressed)
+        {
+            _isPressed = false;
+
+            _view.RPC(nameof(RPC_OnButtonReleased), RpcTarget.All);
+        }
+    }
+
 
     [PunRPC]
     private void RPC_OnButtonPressed()

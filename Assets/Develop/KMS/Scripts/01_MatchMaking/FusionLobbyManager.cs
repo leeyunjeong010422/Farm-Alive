@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class FusionLobbyManager : MonoBehaviour
 {
     public NetworkRunner networkRunnerPrefab;
-    private NetworkRunner _networkRunner;
+    public string lobbyName = "FusionLobby";
 
     private async void Start()
     {
@@ -25,13 +25,12 @@ public class FusionLobbyManager : MonoBehaviour
 
     private async Task StartFusionLobby()
     {
-        //_networkRunner = Instantiate(networkRunnerPrefab);
         networkRunnerPrefab.ProvideInput = true;
 
         var startResult = await networkRunnerPrefab.StartGame(new StartGameArgs
         {
             GameMode = GameMode.Shared,
-            SessionName = "FusionLobby"
+            SessionName = lobbyName
         });
 
         if (startResult.Ok)

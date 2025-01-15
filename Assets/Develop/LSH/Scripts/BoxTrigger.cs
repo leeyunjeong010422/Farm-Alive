@@ -1,4 +1,5 @@
 using Fusion;
+using GameData;
 using Photon.Pun;
 using System;
 using System.Collections;
@@ -6,14 +7,15 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.XR.Content.Interaction;
 using UnityEngine.XR.Interaction.Toolkit;
 using static QuestManager;
 
-public class BoxTrigger : MonoBehaviourPun//, IPunObservable
+public class BoxTrigger : MonoBehaviourPun
 {
     [SerializeField] public GameObject boxTape;
     [SerializeField] public List<RequiredItem> requiredItems;
-    [SerializeField] BoxCover boxCover;
+    [SerializeField] public BoxCover boxCover;
     [SerializeField] public List<int> idList = new List<int>();
     [SerializeField] Collider openCollider;
     [SerializeField] Collider closedCollider;
@@ -36,33 +38,7 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
 
     private void OnTriggerEnter(Collider other)
     {
-        
-        if (other.CompareTag("Crop"))
-        {
-            PhotonView itemView = other.transform.parent.parent.GetComponent<PhotonView>();
-            if (itemView == null || !itemView.IsMine)
-                return;
-
-            if (!boxCover.IsOpen)
-                return;
-
-            if (idList.Contains(itemView.ViewID))
-                return;
-
-            CropInteractable grabInteractable = other.transform.parent.parent.GetComponent<CropInteractable>();
-            Debug.Log(grabInteractable);
-            if (grabInteractable != null && !grabInteractable.isSelected)
-                return;
-
-            if (QuestManager.Instance.currentQuest == null)
-                return;
-            
-            photonView.RPC(nameof(UpCount), RpcTarget.All, itemView.ViewID);
-            
-            Debug.Log("종료");
-        }
-
-        else if (/*!boxCover.IsPackaged &&*/ other.CompareTag("Tape"))
+        if (other.CompareTag("Tape"))
         {
             Debug.Log("포장시작");
             if (boxCover.IsOpen)
@@ -87,86 +63,111 @@ public class BoxTrigger : MonoBehaviourPun//, IPunObservable
                 taping.StopTaping();
             }
         }
-        else if (other.CompareTag("Crop"))
-        {
-            CropInteractable grabInteractable = other.transform.parent.parent.GetComponent<CropInteractable>();
-            if (grabInteractable != null && !grabInteractable.isSelected)
-                return;
-
-            PhotonView itemView = other.transform.parent.parent.GetComponent<PhotonView>();
-
-            photonView.RPC(nameof(DownCount), RpcTarget.All, itemView.ViewID);
-        }
     }
 
-    [PunRPC]
-    private void UpCount(int viewId)
+    public void CountUpdate(int viewId, bool isBool)
     {
-        PhotonView itemView = PhotonView.Find(viewId);
-        idList.Add(viewId);
-
-        Rigidbody itemRigid = itemView.GetComponent<Rigidbody>();
-        itemRigid.drag = 10;
-        itemRigid.angularDrag = 1;
-
-        if (requiredItems.Count > 0)
+        if (!isBool)
         {
-            foreach (QuestManager.RequiredItem item in requiredItems)
+            PhotonView itemView = PhotonView.Find(viewId);
+            idList.Add(viewId);
+
+            Rigidbody itemRigid = itemView.GetComponent<Rigidbody>();
+            itemRigid.drag = 10;
+            itemRigid.angularDrag = 1;
+            Crop cropView = itemView.GetComponent<Crop>();
+            if (requiredItems.Count > 0)
             {
-                Debug.Log(requiredItems);
-                if (item.itemPrefab.name == itemView.gameObject.name)
+                foreach (QuestManager.RequiredItem item in requiredItems)
                 {
-                    item.requiredcount++;
-                    Debug.Log("카운트업");
-                    NotifyRequiredItemsChanged();
-                    return;
+                    Debug.Log(requiredItems);
+                    if (item.itemPrefab.name == itemView.gameObject.name)
+                    {
+                        item.requiredcount += cropView.Value;
+                        Debug.Log("카운트업");
+                        NotifyRequiredItemsChanged();
+                        return;
+                    }
                 }
+                requiredItems.Add(new RequiredItem(itemView.gameObject, cropView.Value));
             }
-            requiredItems.Add(new RequiredItem(itemView.gameObject, 1));
+            else
+            {
+                requiredItems.Add(new RequiredItem(itemView.gameObject, cropView.Value));
+            }
+
+            NotifyRequiredItemsChanged();
         }
         else
         {
-            requiredItems.Add(new RequiredItem(itemView.gameObject, 1));
-        }
+            PhotonView itemView = PhotonView.Find(viewId);
 
-        NotifyRequiredItemsChanged();
-    }
-
-    [PunRPC]
-    private void DownCount(int viewId)
-    {
-        PhotonView itemView = PhotonView.Find(viewId);
-        if (requiredItems.Count > 0)
-        {
-            for (int i = requiredItems.Count - 1; i >= 0; i--)
+            Crop cropView = itemView.GetComponent<Crop>();
+            if (requiredItems.Count > 0)
             {
-                if (requiredItems[i].itemPrefab.name == itemView.gameObject.name)
+                for (int i = requiredItems.Count - 1; i >= 0; i--)
                 {
-                    requiredItems[i].requiredcount--;
-
-                    Rigidbody itemRigid = itemView.GetComponent<Rigidbody>();
-                    itemRigid.drag = 0;
-                    itemRigid.angularDrag = 0.05f;
-
-                    if (requiredItems[i].requiredcount == 0)
+                    if (requiredItems[i].itemPrefab.name == itemView.gameObject.name)
                     {
-                        if (idList.Contains(itemView.ViewID))
-                        {
-                            idList.Remove(itemView.ViewID);
-                            Debug.Log($"리스트에서 {itemView} 제거");
-                        }
-                        requiredItems.RemoveAt(i);
-                    }
+                        requiredItems[i].requiredcount -= cropView.Value;
 
-                    NotifyRequiredItemsChanged();
-                    return;
+                        Rigidbody itemRigid = itemView.GetComponent<Rigidbody>();
+                        itemRigid.drag = 0;
+                        itemRigid.angularDrag = 0.05f;
+
+                        if (requiredItems[i].requiredcount <= 0)
+                        {
+                            if (idList.Contains(itemView.ViewID))
+                            {
+                                idList.Remove(itemView.ViewID);
+                                Debug.Log($"리스트에서 {itemView} 제거");
+                            }
+                            requiredItems.RemoveAt(i);
+                        }
+
+                        NotifyRequiredItemsChanged();
+                        return;
+                    }
                 }
             }
         }
+    }
+
+    public void CompleteTaping()
+    {
+        boxCover.tape.SetActive(true);
+        boxCover.IsPackaged = true;
+
+        Debug.Log($"테이핑 완료: {this.name}");
     }
 
     private void NotifyRequiredItemsChanged()
     {
         RequiredItemsChanged?.Invoke(requiredItems);
+    }
+
+    public void ClearBox()
+    {
+        if (PhotonNetwork.IsMasterClient)
+            StartCoroutine(ClearBoxList());
+    }
+
+    private IEnumerator ClearBoxList()
+    {
+        bool isClear = true;
+        while (isClear)
+        {
+            yield return null;
+
+            for (int i = idList.Count - 1; i >= 0; i--)
+            {
+                PhotonView cropView = PhotonView.Find(idList[i]);
+                PhotonNetwork.Destroy(cropView.gameObject);
+            }
+
+            isClear = false;
+        }
+
+        PhotonNetwork.Destroy(gameObject);
     }
 }

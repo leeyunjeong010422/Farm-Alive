@@ -103,31 +103,11 @@ public class Taping : MonoBehaviourPun
         }
     }
 
-    private void CompleteTaping()
-    {
-        isTaping = false;
-        if (currentBox != null)
-        {
-            currentBox.IsPackaged = true;
-            foreach (var id in boxTrigger.idList)
-            {
-                GameObject crop = PhotonView.Find(id).gameObject;
-                crop.SetActive(false);
-            }
-            
-            Debug.Log($"테이핑 완료: {currentBox.name}");
-        }
-        currentBox = null;
-    }
-
     [PunRPC]
     private void CompleteBox()
     {
-        if (currentBox != null)
-        {
-            currentBox.tape.SetActive(true);
-            CompleteTaping();
-        }
+            isTaping = false;
+            boxTrigger.CompleteTaping();
     }
 
     public void OnGrab(SelectEnterEventArgs args)

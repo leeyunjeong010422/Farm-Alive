@@ -16,8 +16,9 @@ public class PunPlayerSpawn : MonoBehaviour
     private void Start()
     {
         RemoveNetworkRunner();
+        SpawnPlayer();
     }
-
+#if UNITY_EDITOR
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Z))
@@ -25,6 +26,7 @@ public class PunPlayerSpawn : MonoBehaviour
             ReturnToFusion();
         }
     }
+#endif
 
     private void RemoveNetworkRunner()
     {
@@ -39,11 +41,6 @@ public class PunPlayerSpawn : MonoBehaviour
             runner.Shutdown();
             Destroy(runner.gameObject);
         }
-    }
-
-    public void OnEnable()
-    {
-        SpawnPlayer();
     }
 
     private void SpawnPlayer()
@@ -115,5 +112,4 @@ public class PunPlayerSpawn : MonoBehaviour
             }
         }
     }
-
 }

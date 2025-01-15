@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
   AppSettings:
-    AppIdRealtime: e59064f0-a962-4ef7-b654-357ac00793e9
+    AppIdRealtime: 97cc1105-a068-4931-b36c-6e824ce3a894
     AppIdFusion: 
     AppIdChat: 
-    AppIdVoice: e59064f0-a962-4ef7-b654-357ac00793e9
+    AppIdVoice: 97cc1105-a068-4931-b36c-6e824ce3a894
     AppVersion: 
     UseNameServer: 1
     FixedRegion: KR
@@ -39,46 +39,54 @@ MonoBehaviour:
   - ChangeState
   - ClickRpc
   - CloseAllShutters
+  - ColliderEnabled
   - CompleteBox
   - ConnectHose
   - CountCheck
   - DestroyRpc
   - DestroySpaceship
-  - DownCount
+  - DisplayMessageRPC
+  - EndStage
+  - FieldItem
   - Fire
   - HeresWhy
-  - IsQuestComplete
+  - NpcSync
   - OpenAllShutters
   - QuestStart
   - RespawnSpaceship
+  - RPC_ButtonClick
   - RPC_OnButtonPressed
   - RPC_OnButtonReleased
   - RPC_PlayParticleEffect
   - RPC_PlusRepairCount
+  - RPC_ResolveEvent
+  - RPC_StartEvents
   - RPC_StopParticleEffect
   - SelectCubeRPC
   - SelectEnterBox
   - SelectExitBox
   - SetQuest
   - StartFollowingRPC
+  - StartReturnToInitial
   - StartWater
   - StopFollowingRPC
   - StopWater
   - SyncAnimationRPC
   - SyncDestination
   - SyncDig
-  - SyncEnableRepair
   - SyncIKRPC
   - SyncKnobState
-  - SyncLeverState
   - SyncPullState
+  - SyncQuestTimer
   - SyncRecoverFromBlackout
+  - SyncRepaired
   - SyncSelect
   - SyncSuccessGeneratorStart
+  - SyncSymptom
+  - SyncTargetPlayer
   - SyncTransform
   - SyncTriggerBlackout
-  - SyncTriggerWarning
-  - UpCount
+  - SyncTruck
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

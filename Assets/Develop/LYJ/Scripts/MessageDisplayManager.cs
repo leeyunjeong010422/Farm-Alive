@@ -9,8 +9,8 @@ public class MessageDisplayManager : MonoBehaviour
 
     [SerializeField] private Canvas _messageCanvas;
     [SerializeField] private TextMeshProUGUI _messageText;
-    [SerializeField] private float _displayTime = 2f;        // 텍스트 표시 시간
-    [SerializeField] private float _distanceFromCamera = 1f; // 텍스트가 카메라 앞에 나타날 거리
+    [SerializeField] private float _displayTime = 3f;        // 텍스트 표시 시간
+    [SerializeField] private float _distanceFromCamera = 3f; // 텍스트가 카메라 앞에 나타날 거리
 
     private Transform _playerCamera;
     private float _timer;

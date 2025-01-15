@@ -450,6 +450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee49e885baee7e04ab49091d36bc635c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cropData: {fileID: 11400000, guid: 74545b4ff8099974c98cc8e2c8bd17a6, type: 2}
   _GFXs: []
   _curState: 0
   _digCount: 0

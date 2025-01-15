@@ -13,9 +13,19 @@ public class GameSpawn : MonoBehaviour
 
     private GameObject _player;
 
-    public void OnEnable()
+    private void Awake()
     {
-        SpawnPlayer();
+        var voiceConnection = FindObjectOfType<Photon.Voice.Unity.VoiceConnection>();
+        if (voiceConnection != null)
+        {
+            Debug.Log("VoiceConnection 상태 초기화 중...");
+            if (voiceConnection.Client.InRoom)
+            {
+                Debug.Log("VoiceConnection 방에서 나가기...");
+                voiceConnection.Client.OpLeaveRoom(false);
+            }
+            voiceConnection.Client.Disconnect(); // 완전히 연결 해제
+        }
     }
 
     private void Update()
@@ -30,7 +40,7 @@ public class GameSpawn : MonoBehaviour
     {
         // 네트워크 상에서 플레이어 생성
         _player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.rotation);
-
+        
         if (_player)
         {
             Debug.Log($"게임 씬 플레이어 소환 완료: {FirebaseManager.Instance.GetUserId()}");

@@ -42,10 +42,27 @@ public class BoxUI : MonoBehaviour
     private void UpdateUIText(List<RequiredItem> requiredItems)
     {
         string displayText = "Box 안 내용물:\n";
+
+        // 동일 이름의 작물 카운트를 합산하기 위한 Dictionary
+        Dictionary<string, float> itemCounts = new Dictionary<string, float>();
+
         foreach (var item in requiredItems)
         {
             string cropName = item.itemPrefab.name.Contains("(Clone)") ? item.itemPrefab.name.Replace("(Clone)", "").Trim() : item.itemPrefab.name;
-            displayText += $"{cropName}: {item.requiredcount}\n";
+
+            if (itemCounts.ContainsKey(cropName))
+            {
+                itemCounts[cropName] += item.requiredcount;
+            }
+            else
+            {
+                itemCounts[cropName] = item.requiredcount;
+            }
+        }
+        
+        foreach (var kvp in itemCounts)
+        {
+            displayText += $"{kvp.Key}: {kvp.Value}\n";
         }
 
         boxTextInstance.text = displayText;

@@ -1,3 +1,5 @@
+using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
+using Fusion;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
@@ -12,9 +14,17 @@ public class PunManager : MonoBehaviourPunCallbacks
 {
     [Tooltip("테스트를 위한 방 넘버 설정.")]
     public int RoomNum = 0;
-    public int maxPlayer = 5;
+    public int maxPlayer;
 
-    private List<RoomInfo> cachedRoomList = new List<RoomInfo>();
+    [Tooltip("스테이지 ID")]
+    public int selectedStage = (int)E_StageMode.Stage1;
+    public string roomName;
+
+    [Tooltip("대기방 씬 이름")]
+    public string waittingRoomName = "04_Waiting Room";
+
+    private Dictionary<string, RoomInfo> cachedRoomList = new Dictionary<string, RoomInfo>();
+    private E_GameMode _gameMode = E_GameMode.Normal;
 
     public static PunManager Instance { get; private set; }
 
@@ -42,7 +52,17 @@ public class PunManager : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = false;
         // 호출의 순서가 FirebaseManager가 초기화 완료되고 나서
         // ConnectToPhoton() 호출해야하기에 이벤트로 연결.
+        Debug.Log("Firebase 이벤트 등록");
         FirebaseManager.Instance.OnFirebaseInitialized += ConnectToPhoton;
+        //FirebaseManager.Instance.NotifyInitializationComplete();
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Debug.Log($"selectedStage {selectedStage}");
+        }
     }
 
     /// <summary>
@@ -66,7 +86,7 @@ public class PunManager : MonoBehaviourPunCallbacks
 
         // PhotonNetwork에서 고유의 UserID를 가져와서 인증을 받음.
         // 테스트시에는 userId를 불러올시 ParrelSync가 동작이 안되기에 Random.Range로 진행.
-        PhotonNetwork.AuthValues = new AuthenticationValues { UserId = /*userId*/ Random.Range(1000, 10000).ToString() };
+        PhotonNetwork.AuthValues = new AuthenticationValues { UserId = userId /*Random.Range(1000, 10000).ToString() */ };
 
         Debug.Log($"ConnectToPhoton {userId}");
         PhotonNetwork.ConnectUsingSettings();
@@ -81,6 +101,7 @@ public class PunManager : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.InLobby)
         {
             Debug.Log("0. Photon Master Server와 연결!");
+            PhotonNetwork.LocalPlayer.NickName = FirebaseManager.Instance.GetNickName();
             PhotonNetwork.JoinLobby();
         }
         else
@@ -96,10 +117,10 @@ public class PunManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("1. PUN 로비 입장!");
         Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}");
-        if (SceneManager.GetActiveScene().name != "03_FusionLobby" && PhotonNetwork.InLobby)
+        if (SceneManager.GetActiveScene().name != "03_Lobby" && PhotonNetwork.InLobby)
         {
             Debug.Log("로딩 씬으로 이동...");
-            SceneLoader.LoadSceneWithLoading("03_FusionLobby");
+            SceneLoader.LoadSceneWithLoading("03_Lobby");
         }
     }
 
@@ -108,8 +129,45 @@ public class PunManager : MonoBehaviourPunCallbacks
     /// </summary>
     public void CreateAndMoveToPunRoom()
     {
+        Debug.Log("방생성 시작!");
+
         // 5초 카운트다운 및 방 생성 시작
         StartCoroutine(PunRoomCountdown(5f));
+    }
+
+    public void SetGameMode(E_GameMode eGameMode)
+    {
+        // 현재는 게임 모드는 Normal만 존재하기에
+        if (eGameMode != E_GameMode.Normal)
+        {
+            Debug.LogWarning($"선택된 {eGameMode} 모드는 아직 없는 모드입니다. \nNormal 모드로 변경 합니다.");
+            eGameMode = E_GameMode.Normal;
+        }
+        _gameMode = eGameMode;
+    }
+
+    public string GetGameMode() { return _gameMode.ToString(); }
+
+    public void SetStageNumber(E_StageMode eStageMode)
+    {
+        // 현재는 게임 모드는 Normal만 존재하기에
+        if (eStageMode == E_StageMode.None || eStageMode == E_StageMode.SIZE_MAX)
+        {
+            Debug.LogWarning($"선택된 {eStageMode}은 잘못 입력 되었습니다. \nStage 1 로 변경 합니다.");
+            eStageMode = E_StageMode.Stage1;
+        }
+        selectedStage = (int)eStageMode;
+    }
+
+    public string GetStageNumber() 
+    {
+        return ((E_StageMode)selectedStage).ToString(); 
+    }
+
+    public void SetRoomName(string sRoomName)
+    {
+        roomName = sRoomName;
+        Debug.Log($"방 이름은 {roomName} \n방 모드{_gameMode.ToString()} \n스테이지 번호{selectedStage}");
     }
 
     /// <summary>
@@ -122,7 +180,7 @@ public class PunManager : MonoBehaviourPunCallbacks
         while (remainingTime > 0)
         {
             // 메시지 갱신
-            MessageDisplayManager.Instance.ShowMessage($"After {(int)remainingTime} seconds, you enter the room.", 1f, 3f);
+            MessageDisplayManager.Instance.ShowMessage($"{(int)remainingTime} 초 후 , 방에 입장 합니다..", 1f, 3f);
             Debug.Log($"After {(int)remainingTime} seconds, you enter the room.");
             yield return new WaitForSeconds(1f);
             remainingTime--;
@@ -132,11 +190,17 @@ public class PunManager : MonoBehaviourPunCallbacks
         {
             MaxPlayers = maxPlayer,
             IsVisible = true,
-            IsOpen = true
+            IsOpen = true,
+            CustomRoomProperties = new PhotonHashtable
+            {
+                { "gameMode", _gameMode},
+                { "selectedStage", selectedStage }
+            },
+            CustomRoomPropertiesForLobby = new string[] { "gameMode", "selectedStage" }
         };
 
         Debug.Log("방 생성 시도 중...");
-        PhotonNetwork.JoinOrCreateRoom($"PunRoom_{Random.RandomRange(100,1000)}", roomOptions, TypedLobby.Default);
+        PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
     }
 
     public override void OnCreatedRoom()
@@ -151,11 +215,25 @@ public class PunManager : MonoBehaviourPunCallbacks
     {
         // Pun 이동
         Debug.Log($"방 입장 성공: {PhotonNetwork.CurrentRoom.Name}");
+        PhotonNetwork.AutomaticallySyncScene = true;
+
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("gameMode", out object gameModeValue))
+        {
+            _gameMode = (E_GameMode)gameModeValue;
+            Debug.Log($"방의 gameMode 값 동기화: {_gameMode}");
+        }
+
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("selectedStage", out object stageValue))
+        {
+            selectedStage = (int)stageValue;
+            Debug.Log($"방의 selectedStage 값 동기화: {selectedStage}");
+        }
+
         if (PhotonNetwork.InLobby)
         {
             PhotonNetwork.LeaveLobby();
         }
-        PhotonNetwork.LoadLevel("04_PunWaitingRoom"); // 대기실 씬으로 이동
+        SceneManager.LoadScene("04_Waiting Room"); // 대기실 씬으로 이동
     }
 
     /// <summary>
@@ -163,12 +241,18 @@ public class PunManager : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        // 방 목록 업데이트
-        cachedRoomList = roomList;
         foreach (RoomInfo room in roomList)
         {
-            Debug.Log($"방 이름: {room.Name}, 플레이어: {room.PlayerCount}/{room.MaxPlayers}");
-            Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}");
+            if (room.RemovedFromList)
+            {
+                // 삭제된 방 제거
+                cachedRoomList.Remove(room.Name);
+            }
+            else
+            {
+                // 추가 또는 갱신된 방 업데이트
+                cachedRoomList[room.Name] = room;
+            }
         }
     }
 
@@ -193,7 +277,7 @@ public class PunManager : MonoBehaviourPunCallbacks
     /// <returns></returns>
     public List<RoomInfo> GetRoomList()
     {
-        return cachedRoomList;
+        return new List<RoomInfo>(cachedRoomList.Values);
     }
 
     /// <summary>

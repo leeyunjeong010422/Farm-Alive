@@ -1,24 +1,30 @@
+using GameData;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 using static QuestManager;
 
 public class QuestManager : MonoBehaviourPun
 {
+    public UnityEvent<List<Quest>, List<TruckQuest>> OnTruckUpdated;
+
     public static QuestManager Instance;
 
     [System.Serializable]
     public class RequiredItem
     {
         public GameObject itemPrefab;
-        public int requiredcount;
+        public float requiredcount;
         public bool isSuccess;
 
-        public RequiredItem(GameObject prefab, int itemCount)
+        public RequiredItem(GameObject prefab, float itemCount)
         {
             itemPrefab = prefab;
             requiredcount = itemCount;
@@ -31,13 +37,22 @@ public class QuestManager : MonoBehaviourPun
         public string questName;
         public List<RequiredItem> requiredItems;
         public bool isSuccess;
+        public float questTimer;
     }
 
     [SerializeField] public List<Quest> questsList = new List<Quest>();
     [SerializeField] public List<TruckQuest> truckList = new List<TruckQuest>();
+
     [SerializeField] public GameObject[] itemPrefabs;
     [SerializeField] public Quest currentQuest;
-    [SerializeField] public int maxItemCount;
+    [SerializeField] TruckController truckController;
+    [SerializeField] QuestController questController;
+
+    [SerializeField] public int maxRequiredCount;
+    [SerializeField] public int questCount;
+    [SerializeField] public int itemTypeCount;
+    [SerializeField] public int clearQuestCount;
+    [SerializeField] public int totalQuestCount;
 
     private void Awake()
     {
@@ -51,123 +66,155 @@ public class QuestManager : MonoBehaviourPun
         }
     }
 
-    public void FirstStart()
+    public void FirstStart(int stageID)
     {
-        if (questsList.Count < 7)
-            photonView.RPC(nameof(QuestStart), RpcTarget.AllBuffered);
-    }
-
-    [PunRPC]
-    public void QuestStart()
-    {
-        maxItemCount = 0;
-        if (PhotonNetwork.IsMasterClient)
+        totalQuestCount = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
+        if (questsList.Count < 4)
         {
-            //int rand = Random.Range(1, itemPrefabs.Length);
-            int rand = Random.Range(2, 3);
-
-            List<int> randomPrefabIndexes = new List<int>();
-            int[] choseIndex = new int[rand];
-
-            // 아이템 목록화
-            for (int i = 0; i < itemPrefabs.Length; i++)
-            {
-                randomPrefabIndexes.Add(i);
-            }
-
-            // 아이템 개수 설정
-            int checkItemLength = 0;
-            int[] maxItemCounts = new int[rand];
-            for (int i = 0; i < maxItemCounts.Length; i++)
-            {
-                //maxItemCounts[i] = Random.Range(1, 15);
-                maxItemCounts[i] = 1;
-                maxItemCount += maxItemCounts[i];
-                checkItemLength++;
-                if (maxItemCount >= 30)
-                {
-                    int deleteCount = maxItemCounts.Max();
-                    maxItemCount -= 30;
-
-                    for (int j = 0; j < maxItemCounts.Length; j++)
-                    {
-                        if (maxItemCounts[j] == deleteCount)
-                        {
-                            if (maxItemCounts[j] > maxItemCount)
-                            {
-                                maxItemCounts[j] -= maxItemCount;
-                            }
-                        }
-                    }
-                    break;
-                }
-
-            }
-
-            int[] itemCounts = new int[checkItemLength];
-            for (int i = 0; i < itemCounts.Length; i++)
-            {
-                itemCounts[i] = maxItemCounts[i];
-            }
-
-            // 아이템 선정
-            for (int i = 0; i < itemCounts.Length; i++)
-            {
-                int randomIndex = Random.Range(0, randomPrefabIndexes.Count);
-                choseIndex[i] = randomPrefabIndexes[randomIndex];
-                randomPrefabIndexes.RemoveAt(randomIndex);
-
-            }
-
-            photonView.RPC(nameof(SetQuest), RpcTarget.AllBuffered, "택배포장", itemCounts.Length, choseIndex, itemCounts);
+            photonView.RPC(nameof(QuestStart), RpcTarget.AllBuffered, stageID);
         }
     }
 
     [PunRPC]
-    public void SetQuest(string questName, int count, int[] itemIndexes, int[] itemCounts)
+    public void QuestStart(int stageID)
+    {
+
+            totalQuestCount = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            int stageIdx = CSVManager.Instance.Stages[stageID].idx;
+            foreach (int corID in CSVManager.Instance.Stages_Correspondents[stageID].stage_corList)
+            {
+                if (corID == 0)
+                    return;
+
+                maxRequiredCount = CSVManager.Instance.Correspondents_CropsCount[corID].correspondent_stage[stageIdx];
+
+                int rand = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
+
+                List<int> randomPrefabIndexes = new List<int>();
+                int[] choseIndex = new int[CSVManager.Instance.Correspondents_CropsType[corID].correspondent_stage[stageIdx]];
+
+                // 아이템 목록화
+                for (int j = 0; j < 3; j++)
+                {
+                    randomPrefabIndexes.Add(j);
+                }
+
+                // 아이템 개수 설정
+                int checkItemLength = 0;
+                int[] curItemCounts = new int[CSVManager.Instance.Correspondents_CropsType[corID].correspondent_stage[stageIdx]];
+                int curCount = 0;
+                for (int j = 0; j < curItemCounts.Length; j++)
+                {
+                    curItemCounts[j] = Random.Range(1, 8);
+                    curCount += curItemCounts[j];
+                    checkItemLength++;
+                    if (curCount >= maxRequiredCount)
+                    {
+                        int deleteCount = curItemCounts.Max();
+                        curCount -= maxRequiredCount;
+
+                        for (int a = 0; a < curItemCounts.Length; a++)
+                        {
+                            if (curItemCounts[a] == deleteCount)
+                            {
+                                if (curItemCounts[a] > curCount)
+                                {
+                                    curItemCounts[a] -= curCount;
+                                }
+                            }
+                        }
+                        break;
+                    }
+
+                    if (j == curItemCounts.Length - 1 && curCount < maxRequiredCount)
+                    {
+                        int temp = maxRequiredCount - curCount;
+                        curItemCounts[j] += temp;
+                    }
+                }
+
+                int[] itemCounts = new int[checkItemLength];
+                for (int j = 0; j < itemCounts.Length; j++)
+                {
+                    itemCounts[j] = curItemCounts[j];
+                }
+
+                // 아이템 선정
+                for (int j = 0; j < itemCounts.Length; j++)
+                {
+                    int randomIndex = Random.Range(0, randomPrefabIndexes.Count);
+                    choseIndex[j] = randomPrefabIndexes[randomIndex];
+                    randomPrefabIndexes.RemoveAt(randomIndex);
+                }
+
+                float qTimer = CSVManager.Instance.Correspondents[corID].correspondent_timeLimit;
+
+                photonView.RPC(nameof(SetQuest), RpcTarget.AllBuffered, "택배포장", itemCounts.Length, choseIndex, itemCounts, corID, qTimer);
+            }
+        }
+    }
+
+    [PunRPC]
+    public void SetQuest(string questName, int count, int[] itemIndexes, int[] itemCounts, int corID, float qTimer)
     {
         currentQuest = new Quest
         {
             questName = questName,
-            requiredItems = new List<RequiredItem>()
+            requiredItems = new List<RequiredItem>(),
+            questTimer = qTimer
         };
 
         for (int i = 0; i < count; i++)
         {
-            GameObject itemPrefab = itemPrefabs[itemIndexes[i]];
+            int y = CSVManager.Instance.Correspondents_RequireCrops[corID].correspondent_cropID[itemIndexes[i]];
+            y = 4 * ((y % 100 - y % 10) / 10 - 1) + y % 10;
+
+
+            GameObject itemPrefab = itemPrefabs[y - 1];
             int requiredCount = itemCounts[i];
             currentQuest.requiredItems.Add(new RequiredItem(itemPrefab, requiredCount));
         }
 
         questsList.Add(currentQuest);
-        UpdateUI();
+
+        if (PhotonNetwork.IsMasterClient)
+            StartCoroutine(questController.QuestCountdown(currentQuest));
+
+            truckController.CreateTruck(corID);
     }
 
-    private void UpdateUI()
+    public void UpdateUI()
     {
-        UIManager.Instance.UpdateQuestUI(questsList);
+        Debug.Log("Invoke OnTruckUpdated!");
+        OnTruckUpdated?.Invoke(questsList, truckList);
     }
 
-    public void CountUpdate(int[] questId, int[] number, int[] count, int boxView)
+    public void CountUpdate(int questId, int[] number, float[] count, int boxView, int itemCheck)
     {
         Debug.Log("카운트 업데이트");
-        photonView.RPC(nameof(CountCheck), RpcTarget.AllBuffered, questId, number, count, boxView);
+        photonView.RPC(nameof(CountCheck), RpcTarget.AllBuffered, questId, number, count, boxView, itemCheck);
     }
 
     [PunRPC]
-    private void CountCheck(int[] questId, int[] number, int[] count, int boxView)
+    private void CountCheck(int truckId, int[] number, float[] count, int boxView, int itemCheck)
     {
         Debug.Log("카운트 감소");
 
-        for (int i = 0; i < questId.Length; i++)
+        for (int i = 0; i < number.Length; i++)
         {
-            questsList[questId[i]].requiredItems[number[i]].requiredcount -= count[i];
+            Debug.Log($"퀘스트 ID : {questsList[truckId]}");
+            Debug.Log($"차감된 갯수 : {count[i]}");
+            questsList[truckId].requiredItems[number[i]].requiredcount -= count[i];
 
-            if (questsList[questId[i]].requiredItems[number[i]].requiredcount <= 0)
+            Debug.Log($"남은 갯수 : {questsList[truckId].requiredItems[number[i]].requiredcount}");
+            if (questsList[truckId].requiredItems[number[i]].requiredcount <= 0)
             {
                 Debug.Log("납품완료");
                 Debug.Log("퀘스트 성공 여부 동기화!");
-                questsList[questId[i]].requiredItems[number[i]].isSuccess = true;
+                questsList[truckId].requiredItems[number[i]].isSuccess = true;
             }
         }
 
@@ -182,14 +229,27 @@ public class QuestManager : MonoBehaviourPun
                 {
                     allCompleted = false;
                     break;
-                } 
+                }
             }
 
             if (allCompleted)
             {
                 questsList[i].isSuccess = true;
                 completedIndexes.Add(i);
+                truckList[truckId].npcPrefab.GetComponent<NpcTextView>().NpcText(true);
+                truckList[truckId].CloseCover();
             }
+            else
+            {
+                truckList[truckId].npcPrefab.GetComponent<NpcTextView>().NpcText(itemCheck);
+            }
+        }
+
+        PhotonView box = PhotonView.Find(boxView);
+        if (box != null)
+        {
+            box.transform.position = new Vector3(0, -100, 0);
+            box.GetComponent<Rigidbody>().isKinematic = true;
         }
 
         if (completedIndexes.Count > 0)
@@ -198,28 +258,26 @@ public class QuestManager : MonoBehaviourPun
 
             IsQuestComplete(listArray);
         }
-
-        PhotonView box = PhotonView.Find(boxView);
-        if (box != null && box.IsMine)
+        else
         {
-            PhotonNetwork.Destroy(box.gameObject);
+            UpdateUI();
         }
-        
-        UpdateUI();
     }
 
     public void IsQuestComplete(int[] completedIndexes)
     {
         foreach (int index in completedIndexes.OrderByDescending(x => x))
         {
-            questsList.RemoveAt(index);
+            clearQuestCount++;
+            //questsList.RemoveAt(index);
+            //PhotonNetwork.Destroy(truckList[index].gameObject);
+
         }
 
-        if (questsList.Count == 0)
+        if (clearQuestCount == totalQuestCount)
         {
-            GameSpawn gameSpawn = FindObjectOfType<GameSpawn>();
-            gameSpawn.ReturnToFusion();
-            //SceneLoader.LoadSceneWithLoading("03_FusionLobby");
+            // TODO 로비 복귀ㅣ 함수
+            StageManager.Instance.EndStage();
         }
         else
         {
