@@ -95,9 +95,6 @@ public class Taping : MonoBehaviourPun
 
             if (isStart && isEnd)
             {
-                //currentBox.tape.SetActive(true);
-                //CompleteTaping();
-
                 photonView.RPC(nameof(CompleteBox), RpcTarget.All);
             }
         }
