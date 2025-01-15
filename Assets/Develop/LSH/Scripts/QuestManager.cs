@@ -206,8 +206,10 @@ public class QuestManager : MonoBehaviourPun
         for (int i = 0; i < number.Length; i++)
         {
             Debug.Log($"Äù½ºÆ® ID : {questsList[truckId]}");
+            Debug.Log($"Â÷°¨µÈ °¹¼ö : {count[i]}");
             questsList[truckId].requiredItems[number[i]].requiredcount -= count[i];
 
+            Debug.Log($"³²Àº °¹¼ö : {questsList[truckId].requiredItems[number[i]].requiredcount}");
             if (questsList[truckId].requiredItems[number[i]].requiredcount <= 0)
             {
                 Debug.Log("³³Ç°¿Ï·á");
@@ -244,9 +246,10 @@ public class QuestManager : MonoBehaviourPun
         }
 
         PhotonView box = PhotonView.Find(boxView);
-        if (box != null && box.IsMine)
+        if (box != null)
         {
-            PhotonNetwork.Destroy(box.gameObject);
+            box.transform.position = new Vector3(0, -100, 0);
+            box.GetComponent<Rigidbody>().isKinematic = true;
         }
 
         if (completedIndexes.Count > 0)

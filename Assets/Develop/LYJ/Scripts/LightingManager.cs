@@ -20,7 +20,6 @@ public class LightingManager : MonoBehaviourPun
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {

@@ -1,4 +1,5 @@
 using Fusion;
+using GameData;
 using Photon.Pun;
 using System;
 using System.Collections;
@@ -136,11 +137,6 @@ public class BoxTrigger : MonoBehaviourPun
     {
         boxCover.tape.SetActive(true);
         boxCover.IsPackaged = true;
-        foreach (var id in idList)
-        {
-            GameObject crop = PhotonView.Find(id).gameObject;
-            crop.SetActive(false);
-        }
 
         Debug.Log($"테이핑 완료: {this.name}");
     }
@@ -150,13 +146,28 @@ public class BoxTrigger : MonoBehaviourPun
         RequiredItemsChanged?.Invoke(requiredItems);
     }
 
-    private void OnDestroy()
+    public void ClearBox()
     {
-        foreach (int crop in idList)
-        {
-            PhotonView cropView = PhotonView.Find(crop);
+        if (PhotonNetwork.IsMasterClient)
+            StartCoroutine(ClearBoxList());
+    }
 
-            Destroy(cropView.gameObject);
+    private IEnumerator ClearBoxList()
+    {
+        bool isClear = true;
+        while (isClear)
+        {
+            yield return null;
+
+            for (int i = idList.Count - 1; i >= 0; i--)
+            {
+                PhotonView cropView = PhotonView.Find(idList[i]);
+                PhotonNetwork.Destroy(cropView.gameObject);
+            }
+
+            isClear = false;
         }
+
+        PhotonNetwork.Destroy(gameObject);
     }
 }

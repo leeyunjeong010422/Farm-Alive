@@ -2295,7 +2295,7 @@ GameObject:
   - component: {fileID: 3171796903016066}
   - component: {fileID: 7680452623214751169}
   m_Layer: 0
-  m_Name: Text_Wheather
+  m_Name: Text_Weather
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2349,7 +2349,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uB0A0\uC528: {} / {}"
+  m_text: "\uB0A0\uC528: \uC815\uC0C1"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 310a7f87dc4a85c48837a15b9de8fba7, type: 2}
   m_sharedMaterial: {fileID: 77167779958466091, guid: 310a7f87dc4a85c48837a15b9de8fba7, type: 2}
@@ -3403,7 +3403,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8478042070454601760}
   m_Layer: 0
-  m_Name: WheatherInfo
+  m_Name: WeatherInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

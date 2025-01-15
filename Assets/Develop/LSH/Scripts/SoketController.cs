@@ -68,5 +68,4 @@ public class SoketController : MonoBehaviourPun
         socket.selectEntered.RemoveListener(OnSelectEntered);
         socket.selectExited.RemoveListener(OnSelectExited);
     }
-
 }

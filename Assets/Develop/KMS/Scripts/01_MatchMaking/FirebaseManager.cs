@@ -25,7 +25,7 @@ public class FirebaseManager : MonoBehaviour
 
     public event Action OnFirebaseInitialized; // Firebase 초기화 완료 이벤트
 
-    private string _highStage = "";
+    private string _highStage = "Stage1";
 
     private string _nickName;
     public class StageData

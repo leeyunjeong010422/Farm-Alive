@@ -35,6 +35,7 @@ public class RobotController : MonoBehaviour
         Button moveButton = GetComponentInChildren<Button>();
         if (moveButton != null)
         {
+            moveButton.onClick.RemoveListener(OnMoveButtonClicked);
             moveButton.onClick.AddListener(OnMoveButtonClicked);
         }
     }
@@ -81,7 +82,7 @@ public class RobotController : MonoBehaviour
     {
         if (Time.time - lastButtonClickTime < cooldownTime)
         {
-            Debug.Log("버튼이 너무 빨리 눌렸습니다. 쿨다운 중입니다.");
+            Debug.Log("버튼은 3초에 1번 누를 수 있습니다.");
             return;
         }
 
@@ -118,15 +119,15 @@ public class RobotController : MonoBehaviour
     }
 
     // 마스터 클라이언트에게 소유권 요청
-    [PunRPC]
-    private void RequestOwnership(int photonViewID, PhotonMessageInfo info)
-    {
-        // 마스터 클라이언트에서 요청한 플레이어에게 소유권 이전
-        photonView.TransferOwnership(info.Sender.ActorNumber);
+    //[PunRPC]
+    //private void RequestOwnership(int photonViewID, PhotonMessageInfo info)
+    //{
+    //    // 마스터 클라이언트에서 요청한 플레이어에게 소유권 이전
+    //    photonView.TransferOwnership(info.Sender.ActorNumber);
 
-        // 소유권 이전 후 모든 플레이어에게 로봇 타겟 플레이어 대상 동기화
-        photonView.RPC(nameof(SyncTargetPlayer), RpcTarget.AllBuffered, photonViewID);
-    }
+    //    // 소유권 이전 후 모든 플레이어에게 로봇 타겟 플레이어 대상 동기화
+    //    photonView.RPC(nameof(SyncTargetPlayer), RpcTarget.AllBuffered, photonViewID);
+    //}
 
     [PunRPC]
     private void SyncTargetPlayer(int photonViewID, PhotonMessageInfo info)
@@ -161,6 +162,7 @@ public class RobotController : MonoBehaviour
         }
     }
 
+    [PunRPC]
     private void StartReturnToInitial()
     {
         _targetPlayer = null; // 추적 대상 해제
