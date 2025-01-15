@@ -791,7 +791,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8270855663187062767}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: XR Controller Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
