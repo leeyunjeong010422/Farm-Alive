@@ -18324,7 +18324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RoomNum: 999
-  maxPlayer: 5
+  maxPlayer: 2
   selectedStage: 511
   roomName: 
   waittingRoomName: 04_Waiting Room
