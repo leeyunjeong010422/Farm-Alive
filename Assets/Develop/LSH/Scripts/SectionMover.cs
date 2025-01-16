@@ -96,6 +96,7 @@ public class SectionMover : MonoBehaviourPun
 
             if (!wayPoint1[selectedIndex])
             {
+                SoundManager.Instance.PlaySFXLoop("SFX_Section_Move");
                 selectedSection.transform.position = Vector3.MoveTowards(selectedSection.transform.position, middlePosition[selectedIndex], moveSpeed * Time.deltaTime);
 
                 if (Vector3.Distance(selectedSection.transform.position, middlePosition[selectedIndex]) < 0.01f)
@@ -120,6 +121,7 @@ public class SectionMover : MonoBehaviourPun
                 {
                     if (/*!isUpperLowerShutterOpen ||*/ !isLeftRightShutterOpen)
                     {
+                        SoundManager.Instance.StopSFXLoop("SFX_Section_Move");
                         SectorDistance();
                     }
                 }
@@ -225,8 +227,11 @@ public class SectionMover : MonoBehaviourPun
         if (!isLeftRightShutterOpen)
         {
             if (ShutterController != null)
+            {
                 ShutterController.isLeftRightShutterOpen = true;
-
+                SoundManager.Instance.PlaySFX("SFX_Section_Door_Open");                
+            }
+            
             isLeftRightShutterOpen = true;
         }
     }
@@ -239,6 +244,7 @@ public class SectionMover : MonoBehaviourPun
         {
             //ShutterController.isUpperLowerShutterOpen = false;
             ShutterController.isLeftRightShutterOpen = false;
+            SoundManager.Instance.PlaySFX("SFX_Section_Door_Close");
         }
 
         //isUpperLowerShutterOpen = false;
