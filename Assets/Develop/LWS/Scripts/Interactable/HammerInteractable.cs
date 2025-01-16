@@ -7,6 +7,15 @@ public class HammerInteractable : MonoBehaviourPunCallbacks
 {
     private bool _isGrapped = false;
 
+    private ParticleSystem _particle;
+
+    private void Awake()
+    {
+        // _particle = GetComponentInChildren<ParticleSystem>();
+        // 
+        // _particle.Stop();
+    }
+
     public void OnGrab()
     {
         _isGrapped = true;
@@ -27,6 +36,8 @@ public class HammerInteractable : MonoBehaviourPunCallbacks
 
         if (repair != null)
         {
+            // _particle.Play();
+
             PhotonView repairView = repair.GetComponent<PhotonView>();
             if (repairView != null)
             {
