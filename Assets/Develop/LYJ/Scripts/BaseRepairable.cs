@@ -7,6 +7,9 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
     protected bool _isBroken;
     private bool _isSymptomSolved = false; // 전조 증상 해결 여부
 
+    protected virtual ParticleSystem SymptomParticle { get; }
+    protected virtual ParticleSystem BrokenParticle { get; }
+
     protected virtual void Start()
     {
         _repair = GetComponent<Repair>();
@@ -26,6 +29,7 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
     {
         _isBroken = false;
         _isSymptomSolved = false; // 전조 증상 해결 여부 초기화
+        SymptomParticle?.Play(); // 전조 증상 파티클 재생
         MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 전조 증상 발생!");
     }
 
@@ -38,6 +42,8 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
         }
 
         _isBroken = true;
+        SymptomParticle?.Stop();
+        BrokenParticle?.Play(); // 고장 파티클 재생
         MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 고장 발생!");
         //Debug.LogError($"{gameObject.name}: 고장 발생!");
         return true; // 고장이 발생함
@@ -56,6 +62,7 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
             return;
         }
 
+        SymptomParticle?.Stop();
         _repair.IsSymptom = false;
         _isSymptomSolved = true;
         _repair.ResetRepairState();
@@ -66,6 +73,7 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
     public virtual void SolveBroken()
     {
         _isBroken = false;
+        BrokenParticle?.Stop();
         _repair.ResetRepairState();
         MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 수리되었습니다!");
         //Debug.LogError($"{gameObject.name}: 수리되었습니다!");
