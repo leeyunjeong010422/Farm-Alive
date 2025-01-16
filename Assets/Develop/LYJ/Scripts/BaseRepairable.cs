@@ -60,7 +60,7 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
         {
             Debug.Log("전조 증상 사운드 멈춤 및 고장 사운드 재생");
             SoundManager.Instance.StopSFXLoop(SymptomSoundKey);
-            SoundManager.Instance.PlaySFX(BrokenSoundKey, 0.5f);
+            SoundManager.Instance.PlaySFXLoop(BrokenSoundKey, 0.5f);
         }
 
         MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 고장 발생!");
