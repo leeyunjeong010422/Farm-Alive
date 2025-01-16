@@ -141,8 +141,8 @@ public class BoxTrigger : MonoBehaviourPun
     [PunRPC]
     private void SyncTaping()
     {
-        boxCover.tape.SetActive(true);
         boxCover.IsPackaged = true;
+        boxCover.tape.SetActive(true);        
 
         Debug.Log($"테이핑 완료: {this.name}");
     }
