@@ -27,6 +27,7 @@ public class BoxTrigger : MonoBehaviourPun
     private void Start()
     {
         boxCover = GetComponent<BoxCover>();
+        boxCover.OnIsOpenChanged += NotifyRequiredItemsChanged;
     }
 
     private void OnEnable()
