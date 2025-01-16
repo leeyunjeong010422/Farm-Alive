@@ -33,11 +33,6 @@ public class CupInteractable : MonoBehaviourPun, IPunObservable
 
     private void Start()
     {
-        // _audioSource = GetComponent<AudioSource>();
-        // if (_audioSource != null)
-        // {
-        //     _audioSource.clip = _pouringSound;
-        // }
     }
 
     private void Update()
@@ -74,8 +69,7 @@ public class CupInteractable : MonoBehaviourPun, IPunObservable
             if (particleSystemLiquid != null && particleSystemLiquid.isStopped)
                 particleSystemLiquid.Play();
 
-           // if (_audioSource != null && !_audioSource.isPlaying)
-           //     _audioSource.Play();
+            SoundManager.Instance.PlaySFXLoop("SFX_NutrientContainerPoured");
         }
         else
         {
@@ -88,7 +82,7 @@ public class CupInteractable : MonoBehaviourPun, IPunObservable
 
             // 파티클/사운드 정지
             if (particleSystemLiquid != null) particleSystemLiquid.Stop();
-            // if (_audioSource != null) _audioSource.Stop();
+            SoundManager.Instance.StopSFXLoop("SFX_NutrientContainerPoured");
         }
     }
 
@@ -99,14 +93,13 @@ public class CupInteractable : MonoBehaviourPun, IPunObservable
             if (particleSystemLiquid != null && particleSystemLiquid.isStopped)
                 particleSystemLiquid.Play();
 
-           // if (_audioSource != null && !_audioSource.isPlaying)
-           //     _audioSource.Play();
+            SoundManager.Instance.PlaySFXLoop("SFX_NutrientContainerPoured");
         }
         else
         {
             // 붓고 있지 않거나 액체가 없으면 정지
             if (particleSystemLiquid != null) particleSystemLiquid.Stop();
-           //  if (_audioSource != null) _audioSource.Stop();
+            SoundManager.Instance.StopSFXLoop("SFX_NutrientContainerPoured");
         }
     }
 

@@ -172,10 +172,12 @@ public class SectionManager : MonoBehaviour
         }
 
         particle.Play();
+        SoundManager.Instance.PlaySFXLoop("SFX_SupplyDevice");
 
         yield return new WaitForSeconds(5f);
 
         particle.Stop();
+        SoundManager.Instance.StopSFXLoop("SFX_SupplyDevice");
     }
 
     #region 돌발이벤트 반응함수

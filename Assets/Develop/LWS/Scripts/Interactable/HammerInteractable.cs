@@ -38,11 +38,18 @@ public class HammerInteractable : MonoBehaviourPunCallbacks
         {
             // _particle.Play();
 
+            SoundManager.Instance.PlaySFX("SFX_Hammer");
+
             PhotonView repairView = repair.GetComponent<PhotonView>();
             if (repairView != null)
             {
                 repairView.RPC("RPC_PlusRepairCount", RpcTarget.AllBuffered);
             }
+        }
+
+        if (collision.collider.gameObject.layer == 6)
+        {
+            SoundManager.Instance.PlaySFX("SFX_PlayerHit1");
         }
     }
 }

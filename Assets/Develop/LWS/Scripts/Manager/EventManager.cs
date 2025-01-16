@@ -126,6 +126,7 @@ public class EventManager : MonoBehaviourPunCallbacks
             
             ParticleManager.Instance.PlayParticle(eventID.ToString(), evData.event_continueTime);
 
+            SoundManager.Instance.PlaySFXLoop(eventID.ToString());
             // MessageDisplayManager.Instance.ShowMessage(eventDict[eventID].event_name);
 
             // 자동 종료
@@ -234,6 +235,8 @@ public class EventManager : MonoBehaviourPunCallbacks
             OnEventEnded?.Invoke(evData);
 
             ParticleManager.Instance.StopParticle(eventID.ToString());
+
+            SoundManager.Instance.StopSFXLoop(eventID.ToString());
         }
     }
 }
