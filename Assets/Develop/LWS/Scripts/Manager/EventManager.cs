@@ -40,27 +40,6 @@ public class EventManager : MonoBehaviourPunCallbacks
         }
     }
 
-    #region test
-    private void Update()
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-                TriggerManualEvent(411);
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-                TriggerManualEvent(421);
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-                TriggerManualEvent(431);
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-                TriggerManualEvent(432);
-            if (Input.GetKeyDown(KeyCode.Alpha5))
-                TriggerManualEvent(441);
-            if (Input.GetKeyDown(KeyCode.Alpha6))
-                TriggerManualEvent(442);
-        }
-    }
-#endregion
-
         private void TriggerManualEvent(int eventID)
     {
         int[] arr = new int[1]{ eventID };
