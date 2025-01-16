@@ -22,6 +22,7 @@ public class TruckQuest : MonoBehaviourPun
     [SerializeField] public int correspondentId;
     private Quaternion endRotation;
     [SerializeField] bool canDelivery;
+    private bool check = false;
 
     [SerializeField] GameObject truckCover1, truckCover2;
 
@@ -33,7 +34,9 @@ public class TruckQuest : MonoBehaviourPun
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Ãæµ¹");
+        if (check)
+            return;
+
         if (PhotonNetwork.IsMasterClient)
         {
             if (!canDelivery)
@@ -48,6 +51,8 @@ public class TruckQuest : MonoBehaviourPun
 
                 if (!boxTrigger.boxCover.IsPackaged)
                     return;
+
+                check = true;
 
                 PhotonView boxView = other.GetComponent<PhotonView>();
 
@@ -177,6 +182,7 @@ public class TruckQuest : MonoBehaviourPun
     {
         canDelivery = false;
         StartCoroutine(SmoothRotate(truckCover1, truckCover2));
+        SoundManager.Instance.PlaySFX("SFX_Truck_Door_Close");
     }
 
     private IEnumerator SmoothRotate(GameObject truckCover1, GameObject truckCover2)

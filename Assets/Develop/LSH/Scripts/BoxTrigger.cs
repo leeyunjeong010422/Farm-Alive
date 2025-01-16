@@ -72,7 +72,7 @@ public class BoxTrigger : MonoBehaviourPun
         {
             PhotonView itemView = PhotonView.Find(viewId);
             idList.Add(viewId);
-
+            SoundManager.Instance.PlaySFX("SFX_CropInBox");
             Rigidbody itemRigid = itemView.GetComponent<Rigidbody>();
             itemRigid.drag = 10;
             itemRigid.angularDrag = 1;
@@ -84,6 +84,7 @@ public class BoxTrigger : MonoBehaviourPun
                     Debug.Log(requiredItems);
                     if (item.itemPrefab.name == itemView.gameObject.name)
                     {
+                        
                         item.requiredcount += cropView.Value;
                         Debug.Log("카운트업");
                         NotifyRequiredItemsChanged();
@@ -102,7 +103,7 @@ public class BoxTrigger : MonoBehaviourPun
         else
         {
             PhotonView itemView = PhotonView.Find(viewId);
-
+            SoundManager.Instance.PlaySFX("SFX_CropOutBox");
             Crop cropView = itemView.GetComponent<Crop>();
             if (requiredItems.Count > 0)
             {
@@ -111,7 +112,6 @@ public class BoxTrigger : MonoBehaviourPun
                     if (requiredItems[i].itemPrefab.name == itemView.gameObject.name)
                     {
                         requiredItems[i].requiredcount -= cropView.Value;
-
                         Rigidbody itemRigid = itemView.GetComponent<Rigidbody>();
                         itemRigid.drag = 0;
                         itemRigid.angularDrag = 0.05f;
@@ -143,8 +143,8 @@ public class BoxTrigger : MonoBehaviourPun
     private void SyncTaping()
     {
         boxCover.IsPackaged = true;
-        boxCover.tape.SetActive(true);        
-
+        boxCover.tape.SetActive(true);
+        SoundManager.Instance.PlaySFX("SFX_Tape");
         Debug.Log($"테이핑 완료: {this.name}");
     }
 
