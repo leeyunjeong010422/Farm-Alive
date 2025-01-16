@@ -46,8 +46,8 @@ public class TruckQuest : MonoBehaviourPun
                 if (boxTrigger == null)
                     return;
 
-                /*if (!boxTrigger.boxCover.IsPackaged)
-                    return;*/
+                if (!boxTrigger.boxCover.IsPackaged)
+                    return;
 
                 PhotonView boxView = other.GetComponent<PhotonView>();
 
