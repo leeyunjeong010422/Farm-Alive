@@ -109,7 +109,8 @@ public class PunManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("1. PUN 로비 입장!");
         Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}");
-        SoundManager.Instance.PlayBGM("LOBBY");
+        SoundManager.Instance.StopBGM();
+        SoundManager.Instance.PlayBGM("LOBBY", 0.4f);
         Debug.Log("BGM Lobby 동작");
 
         if (SceneManager.GetActiveScene().name != "03_Lobby" && PhotonNetwork.InLobby)
@@ -214,7 +215,7 @@ public class PunManager : MonoBehaviourPunCallbacks
         Debug.Log($"Lobby BGM 종료");
         // Pun 이동
         Debug.Log($"방 입장 성공: {PhotonNetwork.CurrentRoom.Name}");
-        SoundManager.Instance.PlayBGM("ROOM");
+        SoundManager.Instance.PlayBGM("ROOM", 0.4f);
         Debug.Log($"BGM ROOM 동작");
         PhotonNetwork.AutomaticallySyncScene = true;
 

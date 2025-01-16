@@ -51,6 +51,7 @@ public class Fusion_VR_Anim_Controller : NetworkBehaviour
                 else
                 {
                     animator.SetFloat("Speed", 0f);
+                    SoundManager.Instance.StopSFXLoop("SFX_PlayerMove");
                 }
             }
 
@@ -129,6 +130,7 @@ public class Fusion_VR_Anim_Controller : NetworkBehaviour
 
             Vector3 moveDirection = (forward * _leftInputAxis.y + right * _leftInputAxis.x).normalized;
 
+            SoundManager.Instance.PlaySFXLoop("SFX_PlayerMove");
             transform.position += moveDirection * moveSpeed * Runner.DeltaTime;
         }
     }
