@@ -47,7 +47,7 @@ public class HammerInteractable : MonoBehaviourPunCallbacks
             }
         }
 
-        if (collision.collider.gameObject.layer == 6)
+        if (collision.gameObject.layer == LayerMask.NameToLayer("HeadLayer"))
         {
             SoundManager.Instance.PlaySFX("SFX_PlayerHit1");
         }
