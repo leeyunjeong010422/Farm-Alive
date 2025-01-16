@@ -19,13 +19,13 @@ public class PunPlayerSpawn : MonoBehaviour
         SpawnPlayer();
     }
 #if UNITY_EDITOR
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Z))
-    //    {
-    //        ReturnToFusion();
-    //    }
-    //}
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            ReturnToFusion();
+        }
+    }
 #endif
 
     private void RemoveNetworkRunner()
