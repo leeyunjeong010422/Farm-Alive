@@ -43,43 +43,29 @@ public class EventManager : MonoBehaviourPunCallbacks
     #region test
     private void Update()
     {
-        int[] testEvCode = new int[1];
-
         if (PhotonNetwork.IsMasterClient)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                testEvCode[0] = 411;
-                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, testEvCode);
-            }
+                TriggerManualEvent(411);
             if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                testEvCode[0] = 421;
-                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, testEvCode);
-            }
+                TriggerManualEvent(421);
             if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                testEvCode[0] = 431;
-                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, testEvCode);
-            }
+                TriggerManualEvent(431);
             if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                testEvCode[0] = 432;
-                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, testEvCode);
-            }
+                TriggerManualEvent(432);
             if (Input.GetKeyDown(KeyCode.Alpha5))
-            {
-                testEvCode[0] = 441;
-                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, testEvCode);
-            }
+                TriggerManualEvent(441);
             if (Input.GetKeyDown(KeyCode.Alpha6))
-            {
-                testEvCode[0] = 442;
-                photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, testEvCode);
-            }
+                TriggerManualEvent(442);
         }
     }
-    #endregion
+#endregion
+
+        private void TriggerManualEvent(int eventID)
+    {
+        int[] arr = new int[1]{ eventID };
+        photonView.RPC(nameof(RPC_StartEvents), RpcTarget.All, arr);
+    }
 
     private IEnumerator EventRoutine()
     {
@@ -106,6 +92,10 @@ public class EventManager : MonoBehaviourPunCallbacks
 
                 // 이미 진행 중인 같은 이벤트는 스킵
                 if (_activeEventsID.Contains(eventID))
+                    continue;
+
+                // 같이 발생하면 안되는 이벤트가 이미 진행중이면 스킵
+                if (CheckConflictWithActive(eventID))
                     continue;
 
                 // 기본 확률
@@ -165,6 +155,21 @@ public class EventManager : MonoBehaviourPunCallbacks
                 StartCoroutine(AutoEndRoutine(eventID, evData.event_continueTime));
             }
         }
+    }
+
+    // 이미 진행중인 이벤트 충돌이면 true 반환
+    private bool CheckConflictWithActive(int newEventID)
+    {
+        foreach (var pair in _conflictPairs)
+        {
+            int A = pair.Item1;
+            int B = pair.Item2;
+            if (newEventID == A && _activeEventsID.Contains(B))
+                return true;
+            if (newEventID == B && _activeEventsID.Contains(A))
+                return true;
+        }
+        return false;
     }
 
     // 계절 확인, true반환
@@ -248,6 +253,8 @@ public class EventManager : MonoBehaviourPunCallbacks
             var evData = CSVManager.Instance.Events[eventID];
 
             OnEventEnded?.Invoke(evData);
+
+            ParticleManager.Instance.StopParticle(eventID.ToString());
         }
     }
 }
