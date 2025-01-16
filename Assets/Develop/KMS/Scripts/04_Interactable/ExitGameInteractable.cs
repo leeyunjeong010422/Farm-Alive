@@ -51,6 +51,7 @@ public class ExitGameInteractable : XRGrabInteractable
 #if UNITY_EDITOR
         Debug.Log($"{args.interactableObject.transform.name}가 선택 되었습니다.");
 #endif
+        SoundManager.Instance.PlaySFX("SFX_Lobby_Exit");
         StartCoroutine(ExitGameMode(args.interactableObject.transform.gameObject));
     }
 
@@ -138,12 +139,15 @@ public class ExitGameInteractable : XRGrabInteractable
         Debug.Log("게임 종료!");
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
+        SoundManager.Instance.PlaySFX("SFX_Lobby_ButtonClicked");
         Application.Quit();
     }
 
     private void CancelExit()
     {
         Debug.Log("게임 종료 취소!");
+        SoundManager.Instance.PlaySFX("SFX_Lobby_ButtonClicked");
+
         HideExitConfirmation();
     }
 

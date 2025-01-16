@@ -6,6 +6,7 @@ public class HeadLayerController_Fusion : NetworkBehaviour
     public Camera vrCamera;         // VR 카메라를 드래그 앤 드롭으로 연결
     public GameObject headObject;   // 머리 오브젝트를 연결
     public GameObject[] controllerObjects;   // 컨트롤러 오브젝트 배열 (로컬 플레이어의 컨트롤러)
+    public GameObject[] rayInteractors; // Ray Interactor 오브젝트 배열 (Ray Interactor를 직접 참조)
 
     void Start()
     {
@@ -45,6 +46,20 @@ public class HeadLayerController_Fusion : NetworkBehaviour
                 if (controller != null)
                 {
                     controller.SetActive(false);
+                }
+            }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (!Object.HasStateAuthority)
+        {
+            foreach (GameObject rayInteractor in rayInteractors)
+            {
+                if (rayInteractor != null && rayInteractor.activeSelf)
+                {
+                    rayInteractor.SetActive(false);
                 }
             }
         }

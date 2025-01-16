@@ -23,6 +23,12 @@ public class RoomSelectInteractable : XRGrabInteractable
         _text = GetComponent<TMP_Text>();
     }
 
+    protected override void OnSelectEntered(SelectEnterEventArgs args)
+    {
+        base.OnSelectEntered(args);
+        SoundManager.Instance.PlaySFX("SFX_Lobby_CropSelected");
+    }
+
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
 #if UNITY_EDITOR

@@ -50,6 +50,7 @@ public class VR_Anim_Leg_Controller : MonoBehaviourPun
                 else
                 {
                     animator.SetFloat("Speed", 0f); // 정지 상태
+                    SoundManager.Instance.StopSFXLoop("SFX_PlayerMove");
                 }
 
                 photonView.RPC("SyncAnimationRPC", RpcTarget.Others, _leftInputAxis.magnitude);
@@ -161,6 +162,7 @@ public class VR_Anim_Leg_Controller : MonoBehaviourPun
 
             // 캐릭터 이동
             transform.position += moveDirection * moveSpeed * Time.deltaTime;
+            SoundManager.Instance.PlaySFXLoop("SFX_PlayerMove", 0.5f);
         }
     }
 

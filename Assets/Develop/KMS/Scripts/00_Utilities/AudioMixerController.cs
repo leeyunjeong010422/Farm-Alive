@@ -14,6 +14,8 @@ public class AudioMixerController : MonoBehaviour
     private void Awake()
     {
         masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
+        bgmVolumeSlider.onValueChanged.AddListener(SetBGMVolume);
+        sfxVolumeSlider.onValueChanged.AddListener(SetSFXVolume);
     }
 
     public void SetMasterVolume(float volume)

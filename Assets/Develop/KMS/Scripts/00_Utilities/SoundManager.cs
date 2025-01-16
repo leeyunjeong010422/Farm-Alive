@@ -63,7 +63,7 @@ public class SoundManager : MonoBehaviour
     /// 원하는 BGM을 재생합니다.
     /// </summary>
     /// <param name="key">재생을 원하는 BGM</param>
-    public void PlayBGM(string key)
+    public void PlayBGM(string key, float volumeScale = 1f)
     {
         if (!_bgmDict.ContainsKey(key))
         {
@@ -72,6 +72,7 @@ public class SoundManager : MonoBehaviour
         }
 
         bgm.clip = _bgmDict[key];
+        bgm.volume = volumeScale;
         bgm.Play();
     }
 
@@ -87,9 +88,9 @@ public class SoundManager : MonoBehaviour
     private void Start()
     {
         // bgm 딕셔너리 초기화
-        foreach (var sfx in bgmInfo)
+        foreach (var bgm in bgmInfo)
         {
-            _bgmDict.Add(sfx.key, sfx.clip);
+            _bgmDict.Add(bgm.key, bgm.clip);
         }
 
         Debug.Log("BGM 딕셔너리 초기화 완료");
