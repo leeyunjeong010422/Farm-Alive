@@ -10,6 +10,9 @@ public class PesticideRepair : BaseRepairable
     protected override ParticleSystem SymptomParticle => _symptomParticle;
     protected override ParticleSystem BrokenParticle => _brokenParticle;
 
+    protected override string SymptomSoundKey => "SFX_Supply_Device_Error";
+    protected override string BrokenSoundKey => "SFX_Supply_Problem";
+
     protected override void Start()
     {
         base.Start();
