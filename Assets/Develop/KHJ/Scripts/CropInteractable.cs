@@ -33,9 +33,14 @@ public class CropInteractable : XRGrabInteractable
         {
             Debug.Log("planted into ground");
 
+            SoundManager.Instance.PlaySFX("SFX_PlantCrop");
             SectionManager.Instance.Sections[SectionManager.Instance.CurSection, plantGround.ground] = crop;
             crop.ChangeState(Crop.E_CropState.GrowStopped);
             crop.ReactToEvents();
+        }
+        else
+        {
+            SoundManager.Instance.PlaySFX("SFX_CropSelected");
         }
     }
 
@@ -46,8 +51,13 @@ public class CropInteractable : XRGrabInteractable
         PlantGround plantGround = args.interactorObject.transform.GetComponent<PlantGround>();
         if (plantGround != null)
         {
+            SoundManager.Instance.PlaySFX("SFX_CropHarvested");
             SectionManager.Instance.Sections[SectionManager.Instance.CurSection, plantGround.ground] = null;
             plantGround.OnMyPlantUpdated?.Invoke(0, Crop.E_CropState.SIZE);
+        }
+        else
+        {
+            SoundManager.Instance.PlaySFX("SFX_CropExited");
         }
     }
 
