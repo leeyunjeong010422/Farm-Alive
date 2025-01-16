@@ -1944,7 +1944,6 @@ MonoBehaviour:
   _body: {fileID: 1681703920980649739}
   _photonView: {fileID: 4355634500693566373}
   _rigid: {fileID: 4355634500693566369}
-  _Axis: 1
   _angleRange: 0.05
   <IsOpen>k__BackingField: 1
 --- !u!1 &4355634501196006473
@@ -2231,7 +2230,6 @@ MonoBehaviour:
   _body: {fileID: 1681703920980649739}
   _photonView: {fileID: 4355634501196006467}
   _rigid: {fileID: 4355634501196006469}
-  _Axis: 1
   _angleRange: 0.05
   <IsOpen>k__BackingField: 1
 --- !u!1 &4355634501262847906
@@ -2518,7 +2516,6 @@ MonoBehaviour:
   _body: {fileID: 1681703920980649739}
   _photonView: {fileID: 4355634501262847932}
   _rigid: {fileID: 4355634501262847934}
-  _Axis: 0
   _angleRange: 0.05
   <IsOpen>k__BackingField: 1
 --- !u!1 &4355634501326501152
@@ -2805,7 +2802,6 @@ MonoBehaviour:
   _body: {fileID: 1681703920980649739}
   _photonView: {fileID: 4355634501326501183}
   _rigid: {fileID: 4355634501326501178}
-  _Axis: 0
   _angleRange: 0.05
   <IsOpen>k__BackingField: 1
 --- !u!1 &4430531917212193672
