@@ -83,11 +83,11 @@ MonoBehaviour:
   - SyncSelect
   - SyncSuccessGeneratorStart
   - SyncSymptom
+  - SyncTaping
   - SyncTargetPlayer
   - SyncTransform
   - SyncTriggerBlackout
   - SyncTruck
-  - SyncTaping
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
