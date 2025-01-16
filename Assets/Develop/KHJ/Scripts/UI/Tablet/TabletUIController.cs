@@ -45,10 +45,16 @@ public class TabletUIController : UIBinder
         GetUI<Button>("Schedule_CloseButton").onClick.AddListener(ReturnToMainPanel);
     }
 
-    public void ReturnToMainPanel() => ChangePanel(E_PanelName.Main);
+    public void ReturnToMainPanel()
+    {
+        SoundManager.Instance.PlaySFX("SFX_TabletControl", 0.1f);
+        ChangePanel(E_PanelName.Main);
+    }
 
     private void ChangePanel(E_PanelName panelName)
     {
+        SoundManager.Instance.PlaySFX("SFX_TabletControl", 0.1f);
+
         foreach (GameObject panel in _panels)
         {
             panel.SetActive(panel.name == panelName.ToString());
@@ -56,20 +62,38 @@ public class TabletUIController : UIBinder
     }
 
     #region Main Panel
-    private void OnGuideButtonClicked() => ChangePanel(E_PanelName.Guide);
-    private void OnSectionButtonClicked() => ChangePanel(E_PanelName.Section);
-    private void OnScheduleButtonClicked() => ChangePanel(E_PanelName.Schedule);
+    private void OnGuideButtonClicked()
+    {
+        SoundManager.Instance.PlaySFX("SFX_TabletControl", 0.1f);
+        ChangePanel(E_PanelName.Guide);
+    }
+
+    private void OnSectionButtonClicked()
+    {
+        SoundManager.Instance.PlaySFX("SFX_TabletControl", 0.1f);
+        ChangePanel(E_PanelName.Section);
+    }
+    private void OnScheduleButtonClicked()
+    {
+        SoundManager.Instance.PlaySFX("SFX_TabletControl", 0.1f);
+        ChangePanel(E_PanelName.Schedule);
+    }
+
     #endregion
 
     #region Guide Panel
     private void OnCropTabButtonClicked()
     {
+        SoundManager.Instance.PlaySFX("SFX_TabletControl", 0.1f);
+
         GetUI("CropTab").SetActive(true);
         GetUI("FacilityTab").SetActive(false);
     }
 
     private void OnFacilityTabButtonClicked()
     {
+        SoundManager.Instance.PlaySFX("SFX_TabletControl", 0.1f);
+
         GetUI("FacilityTab").SetActive(true);
         GetUI("CropTab").SetActive(false);
     }

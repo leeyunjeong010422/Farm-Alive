@@ -6,19 +6,12 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class BoxCoverInteractable : XRGrabInteractable
 {
-    public enum E_Axis
-    {
-        X, Y, Z
-    }
-
     [Header("박스 몸체")]
     [SerializeField] private GameObject _body;
 
     [Header("박스 커버")]
     [SerializeField] private PhotonView _photonView;
     [SerializeField] private Rigidbody _rigid;
-    [Tooltip("회전축")]
-    [SerializeField] private E_Axis _Axis;
     [Tooltip("임계 각도 차이")]
     [SerializeField] private float _angleRange;
 
@@ -48,6 +41,7 @@ public class BoxCoverInteractable : XRGrabInteractable
     {
         base.OnSelectEntered(args);
 
+        SoundManager.Instance.PlaySFXLoop("SFX_BoxOpen");
         _photonView.RPC(nameof(SelectEnterBox), RpcTarget.All);
     }
 
@@ -55,6 +49,7 @@ public class BoxCoverInteractable : XRGrabInteractable
     {
         base.OnSelectExited(args);
 
+        SoundManager.Instance.StopSFXLoop("SFX_BoxOpen");
         _photonView.RPC(nameof(SelectExitBox), RpcTarget.All, CheckOpen());
     }
 
@@ -92,22 +87,5 @@ public class BoxCoverInteractable : XRGrabInteractable
     private void Close()
     {
         _rigid.constraints = RigidbodyConstraints.FreezeRotation;
-
-        //Vector3 closedRotation = transform.eulerAngles;
-        //switch (_Axis)
-        //{
-        //    case E_Axis.X:
-        //        closedRotation.x = 0f;
-        //        break;
-        //    case E_Axis.Y:
-        //        closedRotation.y = 0f;
-        //        break;
-        //    case E_Axis.Z:
-        //        closedRotation.z = 0f;
-        //        break;
-        //    default:
-        //        break;
-        //}
-        //transform.eulerAngles = closedRotation;
     }
 }
