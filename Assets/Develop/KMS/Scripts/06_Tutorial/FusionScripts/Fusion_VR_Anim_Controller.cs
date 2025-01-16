@@ -130,7 +130,7 @@ public class Fusion_VR_Anim_Controller : NetworkBehaviour
 
             Vector3 moveDirection = (forward * _leftInputAxis.y + right * _leftInputAxis.x).normalized;
 
-            SoundManager.Instance.PlaySFXLoop("SFX_PlayerMove", 0.5f);
+            SoundManager.Instance.PlaySFXLoop("SFX_PlayerMove", 0.2f);
             transform.position += moveDirection * moveSpeed * Runner.DeltaTime;
         }
     }
