@@ -96,7 +96,7 @@ public class StageManager : MonoBehaviourPunCallbacks
         while (_stageTimeLimit - _curStageTime <= 60f)
         {
             SoundManager.Instance.StopBGM();
-            SoundManager.Instance.PlayBGM("BGM_StageOneMinute");
+            SoundManager.Instance.PlayBGM("BGM_StageOneMinute", 0.4f);
 
             if (_stageTimeLimit == _curStageTime)
                 SoundManager.Instance.StopBGM();
