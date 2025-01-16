@@ -40,6 +40,10 @@ public class SoundManager : MonoBehaviour
     public AudioSource bgm;
     public AudioSource sfx;
 
+    [Header("Audio Mixer")]
+    public AudioMixer audioMixer;
+    public AudioMixerGroup loopSFXGroup;
+
     private Dictionary<string, AudioClip> _bgmDict = new Dictionary<string, AudioClip>();
     private Dictionary<string, AudioClip> _sfxDict = new Dictionary<string, AudioClip>();
     private Dictionary<string, AudioSource> _sfxLoopDict = new Dictionary<string, AudioSource>();
@@ -171,6 +175,8 @@ public class SoundManager : MonoBehaviour
         newSource.clip = _sfxDict[key];
         newSource.volume = volumeScale;
         newSource.loop = true;
+        // 루프 SFX 전용 AudioMixerGroup 할당
+        newSource.outputAudioMixerGroup = loopSFXGroup;
         newSource.Play();
 
         _sfxLoopDict[key] = newSource;

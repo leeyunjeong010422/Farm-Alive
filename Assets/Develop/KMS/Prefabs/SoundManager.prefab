@@ -46,7 +46,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -171,7 +171,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -8066224653808631419, guid: fdca16bb6c294da42bfbcfc36ca3a40e, type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -499,6 +499,8 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: eb69447ba1a3f3b4880e830f8613d2d0, type: 3}
   bgm: {fileID: 6178326602127894655}
   sfx: {fileID: 4145566991314163080}
+  audioMixer: {fileID: 0}
+  loopSFXGroup: {fileID: 0}
 --- !u!114 &3212021690623256681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -515,6 +517,7 @@ MonoBehaviour:
   masterVolumeSlider: {fileID: 9067053125321372045}
   bgmVolumeSlider: {fileID: 2756194889335375849}
   sfxVolumeSlider: {fileID: 4142486415597427231}
+  voiceVolumeSlider: {fileID: 9003250943084852419}
 --- !u!114 &6858897456392201882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -530,7 +533,6 @@ MonoBehaviour:
   canvas: {fileID: 9067053125688562344}
   distanceFromCamera: 10
   controllerNode: 4
-  _cameraTransform: {fileID: 0}
 --- !u!1001 &1193953133963602946
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -706,6 +708,17 @@ MonoBehaviour:
 --- !u!114 &4142486415597427231 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3021026389794862621, guid: 3f4416fdbf1e5a9429e7a4fcaa207b0a, type: 3}
+  m_PrefabInstance: {fileID: 1193953133963602946}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9003250943084852419 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7809311042992380097, guid: 3f4416fdbf1e5a9429e7a4fcaa207b0a, type: 3}
   m_PrefabInstance: {fileID: 1193953133963602946}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
