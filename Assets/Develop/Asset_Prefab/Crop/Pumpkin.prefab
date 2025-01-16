@@ -583,19 +583,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee49e885baee7e04ab49091d36bc635c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cropData: {fileID: 0}
+  _ID: 0
+  _name: 
   _GFXs:
   - {fileID: 5886277867669445981}
   - {fileID: 8815621844641772606, guid: fb1de593722668142a406d57ccfce094, type: 3}
   - {fileID: 7660083458229812442, guid: 0e0123d481f5529459d1576d6cd77708, type: 3}
   - {fileID: 518083817376825963, guid: 1138c1ce700d10c4b961e49a8c3ec043, type: 3}
   _curState: 0
+  _value: 0
   _digCount: 2
   _growthTime: 10
   _elapsedTime: 0
-  _maxMoisture: 3
+  _idleMaxMoisture: 0
+  _droughtMaxMoisture: 0
   _curMoisture: 3
-  _maxNutrient: 3
+  _idleMaxNutrient: 0
+  _droughtMaxNutrient: 0
   _curNutrient: 3
+  _damageRate: 0
+  _damageLimitTime: 0
+  _temperatureDecreaseLimitTime: 0
+  _temperatureIncreaseLimitTime: 0
 --- !u!114 &-5271553385700312961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -609,7 +619,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _refillPrefab: {fileID: 5886277867669445981}
-  _maxCount: 10
+  _maxCount: 30
   _triggerZoneName: CropRefillZone
   idList: 
 --- !u!1 &6170553595380224054

@@ -617,7 +617,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _refillPrefab: {fileID: 5131138091925150385, guid: c339eb5de7e5fb4408dcea41724b5fa3, type: 3}
-  _maxCount: 10
+  _maxCount: 30
   _triggerZoneName: CropRefillZone
   idList: 
 --- !u!114 &7356345698240060660
