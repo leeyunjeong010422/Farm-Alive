@@ -57,14 +57,6 @@ public class PunManager : MonoBehaviourPunCallbacks
         //FirebaseManager.Instance.NotifyInitializationComplete();
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            Debug.Log($"selectedStage {selectedStage}");
-        }
-    }
-
     /// <summary>
     /// Photon서버에 연결하는 메서드.
     /// 
