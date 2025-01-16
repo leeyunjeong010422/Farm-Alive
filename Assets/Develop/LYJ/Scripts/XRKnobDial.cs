@@ -369,7 +369,7 @@ public class XRKnobDial : XRBaseInteractable
         // 값이 변경된 경우에 사운드를 재생
         if (!Mathf.Approximately(m_Value, value) && !_playedSound)
         {
-            SoundManager.Instance.PlaySFX("SFX_DialRotated", 0.5f);
+            SoundManager.Instance.PlaySFX("SFX_DialRotated", 0.7f);
             _playedSound = true;
         }
 
