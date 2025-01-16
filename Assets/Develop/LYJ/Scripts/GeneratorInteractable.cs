@@ -121,6 +121,7 @@ public class GeneratorInteractable : XRBaseInteractable
 
     private void OnLeverActivate()
     {
+        SoundManager.Instance.PlaySFX("SFX_LeverPulled", 0.5f);
         if (_repair.IsSymptom)
         {
             _isLeverDown = true;
@@ -130,6 +131,7 @@ public class GeneratorInteractable : XRBaseInteractable
 
     private void OnLeverDeactivate()
     {
+        SoundManager.Instance.PlaySFX("SFX_LeverPulled", 0.5f);
         _isLeverDown = false;
     }
 
@@ -183,6 +185,7 @@ public class GeneratorInteractable : XRBaseInteractable
 
             _hasTriggered = true;
             _currentAttempts++;
+            SoundManager.Instance.PlaySFX("SFX_Crank_Pulling");
 
             //Debug.LogError($"발전기 시동 횟수: {_currentAttempts}/{_startAttemptsRequired}");
             MessageDisplayManager.Instance.ShowMessage($"발전기 시동 횟수: {_currentAttempts}/{_startAttemptsRequired}");
@@ -198,6 +201,8 @@ public class GeneratorInteractable : XRBaseInteractable
     private void SyncSuccessGeneratorStart()
     {
         MessageDisplayManager.Instance.ShowMessage("발전기 시동 성공!");
+        SoundManager.Instance.StopSFXLoop("SFX_Generator_Failure");
+
         _brokenParticle.Stop();
         //Debug.LogError("발전기 시동 성공!");
         _isGeneratorRunning = true;
@@ -230,6 +235,7 @@ public class GeneratorInteractable : XRBaseInteractable
     // 전조 증상 발생 처리
     public void Symptom()
     {
+        SoundManager.Instance.PlaySFXLoop("SFX_Generator_Error");
         _symptomParticle.Play();
         _isBroken = false;
         MessageDisplayManager.Instance.ShowMessage("발전기 전조증상 발생!");
@@ -239,6 +245,8 @@ public class GeneratorInteractable : XRBaseInteractable
     // 고장 발생 처리
     public void Broken()
     {
+        SoundManager.Instance.StopSFXLoop("SFX_Generator_Error");
+        SoundManager.Instance.PlaySFXLoop("SFX_Generator_Failure");
         _symptomParticle.Stop();
         _brokenParticle.Play();
         _isGeneratorRunning = false;
@@ -264,6 +272,7 @@ public class GeneratorInteractable : XRBaseInteractable
             _repair.IsSymptom = false;
         }
 
+        SoundManager.Instance.StopSFXLoop("SFX_Generator_Error");
         _symptomParticle.Stop();
         _isBroken = false; // 고장 상태 초기화
         _repair.ResetRepairState();
@@ -280,6 +289,7 @@ public class GeneratorInteractable : XRBaseInteractable
             return;
         }
 
+        SoundManager.Instance.StopSFXLoop("SFX_Generator_Failure");
         _brokenParticle.Stop();
         _isGeneratorRunning = false;
         _isBroken = true;

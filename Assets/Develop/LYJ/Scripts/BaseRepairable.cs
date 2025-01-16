@@ -10,6 +10,9 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
     protected virtual ParticleSystem SymptomParticle { get; }
     protected virtual ParticleSystem BrokenParticle { get; }
 
+    protected virtual string SymptomSoundKey => null; // 전조 증상 사운드 키 값
+    protected virtual string BrokenSoundKey => null; // 고장 사운드 키 값
+
     protected virtual void Start()
     {
         _repair = GetComponent<Repair>();
@@ -30,6 +33,13 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
         _isBroken = false;
         _isSymptomSolved = false; // 전조 증상 해결 여부 초기화
         SymptomParticle?.Play(); // 전조 증상 파티클 재생
+
+        // 전조 증상 사운드 재생
+        if (!string.IsNullOrEmpty(SymptomSoundKey))
+        {
+            Debug.Log("전조 증상 사운드 재생");
+            SoundManager.Instance.PlaySFXLoop(SymptomSoundKey, 0.5f);
+        }
         MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 전조 증상 발생!");
     }
 
@@ -44,6 +54,15 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
         _isBroken = true;
         SymptomParticle?.Stop();
         BrokenParticle?.Play(); // 고장 파티클 재생
+
+        // 고장 사운드 재생 및 전조 증상 사운드 중지
+        if (!string.IsNullOrEmpty(BrokenSoundKey))
+        {
+            Debug.Log("전조 증상 사운드 멈춤 및 고장 사운드 재생");
+            SoundManager.Instance.StopSFXLoop(SymptomSoundKey);
+            SoundManager.Instance.PlaySFXLoop(BrokenSoundKey, 0.5f);
+        }
+
         MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 고장 발생!");
         //Debug.LogError($"{gameObject.name}: 고장 발생!");
         return true; // 고장이 발생함
@@ -66,6 +85,12 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
         _repair.IsSymptom = false;
         _isSymptomSolved = true;
         _repair.ResetRepairState();
+
+        // 전조 증상 사운드 정지
+        if (!string.IsNullOrEmpty(SymptomSoundKey))
+        {
+            SoundManager.Instance.StopSFXLoop(SymptomSoundKey);
+        }
         MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 전조 증상이 해결되었습니다!");
         //Debug.LogError($"{gameObject.name}: 전조 증상이 해결되었습니다!");
     }
@@ -75,6 +100,12 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
         _isBroken = false;
         BrokenParticle?.Stop();
         _repair.ResetRepairState();
+
+        // 고장 사운드 정지
+        if (!string.IsNullOrEmpty(BrokenSoundKey))
+        {
+            SoundManager.Instance.StopSFXLoop(BrokenSoundKey);
+        }
         MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 수리되었습니다!");
         //Debug.LogError($"{gameObject.name}: 수리되었습니다!");
     }
