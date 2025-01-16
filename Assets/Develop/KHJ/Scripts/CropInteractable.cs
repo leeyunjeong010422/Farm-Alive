@@ -1,4 +1,5 @@
 using GameData;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,13 @@ public class CropInteractable : XRGrabInteractable
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
+        Crop crop = GetComponent<Crop>();
+        if (crop.CurState == Crop.E_CropState.Waste)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
         Debug.Log("CropInteractable OnSelectEntered");
         base.OnSelectEntered(args);
 
@@ -24,7 +32,6 @@ public class CropInteractable : XRGrabInteractable
         if (plantGround != null)
         {
             Debug.Log("planted into ground");
-            Crop crop = GetComponent<Crop>();
 
             SectionManager.Instance.Sections[SectionManager.Instance.CurSection, plantGround.ground] = crop;
             crop.ChangeState(Crop.E_CropState.GrowStopped);
@@ -50,7 +57,7 @@ public class CropInteractable : XRGrabInteractable
             return base.IsSelectableBy(interactor);
 
         Crop crop = GetComponent<Crop>();
-        if (crop.CurState == Crop.E_CropState.Seeding || crop.CurState == Crop.E_CropState.GrowCompleted)
+        if (crop.CurState == Crop.E_CropState.Seeding || crop.CurState == Crop.E_CropState.GrowCompleted || crop.CurState == Crop.E_CropState.Waste)
             return base.IsSelectableBy(interactor);
         else
             return false;
