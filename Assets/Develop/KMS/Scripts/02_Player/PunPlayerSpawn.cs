@@ -18,15 +18,6 @@ public class PunPlayerSpawn : MonoBehaviour
         RemoveNetworkRunner();
         SpawnPlayer();
     }
-#if UNITY_EDITOR
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            ReturnToFusion();
-        }
-    }
-#endif
 
     private void RemoveNetworkRunner()
     {
