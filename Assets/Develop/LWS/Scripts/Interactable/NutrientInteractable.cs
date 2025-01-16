@@ -22,6 +22,16 @@ public class NutrientInteractable : XRGrabInteractable
             }
 
             cup.particleSystemLiquid.Stop();
+            SoundManager.Instance.StopSFXLoop("SFX_NutrientContainerPoured");
         }
+
+        SoundManager.Instance.PlaySFX("SFX_NutrientContainerSelected");
+    }
+
+    protected override void OnSelectExited(SelectExitEventArgs args)
+    {
+        base.OnSelectExited(args);
+
+        SoundManager.Instance.PlaySFX("SFX_NutrientContainerExited");
     }
 }

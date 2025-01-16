@@ -24,6 +24,8 @@ public class HoseInteractable : XRGrabInteractable
     {
         base.OnSelectEntered(args);
 
+        SoundManager.Instance.PlaySFX("SFX_HoseSelected");
+
         if (args.interactorObject is XRSocketInteractor)
         {
             LiquidContainer receiver = args.interactorObject.transform.GetComponent<LiquidContainer>();
@@ -35,6 +37,13 @@ public class HoseInteractable : XRGrabInteractable
 
             wateringParticle.Stop();
         }
+    }
+
+    protected override void OnSelectExited(SelectExitEventArgs args)
+    {
+        base.OnSelectExited(args);
+
+        SoundManager.Instance.PlaySFX("SFX_HoseExited");
     }
 
     protected override void OnActivated(ActivateEventArgs args)

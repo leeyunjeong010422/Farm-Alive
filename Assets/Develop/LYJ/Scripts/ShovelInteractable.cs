@@ -14,6 +14,20 @@ public class ShovelInteractable : XRGrabInteractable
         base.Awake();
     }
 
+    protected override void OnSelectEntered(SelectEnterEventArgs args)
+    {
+        base.OnSelectEntered(args);
+
+        SoundManager.Instance.PlaySFX("SFX_ShovelSelected");
+    }
+
+    protected override void OnSelectExited(SelectExitEventArgs args)
+    {
+        base.OnSelectExited(args);
+        
+        SoundManager.Instance.PlaySFX("SFX_ShovelExited");
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         PlantGround ground = other.GetComponentInParent<PlantGround>();
@@ -45,6 +59,7 @@ public class ShovelInteractable : XRGrabInteractable
 
             if (_groundTriggerCount <= 0)
             {
+                SoundManager.Instance.PlaySFX("SFX_ShovelDig");
                 _currentGround.Dig();
                 _currentGround = null;
                 _groundTriggerCount = 0;

@@ -63,7 +63,7 @@ public class StageManager : MonoBehaviourPunCallbacks
         _weatherID = _curStageData.stage_seasonID;
         _maxBrokenMachineCount = _curStageData.stage_allowSymptomFacilityCount;
 
-        _stageTimeLimit = 1000f;
+        _stageTimeLimit = 400f;
 
 
         while (!ParticleManager.Instance.isAllParticleStoped)
@@ -92,6 +92,15 @@ public class StageManager : MonoBehaviourPunCallbacks
             return;
 
         _curStageTime += Time.deltaTime;
+
+        while (_stageTimeLimit - _curStageTime <= 60f)
+        {
+            SoundManager.Instance.PlaySFXLoop("BGM_StageOneMinute");
+
+            if (_stageTimeLimit == _curStageTime)
+                SoundManager.Instance.StopSFXLoop("BGM_StageOneMinute");
+                break;
+        }
 
         if (_stageTimeLimit > 0 && _curStageTime >= _stageTimeLimit)
         {
