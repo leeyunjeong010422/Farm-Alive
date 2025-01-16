@@ -93,21 +93,21 @@ public class BoxCoverInteractable : XRGrabInteractable
     {
         _rigid.constraints = RigidbodyConstraints.FreezeRotation;
 
-        Vector3 closedRotation = transform.eulerAngles;
-        switch (_Axis)
-        {
-            case E_Axis.X:
-                closedRotation.x = 0f;
-                break;
-            case E_Axis.Y:
-                closedRotation.y = 0f;
-                break;
-            case E_Axis.Z:
-                closedRotation.z = 0f;
-                break;
-            default:
-                break;
-        }
-        transform.eulerAngles = closedRotation;
+        //Vector3 closedRotation = transform.eulerAngles;
+        //switch (_Axis)
+        //{
+        //    case E_Axis.X:
+        //        closedRotation.x = 0f;
+        //        break;
+        //    case E_Axis.Y:
+        //        closedRotation.y = 0f;
+        //        break;
+        //    case E_Axis.Z:
+        //        closedRotation.z = 0f;
+        //        break;
+        //    default:
+        //        break;
+        //}
+        //transform.eulerAngles = closedRotation;
     }
 }
