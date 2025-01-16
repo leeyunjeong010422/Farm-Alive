@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class HammerInteractable : MonoBehaviourPunCallbacks
@@ -36,9 +37,7 @@ public class HammerInteractable : MonoBehaviourPunCallbacks
 
         if (repair != null)
         {
-            // _particle.Play();
-
-            SoundManager.Instance.PlaySFX("SFX_Hammer");
+            photonView.RPC(nameof(PlaySound), RpcTarget.All, "SFX_Hammer");
 
             PhotonView repairView = repair.GetComponent<PhotonView>();
             if (repairView != null)
@@ -47,9 +46,15 @@ public class HammerInteractable : MonoBehaviourPunCallbacks
             }
         }
 
-        if (collision.collider.gameObject.layer == 6)
+        if (collision.gameObject.layer == LayerMask.NameToLayer("HeadLayer"))
         {
-            SoundManager.Instance.PlaySFX("SFX_PlayerHit1");
+            photonView.RPC(nameof(PlaySound), RpcTarget.All, "SFX_PlayerHit1");
         }
+    }
+
+    [PunRPC]
+    private void PlaySound(string name)
+    {
+        SoundManager.Instance.PlaySFX(name);
     }
 }
