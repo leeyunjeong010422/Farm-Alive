@@ -80,6 +80,7 @@ public class RobotController : MonoBehaviour
     // 로봇 버튼을 클릭했을 때
     public void OnMoveButtonClicked()
     {
+        SoundManager.Instance.PlaySFX("SFX_RobotRecognize");
         if (Time.time - lastButtonClickTime < cooldownTime)
         {
             Debug.Log("버튼은 3초에 1번 누를 수 있습니다.");
@@ -105,6 +106,7 @@ public class RobotController : MonoBehaviour
     [PunRPC]
     private void RPC_ButtonClick(int photonViewID, PhotonMessageInfo info)
     {
+        SoundManager.Instance.PlaySFX("SX_RobotTraceCancel");
         if (photonViewID == targetPhotonViewID && photonViewID == lastPhotonViewID)
         {
             photonView.RPC(nameof(StartReturnToInitial), RpcTarget.AllBuffered);
