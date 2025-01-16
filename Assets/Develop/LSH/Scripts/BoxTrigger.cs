@@ -135,6 +135,12 @@ public class BoxTrigger : MonoBehaviourPun
 
     public void CompleteTaping()
     {
+        photonView.RPC(nameof(SyncTaping), RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void SyncTaping()
+    {
         boxCover.tape.SetActive(true);
         boxCover.IsPackaged = true;
 
