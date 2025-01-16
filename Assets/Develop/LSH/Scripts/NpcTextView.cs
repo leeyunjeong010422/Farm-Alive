@@ -11,6 +11,9 @@ public class NpcTextView : MonoBehaviour
     [SerializeField] public Text text;
     private float outputTime = 5f;
     private float outputSpeed = 0.05f;
+    [SerializeField] Animator anim;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip[] soundList;
 
     private Coroutine textCoroutine;
 
@@ -18,6 +21,8 @@ public class NpcTextView : MonoBehaviour
     {
         //text.text = "거북이 조상님이 와도\n이거보다는 빠르겠어!!";
         ShowText("거북이 조상님이 와도\n이거보다는 빠르겠어!!");
+        anim.SetBool("isField", true);
+        PlaySound(2);
     }
 
     public void NpcText(bool check)
@@ -26,11 +31,15 @@ public class NpcTextView : MonoBehaviour
         {
             //text.text = "완벽하군!!\n 다음에도 잘 부탁하겠네!";
             ShowText("완벽하군!!\n 다음에도 잘 부탁하겠네!");
+            anim.SetBool("isSuccess", true);
+            PlaySound(1);
         }
         else
         {
             //text.text = "내가 원하던 작물이 아니잖아!!\n일을 어떻게 하는거야!";
             ShowText("내가 원하던 작물이 아니잖아!!\n일을 어떻게 하는거야!");
+            anim.SetBool("isField", true);
+            PlaySound(2);
         }
     }
 
@@ -40,12 +49,15 @@ public class NpcTextView : MonoBehaviour
         {
             //text.text = "흠 주문하지 않은 작물이 섞여있는데\n이건 선물인가?\n 고맙게 잘 받겠네";
             ShowText("흠 주문하지 않은 작물이 섞여있는데\n이건 선물인가?\n 고맙게 잘 받겠네");
+            anim.SetBool("isSuccess", true);
+            PlaySound(0);
         }
 
         if (count <= 0)
         {
             //text.text = "고맙네\n남은 작물들도 빠르게 부탁하겠네!";
             ShowText("고맙네\n남은 작물들도 빠르게 부탁하겠네!");
+            PlaySound(1);
         }
     }
 
@@ -75,6 +87,21 @@ public class NpcTextView : MonoBehaviour
     {
         yield return new WaitForSeconds(outputTiem);
 
+        anim.SetBool("isSuccess", false);
+        anim.SetBool("isField", false);
         textPanel.SetActive(false);
+    }
+
+    public void PlaySound(int index)
+    {
+        if (index >= 0 && index < soundList.Length)
+        {
+            audioSource.clip = soundList[index];
+            audioSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning("사운드 인덱스가 범위를 벗어났습니다!");
+        }
     }
 }

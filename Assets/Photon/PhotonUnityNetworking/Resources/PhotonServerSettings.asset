@@ -87,6 +87,7 @@ MonoBehaviour:
   - SyncTransform
   - SyncTriggerBlackout
   - SyncTruck
+  - SyncTaping
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
