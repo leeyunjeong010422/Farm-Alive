@@ -13,6 +13,9 @@ public class SectionRepair : BaseRepairable
     protected override ParticleSystem SymptomParticle => _symptomParticle;
     protected override ParticleSystem BrokenParticle => _brokenParticle;
 
+    protected override string SymptomSoundKey => "SFX_Machine_Error";
+    protected override string BrokenSoundKey => "SFX_Equipment_Problem";
+
     protected override void Start()
     {
         base.Start();
