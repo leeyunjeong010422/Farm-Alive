@@ -10,15 +10,13 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance { get; private set; }
 
     // BGM types
-    public enum E_BGM
+    [System.Serializable]
+    public class BGMInfo
     {
-        GAMESTART,
-        LOBBY,
-        ROOM,
-        INGAME,
-        LOADING,
-
-        SIZEMAX
+        [Tooltip("BGM를 구분할 키")]
+        public string key;
+        [Tooltip("BGM AudioClip")]
+        public AudioClip clip;
     }
 
     [System.Serializable]
@@ -30,32 +28,20 @@ public class SoundManager : MonoBehaviour
         public AudioClip clip;
     }
 
-    [Header("BGM Clips")]
-    public AudioClip[] bgmClips;
+    [Header("BGM 설정")]
+    [Tooltip("BGM 정보 배열")]
+    public BGMInfo[] bgmInfo;
 
     [Header("SFX 설정")]
     [Tooltip("SFX 정보 배열")]
-    public SFXInfo[] _sfxInfo;
+    public SFXInfo[] sfxInfo;
 
     [Header("BGM Audio Source")]
     public AudioSource bgm;
     public AudioSource sfx;
 
+    private Dictionary<string, AudioClip> _bgmDict = new Dictionary<string, AudioClip>();
     private Dictionary<string, AudioClip> _sfxDict = new Dictionary<string, AudioClip>();
-
-    //[Header("Audio Setting")]
-    //public AudioMixer test; // 오디오 믹서
-    //public GameObject sliderUI; // 슬라이더 UI 패널
-    //public XRNode rightControllerNode = XRNode.RightHand; // 오른손 컨트롤러
-
-    //private float maxVolumeDb = 20f;
-    //private float minVolumeDb = -80f;
-    //private float buttonHoldTime = 1f; // 버튼을 눌러야 하는 시간
-    //private float buttonHoldCounter = 0f; // 버튼 누름 시간 추적
-    //private bool isSliderUIActive = false; // 슬라이더 UI 활성화 상태
-
-    //private Transform _mainCamera; // 메인 카메라의 Transform
-    //public float distanceFromCamera = 3f; // 카메라에서 슬라이더 UI가 떨어질 거리
 
     private void Awake()
     {
@@ -73,10 +59,16 @@ public class SoundManager : MonoBehaviour
     /// <summary>
     /// 원하는 BGM을 재생합니다.
     /// </summary>
-    /// <param name="bgmIdx">재생을 원하는 BGM</param>
-    public void PlayBGM(E_BGM bgmIdx)
+    /// <param name="key">재생을 원하는 BGM</param>
+    public void PlayBGM(string key)
     {
-        bgm.clip = bgmClips[(int)bgmIdx];
+        if (!_bgmDict.ContainsKey(key))
+        {
+            Debug.LogWarning($"BGM '{key}'가 없습니다!");
+            return;
+        }
+
+        bgm.clip = _bgmDict[key];
         bgm.Play();
     }
 
@@ -91,20 +83,16 @@ public class SoundManager : MonoBehaviour
 
     private void Start()
     {
-        //_mainCamera = Camera.main.transform;
+        // bgm 딕셔너리 초기화
+        foreach (var sfx in bgmInfo)
+        {
+            _bgmDict.Add(sfx.key, sfx.clip);
+        }
 
-        //if (!_mainCamera)
-        //{
-        //    Debug.LogError("Main Camera를 찾을 수 없습니다!");
-        //}
-
-        //if (sliderUI)
-        //{
-        //    sliderUI.SetActive(false);
-        //}
+        Debug.Log("BGM 딕셔너리 초기화 완료");
 
         // SFX 딕셔너리 초기화
-        foreach (var sfx in _sfxInfo)
+        foreach (var sfx in sfxInfo)
         {
             _sfxDict.Add(sfx.key, sfx.clip);
         }
@@ -165,78 +153,4 @@ public class SoundManager : MonoBehaviour
         yield return new WaitForSeconds(duration);
         sfx.Stop();
     }
-
-//    public void SetBGMVolume(float volume)
-//    {
-//        float dBValue = Mathf.Lerp(minVolumeDb, maxVolumeDb, volume);
-//        test.SetFloat("PlayerVoiceVolum", dBValue);
-//    }
-
-//    private void Update()
-//    {
-//        if (IsControllerButtonPressed(rightControllerNode, CommonUsages.primaryButton))
-//        {
-//            buttonHoldCounter += Time.deltaTime;
-
-//            if (buttonHoldCounter >= buttonHoldTime)
-//            {
-//                ToggleSliderUI();
-//                buttonHoldCounter = 0f;
-//            }
-//        }
-//#if UNITY_EDITOR
-//        else if (Input.GetKey(KeyCode.Slash))
-//        {
-//            buttonHoldCounter += Time.deltaTime;
-
-//            if (buttonHoldCounter >= buttonHoldTime)
-//            {
-//                ToggleSliderUI();
-//                buttonHoldCounter = 0f;
-//            }
-//        }
-//#endif
-//        else
-//        {
-//            buttonHoldCounter = 0f;
-//        }
-
-//        if (isSliderUIActive && sliderUI != null && _mainCamera != null)
-//        {
-//            UpdateSliderUIPosition();
-//        }
-//    }
-
-//    private void ToggleSliderUI()
-//    {
-//        isSliderUIActive = !isSliderUIActive;
-
-//        if (sliderUI != null)
-//        {
-//            sliderUI.SetActive(isSliderUIActive);
-
-//            if (isSliderUIActive)
-//            {
-//                UpdateSliderUIPosition();
-//            }
-//        }
-//    }
-
-//    private void UpdateSliderUIPosition()
-//    {
-//        Vector3 newPosition = _mainCamera.position + _mainCamera.forward * distanceFromCamera;
-//        sliderUI.transform.position = newPosition;
-//        sliderUI.transform.rotation = Quaternion.LookRotation(sliderUI.transform.position - _mainCamera.position);
-//    }
-
-//    private bool IsControllerButtonPressed(XRNode controllerNode, InputFeatureUsage<bool> button)
-//    {
-//        // 컨트롤러 노드에서 버튼 입력 상태 확인
-//        InputDevice device = InputDevices.GetDeviceAtXRNode(controllerNode);
-//        if (device.isValid && device.TryGetFeatureValue(button, out bool isPressed))
-//        {
-//            return isPressed;
-//        }
-//        return false;
-//    }
 }
