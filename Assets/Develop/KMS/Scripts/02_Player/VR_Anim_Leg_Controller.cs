@@ -162,7 +162,7 @@ public class VR_Anim_Leg_Controller : MonoBehaviourPun
 
             // 캐릭터 이동
             transform.position += moveDirection * moveSpeed * Time.deltaTime;
-            SoundManager.Instance.PlaySFXLoop("SFX_PlayerMove");
+            SoundManager.Instance.PlaySFXLoop("SFX_PlayerMove", 0.5f);
         }
     }
 
