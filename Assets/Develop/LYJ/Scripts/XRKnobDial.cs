@@ -224,6 +224,8 @@ public class XRKnobDial : XRBaseInteractable
 
         UpdateBaseKnobRotation();
         UpdateRotation(true);
+
+        _playedSound = false;
     }
 
     void EndGrab(SelectExitEventArgs args)
@@ -233,6 +235,8 @@ public class XRKnobDial : XRBaseInteractable
         // 손을 뗐을 때 Knob 값을 초기화
         value = _firstValue; // Knob 값 초기화
         SetKnobRotation(ValueToRotation()); // Handle 위치 초기화
+
+        _playedSound = false;
     }
 
     public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
@@ -347,6 +351,8 @@ public class XRKnobDial : XRBaseInteractable
             m_Handle.localEulerAngles = new Vector3(0.0f, angle, 0.0f);
     }
 
+    private bool _playedSound = false;
+
     void SetValue(float value)
     {
         if (m_ClampedMotion)
@@ -358,6 +364,13 @@ public class XRKnobDial : XRBaseInteractable
             var angle = Mathf.Lerp(0.0f, angleRange, value);
             angle = Mathf.Round(angle / m_AngleIncrement) * m_AngleIncrement;
             value = Mathf.InverseLerp(0.0f, angleRange, angle);
+        }
+
+        // 값이 변경된 경우에 사운드를 재생
+        if (!Mathf.Approximately(m_Value, value) && !_playedSound)
+        {
+            SoundManager.Instance.PlaySFX("SFX_DialRotated", 0.5f);
+            _playedSound = true;
         }
 
         m_Value = value;
