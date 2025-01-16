@@ -35,9 +35,13 @@ public class GeneratorInteractable : XRBaseInteractable
     private bool _isLeverDown = false;     // 레버가 내려간 상태인지 여부
     private bool _isBroken = false;        // 고장 상태 여부
 
+    [SerializeField] private ParticleSystem _symptomParticle;
+    [SerializeField] private ParticleSystem _brokenParticle;
+
     protected override void Awake()
     {
         base.Awake();
+
         photonView = GetComponent<PhotonView>();
 
         if (photonView == null)
@@ -78,6 +82,18 @@ public class GeneratorInteractable : XRBaseInteractable
         _repair.OnSymptomRaised.AddListener(Symptom);      // 전조 증상 발생
         _repair.OnBrokenRaised.AddListener(Broken);        // 고장 발생
         _repair.OnBrokenSolved.AddListener(SolveBroken);
+
+        if (_symptomParticle == null)
+            _symptomParticle = transform.Find("SymptomParticle")?.GetComponentInChildren<ParticleSystem>(true);
+
+        if (_brokenParticle == null)
+            _brokenParticle = transform.Find("BrokenParticle")?.GetComponentInChildren<ParticleSystem>(true);
+
+        if (_symptomParticle == null)
+            Debug.LogWarning($"{gameObject.name}: 'SymptomParticle' 파티클을 찾을 수 없습니다.");
+
+        if (_brokenParticle == null)
+            Debug.LogWarning($"{gameObject.name}: 'BrokenParticle' 파티클을 찾을 수 없습니다.");
     }
 
     private void OnKnobValueChanged(float value)
@@ -182,6 +198,7 @@ public class GeneratorInteractable : XRBaseInteractable
     private void SyncSuccessGeneratorStart()
     {
         MessageDisplayManager.Instance.ShowMessage("발전기 시동 성공!");
+        _brokenParticle.Stop();
         //Debug.LogError("발전기 시동 성공!");
         _isGeneratorRunning = true;
         _currentAttempts = 0;
@@ -213,6 +230,7 @@ public class GeneratorInteractable : XRBaseInteractable
     // 전조 증상 발생 처리
     public void Symptom()
     {
+        _symptomParticle.Play();
         _isBroken = false;
         MessageDisplayManager.Instance.ShowMessage("발전기 전조증상 발생!");
         //Debug.LogError("발전기 전조증상 발생!");
@@ -221,6 +239,8 @@ public class GeneratorInteractable : XRBaseInteractable
     // 고장 발생 처리
     public void Broken()
     {
+        _symptomParticle.Stop();
+        _brokenParticle.Play();
         _isGeneratorRunning = false;
         _isBroken = true;
         MessageDisplayManager.Instance.ShowMessage("발전기가 고장났습니다!");
@@ -244,6 +264,7 @@ public class GeneratorInteractable : XRBaseInteractable
             _repair.IsSymptom = false;
         }
 
+        _symptomParticle.Stop();
         _isBroken = false; // 고장 상태 초기화
         _repair.ResetRepairState();
         MessageDisplayManager.Instance.ShowMessage("전조 증상이 해결되었습니다!");
@@ -259,6 +280,7 @@ public class GeneratorInteractable : XRBaseInteractable
             return;
         }
 
+        _brokenParticle.Stop();
         _isGeneratorRunning = false;
         _isBroken = true;
         _repair.ResetRepairState();
