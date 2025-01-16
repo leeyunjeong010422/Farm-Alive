@@ -106,16 +106,16 @@ public class StageManager : MonoBehaviourPunCallbacks
         switch (_weatherID)
         {
             case 0: // 봄
-                 // RenderSettings.skybox = _materials[0];
+                 RenderSettings.skybox = _materials[0];
                 break;
             case 1: // 여름
-                 // RenderSettings.skybox = _materials[1];
+                 RenderSettings.skybox = _materials[1];
                 break;
             case 2: // 가을
-                 // RenderSettings.skybox = _materials[2];
+                 RenderSettings.skybox = _materials[2];
                 break;
             case 3: // 겨울
-                 // RenderSettings.skybox = _materials[3];
+                 RenderSettings.skybox = _materials[3];
                 break;
         }
 
