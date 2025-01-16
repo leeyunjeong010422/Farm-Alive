@@ -42,9 +42,6 @@ public class ExitGameInteractable : XRGrabInteractable
 
     private void Update()
     {
-#if UNITY_EDITOR
-        HandleTestKeys();
-#endif
         HandleControllerInput();
 
         UpdatePanelPos();
@@ -70,40 +67,6 @@ public class ExitGameInteractable : XRGrabInteractable
 
         ShowExitConfirmation();
     }
-
-#if UNITY_EDITOR
-    private void HandleTestKeys()
-    {
-        // ESC 키가 Y 버튼 역할
-        if (Input.GetKey(KeyCode.Escape))
-        {
-            HandleExitRequest(true);
-        }
-        else
-        {
-            HandleExitRequest(false);
-        }
-
-        // Y 키가 A 버튼 역할 (게임 종료)
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            if (exitConfirmationPanel.activeSelf)
-            {
-                ConfirmExit();
-            }
-        }
-
-        // N 키가 B 버튼 역할 (알림창 닫기)
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            if (exitConfirmationPanel.activeSelf)
-            {
-                CancelExit();
-            }
-        }
-    }
-#endif
-
     private void HandleExitRequest(bool isPressed)
     {
         if (isPressed)

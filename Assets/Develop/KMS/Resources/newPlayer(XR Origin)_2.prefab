@@ -356,7 +356,7 @@ MonoBehaviour:
   raycastDistance: 1
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   sphereCastRadius: 0.2
   _leftControllerNode: 4
   _rightControllerNode: 5
@@ -2383,7 +2383,7 @@ PrefabInstance:
     - target: {fileID: 7873808150132776335, guid: 3f4416fdbf1e5a9429e7a4fcaa207b0a, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4322343410700619572}
+      objectReference: {fileID: 0}
     - target: {fileID: 7873808150132776335, guid: 3f4416fdbf1e5a9429e7a4fcaa207b0a, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetBGMVolume
@@ -2514,11 +2514,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f4416fdbf1e5a9429e7a4fcaa207b0a, type: 3}
---- !u!1 &7887018125646932266 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7873808151305158314, guid: 3f4416fdbf1e5a9429e7a4fcaa207b0a, type: 3}
-  m_PrefabInstance: {fileID: 13849419814197120}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &428011368366810136
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2714,7 +2709,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2888738194938785264, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_Value
-      value: 0.9459368
+      value: 0.94078785
       objectReference: {fileID: 0}
     - target: {fileID: 3329543490547589583, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2754,7 +2749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5118833109452608501, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 113.53271
+      value: 124.34545
       objectReference: {fileID: 0}
     - target: {fileID: 5730456263542408266, guid: 5d4c5f174e824d64dbcbf4e56fe85ca5, type: 3}
       propertyPath: _holder
@@ -2945,22 +2940,6 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &4322343410700619572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8445300832270861221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1289b3509a80bca46bf0e99c2de4062b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  test: {fileID: 24100000, guid: fdca16bb6c294da42bfbcfc36ca3a40e, type: 2}
-  sliderUI: {fileID: 7887018125646932266}
-  rightControllerNode: 5
-  distanceFromCamera: 3
 --- !u!114 &6008416999451929601
 MonoBehaviour:
   m_ObjectHideFlags: 0
