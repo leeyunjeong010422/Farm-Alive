@@ -121,6 +121,7 @@ public class GeneratorInteractable : XRBaseInteractable
 
     private void OnLeverActivate()
     {
+        SoundManager.Instance.PlaySFX("SFX_LeverPulled", 0.5f);
         if (_repair.IsSymptom)
         {
             _isLeverDown = true;
@@ -130,6 +131,7 @@ public class GeneratorInteractable : XRBaseInteractable
 
     private void OnLeverDeactivate()
     {
+        SoundManager.Instance.PlaySFX("SFX_LeverPulled", 0.5f);
         _isLeverDown = false;
     }
 
