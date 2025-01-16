@@ -32,6 +32,7 @@ public class EnterTheGameInteractable : XRGrabInteractable
     {
         base.OnSelectEntered(args);
         Debug.Log("게임시작 문이 선택 되었습니다.");
+        SoundManager.Instance.PlaySFX("SFX_Lobby_UIButtonClicked");
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -56,8 +57,8 @@ public class EnterTheGameInteractable : XRGrabInteractable
             yield return new WaitForSeconds(1f);
             remainingTime--;
         }
-        //SoundManager.Instance.StopBGM();
-        //Debug.Log("BGM Room 정지");
+        SoundManager.Instance.StopBGM();
+        Debug.Log("BGM Room 정지");
         Debug.Log("게임 씬 이동 중...");
         SceneLoader.LoadNetworkSceneWithLoading(targetSceneName);
     }

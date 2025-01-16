@@ -20,6 +20,12 @@ public class ReturnInteractable : XRGrabInteractable
         initialRotation = transform.rotation;
     }
 
+    protected override void OnSelectEntered(SelectEnterEventArgs args)
+    {
+        base.OnSelectEntered(args);
+        SoundManager.Instance.PlaySFX("SFX_Lobby_CropSelected");
+    }
+
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
 #if UNITY_EDITOR

@@ -38,6 +38,8 @@ public class StageSelectInteractable : XRGrabInteractable
 
     protected override void OnHoverEntered(HoverEnterEventArgs args)
     {
+        SoundManager.Instance.PlaySFX("SFX_Lobby_CropHovered");
+
         string highStage = FirebaseManager.Instance.GetHighStage();
 
         // 현재 스테이지와 HighStage 비교 (비연속 Enum 대응)
@@ -98,6 +100,7 @@ public class StageSelectInteractable : XRGrabInteractable
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
+        SoundManager.Instance.PlaySFX("SFX_Lobby_CropSelected");
         TurnOnUi(false);
     }
 

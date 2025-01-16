@@ -28,6 +28,12 @@ public class ReturnToLobbyInteractable : XRGrabInteractable
         text.text = "로비로 돌아갈 시 문을 Select 하세요.";
     }
 
+    protected override void OnSelectEntered(SelectEnterEventArgs args)
+    {
+        base.OnSelectEntered(args);
+        SoundManager.Instance.PlaySFX("SFX_Lobby_CropSelected");
+    }
+
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
 #if UNITY_EDITOR
