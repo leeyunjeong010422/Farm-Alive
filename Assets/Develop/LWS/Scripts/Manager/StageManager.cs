@@ -93,18 +93,15 @@ public class StageManager : MonoBehaviourPunCallbacks
 
         _curStageTime += Time.deltaTime;
 
-        while (_stageTimeLimit - _curStageTime <= 60f)
+        if (_stageTimeLimit - _curStageTime <= 60f)
         {
             SoundManager.Instance.StopBGM();
             SoundManager.Instance.PlayBGM("BGM_StageOneMinute", 0.4f);
-
-            if (_stageTimeLimit == _curStageTime)
-                SoundManager.Instance.StopBGM();
-                break;
         }
 
         if (_stageTimeLimit > 0 && _curStageTime >= _stageTimeLimit)
         {
+            SoundManager.Instance.StopBGM();
             photonView.RPC(nameof(EndStage), RpcTarget.All);
         }
     }
