@@ -183,6 +183,7 @@ public class GeneratorInteractable : XRBaseInteractable
 
             _hasTriggered = true;
             _currentAttempts++;
+            SoundManager.Instance.PlaySFX("SFX_Crank_Pulling");
 
             //Debug.LogError($"발전기 시동 횟수: {_currentAttempts}/{_startAttemptsRequired}");
             MessageDisplayManager.Instance.ShowMessage($"발전기 시동 횟수: {_currentAttempts}/{_startAttemptsRequired}");
