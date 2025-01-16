@@ -42,7 +42,10 @@ public class SoundManager : MonoBehaviour
 
     private Dictionary<string, AudioClip> _bgmDict = new Dictionary<string, AudioClip>();
     private Dictionary<string, AudioClip> _sfxDict = new Dictionary<string, AudioClip>();
-
+    private Dictionary<string, AudioSource> _sfxLoopDict = new Dictionary<string, AudioSource>();
+    
+    private Coroutine sfxStopCoroutine;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -136,8 +139,59 @@ public class SoundManager : MonoBehaviour
 
         if (duration > 0)
         {
-            StartCoroutine(StopSFXAfter(duration));
+            if (sfxStopCoroutine != null)
+            {
+                StopCoroutine(sfxStopCoroutine);
+            }
+            sfxStopCoroutine = StartCoroutine(StopSFXAfter(duration));
         }
+    }
+
+    /// <summary>
+    /// 특정 SFX를 루프 재생
+    /// </summary>
+    public void PlaySFXLoop(string key, float volumeScale = 1f)
+    {
+        if (!_sfxDict.ContainsKey(key))
+        {
+            Debug.LogWarning($"SFX '{key}'가 없습니다!");
+            return;
+        }
+
+        // 이미 루프 중이면 종료
+        if (_sfxLoopDict.ContainsKey(key))
+        {
+            Debug.Log($"SFX '{key}'가 이미 루프 중입니다!");
+            return;
+        }
+
+        // 새로운 AudioSource 생성 및 설정
+        AudioSource newSource = gameObject.AddComponent<AudioSource>();
+        newSource.clip = _sfxDict[key];
+        newSource.volume = volumeScale;
+        newSource.loop = true;
+        newSource.Play();
+
+        _sfxLoopDict[key] = newSource;
+    }
+
+    /// <summary>
+    /// 루프 중인 특정 SFX를 중지하고 컴포넌트 삭제
+    /// </summary>
+    /// <param name="key">중지할 SFX의 키</param>
+    public void StopSFXLoop(string key)
+    {
+        if (!_sfxLoopDict.ContainsKey(key))
+        {
+            Debug.LogWarning($"루프 중인 SFX '{key}'가 없습니다!");
+            return;
+        }
+
+        AudioSource loopAudioSource = _sfxLoopDict[key];
+        loopAudioSource.Stop();
+        Destroy(loopAudioSource);
+
+        _sfxLoopDict.Remove(key);
     }
 
     /// <summary>

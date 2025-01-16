@@ -109,8 +109,8 @@ public class PunManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("1. PUN 로비 입장!");
         Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}");
-        //SoundManager.Instance.PlayBGM("LOBBY");
-        //Debug.Log("BGM Lobby 동작");
+        SoundManager.Instance.PlayBGM("LOBBY");
+        Debug.Log("BGM Lobby 동작");
 
         if (SceneManager.GetActiveScene().name != "03_Lobby" && PhotonNetwork.InLobby)
         {
@@ -210,12 +210,12 @@ public class PunManager : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnJoinedRoom()
     {
-        //SoundManager.Instance.StopBGM();
-        //Debug.Log($"Lobby BGM 종료");
+        SoundManager.Instance.StopBGM();
+        Debug.Log($"Lobby BGM 종료");
         // Pun 이동
         Debug.Log($"방 입장 성공: {PhotonNetwork.CurrentRoom.Name}");
-        //SoundManager.Instance.PlayBGM("ROOM");
-        //Debug.Log($"BGM ROOM 동작");
+        SoundManager.Instance.PlayBGM("ROOM");
+        Debug.Log($"BGM ROOM 동작");
         PhotonNetwork.AutomaticallySyncScene = true;
 
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("gameMode", out object gameModeValue))

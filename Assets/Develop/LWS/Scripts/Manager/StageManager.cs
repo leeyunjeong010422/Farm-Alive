@@ -130,8 +130,8 @@ public class StageManager : MonoBehaviourPunCallbacks
     public void StartStageTimer()
     {
         QuestManager.Instance.FirstStart(_curStageID);
-        //SoundManager.Instance.PlayBGM(_curStageID.ToString());
-        //Debug.Log($"{_curStageID.ToString()} BGM 시작!");
+        SoundManager.Instance.PlayBGM(_curStageID.ToString());
+        Debug.Log($"{_curStageID.ToString()} BGM 시작!");
         _curStageTime = 0f;
         _isTimerRunning = true;
     }
