@@ -56,8 +56,8 @@ public class EnterTheGameInteractable : XRGrabInteractable
             yield return new WaitForSeconds(1f);
             remainingTime--;
         }
-        SoundManager.Instance.StopBGM();
-        Debug.Log("BGM Room 정지");
+        //SoundManager.Instance.StopBGM();
+        //Debug.Log("BGM Room 정지");
         Debug.Log("게임 씬 이동 중...");
         SceneLoader.LoadNetworkSceneWithLoading(targetSceneName);
     }
