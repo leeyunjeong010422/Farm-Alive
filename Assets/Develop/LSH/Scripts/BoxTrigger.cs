@@ -152,29 +152,4 @@ public class BoxTrigger : MonoBehaviourPun
     {
         RequiredItemsChanged?.Invoke(requiredItems);
     }
-
-    public void ClearBox()
-    {
-        if (PhotonNetwork.IsMasterClient)
-            StartCoroutine(ClearBoxList());
-    }
-
-    private IEnumerator ClearBoxList()
-    {
-        bool isClear = true;
-        while (isClear)
-        {
-            yield return null;
-
-            for (int i = idList.Count - 1; i >= 0; i--)
-            {
-                PhotonView cropView = PhotonView.Find(idList[i]);
-                PhotonNetwork.Destroy(cropView.gameObject);
-            }
-
-            isClear = false;
-        }
-
-        PhotonNetwork.Destroy(gameObject);
-    }
 }
