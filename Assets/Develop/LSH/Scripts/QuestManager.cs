@@ -250,6 +250,7 @@ public class QuestManager : MonoBehaviourPun
         {
             box.transform.position = new Vector3(0, -100, 0);
             box.GetComponent<Rigidbody>().isKinematic = true;
+            truckList[truckId].check = false;
         }
 
         if (completedIndexes.Count > 0)

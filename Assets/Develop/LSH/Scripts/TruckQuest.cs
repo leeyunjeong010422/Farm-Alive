@@ -22,7 +22,7 @@ public class TruckQuest : MonoBehaviourPun
     [SerializeField] public int correspondentId;
     private Quaternion endRotation;
     [SerializeField] bool canDelivery;
-    private bool check = false;
+    public bool check = false;
 
     [SerializeField] GameObject truckCover1, truckCover2;
 
