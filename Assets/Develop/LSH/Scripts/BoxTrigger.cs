@@ -19,6 +19,8 @@ public class BoxTrigger : MonoBehaviourPun
     [SerializeField] public List<int> idList = new List<int>();
     [SerializeField] Collider openCollider;
     [SerializeField] Collider closedCollider;
+    [SerializeField] private string boxTag = "Box";
+    [SerializeField] private string unTag = "Untagged";
 
     [SerializeField] public delegate void OnRequiredItemsChanged(List<RequiredItem> items);
     [SerializeField] public event OnRequiredItemsChanged RequiredItemsChanged;
@@ -151,5 +153,15 @@ public class BoxTrigger : MonoBehaviourPun
     private void NotifyRequiredItemsChanged()
     {
         RequiredItemsChanged?.Invoke(requiredItems);
+    }
+
+    public void OnGrab(SelectEnterEventArgs args)
+    {
+        gameObject.tag = unTag;
+    }
+
+    public void OnRelease(SelectExitEventArgs args)
+    {
+        gameObject.tag = boxTag;
     }
 }

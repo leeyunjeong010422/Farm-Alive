@@ -59,10 +59,6 @@ public class TruckQuest : MonoBehaviourPun
                 Debug.Log("³³Ç° ÁøÇà");
                 check = true;
 
-                var interactor = interactable.interactorsSelecting;
-                XRBaseInteractor XRinteractor = (XRBaseInteractor)interactor[0];
-                interactable.interactionManager.SelectExit((IXRSelectInteractor)interactor, interactable);
-
                 PhotonView boxView = other.GetComponent<PhotonView>();
 
                 List<int> itemIndexes = new List<int>();
