@@ -36,8 +36,8 @@ public class StageManager : MonoBehaviourPunCallbacks
     // 계절별 파티클 / 오브젝트 등.
     [Tooltip("계절별 스카이박스 메테리얼 (순서대로 계절)")]
     [SerializeField] Material[] _materials;
-    //
-    //
+
+    [SerializeField] GameObject _descriptionObject;
 
     public static StageManager Instance { get; private set; }
 
@@ -69,7 +69,7 @@ public class StageManager : MonoBehaviourPunCallbacks
         while (!ParticleManager.Instance.isAllParticleStoped)
             yield return null; // 모든 파티클 정보 저장, 재생 중단 후 진행
 
-        SetSeason();
+        SetMap();
 
         while (!_isMapSetted)
             yield return null; // 맵 세팅 후 진행
@@ -106,7 +106,7 @@ public class StageManager : MonoBehaviourPunCallbacks
         }
     }
 
-    private void SetSeason()
+    private void SetMap()
     {
         // 맵별 파티클 setactive false
 
@@ -125,6 +125,9 @@ public class StageManager : MonoBehaviourPunCallbacks
                  RenderSettings.skybox = _materials[3];
                 break;
         }
+
+        if (_curStageID == 511)
+            _descriptionObject.SetActive(true);
 
         _isMapSetted = true;
     }
