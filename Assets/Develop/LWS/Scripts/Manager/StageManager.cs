@@ -93,7 +93,7 @@ public class StageManager : MonoBehaviourPunCallbacks
 
         _curStageTime += Time.deltaTime;
 
-        if (_stageTimeLimit - _curStageTime <= 60f)
+        if (_stageTimeLimit - _curStageTime == 60f)
         {
             SoundManager.Instance.StopBGM();
             SoundManager.Instance.PlayBGM("GameOver1Min", 0.4f);
