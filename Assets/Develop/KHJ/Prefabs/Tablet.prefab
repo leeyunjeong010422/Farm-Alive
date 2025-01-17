@@ -9212,7 +9212,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6582558, guid: 3831309e491dd814d9313ff728ddb0f4, type: 3}
       propertyPath: m_IsTrigger
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5413958, guid: 3831309e491dd814d9313ff728ddb0f4, type: 3}
