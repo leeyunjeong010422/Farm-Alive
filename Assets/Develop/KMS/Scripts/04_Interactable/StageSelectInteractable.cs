@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class StageSelectInteractable : XRGrabInteractable
@@ -28,12 +26,30 @@ public class StageSelectInteractable : XRGrabInteractable
     private Vector3 initialPosition;
     private Quaternion initialRotation;
 
+    private bool _isSelected;
+    private Coroutine resetCoroutine;
+
+    [Header("Movement Allowance")]
+    [Tooltip("허용되는 이동 거리")]
+    public float movementAllowance = 0.5f;
+
     protected override void Awake()
     {
         base.Awake();
 
         initialPosition = transform.position;
         initialRotation = transform.rotation;
+    }
+
+    private void Update()
+    {
+        if (!isSelected && Vector3.Distance(transform.position, initialPosition) > movementAllowance)
+        {
+            if (resetCoroutine == null)
+            {
+                resetCoroutine = StartCoroutine(ResetToInitialPosition());
+            }
+        }
     }
 
     protected override void OnHoverEntered(HoverEnterEventArgs args)
@@ -88,7 +104,9 @@ public class StageSelectInteractable : XRGrabInteractable
         }
         else // 선택 불가능
         {
+#if UNITY_EDITOR
             Debug.LogWarning($"현재 스테이지({stageMode})는 선택할 수 없습니다. HighStage는 {highStage}입니다.");
+#endif
             ShowUnavailableUI();
         }
     }
@@ -100,12 +118,20 @@ public class StageSelectInteractable : XRGrabInteractable
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
+        _isSelected = true;
         SoundManager.Instance.PlaySFX("SFX_Lobby_CropSelected");
         TurnOnUi(false);
+
+        if (resetCoroutine != null)
+        {
+            StopCoroutine(resetCoroutine);
+            resetCoroutine = null;
+        }
     }
 
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
+        _isSelected = false;
         string highStage = FirebaseManager.Instance.GetHighStage();
 
         Array stageModes = Enum.GetValues(typeof(E_StageMode));
@@ -191,5 +217,17 @@ public class StageSelectInteractable : XRGrabInteractable
 
         transform.position = initialPosition;
         transform.rotation = initialRotation;
+    }
+    private IEnumerator ResetToInitialPosition()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        if (!isSelected)
+        {
+            transform.position = initialPosition;
+            transform.rotation = initialRotation;
+        }
+
+        resetCoroutine = null;
     }
 }

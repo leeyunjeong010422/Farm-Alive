@@ -1,9 +1,6 @@
-using Photon.Pun;
 using UnityEngine;
 using System.Threading.Tasks;
 using Fusion;
-using Unity.VisualScripting;
-using UnityEngine.UI;
 
 public class FusionLobbyManager : MonoBehaviour
 {

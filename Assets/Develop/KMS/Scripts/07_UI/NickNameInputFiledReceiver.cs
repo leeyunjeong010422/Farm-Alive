@@ -41,10 +41,20 @@ public class NickNameInputFiledReceiver : MonoBehaviour
 
     public void CreateNickName()
     {
+        if (string.IsNullOrWhiteSpace(_nickName))
+        {
+            MessageDisplayManager.Instance.ShowMessage($"닉네임이 비어있습니다. 다시 입력해주세요!", 1f, 3f);
+            _text.text = "닉네임을 입력해주세요.";
+            _inputField.text = "";
+            _inputField.ActivateInputField();
+            return;
+        }
+
+        Debug.Log($"닉네임 생성 완료: {_nickName}");
 
         _inputField.gameObject.SetActive(false);
         _text.text = "로비로 입장합니다!";
-        FirebaseManager.Instance.SaveNickName( _nickName );
+        FirebaseManager.Instance.SaveNickName(_nickName);
 
         SceneLoader.LoadSceneWithLoading("03_Lobby");
     }
