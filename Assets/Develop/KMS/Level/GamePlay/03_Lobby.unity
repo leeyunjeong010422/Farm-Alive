@@ -1374,7 +1374,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &191685072
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -24513,8 +24513,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameTextPrefab: {fileID: 5425592634578222487, guid: 6cb0f7b8439806a47bb13ec9a53e5e6c, type: 3}
   height: 3
-  position: {x: 0, y: 2, z: 1.6}
-  rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+  position: {x: 0, y: 2, z: -1.6}
+  rotation: {x: 0, y: 0, z: 0, w: 1}
   scale: 5
 --- !u!1 &2002305153
 GameObject:

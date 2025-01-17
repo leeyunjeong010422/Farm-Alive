@@ -263,6 +263,7 @@ public class PunManager : MonoBehaviourPunCallbacks
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         Debug.LogError("방 입장 실패: " + message);
+        MessageDisplayManager.Instance.ShowMessage($"방 입장에 실패 했습니다..", 1f, 3f);
     }
 
     public override void OnLeftRoom()
