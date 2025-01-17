@@ -10,6 +10,8 @@ public class AudioMixerController : MonoBehaviour
     public Slider sfxVolumeSlider;
     public Slider voiceVolumeSlider;
 
+    private const float MinVolumeDb = -80f;
+
     private void Awake()
     {
         masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
@@ -20,21 +22,21 @@ public class AudioMixerController : MonoBehaviour
 
     public void SetMasterVolume(float volume)
     {
-        audioMixer.SetFloat("MASTER", Mathf.Log10(volume) * 20);
+        audioMixer.SetFloat("MASTER", volume > 0 ? Mathf.Log10(volume) * 20 : MinVolumeDb);
     }
 
     public void SetBGMVolume(float volume)
     {
-        audioMixer.SetFloat("BGM", Mathf.Log10(volume) * 20);
+        audioMixer.SetFloat("BGM", volume > 0 ? Mathf.Log10(volume) * 20 : MinVolumeDb);
     }
 
     public void SetSFXVolume(float volume)
     {
-        audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
+        audioMixer.SetFloat("SFX", volume > 0 ? Mathf.Log10(volume) * 20 : MinVolumeDb);
     }
 
     public void SetVoiceVolume(float volume)
     {
-        audioMixer.SetFloat("Voice", Mathf.Log10(volume) * 20);
+        audioMixer.SetFloat("Voice", volume > 0 ? Mathf.Log10(volume) * 20 : MinVolumeDb);
     }
 }
