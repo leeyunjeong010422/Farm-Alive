@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.Demo.Cockpit;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,26 +25,29 @@ public class AutomaticDoor : MonoBehaviourPun
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            if (_moveCoroutine != null)
-                StopCoroutine(_moveCoroutine);
+        if (!other.gameObject.CompareTag("Player"))
+            return;
 
-            photonView.RPC(nameof(RPC_MoveDoor),RpcTarget.All);
-        }
+        if (_moveCoroutine != null)
+            StopCoroutine(_moveCoroutine);
+
+        photonView.RPC(nameof(RPC_MoveDoor), RpcTarget.All, true);
+
     }
 
     [PunRPC]
-    private void RPC_MoveDoor()
+    private void RPC_MoveDoor(bool isOpen)
     {
-        _moveCoroutine = StartCoroutine(MoveDoor());
+        Vector3 targetPos = isOpen? _destinationPos.position : _initPos;
+
+        _moveCoroutine = StartCoroutine(MoveDoor(targetPos));
     }
 
-    private IEnumerator MoveDoor()
+    private IEnumerator MoveDoor(Vector3 targetPos)
     {
         while ((transform.position - _destinationPos.position).sqrMagnitude > 0.001f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, _destinationPos.position, _moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, _moveSpeed * Time.deltaTime);
             yield return null;
         }
 
@@ -53,13 +57,14 @@ public class AutomaticDoor : MonoBehaviourPun
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            if (_moveCoroutine != null)
-                StopCoroutine(_moveCoroutine);
-                
-            photonView.RPC(nameof(RPC_CloseDoor),RpcTarget.All);
-        }
+        if (!other.CompareTag("Player"))
+            return;
+
+        if (_moveCoroutine != null)
+            StopCoroutine(_moveCoroutine);
+
+        photonView.RPC(nameof(RPC_CloseDoor), RpcTarget.All);
+
     }
 
     [PunRPC]
@@ -72,6 +77,6 @@ public class AutomaticDoor : MonoBehaviourPun
     {
         yield return new WaitForSeconds(_delay);
 
-        _moveCoroutine = StartCoroutine(MoveDoor());
+        photonView.RPC(nameof(RPC_MoveDoor), RpcTarget.All, false);
     }
 }
