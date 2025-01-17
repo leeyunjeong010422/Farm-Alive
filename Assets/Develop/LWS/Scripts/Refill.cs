@@ -48,7 +48,7 @@ public class Refill : MonoBehaviourPun
         }
         _curCount++;
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         GameObject NewObject = PhotonNetwork.Instantiate(_refillPrefab.name, _originalPos, Quaternion.identity);
         Refill refill = NewObject.GetComponent<Refill>();
