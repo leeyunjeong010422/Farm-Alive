@@ -270,14 +270,10 @@ public class QuestManager : MonoBehaviourPun
         foreach (int index in completedIndexes.OrderByDescending(x => x))
         {
             clearQuestCount++;
-            //questsList.RemoveAt(index);
-            //PhotonNetwork.Destroy(truckList[index].gameObject);
-
         }
 
         if (clearQuestCount == totalQuestCount)
         {
-            // TODO 로비 복귀ㅣ 함수
             StageManager.Instance.EndStage();
         }
         else

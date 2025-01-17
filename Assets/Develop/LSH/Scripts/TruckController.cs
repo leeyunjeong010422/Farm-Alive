@@ -55,16 +55,16 @@ public class TruckController : MonoBehaviourPun
         }
     }
 
-        [PunRPC]
-        public void SyncTruck(int j, int viewId, int npcNumber)
-        {
-            PhotonView truckView = PhotonView.Find(viewId);
-            TruckQuest truckQuest = truckView.GetComponent<TruckQuest>();
+    [PunRPC]
+    public void SyncTruck(int j, int viewId, int npcNumber)
+    {
+        PhotonView truckView = PhotonView.Find(viewId);
+        TruckQuest truckQuest = truckView.GetComponent<TruckQuest>();
 
-            truckQuest.SetID(j, this, npcNumber);
+        truckQuest.SetID(j, this, npcNumber);
 
-            QuestManager.Instance.truckList.Add(truckQuest);
+        QuestManager.Instance.truckList.Add(truckQuest);
 
-            truckObjects[j] = truckView.gameObject;
-        }
+        truckObjects[j] = truckView.gameObject;
     }
+}
