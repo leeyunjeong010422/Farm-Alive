@@ -29,14 +29,8 @@ public class AutomaticDoor : MonoBehaviourPun
             if (_moveCoroutine != null)
                 StopCoroutine(_moveCoroutine);
 
-            photonView.RPC(nameof(RPC_MoveDoor), RpcTarget.All, _destinationPos);
+            _moveCoroutine = StartCoroutine(MoveDoor(_destinationPos.position));
         }
-    }
-
-    [PunRPC]
-    private void RPC_MoveDoor(Vector3 targetPos)
-    {
-        _moveCoroutine = StartCoroutine(MoveDoor(targetPos));
     }
 
     private IEnumerator MoveDoor(Vector3 targetPos)
@@ -58,14 +52,8 @@ public class AutomaticDoor : MonoBehaviourPun
             if (_moveCoroutine != null)
                 StopCoroutine(_moveCoroutine);
 
-            photonView.RPC(nameof(RPC_CloseDoor), RpcTarget.All, _destinationPos);
+            _moveCoroutine = StartCoroutine(WaitAndCloseDoor());
         }
-    }
-
-    [PunRPC]
-    private void RPC_CloseDoor()
-    {
-        _moveCoroutine = StartCoroutine(WaitAndCloseDoor());
     }
 
     private IEnumerator WaitAndCloseDoor()
