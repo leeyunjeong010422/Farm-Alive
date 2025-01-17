@@ -78,5 +78,7 @@ public class AutomaticDoor : MonoBehaviourPun
         yield return new WaitForSeconds(_delay);
 
         photonView.RPC(nameof(RPC_MoveDoor), RpcTarget.All, false);
+
+        _moveCoroutine = null;
     }
 }
