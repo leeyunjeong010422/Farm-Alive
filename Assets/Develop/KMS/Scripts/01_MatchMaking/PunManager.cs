@@ -54,7 +54,7 @@ public class PunManager : MonoBehaviourPunCallbacks
         // ConnectToPhoton() 호출해야하기에 이벤트로 연결.
         Debug.Log("Firebase 이벤트 등록");
         FirebaseManager.Instance.OnFirebaseInitialized += ConnectToPhoton;
-        //FirebaseManager.Instance.NotifyInitializationComplete();
+        FirebaseManager.Instance.NotifyInitializationComplete();
     }
 
     /// <summary>

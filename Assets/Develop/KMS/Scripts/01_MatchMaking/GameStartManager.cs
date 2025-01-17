@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using UnityEngine.XR;
-using WebSocketSharp;
 
 public class GameStartManager : MonoBehaviour
 {
@@ -26,7 +23,6 @@ public class GameStartManager : MonoBehaviour
     [Header("닉네임 InputField 세팅")]
     public GameObject nickNameInputField;
 
-    private int _currentStep = 0;
     private bool _isButtonPressed = false;
 
     [Header("게임 스타트 Skip 세팅")]
@@ -39,27 +35,11 @@ public class GameStartManager : MonoBehaviour
     [Tooltip("영상 재생 확인 여부")]
     [SerializeField] private bool _isVideoPlaying = false;
 
-    [SerializeField] private string[] _gameInstructions = new string[]
-    {
-        "한번이라도 접속 하셨다면 \n B key를 1초동안 눌러주세요.",
-        "Press B key",
-        "10",
-        "9",
-        "8",
-        "7",
-        "6",
-        "5",
-        "4",
-        "3",
-        "2",
-        "1",
-        "Next stage in Press B Button..."
-    };
 
     private void Start()
     {
         introPanel.SetActive(true);
-        introText.text = _gameInstructions[_currentStep];
+        introText.text = "왼쪽 컨트롤러의 A 키를 눌러주세요";
 
         if (videoPlayerObject)
         {
@@ -86,14 +66,11 @@ public class GameStartManager : MonoBehaviour
         // A key
         if (rightController.TryGetFeatureValue(CommonUsages.primaryButton, out bool isAPressed)) // A 버튼 입력
         {
-            if (isAPressed && !_isVideoPlaying)
+            if (isAPressed && !_isVideoPlaying && !nickNameInputField.activeSelf)
             {
-                if (string.IsNullOrEmpty(FirebaseManager.Instance.GetNickName()))
-                    PlayVideo();
-                else
-                {
-                    SceneLoader.LoadSceneWithLoading("03_Lobby");
-                }
+                introText.text = "";
+                introPanel.transform.position = new Vector3(introPanel.transform.position.x, introPanel.transform.position.y - 1, introPanel.transform.position.z);
+                PlayVideo();
             }
         }
 
@@ -109,8 +86,7 @@ public class GameStartManager : MonoBehaviour
 
                 if (!_isButtonPressed)
                 {
-                    _isButtonPressed = true; // 버튼 눌림 상태 기록
-                    ShowNextInstruction();
+                    _isButtonPressed = true;
                 }
 
                 if (_buttonPressDuration >= _requiredHoldTime && _isFirebaseUser)
@@ -126,55 +102,15 @@ public class GameStartManager : MonoBehaviour
             }
         }
 
-#if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.A) && !_isVideoPlaying)
-        {
-            if (string.IsNullOrEmpty(FirebaseManager.Instance.GetNickName()))
-                PlayVideo();
-            else
-            {
-                SceneLoader.LoadSceneWithLoading("03_Lobby");
-            }
-        }
-
-        if (Input.GetKey(KeyCode.B))
-        {
-            isPressed = true;
-            if (isPressed)
-            {
-                _buttonPressDuration += Time.deltaTime;
-
-                if (_isFirebaseUser)
-                    UpdateSkipGauge();
-
-                if (!_isButtonPressed)
-                {
-                    _isButtonPressed = true;
-                    ShowNextInstruction();
-                }
-
-                if (_buttonPressDuration >= _requiredHoldTime && _isFirebaseUser)
-                {
-                    SkipToLobby();
-                }
-            }
-        }
-        else if (Input.GetKeyUp(KeyCode.B))
-        {
-            isPressed = false;
-            if (!isPressed)
-            {
-                _isButtonPressed = false;
-                _buttonPressDuration = 0f;
-                skipGauge.fillAmount = 0f;
-            }
-        }
-#endif
-
         if (videoPlayerObject.activeSelf)
         {
-            FollowHMD();
+            FixHMD();
+
+            if (_isFirebaseUser)
+                introText.text = $"{FirebaseManager.Instance.GetNickName()}님 왼쪽 컨트롤러의 B키를 1초동안 누르고 계시면 Skip이 가능합니다.";
         }
+
+
     }
 
     private void PlayVideo()
@@ -188,6 +124,7 @@ public class GameStartManager : MonoBehaviour
             videoPlayerObject.SetActive(true);
             videoPlayer.Play();
             _isVideoPlaying = true;
+            SoundManager.Instance.PlayBGM("Intro", 0.4f);
         }
     }
 
@@ -198,6 +135,7 @@ public class GameStartManager : MonoBehaviour
 #endif
         if (videoPlayerObject)
         {
+            introText.gameObject.SetActive(false);
             rawImage.SetActive(false);
             videoPlayerObject.SetActive(false);
         }
@@ -205,14 +143,13 @@ public class GameStartManager : MonoBehaviour
         if (nickNameInputField)
         {
             nickNameInputField.SetActive(true);
-            nickNameInputField.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, 3f);
+            nickNameInputField.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, 0.5f);
         }
 
         _isVideoPlaying = false;
     }
 
-    // HMD를 따라오도록 설정
-    private void FollowHMD()
+    private void FixHMD()
     {
         if (videoPlayerObject)
         {
@@ -229,29 +166,18 @@ public class GameStartManager : MonoBehaviour
         }
     }
 
-    private void ShowNextInstruction()
-    {
-        _currentStep++;
-        if (_currentStep < _gameInstructions.Length)
-        {
-            introText.text = _gameInstructions[_currentStep];
-        }
-        else
-        {
-            Debug.Log("튜토리얼 씬으로 이동.");
-            SceneManager.LoadScene("02_Tutorial");
-        }
-    }
-
     private void SkipToLobby()
     {
         Debug.Log("한번 접속한 유저의 로비 씬으로 이동!");
+        MessageDisplayManager.Instance.ShowMessage($"{FirebaseManager.Instance.GetNickName()}님 다시 접속해주셔서 감사합니다.", 0.5f, 3f);
 
         // 영상 재생 중이라면 중단 및 정리
         if (videoPlayer && videoPlayer.isPlaying)
         {
+            introText.gameObject.SetActive(false);
             Debug.Log("영상 재생 중단 및 정리...");
             videoPlayer.Stop(); // 재생 중단
+            SoundManager.Instance.StopBGM();
             rawImage.SetActive(false);
             videoPlayerObject.SetActive(false); // 오브젝트 비활성화
         }

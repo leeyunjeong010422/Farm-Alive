@@ -188,7 +188,7 @@ public class FirebaseManager : MonoBehaviour
                 UpdateLastLogin();
                 LoadNickName();
                 LoadHighStage();
-                NotifyInitializationComplete();
+                //NotifyInitializationComplete();
             }
             else
             {
@@ -226,7 +226,7 @@ public class FirebaseManager : MonoBehaviour
             {
                 Debug.Log("사용자 데이터 저장 완료!");
                 UpdateLastLogin();
-                NotifyInitializationComplete();
+                //NotifyInitializationComplete();
                 return;
             }
             else
