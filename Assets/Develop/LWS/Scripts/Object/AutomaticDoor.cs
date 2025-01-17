@@ -29,15 +29,21 @@ public class AutomaticDoor : MonoBehaviourPun
             if (_moveCoroutine != null)
                 StopCoroutine(_moveCoroutine);
 
-            _moveCoroutine = StartCoroutine(MoveDoor(_destinationPos.position));
+            photonView.RPC(nameof(RPC_MoveDoor),RpcTarget.All);
         }
     }
 
-    private IEnumerator MoveDoor(Vector3 targetPos)
+    [PunRPC]
+    private void RPC_MoveDoor()
     {
-        while ((transform.position - targetPos).sqrMagnitude > 0.001f)
+        _moveCoroutine = StartCoroutine(MoveDoor());
+    }
+
+    private IEnumerator MoveDoor()
+    {
+        while ((transform.position - _destinationPos.position).sqrMagnitude > 0.001f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, _moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, _destinationPos.position, _moveSpeed * Time.deltaTime);
             yield return null;
         }
 
@@ -51,15 +57,21 @@ public class AutomaticDoor : MonoBehaviourPun
         {
             if (_moveCoroutine != null)
                 StopCoroutine(_moveCoroutine);
-
-            _moveCoroutine = StartCoroutine(WaitAndCloseDoor());
+                
+            photonView.RPC(nameof(RPC_CloseDoor),RpcTarget.All);
         }
+    }
+
+    [PunRPC]
+    private void RPC_CloseDoor()
+    {
+        _moveCoroutine = StartCoroutine(WaitAndCloseDoor());
     }
 
     private IEnumerator WaitAndCloseDoor()
     {
         yield return new WaitForSeconds(_delay);
 
-        _moveCoroutine = StartCoroutine(MoveDoor(_initPos));
+        _moveCoroutine = StartCoroutine(MoveDoor());
     }
 }
