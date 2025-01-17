@@ -1,13 +1,10 @@
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
-using Fusion;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 
 public class PunManager : MonoBehaviourPunCallbacks

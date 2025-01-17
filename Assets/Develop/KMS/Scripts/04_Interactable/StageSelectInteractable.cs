@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class StageSelectInteractable : XRGrabInteractable
@@ -88,7 +86,9 @@ public class StageSelectInteractable : XRGrabInteractable
         }
         else // 선택 불가능
         {
+#if UNITY_EDITOR
             Debug.LogWarning($"현재 스테이지({stageMode})는 선택할 수 없습니다. HighStage는 {highStage}입니다.");
+#endif
             ShowUnavailableUI();
         }
     }
