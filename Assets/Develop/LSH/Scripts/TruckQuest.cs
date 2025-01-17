@@ -32,11 +32,8 @@ public class TruckQuest : MonoBehaviourPun
         endRotation = Quaternion.Euler(0, 0, 0);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (check)
-            return;
-
         if (PhotonNetwork.IsMasterClient)
         {
             if (!canDelivery)
@@ -44,12 +41,19 @@ public class TruckQuest : MonoBehaviourPun
 
             if (other.CompareTag("Box"))
             {
+                XRGrabInteractable interactable = other.GetComponent<XRGrabInteractable>();
+                if (interactable.isSelected)
+                    return;
+
                 Debug.Log("¹Ú½º");
                 BoxTrigger boxTrigger = other.GetComponent<BoxTrigger>();
                 if (boxTrigger == null)
                     return;
 
                 if (!boxTrigger.boxCover.IsPackaged)
+                    return;
+
+                if (check)
                     return;
 
                 check = true;
