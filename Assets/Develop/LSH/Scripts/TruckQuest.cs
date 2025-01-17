@@ -32,7 +32,7 @@ public class TruckQuest : MonoBehaviourPun
         endRotation = Quaternion.Euler(0, 0, 0);
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (PhotonNetwork.IsMasterClient)
         {
@@ -56,7 +56,12 @@ public class TruckQuest : MonoBehaviourPun
                 if (check)
                     return;
 
+                Debug.Log("³³Ç° ÁøÇà");
                 check = true;
+
+                var interactor = interactable.interactorsSelecting;
+                XRBaseInteractor XRinteractor = (XRBaseInteractor)interactor[0];
+                interactable.interactionManager.SelectExit((IXRSelectInteractor)interactor, interactable);
 
                 PhotonView boxView = other.GetComponent<PhotonView>();
 
