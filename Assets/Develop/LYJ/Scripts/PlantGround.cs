@@ -33,7 +33,7 @@ public class PlantGround : MonoBehaviourPun
         if (!_isInteractable) return;
 
         _currentDigCount++;
-        Debug.Log($"삽질 횟수: {_currentDigCount} / {_digCount}");
+        //Debug.Log($"삽질 횟수: {_currentDigCount} / {_digCount}");
 
         if (_currentDigCount >= _digCount)
         {
@@ -41,7 +41,7 @@ public class PlantGround : MonoBehaviourPun
             if (disappearGround != null)
             {
                 Destroy(disappearGround.gameObject);
-                Debug.Log("DisappearingGround가 삭제되었습니다.");
+                //Debug.Log("DisappearingGround가 삭제되었습니다.");
             }
 
             _isInteractable = false; // 추가 삽질 방지
