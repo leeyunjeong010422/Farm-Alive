@@ -13,7 +13,7 @@ public class StageManager : MonoBehaviourPunCallbacks
 
     [Header("스테이지 시간 속성")]
     [SerializeField] float _stageTimeLimit = 0;
-    [SerializeField] float _curStageTime = 0;
+    [SerializeField] public float _curStageTime = 0;
     public float CurStageTime { get { if (PhotonNetwork.IsMasterClient) return _curStageTime; else return 0f; } }
     [SerializeField] bool _isTimerRunning = false;
 
@@ -79,9 +79,9 @@ public class StageManager : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(5f);
 
         OnGameStarted?.Invoke();
-        
+
         yield return new WaitForSeconds(5f);
-        
+
         if (PhotonNetwork.IsMasterClient)
             StartStageTimer();
     }
@@ -102,6 +102,12 @@ public class StageManager : MonoBehaviourPunCallbacks
         if (_stageTimeLimit > 0 && _curStageTime >= _stageTimeLimit)
         {
             SoundManager.Instance.StopBGM();
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                photonView.RPC(nameof(RPC_SyncCurStageTime), RpcTarget.All, _curStageTime);
+            }
+
             photonView.RPC(nameof(EndStage), RpcTarget.All);
         }
     }
@@ -113,16 +119,16 @@ public class StageManager : MonoBehaviourPunCallbacks
         switch (_weatherID)
         {
             case 0: // 봄
-                 RenderSettings.skybox = _materials[0];
+                RenderSettings.skybox = _materials[0];
                 break;
             case 1: // 여름
-                 RenderSettings.skybox = _materials[1];
+                RenderSettings.skybox = _materials[1];
                 break;
             case 2: // 가을
-                 RenderSettings.skybox = _materials[2];
+                RenderSettings.skybox = _materials[2];
                 break;
             case 3: // 겨울
-                 RenderSettings.skybox = _materials[3];
+                RenderSettings.skybox = _materials[3];
                 break;
         }
 
@@ -155,11 +161,20 @@ public class StageManager : MonoBehaviourPunCallbacks
         _isTimerRunning = false;
 
         int star = EvaluateStar();
+
         float playTime = _curStageTime;
 
-        FirebaseManager.Instance.SaveStageResult(_curStageID, _curStageTime, star);
+        FirebaseManager.Instance.SaveStageResult(_curStageID, playTime, star);
+
+        SoundManager.Instance.StopAllSFX();
 
         StartCoroutine(ReturnToFusion());
+    }
+
+    [PunRPC]
+    public void RPC_SyncCurStageTime(float curstagetime)
+    {
+        _curStageTime = curstagetime;
     }
 
     public IEnumerator ReturnToFusion()
