@@ -88,7 +88,7 @@ public class Intro : MonoBehaviour
                     _isButtonPressed = true;
                 }
 
-                if (_buttonPressDuration >= _requiredHoldTime && _isFirebaseUser)
+                if (_buttonPressDuration >= _requiredHoldTime && FirebaseManager.Instance.GetNickName() != "")
                 {
                     SkipToLobby();
                 }
@@ -196,7 +196,6 @@ public class Intro : MonoBehaviour
         if (!string.IsNullOrEmpty(userId))
         {
             Debug.Log($"Firebase 유저 확인 완료: {userId}");
-            FirebaseManager.Instance.LoadNickName();
             _isFirebaseUser = true;
         }
         else
