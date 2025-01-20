@@ -103,12 +103,7 @@ public class StageManager : MonoBehaviourPunCallbacks
         {
             SoundManager.Instance.StopBGM();
 
-            if (PhotonNetwork.IsMasterClient)
-            {
-                photonView.RPC(nameof(RPC_SyncCurStageTime), RpcTarget.All, _curStageTime);
-            }
-
-            photonView.RPC(nameof(EndStage), RpcTarget.All);
+            photonView.RPC(nameof(EndStage), RpcTarget.All, 999f);
         }
     }
 
@@ -156,26 +151,25 @@ public class StageManager : MonoBehaviourPunCallbacks
     /// <summary>
     /// 퀘스트가 모두 종료되었을 때, 호출할 함수.
     /// </summary>
-    public void EndStage()
+    public void RPC_EndStage(float time)
     {
         _isTimerRunning = false;
 
         int star = EvaluateStar();
 
-        float playTime = _curStageTime;
-
-        FirebaseManager.Instance.SaveStageResult(_curStageID, playTime, star);
+        FirebaseManager.Instance.SaveStageResult(_curStageID, time, star);
 
         SoundManager.Instance.StopAllSFX();
 
         StartCoroutine(ReturnToFusion());
     }
 
-    [PunRPC]
-    public void RPC_SyncCurStageTime(float curstagetime)
+    public void EndStage()
     {
-        _curStageTime = curstagetime;
+        if (PhotonNetwork.IsMasterClient)
+            photonView.RPC(nameof(RPC_EndStage), RpcTarget.All, _curStageTime);
     }
+
 
     public IEnumerator ReturnToFusion()
     {
