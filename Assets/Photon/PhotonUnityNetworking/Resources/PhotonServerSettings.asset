@@ -57,9 +57,9 @@ MonoBehaviour:
   - RespawnSpaceship
   - RPC_ButtonClick
   - RPC_CloseDoor
-  - RPC_MoveDoor
   - RPC_OnButtonPressed
   - RPC_OnButtonReleased
+  - RPC_OpenDoor
   - RPC_PlayParticleEffect
   - RPC_PlusRepairCount
   - RPC_ResolveEvent
