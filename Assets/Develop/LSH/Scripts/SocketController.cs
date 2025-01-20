@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class SoketController : MonoBehaviourPun 
+public class SocketController : MonoBehaviourPun 
 {
     [SerializeField] GameObject cropObj;
     [SerializeField] Collider[] colliders;
-    [SerializeField] SoketController[] sockets;
+    [SerializeField] SocketController[] sockets;
 
     [SerializeField] XRSocketInteractor socket;
 
@@ -16,7 +16,7 @@ public class SoketController : MonoBehaviourPun
     {
         colliders = transform.parent.parent.GetComponents<Collider>();
         socket = GetComponent<XRSocketInteractor>();
-        sockets = transform.parent.GetComponentsInChildren<SoketController>();
+        sockets = transform.parent.GetComponentsInChildren<SocketController>();
 
         socket.selectEntered.AddListener(OnSelectEntered);
         socket.selectExited.AddListener(OnSelectExited);

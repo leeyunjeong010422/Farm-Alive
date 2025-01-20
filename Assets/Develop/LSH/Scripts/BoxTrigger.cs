@@ -13,12 +13,9 @@ using static QuestManager;
 
 public class BoxTrigger : MonoBehaviourPun
 {
-    [SerializeField] public GameObject boxTape;
     [SerializeField] public List<RequiredItem> requiredItems;
     [SerializeField] public BoxCover boxCover;
     [SerializeField] public List<int> idList = new List<int>();
-    [SerializeField] Collider openCollider;
-    [SerializeField] Collider closedCollider;
     [SerializeField] private string boxTag = "Box";
     [SerializeField] private string unTag = "Untagged";
 
@@ -70,25 +67,20 @@ public class BoxTrigger : MonoBehaviourPun
 
     public void CountUpdate(int viewId, bool isBool)
     {
+        PhotonView itemView = PhotonView.Find(viewId);
+
         if (!isBool)
         {
-            PhotonView itemView = PhotonView.Find(viewId);
             idList.Add(viewId);
             SoundManager.Instance.PlaySFX("SFX_CropInBox");
-            Rigidbody itemRigid = itemView.GetComponent<Rigidbody>();
-            itemRigid.drag = 10;
-            itemRigid.angularDrag = 1;
             Crop cropView = itemView.GetComponent<Crop>();
             if (requiredItems.Count > 0)
             {
                 foreach (QuestManager.RequiredItem item in requiredItems)
                 {
-                    Debug.Log(requiredItems);
                     if (item.itemPrefab.name == itemView.gameObject.name)
                     {
-                        
                         item.requiredcount += cropView.Value;
-                        Debug.Log("카운트업");
                         NotifyRequiredItemsChanged();
                         return;
                     }
@@ -104,7 +96,6 @@ public class BoxTrigger : MonoBehaviourPun
         }
         else
         {
-            PhotonView itemView = PhotonView.Find(viewId);
             SoundManager.Instance.PlaySFX("SFX_CropOutBox");
             Crop cropView = itemView.GetComponent<Crop>();
             if (requiredItems.Count > 0)
@@ -114,9 +105,6 @@ public class BoxTrigger : MonoBehaviourPun
                     if (requiredItems[i].itemPrefab.name == itemView.gameObject.name)
                     {
                         requiredItems[i].requiredcount -= cropView.Value;
-                        Rigidbody itemRigid = itemView.GetComponent<Rigidbody>();
-                        itemRigid.drag = 0;
-                        itemRigid.angularDrag = 0.05f;
 
                         if (requiredItems[i].requiredcount <= 0)
                         {

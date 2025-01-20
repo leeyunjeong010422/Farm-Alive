@@ -45,7 +45,6 @@ public class TruckQuest : MonoBehaviourPun
                 if (interactable.isSelected)
                     return;
 
-                Debug.Log("박스");
                 BoxTrigger boxTrigger = other.GetComponent<BoxTrigger>();
                 if (boxTrigger == null)
                     return;
@@ -56,7 +55,6 @@ public class TruckQuest : MonoBehaviourPun
                 if (check)
                     return;
 
-                Debug.Log("납품 진행");
                 check = true;
 
                 PhotonView boxView = other.GetComponent<PhotonView>();
@@ -75,11 +73,10 @@ public class TruckQuest : MonoBehaviourPun
                         if (item.itemPrefab.name == QuestManager.Instance.questsList[truckId].requiredItems[j].itemPrefab.name ||
                             item.itemPrefab.name == QuestManager.Instance.questsList[truckId].requiredItems[j].itemPrefab.name + "(Clone)")
                         {
-                            Debug.Log("이름이 같음");
                             Debug.Log($"{QuestManager.Instance.questsList[truckId].requiredItems[j].requiredcount} <= {item.requiredcount}");
+
                             if (QuestManager.Instance.questsList[truckId].requiredItems[j].requiredcount <= 0)
                                 break;
-                            Debug.Log("갯수 통과");
 
                             isCorrect = true;
 
@@ -91,14 +88,10 @@ public class TruckQuest : MonoBehaviourPun
 
                     if (!isCorrect)
                     {
-                        Debug.Log($"다른 작물 : {item.itemPrefab.name}, 아이템 카운트는 : {boxTrigger.requiredItems.Count} <= {otherItem}");
                         otherItem++;
 
                         if (boxTrigger.requiredItems.Count <= otherItem)
-                        {
                             photonView.RPC(nameof(FieldItem), RpcTarget.AllBuffered);
-                            PhotonNetwork.Destroy(other.gameObject);
-                        }
                     }
                 }
 
@@ -118,7 +111,6 @@ public class TruckQuest : MonoBehaviourPun
     {
         this.truckId = truckId;
         this.truckSpawner = truckController;
-        Debug.Log($"오브젝트 ID: {truckId}");
 
         SpawnNpc(npcNumber);
     }
@@ -126,7 +118,6 @@ public class TruckQuest : MonoBehaviourPun
     public void ChangeID(int truckId)
     {
         this.truckId = truckId;
-        Debug.Log($"오브젝트 ID: {truckId}");
     }
 
     public void SpawnNpc(int npcNumber)
@@ -146,10 +137,10 @@ public class TruckQuest : MonoBehaviourPun
         if (PhotonNetwork.IsMasterClient)
         {
             npcPrefab = PhotonNetwork.Instantiate(npcPrefabs[corTemp].name, npcPosition.position, npcPosition.rotation);
-            
+
             PhotonView viewId = npcPrefab.GetComponent<PhotonView>();
-            
-            photonView.RPC(nameof(NpcSync), RpcTarget.AllBuffered, viewId.ViewID );
+
+            photonView.RPC(nameof(NpcSync), RpcTarget.AllBuffered, viewId.ViewID);
         }
     }
 
@@ -160,7 +151,6 @@ public class TruckQuest : MonoBehaviourPun
             QuestManager.Instance.truckList.RemoveAt(truckId);
             truckSpawner.ClearSlot(truckId);
             truckSpawner.ClearPositionSlot(truckId);
-            Debug.Log("삭제완료");
         }
     }
 
@@ -222,7 +212,7 @@ public class TruckQuest : MonoBehaviourPun
             yield return null;
         }
 
-        if(PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
             PhotonNetwork.Destroy(gameObject);
     }
 }
