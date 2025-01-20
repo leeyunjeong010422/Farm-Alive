@@ -31,9 +31,6 @@ public class CupInteractable : MonoBehaviourPun, IPunObservable
         }
     }
 
-    private void Start()
-    {
-    }
 
     private void Update()
     {

@@ -29,14 +29,6 @@ public class LiquidContainer : MonoBehaviourPunCallbacks, IPunObservable
 
         FillAmount += amount;
         FillAmount = MathF.Min(FillAmount, _maxAmount);
-
-        StartCoroutine(LiquidCheck());
-    }
-    public IEnumerator LiquidCheck()
-    {
-        Debug.Log($"현재 컨테이너 내부 액체양{FillAmount}");
-
-        yield return new WaitForSeconds(5f);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

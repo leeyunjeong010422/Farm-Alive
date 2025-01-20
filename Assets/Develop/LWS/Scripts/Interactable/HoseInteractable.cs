@@ -10,6 +10,10 @@ public class HoseInteractable : XRGrabInteractable
     [SerializeField] public ParticleSystem wateringParticle;
     [SerializeField] float _pourRate;
 
+    private CupInteractable _cup;
+    private LiquidContainer _liquidContainer;
+    private Coroutine _pourCoroutine;
+
     public event Action OnHoseActivated;
     public event Action OnHoseDeactivated;
 
@@ -18,6 +22,8 @@ public class HoseInteractable : XRGrabInteractable
         base.OnEnable();
 
         wateringParticle.Stop();
+
+        _cup = gameObject.GetComponent<CupInteractable>();
     }
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
@@ -28,11 +34,10 @@ public class HoseInteractable : XRGrabInteractable
 
         if (args.interactorObject is XRSocketInteractor)
         {
-            LiquidContainer receiver = args.interactorObject.transform.GetComponent<LiquidContainer>();
-            if (receiver != null)
+            _liquidContainer = args.interactorObject.transform.GetComponent<LiquidContainer>();
+            if (_liquidContainer != null && _cup != null)
             {
-                float amount = _pourRate * Time.deltaTime;
-                receiver.ReceiveLiquid(amount);
+                _pourCoroutine = StartCoroutine(Pour());
             }
 
             wateringParticle.Stop();
@@ -42,6 +47,12 @@ public class HoseInteractable : XRGrabInteractable
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
         base.OnSelectExited(args);
+        
+        if (_pourCoroutine != null)
+        {
+            StopCoroutine(_pourCoroutine);
+            _pourCoroutine = null;
+        }
 
         SoundManager.Instance.PlaySFX("SFX_HoseExited");
     }
@@ -58,5 +69,16 @@ public class HoseInteractable : XRGrabInteractable
         base.OnDeactivated(args);
 
         OnHoseDeactivated?.Invoke();
+    }
+
+    private IEnumerator Pour()
+    {
+        while (true)
+        {
+            float amount = _cup.pourRate * Time.deltaTime;
+            _liquidContainer.ReceiveLiquid(amount);
+
+            yield return null;
+        }
     }
 }
