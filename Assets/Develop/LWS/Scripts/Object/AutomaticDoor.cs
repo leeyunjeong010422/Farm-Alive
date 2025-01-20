@@ -1,22 +1,23 @@
 using Photon.Pun;
-using Photon.Pun.Demo.Cockpit;
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AutomaticDoor : MonoBehaviourPun
 {
     [Tooltip("문이 열릴 위치")]
     [SerializeField] Transform _destinationPos;
-
-    private Vector3 _initPos;
-
     [SerializeField] float _moveSpeed = 5f;
 
     [Tooltip("문이 열리고 대기시간")]
     [SerializeField] float _delay = 2f;
 
+    private Vector3 _initPos;
+    private bool _isOpen = false;
+    private int _playerInside = 0;
+
     private Coroutine _moveCoroutine;
+    private Coroutine _closeDoorCoroutine;
 
     private void Start()
     {
@@ -25,60 +26,98 @@ public class AutomaticDoor : MonoBehaviourPun
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.gameObject.CompareTag("Player"))
+        if (!PhotonNetwork.IsMasterClient)
             return;
+
+        if (other.CompareTag("Player"))
+        {
+            _playerInside++;
+
+            if (!_isOpen)
+            {
+                if (_closeDoorCoroutine != null)
+                {
+                    StopCoroutine(_closeDoorCoroutine);
+                    _closeDoorCoroutine = null;
+                }
+
+                photonView.RPC(nameof(RPC_OpenDoor), RpcTarget.All);
+            }
+        }
+    }
+
+    [PunRPC]
+    private void RPC_OpenDoor()
+    {
+        if (_isOpen)
+            return;
+
+        _isOpen = true;
 
         if (_moveCoroutine != null)
             StopCoroutine(_moveCoroutine);
 
-        photonView.RPC(nameof(RPC_MoveDoor), RpcTarget.All, true);
-
-    }
-
-    [PunRPC]
-    private void RPC_MoveDoor(bool isOpen)
-    {
-        Vector3 targetPos = isOpen? _destinationPos.position : _initPos;
-
-        _moveCoroutine = StartCoroutine(MoveDoor(targetPos));
+        _moveCoroutine = StartCoroutine(MoveDoor(_destinationPos.position));
     }
 
     private IEnumerator MoveDoor(Vector3 targetPos)
     {
-        while ((transform.position - _destinationPos.position).sqrMagnitude > 0.001f)
+        while ((transform.position - targetPos).sqrMagnitude > 0.001f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, _moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                targetPos,
+                _moveSpeed * Time.deltaTime
+            );
             yield return null;
         }
-
-        // 이동 완료
         _moveCoroutine = null;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (!other.CompareTag("Player"))
+        if(!PhotonNetwork.IsMasterClient)
             return;
 
-        if (_moveCoroutine != null)
-            StopCoroutine(_moveCoroutine);
+        if (other.CompareTag("Player"))
+        {
+            _playerInside--;
 
-        photonView.RPC(nameof(RPC_CloseDoor), RpcTarget.All);
+            if ( _playerInside < 0 )
+                _playerInside = 0;
 
+            if (_playerInside <= 0 )
+            {
+                if (_closeDoorCoroutine != null)
+                {
+                    StopCoroutine(_closeDoorCoroutine);
+                    _closeDoorCoroutine = null;
+                }
+                _closeDoorCoroutine = StartCoroutine(WaitAndCloseDoor());
+            }
+        }
     }
 
     [PunRPC]
     private void RPC_CloseDoor()
     {
-        _moveCoroutine = StartCoroutine(WaitAndCloseDoor());
+        if (!_isOpen) return;
+        _isOpen = false;
+
+        if (_moveCoroutine != null)
+            StopCoroutine(_moveCoroutine);
+
+        _moveCoroutine = StartCoroutine(MoveDoor(_initPos));
     }
 
     private IEnumerator WaitAndCloseDoor()
     {
         yield return new WaitForSeconds(_delay);
 
-        photonView.RPC(nameof(RPC_MoveDoor), RpcTarget.All, false);
-
-        _moveCoroutine = null;
+        if (_playerInside <= 0 && _isOpen)
+        {
+            photonView.RPC(nameof(RPC_CloseDoor), RpcTarget.All);
+        }
+        _closeDoorCoroutine = null;
     }
 }
