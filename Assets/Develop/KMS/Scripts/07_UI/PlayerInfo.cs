@@ -16,21 +16,18 @@ public class PlayerInfo : NetworkBehaviour
 
     public override void Spawned()
     {
-        if (Object.HasStateAuthority)
+        if(HasStateAuthority)
         {
             InitializePlayerInfo();
-            RpcSetPlayerInfo(PlayerNickName, HighStage, Stars);
         }
-        else
-        {
-            RpcRequestPlayerInfo();
-        }
+
+        UpdateUI();
     }
 
     /// <summary>
     /// 플레이어 정보를 초기화
     /// </summary>
-    private void InitializePlayerInfo()
+    public void InitializePlayerInfo()
     {
         PlayerNickName = FirebaseManager.Instance.GetNickName();
         HighStage = FirebaseManager.Instance.GetHighStage();
@@ -47,47 +44,10 @@ public class PlayerInfo : NetworkBehaviour
             Debug.LogWarning($"HighStage '{HighStage}'를 파싱할 수 없습니다.");
             Stars = 0;
         }
-
-        UpdateUI();
     }
 
     /// <summary>
-    /// RPC를 사용하여 플레이어 정보를 동기화
-    /// </summary>
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RpcSetPlayerInfo(string playerName, string highStage, int stars)
-    {
-        PlayerNickName = playerName;
-        HighStage = highStage;
-        Stars = stars;
-
-        UpdateUI();
-    }
-
-    /// <summary>
-    /// 서버에 플레이어 정보를 요청
-    /// </summary>
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RpcRequestPlayerInfo()
-    {
-        RpcSendPlayerInfo(PlayerNickName, HighStage, Stars);
-    }
-
-    /// <summary>
-    /// 클라이언트들에게 플레이어 정보 전송
-    /// </summary>
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RpcSendPlayerInfo(string playerName, string highStage, int stars)
-    {
-        PlayerNickName = playerName;
-        HighStage = highStage;
-        Stars = stars;
-
-        RpcSetPlayerInfo(PlayerNickName, HighStage, Stars);
-    }
-
-    /// <summary>
-    /// UI를 업데이트
+    /// UI를 업데이트.
     /// </summary>
     public void UpdateUI()
     {
