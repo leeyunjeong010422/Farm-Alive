@@ -17,6 +17,7 @@ public class Taping : MonoBehaviourPun
     [SerializeField] GameObject startPoint;
     [SerializeField] GameObject endPoint;
     [SerializeField] Collider objCollider;
+    [SerializeField] float checkDistance = 0.5f;
 
     [SerializeField] bool isCanSealed;
     [SerializeField] bool isStart = false;
@@ -63,14 +64,14 @@ public class Taping : MonoBehaviourPun
             Debug.Log(gameObject.transform.position);
             Debug.Log(currentBox.rightPoint.transform.position);
 
-            if (Vector3.Distance(firstPosition, currentBox.rightPoint.transform.position) < 0.5f)
+            if (Vector3.Distance(firstPosition, currentBox.rightPoint.transform.position) < checkDistance)
             {
                 Debug.Log("첫거리가0.1이하");
                 isStart = true;
                 startPoint = currentBox.rightPoint;
                 endPoint = currentBox.leftPoint;
             }
-            else if(Vector3.Distance(firstPosition, currentBox.leftPoint.transform.position) < 0.5f)
+            else if(Vector3.Distance(firstPosition, currentBox.leftPoint.transform.position) < checkDistance)
             {
                 Debug.Log("첫거리가0.1이하");
                 isStart = true;
@@ -87,7 +88,7 @@ public class Taping : MonoBehaviourPun
         {
             secendPosition = this.gameObject.transform.position;
 
-            if (Vector3.Distance(secendPosition, endPoint.transform.position) < 0.5f)
+            if (Vector3.Distance(secendPosition, endPoint.transform.position) < checkDistance)
             {
                 Debug.Log("둘거리가0.1이하");
                 isEnd = true;

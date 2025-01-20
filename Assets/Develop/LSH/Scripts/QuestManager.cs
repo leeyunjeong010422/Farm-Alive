@@ -90,8 +90,6 @@ public class QuestManager : MonoBehaviourPun
 
                 maxRequiredCount = CSVManager.Instance.Correspondents_CropsCount[corID].correspondent_stage[stageIdx];
 
-                int rand = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
-
                 List<int> randomPrefabIndexes = new List<int>();
                 int[] choseIndex = new int[CSVManager.Instance.Correspondents_CropsType[corID].correspondent_stage[stageIdx]];
 
