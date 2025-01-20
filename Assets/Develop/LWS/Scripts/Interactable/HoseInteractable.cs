@@ -10,7 +10,6 @@ public class HoseInteractable : XRGrabInteractable
     [SerializeField] public ParticleSystem wateringParticle;
     [SerializeField] float _pourRate;
 
-    private CupInteractable _cup;
     private LiquidContainer _liquidContainer;
     private Coroutine _pourCoroutine;
 
@@ -22,8 +21,6 @@ public class HoseInteractable : XRGrabInteractable
         base.OnEnable();
 
         wateringParticle.Stop();
-
-        _cup = gameObject.GetComponent<CupInteractable>();
     }
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
@@ -35,7 +32,7 @@ public class HoseInteractable : XRGrabInteractable
         if (args.interactorObject is XRSocketInteractor)
         {
             _liquidContainer = args.interactorObject.transform.GetComponent<LiquidContainer>();
-            if (_liquidContainer != null && _cup != null)
+            if (_liquidContainer != null)
             {
                 _pourCoroutine = StartCoroutine(Pour());
             }
@@ -75,7 +72,7 @@ public class HoseInteractable : XRGrabInteractable
     {
         while (true)
         {
-            float amount = _cup.pourRate * Time.deltaTime;
+            float amount = _pourRate * Time.deltaTime;
             _liquidContainer.ReceiveLiquid(amount);
 
             yield return null;
