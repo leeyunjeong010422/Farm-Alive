@@ -37,17 +37,17 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
         // 전조 증상 사운드 재생
         if (!string.IsNullOrEmpty(SymptomSoundKey))
         {
-            Debug.Log("전조 증상 사운드 재생");
+            //Debug.Log("전조 증상 사운드 재생");
             SoundManager.Instance.PlaySFXLoop(SymptomSoundKey, 0.5f);
         }
-        MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 전조 증상 발생!");
+        MessageDisplayManager.Instance.ShowMessage($"전조 증상 발생! 테블릿을 확인해주세요!, 5f");
     }
 
     public virtual bool Broken() // 반환값 추가
     {
         if (_isSymptomSolved)
         {
-            Debug.Log($"{gameObject.name}: 전조 증상이 해결되었으므로 고장이 발생하지 않습니다.");
+            //Debug.Log($"전조 증상이 해결되었으므로 고장이 발생하지 않습니다.");
             return false; // 고장 발생하지 않음
         }
 
@@ -58,12 +58,12 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
         // 고장 사운드 재생 및 전조 증상 사운드 중지
         if (!string.IsNullOrEmpty(BrokenSoundKey))
         {
-            Debug.Log("전조 증상 사운드 멈춤 및 고장 사운드 재생");
+            //Debug.Log("전조 증상 사운드 멈춤 및 고장 사운드 재생");
             SoundManager.Instance.StopSFXLoop(SymptomSoundKey);
             SoundManager.Instance.PlaySFXLoop(BrokenSoundKey, 0.5f);
         }
 
-        MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 고장 발생!");
+        MessageDisplayManager.Instance.ShowMessage($"고장 발생! 망치로 수리해주세요!, 5f");
         //Debug.LogError($"{gameObject.name}: 고장 발생!");
         return true; // 고장이 발생함
     }
@@ -91,7 +91,7 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
         {
             SoundManager.Instance.StopSFXLoop(SymptomSoundKey);
         }
-        MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 전조 증상이 해결되었습니다!");
+        MessageDisplayManager.Instance.ShowMessage($"전조 증상이 해결되었습니다!, 5f");
         //Debug.LogError($"{gameObject.name}: 전조 증상이 해결되었습니다!");
     }
 
@@ -106,7 +106,7 @@ public abstract class BaseRepairable : MonoBehaviour, IRepairable
         {
             SoundManager.Instance.StopSFXLoop(BrokenSoundKey);
         }
-        MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 수리되었습니다!");
+        //MessageDisplayManager.Instance.ShowMessage($"{gameObject.name}: 수리되었습니다!");
         //Debug.LogError($"{gameObject.name}: 수리되었습니다!");
     }
 
