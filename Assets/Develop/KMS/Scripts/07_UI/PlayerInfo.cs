@@ -68,7 +68,7 @@ public class PlayerInfo : NetworkBehaviour
     /// 서버에 플레이어 정보를 요청
     /// </summary>
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RequestPlayerInfo()
+    public void RpcRequestPlayerInfo()
     {
         RpcSendPlayerInfo(PlayerNickName, HighStage, Stars);
     }
