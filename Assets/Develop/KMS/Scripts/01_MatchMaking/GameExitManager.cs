@@ -8,9 +8,12 @@ public class GameExitManager : MonoBehaviour
     public GameObject exitConfirmationPanel;
     public TMP_Text exitConfirmationText;
 
+    [Header("Panel Settings")]
+    public float panelDistance = 2f;
+
     private bool _isExitRequest = false;
     private float _buttonPressDuration = 0f;
-    private const float _requiredHoldTime = 1.0f;
+    private const float _requiredHoldTime = 1f;
 
     private void Start()
     {
@@ -22,6 +25,11 @@ public class GameExitManager : MonoBehaviour
     private void Update()
     {
         HandleControllerInput();
+
+        if (exitConfirmationPanel && exitConfirmationPanel.activeSelf)
+        {
+            UpdatePanelPosition();
+        }
     }
 
     private void HandleControllerInput()
@@ -100,5 +108,18 @@ public class GameExitManager : MonoBehaviour
     {
         Debug.Log("게임 종료 취소!");
         HideExitConfirmation();
+    }
+
+    private void UpdatePanelPosition()
+    {
+        Camera mainCamera = Camera.main;
+
+        if (exitConfirmationPanel != null)
+        {
+            Vector3 targetPosition = mainCamera.transform.position + mainCamera.transform.forward * panelDistance;
+            exitConfirmationPanel.transform.position = targetPosition;
+
+            exitConfirmationPanel.transform.rotation = Quaternion.LookRotation(exitConfirmationPanel.transform.position - mainCamera.transform.position);
+        }
     }
 }
