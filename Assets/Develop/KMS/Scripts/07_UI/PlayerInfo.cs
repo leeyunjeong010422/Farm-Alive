@@ -23,7 +23,7 @@ public class PlayerInfo : NetworkBehaviour
         }
         else
         {
-            RequestPlayerInfo();
+            RpcRequestPlayerInfo();
         }
     }
 
