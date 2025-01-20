@@ -80,15 +80,15 @@ public class Intro : MonoBehaviour
             {
                 _buttonPressDuration += Time.deltaTime;
 
-                if(FirebaseManager.Instance.GetNickName() != "")
-                    UpdateSkipGauge();
+                if (!string.IsNullOrEmpty(FirebaseManager.Instance.GetNickName()))
+                        UpdateSkipGauge();
 
                 if (!_isButtonPressed)
                 {
                     _isButtonPressed = true;
                 }
 
-                if (_buttonPressDuration >= _requiredHoldTime && FirebaseManager.Instance.GetNickName() != "")
+                if (_buttonPressDuration >= _requiredHoldTime && !string.IsNullOrEmpty(FirebaseManager.Instance.GetNickName()))
                 {
                     SkipToLobby();
                 }
@@ -105,7 +105,7 @@ public class Intro : MonoBehaviour
         {
             FixHMD();
 
-            if (FirebaseManager.Instance.GetNickName() != "")
+            if (!string.IsNullOrEmpty(FirebaseManager.Instance.GetNickName()))
                 introText.text = $"{FirebaseManager.Instance.GetNickName()}님 왼쪽 컨트롤러의 B키를 1초동안 누르고 계시면 Skip이 가능합니다.";
         }
 
@@ -196,6 +196,7 @@ public class Intro : MonoBehaviour
         if (!string.IsNullOrEmpty(userId))
         {
             Debug.Log($"Firebase 유저 확인 완료: {userId}");
+            FirebaseManager.Instance.LoadNickName();
             _isFirebaseUser = true;
         }
         else
