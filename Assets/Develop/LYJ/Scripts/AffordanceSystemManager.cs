@@ -87,6 +87,7 @@ public class AffordanceSystemManager : MonoBehaviour
 
     private void OnHoverEnter(HoverEnterEventArgs args)
     {
+        (args.interactorObject as XRBaseControllerInteractor).SendHapticImpulse(0.5f, 0.1f);
         //Debug.Log("HoverEnter");
         ChangeColor(_hoverColor);
         ChangeScale(_hoverScale);
@@ -104,6 +105,7 @@ public class AffordanceSystemManager : MonoBehaviour
         if (args.interactorObject is XRSocketInteractor)
             return;
            
+        (args.interactorObject as XRBaseControllerInteractor).SendHapticImpulse(0.7f, 0.1f);
         //Debug.Log("SelectEnter");
         ChangeColor(_selectColor);
         PlaySound(_selectSound);
