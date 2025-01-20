@@ -164,7 +164,7 @@ public class StageManager : MonoBehaviourPunCallbacks
 
     public IEnumerator ReturnToFusion()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(10f);
 
         if (PhotonNetwork.InRoom)
         {
