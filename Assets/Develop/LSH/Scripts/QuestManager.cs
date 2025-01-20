@@ -264,7 +264,7 @@ public class QuestManager : MonoBehaviourPun
         {
             if (PhotonNetwork.IsMasterClient)
             {
-               StageManager.Instance.photonView.RPC(nameof(StageManager.Instance.RPC_SyncCurStageTime), RpcTarget.All, StageManager.Instance.CurStageTime);
+                StageManager.Instance.SyncCurStageTime();
             }
 
             StageManager.Instance.EndStage();
