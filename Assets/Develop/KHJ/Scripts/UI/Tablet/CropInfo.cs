@@ -13,7 +13,7 @@ public class CropInfo : MonoBehaviour
 
     private void Awake()
     {
-        _cropNameText.text = _cropData.name;
+        _cropNameText.text = _cropData.cropName;
         _digCountText.text = _cropData.digCount.ToString();
         _maxMoistureText.text = _cropData.maxMoisture.ToString();
         _maxNutrientText.text = _cropData.maxNutrient.ToString();
