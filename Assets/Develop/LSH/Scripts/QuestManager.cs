@@ -262,13 +262,9 @@ public class QuestManager : MonoBehaviourPun
 
         if (clearQuestCount == totalQuestCount)
         {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                StageManager.Instance.SyncCurStageTime();
-            }
-
             StageManager.Instance.EndStage();
         }
+
         else
         {
             UpdateUI();
