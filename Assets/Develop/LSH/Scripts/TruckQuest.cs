@@ -91,7 +91,7 @@ public class TruckQuest : MonoBehaviourPun
                         otherItem++;
 
                         if (boxTrigger.requiredItems.Count <= otherItem)
-                            photonView.RPC(nameof(FieldItem), RpcTarget.AllBuffered);
+                            photonView.RPC(nameof(FieldItem), RpcTarget.AllBuffered, boxView.ViewID);
                     }
                 }
 
@@ -155,9 +155,13 @@ public class TruckQuest : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void FieldItem()
+    public void FieldItem(int viewId)
     {
+        PhotonView box = PhotonView.Find(viewId);
         npcPrefab.GetComponent<NpcTextView>().NpcText(false);
+        box.transform.position = new Vector3(0, -100, 0);
+        box.GetComponent<Rigidbody>().isKinematic = true;
+        check = false;
     }
 
     [PunRPC]
