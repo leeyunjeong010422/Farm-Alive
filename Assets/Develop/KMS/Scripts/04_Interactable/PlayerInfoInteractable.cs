@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class PlayerInfoInteractable : XRBaseInteractable
+public class PlayerInfoInteractable : XRGrabInteractable
 {
     private PlayerInfo _playerInfo;
 
