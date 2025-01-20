@@ -275,6 +275,8 @@ public class FirebaseManager : MonoBehaviour
                 if (snapshot.HasChild("playTime"))
                     oldTime = float.Parse(snapshot.Child("playTime").Value.ToString());
 
+                if (oldTime == 0f)
+                    oldTime = 999f;
 
                 if (newStars > oldStars)
                 {
