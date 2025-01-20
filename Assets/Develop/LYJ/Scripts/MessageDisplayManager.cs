@@ -78,7 +78,7 @@ public class MessageDisplayManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Camera를 찾을 수 없습니다.");
+            //Debug.Log("Camera를 찾을 수 없습니다.");
         }
     }
 

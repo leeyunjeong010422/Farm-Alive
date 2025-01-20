@@ -36,7 +36,7 @@ public class ShovelInteractable : XRGrabInteractable
             if (_currentGround == null)
             {
                 _currentGround = ground;
-                Debug.Log($"참조 성공");
+                //Debug.Log($"참조 성공");
             }
             else
             {
@@ -63,7 +63,7 @@ public class ShovelInteractable : XRGrabInteractable
                 _currentGround.Dig();
                 _currentGround = null;
                 _groundTriggerCount = 0;
-                Debug.Log("참조 해제");
+                //Debug.Log("참조 해제");
             }
         }
     }
