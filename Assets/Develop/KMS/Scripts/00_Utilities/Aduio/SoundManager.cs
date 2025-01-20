@@ -116,7 +116,7 @@ public class SoundManager : MonoBehaviour
         if (!_sfxDict.ContainsKey(key))
         {
 #if UNITY_EDITOR
-            Debug.LogWarning($"SFX '{key}'가 없습니다!");
+            //Debug.LogWarning($"SFX '{key}'가 없습니다!");
 #endif
             return;
         }
@@ -136,10 +136,11 @@ public class SoundManager : MonoBehaviour
         if (!_sfxDict.ContainsKey(key))
         {
 #if UNITY_EDITOR
-            Debug.LogWarning($"SFX '{key}'가 없습니다!");
+            //Debug.LogWarning($"SFX '{key}'가 없습니다!");
 #endif
             return;
         }
+        Debug.LogWarning($"SFX '{key}' 시작");
 
         AudioClip clip = _sfxDict[key];
         sfx.PlayOneShot(clip, volumeScale);
@@ -161,17 +162,19 @@ public class SoundManager : MonoBehaviour
     {
         if (!_sfxDict.ContainsKey(key))
         {
+
 #if UNITY_EDITOR
-            Debug.LogWarning($"SFX '{key}'가 없습니다!");
+            //Debug.LogWarning($"SFX '{key}'가 없습니다!");
 #endif
             return;
         }
+        Debug.LogWarning($"SFX '{key}'루프 시작");
 
         // 이미 루프 중이면 종료
         if (_sfxLoopDict.ContainsKey(key))
         {
 #if UNITY_EDITOR
-            Debug.Log($"SFX '{key}'가 이미 루프 중입니다!");
+            //Debug.Log($"SFX '{key}'가 이미 루프 중입니다!");
 #endif
             return;
         }
@@ -196,8 +199,10 @@ public class SoundManager : MonoBehaviour
     {
         if (!_sfxLoopDict.ContainsKey(key))
         {
+            Debug.LogWarning($"SFX 루프중 '{key}'가 없습니다!");
+
 #if UNITY_EDITOR
-            Debug.LogWarning($"루프 중인 SFX '{key}'가 없습니다!");
+            //Debug.LogWarning($"루프 중인 SFX '{key}'가 없습니다!");
 #endif
             return;
         }
