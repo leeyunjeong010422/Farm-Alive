@@ -16,14 +16,6 @@ public class FusionPlayerSpawn : SimulationBehaviour, IPlayerJoined, IPlayerLeft
 
         Debug.Log("Fusion Player Âü°¡!");
         _spawnedPlayer = Runner.Spawn(_playerPrefab, _playerSpawn.position, _playerSpawn.rotation, player);
-
-        var playerInfo = _spawnedPlayer.GetComponent<PlayerInfo>();
-        if (playerInfo != null && Runner.IsServer)
-        {
-            playerInfo.InitializePlayerInfo();
-            playerInfo.UpdateUI();
-        }
-
     }
 
     public void PlayerLeft(PlayerRef player)
