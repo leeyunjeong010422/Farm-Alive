@@ -45,7 +45,6 @@ public class TruckQuest : MonoBehaviourPun
                 if (interactable.isSelected)
                     return;
 
-                Debug.Log("박스");
                 BoxTrigger boxTrigger = other.GetComponent<BoxTrigger>();
                 if (boxTrigger == null)
                     return;
@@ -56,7 +55,6 @@ public class TruckQuest : MonoBehaviourPun
                 if (check)
                     return;
 
-                Debug.Log("납품 진행");
                 check = true;
 
                 PhotonView boxView = other.GetComponent<PhotonView>();
@@ -113,7 +111,6 @@ public class TruckQuest : MonoBehaviourPun
     {
         this.truckId = truckId;
         this.truckSpawner = truckController;
-        Debug.Log($"오브젝트 ID: {truckId}");
 
         SpawnNpc(npcNumber);
     }
@@ -121,7 +118,6 @@ public class TruckQuest : MonoBehaviourPun
     public void ChangeID(int truckId)
     {
         this.truckId = truckId;
-        Debug.Log($"오브젝트 ID: {truckId}");
     }
 
     public void SpawnNpc(int npcNumber)
