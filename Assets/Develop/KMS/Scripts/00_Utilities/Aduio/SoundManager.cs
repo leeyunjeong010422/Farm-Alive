@@ -121,6 +121,8 @@ public class SoundManager : MonoBehaviour
             return;
         }
 
+        Debug.LogWarning($"SFX '{key}' Ω√¿€");
+
         AudioClip clip = _sfxDict[key];
         sfx.PlayOneShot(clip, volumeScale);
     }
