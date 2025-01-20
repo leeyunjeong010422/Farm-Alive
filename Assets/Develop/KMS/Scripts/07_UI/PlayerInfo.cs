@@ -1,7 +1,7 @@
-using Fusion;
 using System;
 using TMPro;
 using UnityEngine;
+using Fusion;
 
 public class PlayerInfo : NetworkBehaviour
 {
@@ -16,17 +16,13 @@ public class PlayerInfo : NetworkBehaviour
 
     public override void Spawned()
     {
-        if (Object.HasStateAuthority)
-        {
-            InitializePlayerInfo();
-        }
         UpdateUI();
     }
 
     /// <summary>
     /// 플레이어 정보를 초기화
     /// </summary>
-    private void InitializePlayerInfo()
+    public void InitializePlayerInfo()
     {
         PlayerNickName = FirebaseManager.Instance.GetNickName();
         HighStage = FirebaseManager.Instance.GetHighStage();
