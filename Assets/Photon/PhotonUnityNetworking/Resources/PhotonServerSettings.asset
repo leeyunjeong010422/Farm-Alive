@@ -46,17 +46,20 @@ MonoBehaviour:
   - DestroyRpc
   - DestroySpaceship
   - DisplayMessageRPC
-  - EndStage
   - FieldItem
   - Fire
   - HeresWhy
   - NpcSync
   - OpenAllShutters
+  - PlaySound
   - QuestStart
   - RespawnSpaceship
   - RPC_ButtonClick
+  - RPC_CloseDoor
+  - RPC_EndStage
   - RPC_OnButtonPressed
   - RPC_OnButtonReleased
+  - RPC_OpenDoor
   - RPC_PlayParticleEffect
   - RPC_PlusRepairCount
   - RPC_ResolveEvent
@@ -83,6 +86,7 @@ MonoBehaviour:
   - SyncSelect
   - SyncSuccessGeneratorStart
   - SyncSymptom
+  - SyncTaping
   - SyncTargetPlayer
   - SyncTransform
   - SyncTriggerBlackout

@@ -1,13 +1,10 @@
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
-using Fusion;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 
 public class PunManager : MonoBehaviourPunCallbacks
@@ -54,15 +51,7 @@ public class PunManager : MonoBehaviourPunCallbacks
         // ConnectToPhoton() 호출해야하기에 이벤트로 연결.
         Debug.Log("Firebase 이벤트 등록");
         FirebaseManager.Instance.OnFirebaseInitialized += ConnectToPhoton;
-        //FirebaseManager.Instance.NotifyInitializationComplete();
-    }
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            Debug.Log($"selectedStage {selectedStage}");
-        }
+        FirebaseManager.Instance.NotifyInitializationComplete();
     }
 
     /// <summary>
@@ -117,8 +106,14 @@ public class PunManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("1. PUN 로비 입장!");
         Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}");
+        SoundManager.Instance.StopBGM();
+        SoundManager.Instance.PlayBGM("LOBBY", 0.4f);
+        Debug.Log("BGM Lobby 동작");
+
         if (SceneManager.GetActiveScene().name != "03_Lobby" && PhotonNetwork.InLobby)
         {
+            // 최고 스테이지 레벨 로딩 
+            FirebaseManager.Instance.LoadHighStage();
             Debug.Log("로딩 씬으로 이동...");
             SceneLoader.LoadSceneWithLoading("03_Lobby");
         }
@@ -213,8 +208,12 @@ public class PunManager : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnJoinedRoom()
     {
+        SoundManager.Instance.StopBGM();
+        Debug.Log($"Lobby BGM 종료");
         // Pun 이동
         Debug.Log($"방 입장 성공: {PhotonNetwork.CurrentRoom.Name}");
+        SoundManager.Instance.PlayBGM("ROOM", 0.4f);
+        Debug.Log($"BGM ROOM 동작");
         PhotonNetwork.AutomaticallySyncScene = true;
 
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("gameMode", out object gameModeValue))
@@ -264,6 +263,7 @@ public class PunManager : MonoBehaviourPunCallbacks
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         Debug.LogError("방 입장 실패: " + message);
+        MessageDisplayManager.Instance.ShowMessage($"방 입장에 실패 했습니다..", 1f, 3f);
     }
 
     public override void OnLeftRoom()

@@ -1,4 +1,3 @@
-using Photon.Pun;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -26,6 +25,12 @@ public class ReturnToLobbyInteractable : XRGrabInteractable
         initialRotation = transform.rotation;
 
         text.text = "로비로 돌아갈 시 문을 Select 하세요.";
+    }
+
+    protected override void OnSelectEntered(SelectEnterEventArgs args)
+    {
+        base.OnSelectEntered(args);
+        SoundManager.Instance.PlaySFX("SFX_Lobby_CropSelected");
     }
 
     protected override void OnSelectExited(SelectExitEventArgs args)

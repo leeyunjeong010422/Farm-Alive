@@ -41,7 +41,9 @@ public class BoxUI : MonoBehaviour
 
     private void UpdateUIText(List<RequiredItem> requiredItems)
     {
-        string displayText = "Box 안 내용물:\n";
+        string isbool = boxTrigger.boxCover.IsOpen ? "열림" : "닫힘";
+
+        string displayText = $"Box 안 내용물{isbool} :\n";
 
         // 동일 이름의 작물 카운트를 합산하기 위한 Dictionary
         Dictionary<string, float> itemCounts = new Dictionary<string, float>();

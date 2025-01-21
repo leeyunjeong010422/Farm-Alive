@@ -193,6 +193,9 @@ namespace UnityEngine.XR.Content.Interaction
         /// </summary>
         public ValueChangeEvent onValueChange => m_OnValueChange;
 
+        private bool _startedTurning = false; // 휠이 처음 돌려졌는지 여부
+        private bool _stoppedTurning = true; // 휠을 놓았는지 여부
+
         void Start()
         {
             SetValue(m_Value);
@@ -223,11 +226,27 @@ namespace UnityEngine.XR.Content.Interaction
 
             UpdateBaseKnobRotation();
             UpdateRotation(true);
+
+            // 휠을 처음 잡을 때 소리를 재생
+            if (!_startedTurning)
+            {
+                SoundManager.Instance.PlaySFX("SFX_Crank_Turning", 0.4f);
+                _startedTurning = true;
+                _stoppedTurning = false;
+            }
         }
 
         void EndGrab(SelectExitEventArgs args)
         {
             m_Interactor = null;
+
+            // 노브를 놓았을 때 소리 재생
+            if (!_stoppedTurning)
+            {
+                SoundManager.Instance.PlaySFX("SFX_Crank_Loosening", 0.4f);
+                _stoppedTurning = true;
+                _startedTurning = false;
+            }
 
             // 노브를 놓았을 때 천천히 원위치로 돌아가는 코루틴 시작
             StartCoroutine(ReturnKnobToStart());

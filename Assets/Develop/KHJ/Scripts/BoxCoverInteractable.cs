@@ -41,6 +41,7 @@ public class BoxCoverInteractable : XRGrabInteractable
     {
         base.OnSelectEntered(args);
 
+        SoundManager.Instance.PlaySFXLoop("SFX_BoxOpen");
         _photonView.RPC(nameof(SelectEnterBox), RpcTarget.All);
     }
 
@@ -48,7 +49,8 @@ public class BoxCoverInteractable : XRGrabInteractable
     {
         base.OnSelectExited(args);
 
-        _photonView.RPC(nameof(SelectExitBox), RpcTarget.All);
+        SoundManager.Instance.StopSFXLoop("SFX_BoxOpen");
+        _photonView.RPC(nameof(SelectExitBox), RpcTarget.All, CheckOpen());
     }
 
     [PunRPC]
@@ -60,9 +62,9 @@ public class BoxCoverInteractable : XRGrabInteractable
     }
 
     [PunRPC]
-    private void SelectExitBox()
+    private void SelectExitBox(bool isOpen)
     {
-        if (!CheckOpen())
+        if (!isOpen)
         {
             Close();
         }

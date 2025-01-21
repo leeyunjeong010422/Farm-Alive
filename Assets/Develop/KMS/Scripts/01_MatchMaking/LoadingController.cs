@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 public class LoadingController : MonoBehaviour
 {
@@ -15,11 +17,31 @@ public class LoadingController : MonoBehaviour
     [Tooltip("진행도")]
     public TMP_Text progressText;
 
-    private bool _isSceneReady = false;    // 씬 로드 완료 상태 확인
+    [Tooltip("Tip 텍스트")]
+    public TMP_Text tipText;
 
+    [Header("Tip 텍스트 목록")]
+    [Tooltip("Tip 목록")]
+    public List<string> tipTexts;
+    private int currentTipIndex = 0;
+
+    private bool _isSceneReady = false;
+    private bool isButtonPressed = false;
+    private XRNode _leftControllerNode = XRNode.LeftHand;
     private void Start()
     {
         loadingUI.SetActive(true);
+
+        if (tipTexts == null || tipTexts.Count == 0)
+        {
+            Debug.LogWarning("Tip 텍스트 목록이 비어 있습니다.");
+            tipTexts = new List<string> { "Tip이 없습니다." };
+        }
+
+        currentTipIndex = Random.Range(0, tipTexts.Count);
+
+        UpdateTipText();
+
         string targetSceneName = SceneLoader.TargetScene;
 
         if (string.IsNullOrEmpty(targetSceneName))
@@ -28,6 +50,42 @@ public class LoadingController : MonoBehaviour
             return;
         }
         StartCoroutine(LoadSceneAsync(targetSceneName));
+    }
+
+    private void Update()
+    {
+        HandleControllerInput();
+    }
+
+    private void HandleControllerInput()
+    {
+        InputDevice leftController = InputDevices.GetDeviceAtXRNode(_leftControllerNode);
+        if (leftController.TryGetFeatureValue(CommonUsages.primaryButton, out bool isPressed))
+        {
+            if (isPressed && !isButtonPressed)
+            {
+                isButtonPressed = true;
+                ShowNextTip();
+            }
+        }
+        else
+        {
+            isButtonPressed = false;
+        }
+    }
+
+    private void ShowNextTip()
+    {
+        currentTipIndex = (currentTipIndex + 1) % tipTexts.Count;
+        UpdateTipText();
+    }
+
+    private void UpdateTipText()
+    {
+        if (tipText != null)
+        {
+            tipText.text = tipTexts[currentTipIndex];
+        }
     }
 
     private IEnumerator LoadSceneAsync(string targetSceneName)

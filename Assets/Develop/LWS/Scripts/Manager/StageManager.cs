@@ -13,7 +13,7 @@ public class StageManager : MonoBehaviourPunCallbacks
 
     [Header("스테이지 시간 속성")]
     [SerializeField] float _stageTimeLimit = 0;
-    [SerializeField] float _curStageTime = 0;
+    [SerializeField] public float _curStageTime = 0;
     public float CurStageTime { get { if (PhotonNetwork.IsMasterClient) return _curStageTime; else return 0f; } }
     [SerializeField] bool _isTimerRunning = false;
 
@@ -36,8 +36,8 @@ public class StageManager : MonoBehaviourPunCallbacks
     // 계절별 파티클 / 오브젝트 등.
     [Tooltip("계절별 스카이박스 메테리얼 (순서대로 계절)")]
     [SerializeField] Material[] _materials;
-    //
-    //
+
+    [SerializeField] GameObject _descriptionObject;
 
     public static StageManager Instance { get; private set; }
 
@@ -63,13 +63,13 @@ public class StageManager : MonoBehaviourPunCallbacks
         _weatherID = _curStageData.stage_seasonID;
         _maxBrokenMachineCount = _curStageData.stage_allowSymptomFacilityCount;
 
-        _stageTimeLimit = 1000f;
+        _stageTimeLimit = 360f;
 
 
         while (!ParticleManager.Instance.isAllParticleStoped)
             yield return null; // 모든 파티클 정보 저장, 재생 중단 후 진행
 
-        SetSeason();
+        SetMap();
 
         while (!_isMapSetted)
             yield return null; // 맵 세팅 후 진행
@@ -79,9 +79,9 @@ public class StageManager : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(5f);
 
         OnGameStarted?.Invoke();
-        
+
         yield return new WaitForSeconds(5f);
-        
+
         if (PhotonNetwork.IsMasterClient)
             StartStageTimer();
     }
@@ -93,31 +93,42 @@ public class StageManager : MonoBehaviourPunCallbacks
 
         _curStageTime += Time.deltaTime;
 
+        if (_stageTimeLimit - _curStageTime == 60f)
+        {
+            SoundManager.Instance.StopBGM();
+            SoundManager.Instance.PlayBGM("BGM_StageOneMinute", 0.4f);
+        }
+
         if (_stageTimeLimit > 0 && _curStageTime >= _stageTimeLimit)
         {
-            photonView.RPC(nameof(EndStage), RpcTarget.All);
+            SoundManager.Instance.StopBGM();
+
+            photonView.RPC(nameof(EndStage), RpcTarget.All, 999f);
         }
     }
 
-    private void SetSeason()
+    private void SetMap()
     {
         // 맵별 파티클 setactive false
 
         switch (_weatherID)
         {
             case 0: // 봄
-                 // RenderSettings.skybox = _materials[0];
+                RenderSettings.skybox = _materials[0];
                 break;
             case 1: // 여름
-                 // RenderSettings.skybox = _materials[1];
+                RenderSettings.skybox = _materials[1];
                 break;
             case 2: // 가을
-                 // RenderSettings.skybox = _materials[2];
+                RenderSettings.skybox = _materials[2];
                 break;
             case 3: // 겨울
-                 // RenderSettings.skybox = _materials[3];
+                RenderSettings.skybox = _materials[3];
                 break;
         }
+
+        if (_curStageID == 511)
+            _descriptionObject.SetActive(true);
 
         _isMapSetted = true;
     }
@@ -130,7 +141,8 @@ public class StageManager : MonoBehaviourPunCallbacks
     public void StartStageTimer()
     {
         QuestManager.Instance.FirstStart(_curStageID);
-
+        SoundManager.Instance.PlayBGM(_curStageID.ToString(), 0.4f);
+        Debug.Log($"{_curStageID.ToString()} BGM 시작!");
         _curStageTime = 0f;
         _isTimerRunning = true;
     }
@@ -139,21 +151,29 @@ public class StageManager : MonoBehaviourPunCallbacks
     /// <summary>
     /// 퀘스트가 모두 종료되었을 때, 호출할 함수.
     /// </summary>
-    public void EndStage()
+    public void RPC_EndStage(float time)
     {
         _isTimerRunning = false;
 
         int star = EvaluateStar();
-        float playTime = _curStageTime;
 
-        FirebaseManager.Instance.SaveStageResult(_curStageID, _curStageTime, star);
+        FirebaseManager.Instance.SaveStageResult(_curStageID, time, star);
+
+        SoundManager.Instance.StopAllSFX();
 
         StartCoroutine(ReturnToFusion());
     }
 
+    public void EndStage()
+    {
+        if (PhotonNetwork.IsMasterClient)
+            photonView.RPC(nameof(RPC_EndStage), RpcTarget.All, _curStageTime);
+    }
+
+
     public IEnumerator ReturnToFusion()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(10f);
 
         if (PhotonNetwork.InRoom)
         {

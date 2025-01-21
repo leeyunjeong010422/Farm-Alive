@@ -5,23 +5,54 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class NutrientInteractable : XRGrabInteractable
 {
+    private CupInteractable _cup;
+    private LiquidContainer _liquidContainer;
+    private Coroutine _pourCoroutine;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        _cup = GetComponent<CupInteractable>();
+    }
+
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
-
-        CupInteractable cup = transform.GetComponent<CupInteractable>();
-
         base.OnSelectEntered(args);
 
         if (args.interactorObject is XRSocketInteractor)
         {
-            LiquidContainer receiver = args.interactorObject.transform.GetComponent<LiquidContainer>();
-            if (receiver != null)
+            _liquidContainer = args.interactorObject.transform.GetComponent<LiquidContainer>();
+            if (_liquidContainer != null && _cup != null)
             {
-                float amount = cup.pourRate * Time.deltaTime;
-                receiver.ReceiveLiquid(amount);
+                _pourCoroutine = StartCoroutine(Pour());
             }
+            SoundManager.Instance.StopSFXLoop("SFX_NutrientContainerPoured");
+        }
+        SoundManager.Instance.PlaySFX("SFX_NutrientContainerSelected");
+    }
 
-            cup.particleSystemLiquid.Stop();
+    protected override void OnSelectExited(SelectExitEventArgs args)
+    {
+        base.OnSelectExited(args);
+
+        if (_pourCoroutine != null)
+        {
+            StopCoroutine( _pourCoroutine );
+            _pourCoroutine = null;
+        }
+
+        SoundManager.Instance.PlaySFX("SFX_NutrientContainerExited");
+    }
+
+    private IEnumerator Pour()
+    {
+        while (true)
+        {
+            float amount = _cup.pourRate * Time.deltaTime;
+            _liquidContainer.ReceiveLiquid(amount);
+
+            yield return null;
         }
     }
 }

@@ -7,11 +7,13 @@ using UnityEngine.Events;
 
 public class LiquidContainer : MonoBehaviourPunCallbacks, IPunObservable
 {
+    public UnityEvent<float> OnGaugeUpdated;
+
     [Tooltip("초기에 차 있을 정도 (0.0으로 시작이 기본)")]
     [SerializeField] float _fillAmount = 0f;
 
-    public float FillAmount { get { return _fillAmount; } set { _fillAmount = value; } }
-
+    public float FillAmount { get { return _fillAmount; } set { _fillAmount = value; OnGaugeUpdated?.Invoke(value); } }
+    public float MaxAmount { get { return _maxAmount; } }
 
     float _maxAmount = 1.0f;
 
@@ -25,16 +27,8 @@ public class LiquidContainer : MonoBehaviourPunCallbacks, IPunObservable
         if (!photonView.IsMine)
             return;
 
-        _fillAmount += amount;
-        _fillAmount = MathF.Min(_fillAmount, _maxAmount);
-
-        StartCoroutine(LiquidCheck());
-    }
-    public IEnumerator LiquidCheck()
-    {
-        Debug.Log($"현재 컨테이너 내부 액체양{_fillAmount}");
-
-        yield return new WaitForSeconds(5f);
+        FillAmount += amount;
+        FillAmount = MathF.Min(FillAmount, _maxAmount);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -42,12 +36,12 @@ public class LiquidContainer : MonoBehaviourPunCallbacks, IPunObservable
         if (stream.IsWriting)
         {
             // 내가 Owner라면, _fillAmount를 다른 클라이언트에게 전송
-            stream.SendNext(_fillAmount);
+            stream.SendNext(FillAmount);
         }
         else
         {
             // 내 소유가 아니라면, Owner로부터 _fillAmount를 받음
-            _fillAmount = (float)stream.ReceiveNext();
+            FillAmount = (float)stream.ReceiveNext();
         }
     }
 }

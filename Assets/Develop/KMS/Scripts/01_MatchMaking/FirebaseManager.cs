@@ -2,11 +2,9 @@ using UnityEngine;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
-using System.Threading.Tasks;
 using Firebase.Extensions;
 using System;
 using System.Collections.Generic;
-using UnityEngine.SocialPlatforms;
 
 public class FirebaseManager : MonoBehaviour
 {
@@ -188,7 +186,7 @@ public class FirebaseManager : MonoBehaviour
                 UpdateLastLogin();
                 LoadNickName();
                 LoadHighStage();
-                NotifyInitializationComplete();
+                //NotifyInitializationComplete();
             }
             else
             {
@@ -226,7 +224,7 @@ public class FirebaseManager : MonoBehaviour
             {
                 Debug.Log("사용자 데이터 저장 완료!");
                 UpdateLastLogin();
-                NotifyInitializationComplete();
+                //NotifyInitializationComplete();
                 return;
             }
             else
@@ -277,6 +275,8 @@ public class FirebaseManager : MonoBehaviour
                 if (snapshot.HasChild("playTime"))
                     oldTime = float.Parse(snapshot.Child("playTime").Value.ToString());
 
+                if (oldTime == 0f)
+                    oldTime = 999f;
 
                 if (newStars > oldStars)
                 {
@@ -436,7 +436,7 @@ public class FirebaseManager : MonoBehaviour
                 if (task.IsCompleted && task.Result != null && task.Result.HasChildren)
                 {
                     int stars = 0;
-                    float playTime = 0f;
+                    float playTime = 999f;
 
                     if (task.Result.Child("stars").Value != null)
                     {
@@ -539,8 +539,6 @@ public class FirebaseManager : MonoBehaviour
     public void UpdateLastLogin()
     {
         Debug.Log("캐릭터 마지막 로그인 갱신!");
-        Debug.Log("지금은 데이터를 잠시 갱신안함 - (코드 막아둠!)");
-
         DatabaseReference userRef = dataBase.GetReference($"users/{userId}/lastLogin");
 
         userRef.SetValueAsync(DateTime.Now.ToString("o")).ContinueWithOnMainThread(task =>

@@ -161,7 +161,6 @@ public class SectionMover : MonoBehaviourPun
 
     public void sel1()
     {
-        Debug.Log("버튼클릭");
         OnSelectCube(0);
     }
 
@@ -184,8 +183,6 @@ public class SectionMover : MonoBehaviourPun
     {
         if (!isMoving)
         {
-            Debug.Log("큐브선택");
-
             photonView.RPC(nameof(SelectCubeRPC), RpcTarget.AllBuffered, cubeIndex);
         }
     }
@@ -198,7 +195,6 @@ public class SectionMover : MonoBehaviourPun
             wayPoint1[i] = false;
             wayPoint2[i] = false;
         }
-        Debug.Log("큐브선택RPc");
         selectedSection = targetSection[cubeIndex];
         isMoving = true;
         SectionManager.Instance.CurSection = cubeIndex;
@@ -215,6 +211,7 @@ public class SectionMover : MonoBehaviourPun
     [PunRPC]
     public void OpenAllShutters()
     {
+        SoundManager.Instance.StopSFXLoop("SFX_Section_Move");
         /*if (!isUpperLowerShutterOpen)
         {
             if (ShutterController != null)
@@ -225,8 +222,11 @@ public class SectionMover : MonoBehaviourPun
         if (!isLeftRightShutterOpen)
         {
             if (ShutterController != null)
+            {
                 ShutterController.isLeftRightShutterOpen = true;
-
+                SoundManager.Instance.PlaySFX("SFX_Section_Door_Open");                
+            }
+            
             isLeftRightShutterOpen = true;
         }
     }
@@ -234,11 +234,12 @@ public class SectionMover : MonoBehaviourPun
     [PunRPC]
     public void CloseAllShutters()
     {
-        Debug.Log("닫힘");
+        SoundManager.Instance.PlaySFXLoop("SFX_Section_Move");
         if (ShutterController != null)
         {
             //ShutterController.isUpperLowerShutterOpen = false;
             ShutterController.isLeftRightShutterOpen = false;
+            SoundManager.Instance.PlaySFX("SFX_Section_Door_Close");
         }
 
         //isUpperLowerShutterOpen = false;
@@ -249,13 +250,11 @@ public class SectionMover : MonoBehaviourPun
     public void DisableMovement()
     {
         isBroken = true;
-        Debug.Log("섹션 움직임이 비활성화되었습니다.");
     }
 
     // 고장 상태 해제 후 움직임 활성화
     public void EnableMovement()
     {
         isBroken = false;
-        Debug.Log("섹션 움직임이 활성화되었습니다.");
     }
 }

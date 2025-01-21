@@ -74,12 +74,14 @@ public class ButtonInteractable : XRBaseInteractable
     [PunRPC]
     private void RPC_OnButtonPressed()
     {
+        SoundManager.Instance.PlaySFX("SFX_ButtonClicked");
         _onButtonPressed.Invoke();
     }
 
     [PunRPC]
     private void RPC_OnButtonReleased()
     {
+
         _onButtonReleased.Invoke();
     }
 }

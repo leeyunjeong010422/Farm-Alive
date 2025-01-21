@@ -43,12 +43,14 @@ public class HoseNetworkController : MonoBehaviourPun
     [PunRPC]
     private void RPC_PlayParticleEffect()
     {
+        SoundManager.Instance.PlaySFXLoop("SFX_HoseActivated");
         _hoseInteractable.wateringParticle.Play();
     }
 
     [PunRPC]
     private void RPC_StopParticleEffect()
     {
+        SoundManager.Instance.StopSFXLoop("SFX_HoseActivated");
         _hoseInteractable.wateringParticle.Stop();
     }
 }

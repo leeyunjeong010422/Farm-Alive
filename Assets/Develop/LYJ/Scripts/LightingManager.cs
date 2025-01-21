@@ -76,7 +76,7 @@ public class LightingManager : MonoBehaviourPun
     [PunRPC]
     public void SyncTriggerBlackout()
     {
-        Debug.Log("정전 발생!");
+        //Debug.Log("정전 발생!");
 
         // 1. 모든 Light 끄기
         foreach (Light light in _allLights)
@@ -107,7 +107,7 @@ public class LightingManager : MonoBehaviourPun
     [PunRPC]
     public void SyncRecoverFromBlackout()
     {
-        Debug.Log("정전 해제!");
+        //Debug.Log("정전 해제!");
 
         // 1. 모든 Light 켜기
         foreach (Light light in _allLights)

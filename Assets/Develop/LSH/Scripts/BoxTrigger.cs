@@ -13,12 +13,11 @@ using static QuestManager;
 
 public class BoxTrigger : MonoBehaviourPun
 {
-    [SerializeField] public GameObject boxTape;
     [SerializeField] public List<RequiredItem> requiredItems;
     [SerializeField] public BoxCover boxCover;
     [SerializeField] public List<int> idList = new List<int>();
-    [SerializeField] Collider openCollider;
-    [SerializeField] Collider closedCollider;
+    [SerializeField] private string boxTag = "Box";
+    [SerializeField] private string unTag = "Untagged";
 
     [SerializeField] public delegate void OnRequiredItemsChanged(List<RequiredItem> items);
     [SerializeField] public event OnRequiredItemsChanged RequiredItemsChanged;
@@ -27,6 +26,7 @@ public class BoxTrigger : MonoBehaviourPun
     private void Start()
     {
         boxCover = GetComponent<BoxCover>();
+        boxCover.OnIsOpenChanged += NotifyRequiredItemsChanged;
     }
 
     private void OnEnable()
@@ -67,24 +67,20 @@ public class BoxTrigger : MonoBehaviourPun
 
     public void CountUpdate(int viewId, bool isBool)
     {
+        PhotonView itemView = PhotonView.Find(viewId);
+
         if (!isBool)
         {
-            PhotonView itemView = PhotonView.Find(viewId);
             idList.Add(viewId);
-
-            Rigidbody itemRigid = itemView.GetComponent<Rigidbody>();
-            itemRigid.drag = 10;
-            itemRigid.angularDrag = 1;
+            SoundManager.Instance.PlaySFX("SFX_CropInBox");
             Crop cropView = itemView.GetComponent<Crop>();
             if (requiredItems.Count > 0)
             {
                 foreach (QuestManager.RequiredItem item in requiredItems)
                 {
-                    Debug.Log(requiredItems);
                     if (item.itemPrefab.name == itemView.gameObject.name)
                     {
                         item.requiredcount += cropView.Value;
-                        Debug.Log("카운트업");
                         NotifyRequiredItemsChanged();
                         return;
                     }
@@ -100,8 +96,7 @@ public class BoxTrigger : MonoBehaviourPun
         }
         else
         {
-            PhotonView itemView = PhotonView.Find(viewId);
-
+            SoundManager.Instance.PlaySFX("SFX_CropOutBox");
             Crop cropView = itemView.GetComponent<Crop>();
             if (requiredItems.Count > 0)
             {
@@ -110,10 +105,6 @@ public class BoxTrigger : MonoBehaviourPun
                     if (requiredItems[i].itemPrefab.name == itemView.gameObject.name)
                     {
                         requiredItems[i].requiredcount -= cropView.Value;
-
-                        Rigidbody itemRigid = itemView.GetComponent<Rigidbody>();
-                        itemRigid.drag = 0;
-                        itemRigid.angularDrag = 0.05f;
 
                         if (requiredItems[i].requiredcount <= 0)
                         {
@@ -135,9 +126,15 @@ public class BoxTrigger : MonoBehaviourPun
 
     public void CompleteTaping()
     {
-        boxCover.tape.SetActive(true);
-        boxCover.IsPackaged = true;
+        photonView.RPC(nameof(SyncTaping), RpcTarget.All);
+    }
 
+    [PunRPC]
+    private void SyncTaping()
+    {
+        boxCover.IsPackaged = true;
+        boxCover.tape.SetActive(true);
+        SoundManager.Instance.PlaySFX("SFX_Tape");
         Debug.Log($"테이핑 완료: {this.name}");
     }
 
@@ -146,28 +143,13 @@ public class BoxTrigger : MonoBehaviourPun
         RequiredItemsChanged?.Invoke(requiredItems);
     }
 
-    public void ClearBox()
+    public void OnGrab(SelectEnterEventArgs args)
     {
-        if (PhotonNetwork.IsMasterClient)
-            StartCoroutine(ClearBoxList());
+        gameObject.tag = unTag;
     }
 
-    private IEnumerator ClearBoxList()
+    public void OnRelease(SelectExitEventArgs args)
     {
-        bool isClear = true;
-        while (isClear)
-        {
-            yield return null;
-
-            for (int i = idList.Count - 1; i >= 0; i--)
-            {
-                PhotonView cropView = PhotonView.Find(idList[i]);
-                PhotonNetwork.Destroy(cropView.gameObject);
-            }
-
-            isClear = false;
-        }
-
-        PhotonNetwork.Destroy(gameObject);
+        gameObject.tag = boxTag;
     }
 }

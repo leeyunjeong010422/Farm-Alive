@@ -185,7 +185,7 @@ public class Repair : MonoBehaviourPun
         if (_curRepairCount >= _maxRepairCount)
         {
             // 수리 완료
-            MessageDisplayManager.Instance.ShowMessage("수리완료!");
+            MessageDisplayManager.Instance.ShowMessage("수리되었습니다! 테블릿을 확인하세요!", 5f);
             //Debug.LogError("수리완료!");
             IsRepaired = true;  //발전기에서 망치로 1차 수리가 되었다는 걸 알아야 2차 수리 (휠 + 시동줄)을 할 수 있음
             // TODO: 수리 완료 로직 (ex: 오브젝트 파괴, 애니메이션, 상태 변환 등)

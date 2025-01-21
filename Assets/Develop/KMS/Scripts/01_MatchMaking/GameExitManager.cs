@@ -8,9 +8,12 @@ public class GameExitManager : MonoBehaviour
     public GameObject exitConfirmationPanel;
     public TMP_Text exitConfirmationText;
 
+    [Header("Panel Settings")]
+    public float panelDistance = 2f;
+
     private bool _isExitRequest = false;
     private float _buttonPressDuration = 0f;
-    private const float _requiredHoldTime = 1.0f;
+    private const float _requiredHoldTime = 1f;
 
     private void Start()
     {
@@ -23,9 +26,10 @@ public class GameExitManager : MonoBehaviour
     {
         HandleControllerInput();
 
-#if UNITY_INCLUDE_TESTS
-        HandleTestKeys();
-#endif
+        if (exitConfirmationPanel && exitConfirmationPanel.activeSelf)
+        {
+            UpdatePanelPosition();
+        }
     }
 
     private void HandleControllerInput()
@@ -57,39 +61,6 @@ public class GameExitManager : MonoBehaviour
             }
         }
     }
-
-#if UNITY_INCLUDE_TESTS
-    private void HandleTestKeys()
-    {
-        // ESC 키가 Y 버튼 역할
-        if (Input.GetKey(KeyCode.Escape))
-        {
-            HandleExitRequest(true);
-        }
-        else
-        {
-            HandleExitRequest(false);
-        }
-
-        // Y 키가 A 버튼 역할 (게임 종료)
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            if (exitConfirmationPanel.activeSelf)
-            {
-                ConfirmExit();
-            }
-        }
-
-        // N 키가 B 버튼 역할 (알림창 닫기)
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            if (exitConfirmationPanel.activeSelf)
-            {
-                CancelExit();
-            }
-        }
-    }
-#endif
 
     private void HandleExitRequest(bool isPressed)
     {
@@ -137,5 +108,18 @@ public class GameExitManager : MonoBehaviour
     {
         Debug.Log("게임 종료 취소!");
         HideExitConfirmation();
+    }
+
+    private void UpdatePanelPosition()
+    {
+        Camera mainCamera = Camera.main;
+
+        if (exitConfirmationPanel != null)
+        {
+            Vector3 targetPosition = mainCamera.transform.position + mainCamera.transform.forward * panelDistance;
+            exitConfirmationPanel.transform.position = targetPosition;
+
+            exitConfirmationPanel.transform.rotation = Quaternion.LookRotation(exitConfirmationPanel.transform.position - mainCamera.transform.position);
+        }
     }
 }

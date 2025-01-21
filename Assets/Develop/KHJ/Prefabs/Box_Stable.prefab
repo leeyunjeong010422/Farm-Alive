@@ -602,6 +602,7 @@ MonoBehaviour:
   _body: {fileID: 3663111138833697998}
   _photonView: {fileID: 1869330717069160326}
   _rigid: {fileID: 1869330717069160320}
+  _Axis: 1
   _angleRange: 0.05
   <IsOpen>k__BackingField: 1
 --- !u!1 &1869330717137060967
@@ -657,7 +658,7 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 0
+  OwnershipTransfer: 1
   observableSearch: 2
   ObservedComponents:
   - {fileID: 1869330717137060986}
@@ -888,6 +889,7 @@ MonoBehaviour:
   _body: {fileID: 3663111138833697998}
   _photonView: {fileID: 1869330717137060985}
   _rigid: {fileID: 1869330717137060987}
+  _Axis: 0
   _angleRange: 0.05
   <IsOpen>k__BackingField: 1
 --- !u!1 &1869330717202915045
@@ -1174,6 +1176,7 @@ MonoBehaviour:
   _body: {fileID: 3663111138833697998}
   _photonView: {fileID: 1869330717202915066}
   _rigid: {fileID: 1869330717202915071}
+  _Axis: 0
   _angleRange: 0.05
   <IsOpen>k__BackingField: 1
 --- !u!1 &1869330717643491426
@@ -1460,6 +1463,7 @@ MonoBehaviour:
   _body: {fileID: 3663111138833697998}
   _photonView: {fileID: 1869330717643491424}
   _rigid: {fileID: 1869330717643491428}
+  _Axis: 1
   _angleRange: 0.05
   <IsOpen>k__BackingField: 1
 --- !u!1 &2231136958553999785
@@ -1904,7 +1908,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boxTape: {fileID: 0}
   requiredItems: []
-  isFirstItem: 0
   boxCover: {fileID: 0}
   idList: 
   openCollider: {fileID: 0}

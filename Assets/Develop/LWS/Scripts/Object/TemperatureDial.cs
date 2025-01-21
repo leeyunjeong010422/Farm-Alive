@@ -6,10 +6,30 @@ using UnityEngine.Animations.Rigging;
 public class TemperatureDial : BaseRepairable
 {
     [SerializeField] private XRKnobDial _temperatureDial;
+    [SerializeField] private ParticleSystem _symptomParticle;
+    [SerializeField] private ParticleSystem _brokenParticle;
+
+    protected override ParticleSystem SymptomParticle => _symptomParticle;
+    protected override ParticleSystem BrokenParticle => _brokenParticle;
+
+    protected override string SymptomSoundKey => "SFX_Machine_Error";
+    protected override string BrokenSoundKey => "SFX_Thermostat_Malfunction";
 
     protected override void Start()
     {
         base.Start();
+
+        if (_symptomParticle == null)
+            _symptomParticle = transform.Find("SymptomParticle")?.GetComponentInChildren<ParticleSystem>(true);
+
+        if (_brokenParticle == null)
+            _brokenParticle = transform.Find("BrokenParticle")?.GetComponentInChildren<ParticleSystem>(true);
+
+        if (_symptomParticle == null)
+            Debug.LogWarning($"{gameObject.name}: 'SymptomParticle' 파티클을 찾을 수 없습니다.");
+
+        if (_brokenParticle == null)
+            Debug.LogWarning($"{gameObject.name}: 'BrokenParticle' 파티클을 찾을 수 없습니다.");
 
         _temperatureDial = GetComponent<XRKnobDial>();
         if (_temperatureDial == null)

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -21,6 +20,12 @@ public class RoomSelectInteractable : XRGrabInteractable
         _initialRotation = transform.rotation;
 
         _text = GetComponent<TMP_Text>();
+    }
+
+    protected override void OnSelectEntered(SelectEnterEventArgs args)
+    {
+        base.OnSelectEntered(args);
+        SoundManager.Instance.PlaySFX("SFX_Lobby_CropSelected");
     }
 
     protected override void OnSelectExited(SelectExitEventArgs args)

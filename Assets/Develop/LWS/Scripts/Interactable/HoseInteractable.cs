@@ -10,6 +10,9 @@ public class HoseInteractable : XRGrabInteractable
     [SerializeField] public ParticleSystem wateringParticle;
     [SerializeField] float _pourRate;
 
+    private LiquidContainer _liquidContainer;
+    private Coroutine _pourCoroutine;
+
     public event Action OnHoseActivated;
     public event Action OnHoseDeactivated;
 
@@ -24,17 +27,31 @@ public class HoseInteractable : XRGrabInteractable
     {
         base.OnSelectEntered(args);
 
+        SoundManager.Instance.PlaySFX("SFX_HoseSelected");
+
         if (args.interactorObject is XRSocketInteractor)
         {
-            LiquidContainer receiver = args.interactorObject.transform.GetComponent<LiquidContainer>();
-            if (receiver != null)
+            _liquidContainer = args.interactorObject.transform.GetComponent<LiquidContainer>();
+            if (_liquidContainer != null)
             {
-                float amount = _pourRate * Time.deltaTime;
-                receiver.ReceiveLiquid(amount);
+                _pourCoroutine = StartCoroutine(Pour());
             }
 
             wateringParticle.Stop();
         }
+    }
+
+    protected override void OnSelectExited(SelectExitEventArgs args)
+    {
+        base.OnSelectExited(args);
+        
+        if (_pourCoroutine != null)
+        {
+            StopCoroutine(_pourCoroutine);
+            _pourCoroutine = null;
+        }
+
+        SoundManager.Instance.PlaySFX("SFX_HoseExited");
     }
 
     protected override void OnActivated(ActivateEventArgs args)
@@ -49,5 +66,16 @@ public class HoseInteractable : XRGrabInteractable
         base.OnDeactivated(args);
 
         OnHoseDeactivated?.Invoke();
+    }
+
+    private IEnumerator Pour()
+    {
+        while (true)
+        {
+            float amount = _pourRate * Time.deltaTime;
+            _liquidContainer.ReceiveLiquid(amount);
+
+            yield return null;
+        }
     }
 }

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.XR;
@@ -42,9 +41,6 @@ public class ExitGameInteractable : XRGrabInteractable
 
     private void Update()
     {
-#if UNITY_EDITOR
-        HandleTestKeys();
-#endif
         HandleControllerInput();
 
         UpdatePanelPos();
@@ -54,6 +50,7 @@ public class ExitGameInteractable : XRGrabInteractable
 #if UNITY_EDITOR
         Debug.Log($"{args.interactableObject.transform.name}가 선택 되었습니다.");
 #endif
+        SoundManager.Instance.PlaySFX("SFX_Lobby_Exit");
         StartCoroutine(ExitGameMode(args.interactableObject.transform.gameObject));
     }
 
@@ -70,40 +67,6 @@ public class ExitGameInteractable : XRGrabInteractable
 
         ShowExitConfirmation();
     }
-
-#if UNITY_EDITOR
-    private void HandleTestKeys()
-    {
-        // ESC 키가 Y 버튼 역할
-        if (Input.GetKey(KeyCode.Escape))
-        {
-            HandleExitRequest(true);
-        }
-        else
-        {
-            HandleExitRequest(false);
-        }
-
-        // Y 키가 A 버튼 역할 (게임 종료)
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            if (exitConfirmationPanel.activeSelf)
-            {
-                ConfirmExit();
-            }
-        }
-
-        // N 키가 B 버튼 역할 (알림창 닫기)
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            if (exitConfirmationPanel.activeSelf)
-            {
-                CancelExit();
-            }
-        }
-    }
-#endif
-
     private void HandleExitRequest(bool isPressed)
     {
         if (isPressed)
@@ -175,12 +138,15 @@ public class ExitGameInteractable : XRGrabInteractable
         Debug.Log("게임 종료!");
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
+        SoundManager.Instance.PlaySFX("SFX_Lobby_ButtonClicked");
         Application.Quit();
     }
 
     private void CancelExit()
     {
         Debug.Log("게임 종료 취소!");
+        SoundManager.Instance.PlaySFX("SFX_Lobby_ButtonClicked");
+
         HideExitConfirmation();
     }
 

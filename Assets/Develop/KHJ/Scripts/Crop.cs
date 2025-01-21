@@ -318,9 +318,15 @@ public class Crop : MonoBehaviourPun
     {
         public GrowingState(Crop crop) : base(crop) { }
 
-        public override void StateEnter() { }
+        public override void StateEnter()
+        {
+            SoundManager.Instance.PlaySFXLoop("SFX_CropGrowing");
+        }
 
-        public override void StateExit() { }
+        public override void StateExit()
+        {
+            SoundManager.Instance.StopSFXLoop("SFX_CropGrowing");
+        }
 
         public override void StateUpdate()
         {

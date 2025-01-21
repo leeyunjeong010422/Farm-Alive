@@ -357,15 +357,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cropData: {fileID: 11400000, guid: e9d79a977051b5d44a1e113f1c99dfd6, type: 2}
+  _ID: 0
+  _name: 
   _GFXs: []
   _curState: 0
+  _value: 0
   _digCount: 2
   _growthTime: 10
   _elapsedTime: 0
-  _maxMoisture: 3
+  _idleMaxMoisture: 0
+  _droughtMaxMoisture: 0
   _curMoisture: 0
-  _maxNutrient: 3
+  _idleMaxNutrient: 0
+  _droughtMaxNutrient: 0
   _curNutrient: 0
+  _damageRate: 0
+  _damageLimitTime: 0
+  _temperatureDecreaseLimitTime: 0
+  _temperatureIncreaseLimitTime: 0
 --- !u!114 &8715153737235567846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,7 +388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _refillPrefab: {fileID: 3517554546593839507, guid: 12bd9a1f0311d9349a5d1b55edd753c8, type: 3}
-  _maxCount: 10
+  _maxCount: 30
   _triggerZoneName: CropRefillZone
   idList: 
 --- !u!114 &830394283823142734
@@ -396,7 +405,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameTextPrefab: {fileID: 5425592634578222487, guid: 6cb0f7b8439806a47bb13ec9a53e5e6c, type: 3}
   height: 1
+  position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+  scale: 0
 --- !u!114 &4837648111017060988
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -346,7 +346,7 @@ Animator:
   m_GameObject: {fileID: 3170307149821958272}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: f3559152603355f48908fb9d44ce09b7, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8071c4997900e154080e235972f0002b, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -371,6 +371,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textPanel: {fileID: 689209660834752288}
   text: {fileID: 1456241006549005538}
+  anim: {fileID: 8299689459700893673}
+  audioSource: {fileID: 0}
+  soundList:
+  - {fileID: 8300000, guid: 34633739b9d8a564bb3015bfbd8e25ae, type: 3}
+  - {fileID: 8300000, guid: 86243d1e6775a944096e6bf9e760903f, type: 3}
+  - {fileID: 8300000, guid: fe4d32fcb87c1e347b95d9aae5eaf131, type: 3}
 --- !u!114 &8844196412216542659
 MonoBehaviour:
   m_ObjectHideFlags: 0

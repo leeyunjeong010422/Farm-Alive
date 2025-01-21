@@ -78,8 +78,7 @@ public class QuestManager : MonoBehaviourPun
     [PunRPC]
     public void QuestStart(int stageID)
     {
-
-            totalQuestCount = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
+        totalQuestCount = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -90,8 +89,6 @@ public class QuestManager : MonoBehaviourPun
                     return;
 
                 maxRequiredCount = CSVManager.Instance.Correspondents_CropsCount[corID].correspondent_stage[stageIdx];
-
-                int rand = CSVManager.Instance.Stages_Correspondents[stageID].stage_corCount;
 
                 List<int> randomPrefabIndexes = new List<int>();
                 int[] choseIndex = new int[CSVManager.Instance.Correspondents_CropsType[corID].correspondent_stage[stageIdx]];
@@ -183,37 +180,28 @@ public class QuestManager : MonoBehaviourPun
         if (PhotonNetwork.IsMasterClient)
             StartCoroutine(questController.QuestCountdown(currentQuest));
 
-            truckController.CreateTruck(corID);
+        truckController.CreateTruck(corID);
     }
 
     public void UpdateUI()
     {
-        Debug.Log("Invoke OnTruckUpdated!");
         OnTruckUpdated?.Invoke(questsList, truckList);
     }
 
     public void CountUpdate(int questId, int[] number, float[] count, int boxView, int itemCheck)
     {
-        Debug.Log("카운트 업데이트");
         photonView.RPC(nameof(CountCheck), RpcTarget.AllBuffered, questId, number, count, boxView, itemCheck);
     }
 
     [PunRPC]
     private void CountCheck(int truckId, int[] number, float[] count, int boxView, int itemCheck)
     {
-        Debug.Log("카운트 감소");
-
         for (int i = 0; i < number.Length; i++)
         {
-            Debug.Log($"퀘스트 ID : {questsList[truckId]}");
-            Debug.Log($"차감된 갯수 : {count[i]}");
             questsList[truckId].requiredItems[number[i]].requiredcount -= count[i];
 
-            Debug.Log($"남은 갯수 : {questsList[truckId].requiredItems[number[i]].requiredcount}");
             if (questsList[truckId].requiredItems[number[i]].requiredcount <= 0)
             {
-                Debug.Log("납품완료");
-                Debug.Log("퀘스트 성공 여부 동기화!");
                 questsList[truckId].requiredItems[number[i]].isSuccess = true;
             }
         }
@@ -250,6 +238,7 @@ public class QuestManager : MonoBehaviourPun
         {
             box.transform.position = new Vector3(0, -100, 0);
             box.GetComponent<Rigidbody>().isKinematic = true;
+            truckList[truckId].check = false;
         }
 
         if (completedIndexes.Count > 0)
@@ -269,16 +258,13 @@ public class QuestManager : MonoBehaviourPun
         foreach (int index in completedIndexes.OrderByDescending(x => x))
         {
             clearQuestCount++;
-            //questsList.RemoveAt(index);
-            //PhotonNetwork.Destroy(truckList[index].gameObject);
-
         }
 
         if (clearQuestCount == totalQuestCount)
         {
-            // TODO 로비 복귀ㅣ 함수
             StageManager.Instance.EndStage();
         }
+
         else
         {
             UpdateUI();

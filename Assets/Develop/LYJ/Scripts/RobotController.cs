@@ -80,9 +80,10 @@ public class RobotController : MonoBehaviour
     // 로봇 버튼을 클릭했을 때
     public void OnMoveButtonClicked()
     {
+        SoundManager.Instance.PlaySFX("SFX_RobotRecognize");
         if (Time.time - lastButtonClickTime < cooldownTime)
         {
-            Debug.Log("버튼은 3초에 1번 누를 수 있습니다.");
+            //Debug.Log("버튼은 3초에 1번 누를 수 있습니다.");
             return;
         }
 
@@ -92,12 +93,12 @@ public class RobotController : MonoBehaviour
         PhotonView localPlayerPhotonView = GetLocalPlayerPhotonView();
         if (localPlayerPhotonView == null)
         {
-            Debug.LogError("로컬 플레이어의 PhotonView를 찾을 수 없습니다!");
+            //Debug.LogError("로컬 플레이어의 PhotonView를 찾을 수 없습니다!");
             return;
         }
 
         int photonViewID = localPlayerPhotonView.ViewID;
-        Debug.Log($"버튼을 누른 플레이어의 PhotonViewID: {photonViewID}");
+        //Debug.Log($"버튼을 누른 플레이어의 PhotonViewID: {photonViewID}");
 
         photonView.RPC(nameof(RPC_ButtonClick), RpcTarget.MasterClient, photonViewID);
     }
@@ -105,6 +106,7 @@ public class RobotController : MonoBehaviour
     [PunRPC]
     private void RPC_ButtonClick(int photonViewID, PhotonMessageInfo info)
     {
+        SoundManager.Instance.PlaySFX("SX_RobotTraceCancel");
         if (photonViewID == targetPhotonViewID && photonViewID == lastPhotonViewID)
         {
             photonView.RPC(nameof(StartReturnToInitial), RpcTarget.AllBuffered);
@@ -118,17 +120,6 @@ public class RobotController : MonoBehaviour
         lastPhotonViewID = photonViewID;
     }
 
-    // 마스터 클라이언트에게 소유권 요청
-    //[PunRPC]
-    //private void RequestOwnership(int photonViewID, PhotonMessageInfo info)
-    //{
-    //    // 마스터 클라이언트에서 요청한 플레이어에게 소유권 이전
-    //    photonView.TransferOwnership(info.Sender.ActorNumber);
-
-    //    // 소유권 이전 후 모든 플레이어에게 로봇 타겟 플레이어 대상 동기화
-    //    photonView.RPC(nameof(SyncTargetPlayer), RpcTarget.AllBuffered, photonViewID);
-    //}
-
     [PunRPC]
     private void SyncTargetPlayer(int photonViewID, PhotonMessageInfo info)
     {
@@ -138,14 +129,6 @@ public class RobotController : MonoBehaviour
             return;
         }
 
-        //// 이미 추적 중인 플레이어가 한 번 더 버튼을 누른 경우 초기 상태로 복원
-        //if (targetPhotonViewID == photonViewID && isFollowing)
-        //{
-        //    StartReturnToInitial();
-        //    Debug.Log("로봇이 초기 위치로 복원 중입니다.");
-        //    return;
-        //}
-
         // 새로운 PhotonViewID를 기반으로 해당 플레이어의 Transform 가져오기
         GameObject targetObject = GetPlayerGameObjectByPhotonViewID(photonViewID);
 
@@ -154,11 +137,11 @@ public class RobotController : MonoBehaviour
             _targetPlayer = targetObject.transform; // 추적 대상 갱신
             targetPhotonViewID = photonViewID; // 추적 대상 ID 갱신
             isFollowing = true; // 추적 상태 활성화
-            Debug.Log($"로봇이 플레이어 {photonViewID} 를 따라갑니다.");
+            //Debug.Log($"로봇이 플레이어 {photonViewID} 를 따라갑니다.");
         }
         else
         {
-            Debug.LogError($"해당 PhotonViewID {photonViewID} 를 가진 플레이어를 찾을 수 없습니다!");
+            //Debug.LogError($"해당 PhotonViewID {photonViewID} 를 가진 플레이어를 찾을 수 없습니다!");
         }
     }
 
@@ -185,7 +168,7 @@ public class RobotController : MonoBehaviour
         transform.position = initialPosition;
         transform.rotation = initialRotation;
 
-        Debug.Log("로봇이 초기 상태로 복원되었습니다.");
+        //Debug.Log("로봇이 초기 상태로 복원되었습니다.");
     }
 
     private PhotonView GetLocalPlayerPhotonView()

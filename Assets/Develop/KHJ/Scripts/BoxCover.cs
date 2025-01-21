@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,11 +16,23 @@ public class BoxCover : MonoBehaviour
     public GameObject rightPoint;
     public GameObject tape;
 
+    public event Action OnIsOpenChanged;
+
+    private bool _isOpen;
     public bool IsOpen {  get { return _front.IsOpen || _back.IsOpen || _left.IsOpen || _right.IsOpen; } }
     public bool IsPackaged { get; set; }
 
     private void Awake()
     {
         IsPackaged = false;
+    }
+
+    private void Update()
+    {
+        if(_isOpen != IsOpen)
+        {
+            _isOpen = IsOpen;
+            OnIsOpenChanged?.Invoke();
+        }
     }
 }
