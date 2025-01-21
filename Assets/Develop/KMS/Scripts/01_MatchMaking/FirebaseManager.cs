@@ -436,7 +436,7 @@ public class FirebaseManager : MonoBehaviour
                 if (task.IsCompleted && task.Result != null && task.Result.HasChildren)
                 {
                     int stars = 0;
-                    float playTime = 0f;
+                    float playTime = 999f;
 
                     if (task.Result.Child("stars").Value != null)
                     {

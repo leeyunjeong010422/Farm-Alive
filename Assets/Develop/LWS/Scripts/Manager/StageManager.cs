@@ -13,7 +13,7 @@ public class StageManager : MonoBehaviourPunCallbacks
 
     [Header("스테이지 시간 속성")]
     [SerializeField] float _stageTimeLimit = 0;
-    [SerializeField] float _curStageTime = 0;
+    [SerializeField] public float _curStageTime = 0;
     public float CurStageTime { get { if (PhotonNetwork.IsMasterClient) return _curStageTime; else return 0f; } }
     [SerializeField] bool _isTimerRunning = false;
 
@@ -79,9 +79,9 @@ public class StageManager : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(5f);
 
         OnGameStarted?.Invoke();
-        
+
         yield return new WaitForSeconds(5f);
-        
+
         if (PhotonNetwork.IsMasterClient)
             StartStageTimer();
     }
@@ -96,13 +96,14 @@ public class StageManager : MonoBehaviourPunCallbacks
         if (_stageTimeLimit - _curStageTime == 60f)
         {
             SoundManager.Instance.StopBGM();
-            SoundManager.Instance.PlayBGM("GameOver1Min", 0.4f);
+            SoundManager.Instance.PlayBGM("BGM_StageOneMinute", 0.4f);
         }
 
         if (_stageTimeLimit > 0 && _curStageTime >= _stageTimeLimit)
         {
             SoundManager.Instance.StopBGM();
-            photonView.RPC(nameof(EndStage), RpcTarget.All);
+
+            photonView.RPC(nameof(EndStage), RpcTarget.All, 999f);
         }
     }
 
@@ -113,16 +114,16 @@ public class StageManager : MonoBehaviourPunCallbacks
         switch (_weatherID)
         {
             case 0: // 봄
-                 RenderSettings.skybox = _materials[0];
+                RenderSettings.skybox = _materials[0];
                 break;
             case 1: // 여름
-                 RenderSettings.skybox = _materials[1];
+                RenderSettings.skybox = _materials[1];
                 break;
             case 2: // 가을
-                 RenderSettings.skybox = _materials[2];
+                RenderSettings.skybox = _materials[2];
                 break;
             case 3: // 겨울
-                 RenderSettings.skybox = _materials[3];
+                RenderSettings.skybox = _materials[3];
                 break;
         }
 
@@ -150,17 +151,25 @@ public class StageManager : MonoBehaviourPunCallbacks
     /// <summary>
     /// 퀘스트가 모두 종료되었을 때, 호출할 함수.
     /// </summary>
-    public void EndStage()
+    public void RPC_EndStage(float time)
     {
         _isTimerRunning = false;
 
         int star = EvaluateStar();
-        float playTime = _curStageTime;
 
-        FirebaseManager.Instance.SaveStageResult(_curStageID, _curStageTime, star);
+        FirebaseManager.Instance.SaveStageResult(_curStageID, time, star);
+
+        SoundManager.Instance.StopAllSFX();
 
         StartCoroutine(ReturnToFusion());
     }
+
+    public void EndStage()
+    {
+        if (PhotonNetwork.IsMasterClient)
+            photonView.RPC(nameof(RPC_EndStage), RpcTarget.All, _curStageTime);
+    }
+
 
     public IEnumerator ReturnToFusion()
     {

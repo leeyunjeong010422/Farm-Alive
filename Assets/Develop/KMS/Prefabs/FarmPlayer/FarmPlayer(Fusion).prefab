@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6494774741457635801
 Transform:
   m_ObjectHideFlags: 0
@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: -1272708414687315774}
   - component: {fileID: 7833752346533045572}
   - component: {fileID: 4370233099284091025}
-  - component: {fileID: 5079261533322583672}
+  - component: {fileID: 8822230475326364000}
   m_Layer: 0
   m_Name: FarmPlayer(Fusion)
   m_TagString: Untagged
@@ -155,7 +155,7 @@ MonoBehaviour:
   - {fileID: 663345490963425092}
   - {fileID: 7833752346533045572}
   - {fileID: 4370233099284091025}
-  - {fileID: 5079261533322583672}
+  - {fileID: 8822230475326364000}
   - {fileID: 8623049082110364434}
   - {fileID: 6330834745711844645}
   - {fileID: 8786325825434338083}
@@ -201,14 +201,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   sphereCastRadius: 0.2
---- !u!114 &5079261533322583672
+--- !u!114 &8822230475326364000
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1865248795837646416}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21d484aa3c9524342b19e24d85666491, type: 3}
   m_Name: 
@@ -216,9 +216,9 @@ MonoBehaviour:
   nickNameText: {fileID: 2927205626710181464}
   stageText: {fileID: 2240725443370565681}
   starText: {fileID: 1293889230019770967}
-  infoPanel: {fileID: 977452781023112079}
   _PlayerNickName: 
   _HighStage: 
+  _Stars: 0
 --- !u!1 &2684883393748741231
 GameObject:
   m_ObjectHideFlags: 0

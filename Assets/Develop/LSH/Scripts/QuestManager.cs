@@ -264,6 +264,7 @@ public class QuestManager : MonoBehaviourPun
         {
             StageManager.Instance.EndStage();
         }
+
         else
         {
             UpdateUI();
